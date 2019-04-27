@@ -1,0 +1,32 @@
+body{
+    background-color: #ffffff;
+}
+body h1 h2 h3 h4 h5 h6{
+    font-family: 'Arvo';
+}
+a{
+    text-decoration: none !important;
+}
+a:hover{
+    text-decoration: none !important;
+}
+
+.top-bar {
+    background-color: darkgray;
+}
+.top-bar a {
+    color: #222222;
+}
+.top-bar a:hover {
+    color: #cccccc;
+}
+
+.footer{
+    background-color: #222222;
+    color: #83D0F2;
+}
+
+.footer a {
+    background-color: #222222;
+    color: #83D0F2;
+}

@@ -6,12 +6,10 @@ include '../config/dbconnection.php';
 include '../config/session.php';
 include '../model/login.php';
 
-$uname=trim($_POST['uname']);
-$pass=trim($_POST['pass']);
-// echo $uname;
-// echo $pass;
-// exit;
-$user_type=$_SESSION['user_type'];
+$uname=trim($_POST['email']);  // get login email
+$pass=trim($_POST['password']); // get login password
+
+$user_type=$_SESSION['user_type']; //get the user type
 $pass=sha1($pass); //To encrypt using secure hash algorithm
 
 //Server side validation
@@ -21,37 +19,36 @@ if($uname=="" or $pass==""){
     
     //Redirecting and passing data though URL
     if($user_type=="member"){
-         header("Location:../../view/login.php?msg=$msg");
+        header("Location:../web/view/login.php?msg=$msg");
     }else{
-            header("Location:../view/Stafflogin.php?msg=$msg");
+        header("Location:../cms/view/index.php?msg=$msg");
         }
     
 } else {
    
-     $obj=new Login();
-     if($user_type=='member'){
-          $result=$obj->validateLoginMember($uname,$pass);
-     }
-     else{
-          $result=$obj->validateLoginStaff($uname,$pass);
-     }
-     $nor=$result->num_rows;
+     $obj=new Login(); // Call login model
+    if($user_type=='member'){
+        $result=$obj->validateLoginMember($uname,$pass);
+    }
+    else{
+        $result=$obj->validateLoginStaff($uname,$pass);
+    }
+    $nor=$result->num_rows;
      
-     if($nor==0){
+    if($nor==0){
         $msg="User Name or Password Invalid";
         $msg=base64_encode($msg);
         if($user_type=='member'){
-            header("Location:../../view/login.php?msg=$msg");
+            header("Location:../web/view/login.php?msg=$msg");
         }else{
-            header("Location:../view/Stafflogin.php?msg=$msg");
+            header("Location:../cms/view/index.php?msg=$msg");
         }
         
-     } else {//Valid user name and password  
-         
-        
+    }else {//Valid user name and password  
+               
          if($user_type=='member'){
              $MemberDetails=$result->fetch_assoc(); 
-        //create session to pass validateLogin function query details 
+            //create session to pass validateLogin function query details 
             $_SESSION['userDetails']=$MemberDetails;
             
         //To get remote ip address - http://stackoverflow.com/questions/15699101/get-the-client-ip-address-using-php
@@ -77,7 +74,7 @@ if($uname=="" or $pass==""){
             //$MemberDetails['log_id']=$log_id;
             $_SESSION['log_id']=$log_id;
             
-             header("Location:../../view/myPlan.php");
+             header("Location:../web/view/myPlan.php");
         }else{
             $StaffDetails=$result->fetch_assoc(); 
         //create session to pass validateLogin function query details 
@@ -105,7 +102,7 @@ if($uname=="" or $pass==""){
             
            // $StaffDetails['log_id']=$log_id;
             $_SESSION['log_id']=$log_id;         
-           header("Location:../view/Dashboard.php");
+           header("Location:../cms/view/dashboard.php");
         } 
         
      }

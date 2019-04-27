@@ -1,100 +1,79 @@
-<?php include '../common/Session.php';?>
+<?php include '../../config/session.php';?>
 <!------Header starting ------>
 <html>
     <head>
-        <title>Dashboard</title>
-        <link type="text/css" rel="stylesheet" href="../bootstrap/bootstrap-3.3.7/css/bootstrap.min.css" />
-        <link type="text/css" rel="stylesheet" href="../css/adlayout.css" />
-        <link type="text/css" rel="stylesheet" href="../css/adstyle.css" />
-        <link type="text/css" rel="stylesheet" href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css" />
+        <title>CMS</title>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+        <link type="text/css" rel="stylesheet" href="../../public/css/style.css" />
+        <link type="text/css" rel="stylesheet" href="../../public/css/layout.css" />
         <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
         <link href='https://fonts.googleapis.com/css?family=Arvo' rel='stylesheet'>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+        <style>
+            body{
+                background-color: #F8F9FA;
+            }
+            .btn{
+                background-color: #2cabe2;
+            }
+        </style>
     </head>
     <body>
-        <!---navbar starting ---------->
-        <nav class="navbar navbar-inverse">
-            <div class="container">          
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                     </button>
-                    <h3 style="font-size: 24px; color: white; margin-top: 10px">Z Gym</h3>
-                    
-                </div>
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav navbar-right" style="font-size: 24px; color: white; margin-top: 10px">
-                        <li>Staff Login</li>
-                            </ul>
-                    </div>
-        
-            </div>
-        </nav>
-        <!---navbar end----->
-<!---- header ending------>
-<div class="container-fluid">
-    <div class="row">
-    <div class="log-bg col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="log-text">
-            <div class="col-md-4">&nbsp;</div>
-                <div class="col-md-4">
-                    <p>WELCOME</p>
-                    <form method="post" name="slogin" action="../controller/logincontroller.php">
-                         <?php 
-                            $_SESSION['user_type']="staff";
-                            
-                        ?>
+        <div class="container-fluid">
+            <div class="row justify-content-center" style="height: 100%;">
+                <div class="col-4 pt-5">
+                    <h2 class="text-center">WELCOME</h2>
+                    <form method="post" name="slogin" action="../../controller/loginController.php">
+                        <?php $_SESSION['user_type']="staff"; ?>
                         <div id="msg" class="alert-danger">
                             <p style="font-size: 16px">
                             <?php
                                 if(isset($_REQUEST['msg'])){
                                     echo base64_decode($_REQUEST['msg']);
-                            
                                 }
                             ?>
                             </p>
                         </div>  
                         <div class="form-group">
-                            <label for="uname" class="sr-only">User Name :</label>
+                            <label for="uname" class="sr-only">Email :</label>
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                <input type="text" name="uname" class="form-control" id="uname" placeholder="User Name" />
+                                <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="far fa-user"></i></span>
+                                </div>
+                                <input type="text" name="email" class="form-control" id="email" placeholder="Email" />
                             </div>
                         </div>
                         <div class="form-group">
-                           <label for="password" class="sr-only">Password :</label>
+                        <label for="password" class="sr-only">Password :</label>
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                <input type="password" name="pass" class="form-control" id="pass" placeholder="Password" />
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                </div>
+                                <input type="password" name="password" class="form-control" id="password" placeholder="Password" />
                             </div>
                         </div>
-                        <div>
-                          <!--  <button type="submit" class="btn btn-danger" style="float: right"><a href="">Sign In</a></button> -->
-                            <button type="submit" class="btn btn-danger" style="float: right">Sign in</button>
+                        <div class="float-right">
+                            <input type="submit" class="btn" value="Login" />
                         </div>    
                     </form>
-                
                 </div>
-            <div class="col-md-4">&nbsp;</div>
             </div>
         </div>
-    </div>
-</div>
 <!-----footer starting -------->
-        <footer>
+        <footer class="footer">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-12 adfooter">
+                    <div class="col-md-12">
                         <hr />
-                        <small>Developed by</small><p>LBP Creations &COPY; 2017</p>
+                        <small>Developed by LBP Creations &COPY; <?php echo date("Y"); ?> | All Rights Reserved</small>
                     </div>
                 </div>
             </div>        
-</footer>
-        <script type="text/javascript" src="../bootstrap/bootstrap-3.3.7/js/bootstrap.min.js" />
-        <script type="text/javascript" src="../js/jquery-3.1.1.min.js" />    
+        </footer>  
     </body>
 </html>
 <!--------footer ending --------->

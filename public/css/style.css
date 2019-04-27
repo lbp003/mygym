@@ -159,13 +159,6 @@
 
     
 }
-.footer{
-   /*background-image: url("../images/f-bg.png");*/
-    background-color: rgb(47, 47, 47);
-    height: 200px;
-    color: #ffffff;
-    padding-top: 25px;
-}
 .myfooter{
     background-color: #222222;
     height: 100px;

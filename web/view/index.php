@@ -16,12 +16,12 @@
                     <div class="carousel-item active">
                         <img src="../../public/image/xyz.jpg" alt="image1" width="1100" height="auto">
                     </div>
-                    <!-- <div class="carousel-item">
+                    <div class="carousel-item">
                         <img src="../../public/images/web/efg.jpg" alt="image2" width="1100" height="auto">
                     </div>
                     <div class="carousel-item">
                         <img src="../../public/images/web/abc.jpg" alt="image3" width="1100" height="auto">
-                    </div> -->
+                    </div>
                     </div>
 
                     <!-- Left and right controls -->

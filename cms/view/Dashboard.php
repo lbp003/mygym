@@ -1,9 +1,9 @@
 <!--- header start ---->
-<?php include '../common/adHeader.php'; ?>
+<?php include '../layout/adHeader.php'; ?>
 <!--- header end ----> 
 <body onload="startTime()">
         <!---navbar starting ---------->
-        <?php include '../common/navBar.php';?> 
+        <?php include '../layout/navBar.php';?> 
         <!---navbar ending ---------->
                 <!--- breadcrumb starting--------->
         <div class="container-fluid">
@@ -54,5 +54,5 @@
             </div>
         </div>
 <!---- Footer start---->
-<?php include '../common/adFooter.php'; ?>
+<?php include '../layout/adFooter.php'; ?>
 <!---- Footer end------>

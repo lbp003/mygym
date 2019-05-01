@@ -5,6 +5,7 @@ date_default_timezone_get("Asia/Colombo");//To change time zone
 include '../config/dbconnection.php';
 include '../config/session.php';
 include '../model/login.php';
+include '../model/role.php';
 
 $uname=trim($_POST['email']);  // get login email
 $pass=trim($_POST['password']); // get login password
@@ -47,9 +48,9 @@ if($uname=="" or $pass==""){
     }else {//Valid user name and password  
                
          if($user_type=='member'){
-             $MemberDetails=$result->fetch_assoc(); 
+             $memberDetails=$result->fetch_assoc(); 
             //create session to pass validateLogin function query details 
-            $_SESSION['userDetails']=$MemberDetails;
+            $_SESSION['userDetails']=$memberDetails;
             
         //To get remote ip address - http://stackoverflow.com/questions/15699101/get-the-client-ip-address-using-php
             function get_ip_address(){
@@ -76,9 +77,12 @@ if($uname=="" or $pass==""){
             
              header("Location:../web/view/myPlan.php");
         }else{
-            $StaffDetails=$result->fetch_assoc(); 
+            $staffDetails=$result->fetch_assoc(); 
+            $role_id = $staffDetails['role_id'];
+
+            $result = Role::viewRoleModule($role_id);
         //create session to pass validateLogin function query details 
-            $_SESSION['userDetails']=$StaffDetails;
+            $_SESSION['userDetails']=$staffDetails;
             
         //To get remote ip address - http://stackoverflow.com/questions/15699101/get-the-client-ip-address-using-php
             function get_ip_address(){

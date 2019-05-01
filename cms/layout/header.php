@@ -1,22 +1,17 @@
-<?php include_once '../common/Session.php'; ?>
-<?php include_once '../common/dbconnection.php'; ?>
-<?php include_once '../common/CommonSql.php'; ?>
-
+<?php include_once '../../config/session.php'; ?>
 <?php
-
-$StaffDetails=$_SESSION['userDetails'];
+// Get User Details from session
+$staffDetails=$_SESSION['userDetails'];
 $role_id=$StaffDetails['role_id'];
 $staff_id = $StaffDetails['staff_id'];
 
 $obm = new CommonFun();
 $resultm=$obm->viewRoleModule($role_id);
-//echo $userDetails['gender'].$userDetails['dob'];
-//print_r($resultm);
 ?>
 
 <html>
     <head>
-        <title>Z gym</title>
+        <title>CMS</title>
         <link type="text/css" rel="stylesheet" href="../bootstrap/bootstrap-3.3.7/css/bootstrap.min.css" />
         <link type="text/css" rel="stylesheet" href="../css/adlayout.css" />
         <link type="text/css" rel="stylesheet" href="../css/adStyle.css"/>

@@ -1,9 +1,18 @@
 <?php
-class CommonFun{
+class Role{
+
+    CONST SUPER_ADMIN = "S";
+    CONST ADMIN = "A";
+    CONST MANAGER = "M";
+    CONST TRAINER = "T";
+    CONST MEMBER = "M";
     
-    function viewRoleModule($role_id){
+    public static function viewRoleModule($role_id){
         $con=$GLOBALS['con'];
-        $sql="SELECT * FROM module_role r,module m WHERE role_id='$role_id' AND r.module_id=m.module_id";
+        $sql="SELECT * 
+              FROM module_role r,module m 
+              WHERE role_id='$role_id' 
+              AND r.module_id=m.module_id";
         $result=$con->query($sql);
         return $result; 
         

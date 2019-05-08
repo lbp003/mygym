@@ -1,11 +1,5 @@
 <?php
 class Role{
-
-    CONST SUPER_ADMIN = "S";
-    CONST ADMIN = "A";
-    CONST MANAGER = "M";
-    CONST TRAINER = "T";
-    CONST MEMBER = "M";
     
     public static function viewRoleModule($role_id){
         $con=$GLOBALS['con'];

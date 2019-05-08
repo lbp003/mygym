@@ -1,6 +1,12 @@
 <?php
 
 class staff{
+
+    // User Types of the system
+    CONST SUPER_ADMIN = "S";
+    CONST ADMIN = "A";
+    CONST MANAGER = "M";
+    CONST TRAINER = "T";
     
     function displayAllStaff(){
         $con=$GLOBALS['con'];//To get connection string

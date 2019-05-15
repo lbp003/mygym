@@ -1,5 +1,81 @@
 <?php
+include_once '../config/session.php';
 class Role{
+    // Staff Module
+    const MANAGE_STAFF = 1;
+    const VIEW_STAFF = 2;
+
+    // Member Module
+    const MANAGE_MEMBER = 3;
+    const VIEW_MEMBER = 4;
+    
+    // Login Log
+    const VIEW_STAFF_LOGIN_LOG = 5;
+    const VIEW_MEMBER_LOGIN_LOG = 6;
+
+    // PAyment
+    const VIEW_PAYMENT = 7;
+    const MANAGE_PAYMENT = 8;
+
+    // package
+    const VIEW_PACKAGE = 9;
+    const MANAGE_PACKAGE = 10;
+
+    // class
+    const VIEW_CLASS = 11;
+    const MANAGE_CLASS = 12;
+
+    // class shedule
+    const VIEW_CLASS_SCHEDULE = 13;
+    const MANAGE_CLASS_SCHEDULE = 14;
+
+    // equipment
+    const VIEW_EQUIPMENT = 15;
+    const MANAGE_EQUIPMENT = 16;
+
+    // subscription
+    const VIEW_SUBSCRIPTION = 17;
+    const MANAGE_SUBSCRIPTION = 18;
+
+    // workout
+    const VIEW_WORKOUT = 19;
+    const MANAGE_WORKOUT = 26;
+
+    // report
+    const VIEW_REPORT = 20;
+    const MANAGE_REPORT = 21;
+
+    // message
+    const VIEW_MESSAGE = 22;
+    const MANAGE_MESSAGE = 23;
+
+    // event
+    const VIEW_EVENT = 24;
+    const MANAGE_EVENT = 27;
+
+    // backup
+    const MANAGE_BACKUP = 25;
+
+    //Access
+    const UNAUTHORIZED_ACCESS = "UNAUTHORIZED_ACCESS";
+
+    public static function getPermissionList($staff_id){
+        $con = $GLOBALS['con'];
+        $sql = "SELECT role_id
+                FROM staff_role
+                WHERE staff_id = '$staff_id'";
+        $result=$con->query($sql);
+        return $result;         
+    }
+
+    public static function checkPermissions($permissionLevels = []){
+        $userPermission = $_SESSION['permission'];
+        foreach($permissionLevels as $permission){
+            if (!in_array($permission,$userPermission))
+                return false; // if one is missing decline
+        }
+        return true; // if got here mean all found
+    }
     
     public static function viewRoleModule($role_id){
         $con=$GLOBALS['con'];

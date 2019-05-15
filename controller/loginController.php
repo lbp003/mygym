@@ -7,14 +7,16 @@ include '../config/session.php';
 include '../model/login.php';
 include '../model/role.php';
 
-$uname=trim($_POST['email']);  // get login email
-$pass=trim($_POST['password']); // get login password
+$objRole = new Role();
+
+$email=trim($_POST['email']);  // get login email
+$password=trim($_POST['password']); // get login password
 
 $user_type=$_SESSION['user_type']; //get the user type
-$pass=sha1($pass); //To encrypt using secure hash algorithm
+$password=sha1($password); //To encrypt using secure hash algorithm
 
 //Server side validation
-if($uname=="" or $pass==""){
+if($email=="" or $password==""){
     $msg="User Name or Password are Empty";
     $msg= base64_encode($msg);//To encode the message
     
@@ -29,10 +31,10 @@ if($uname=="" or $pass==""){
    
      $obj=new Login(); // Call login model
     if($user_type=='member'){
-        $result=$obj->validateLoginMember($uname,$pass);
+        $result=$obj->validateMemberLogin($email,$password);
     }
     else{
-        $result=$obj->validateLoginStaff($uname,$pass);
+        $result=$obj->validateStaffLogin($email,$password);
     }
     $nor=$result->num_rows;
      
@@ -48,9 +50,9 @@ if($uname=="" or $pass==""){
     }else {//Valid user name and password  
                
          if($user_type=='member'){
-             $memberDetails=$result->fetch_assoc(); 
-            //create session to pass validateLogin function query details 
-            $_SESSION['userDetails']=$memberDetails;
+             $user=$result->fetch_assoc(); 
+            //create session to password validateLogin function query details 
+            $_SESSION['user']=$user;
             
         //To get remote ip address - http://stackoverflow.com/questions/15699101/get-the-client-ip-address-using-php
             function get_ip_address(){
@@ -70,19 +72,18 @@ if($uname=="" or $pass==""){
             $log_ip=get_ip_address();
             
             $objlogme=new log();
-            $log_id=$objlogme->insertLogMember($log_ip, $MemberDetails['member_id']); //Maintaining Member logs
+            $log_id=$objlogme->insertLogMember($log_ip, $user['member_id']); //Maintaining Member logs
     
-            //$MemberDetails['log_id']=$log_id;
+            //$user['log_id']=$log_id;
             $_SESSION['log_id']=$log_id;
             
              header("Location:../web/view/myPlan.php");
         }else{
-            $staffDetails=$result->fetch_assoc(); 
-            $role_id = $staffDetails['role_id'];
+            $user=$result->fetch_assoc();
+            //create session to password validateLogin function query details 
+            $_SESSION['user']=$user;
 
-            $result = Role::viewRoleModule($role_id);
-        //create session to pass validateLogin function query details 
-            $_SESSION['userDetails']=$staffDetails;
+            $staff_id = $user['staff_id']; 
             
         //To get remote ip address - http://stackoverflow.com/questions/15699101/get-the-client-ip-address-using-php
             function get_ip_address(){
@@ -102,9 +103,19 @@ if($uname=="" or $pass==""){
             $log_ip=get_ip_address();
             
             $objlogst=new log();
-            $log_id=$objlogst->insertLogStaff($log_ip, $StaffDetails['staff_id']); //Maintaining Staff logs
+            $log_id=$objlogst->insertStaffLog($log_ip, $user['staff_id']); //Maintaining Staff logs
             
-           // $StaffDetails['log_id']=$log_id;
+            $staff_type = $user['staff_type'];
+
+            $userPermission = $objRole->getPermissionList($staff_id);
+            $permissionAr = [];
+            while($row = mysqli_fetch_array($userPermission))
+                {
+                    $permissionAr[] = $row['role_id'];
+                }
+
+            $_SESSION['permission'] = $permissionAr; 
+
             $_SESSION['log_id']=$log_id;         
            header("Location:../cms/view/dashboard.php");
         } 

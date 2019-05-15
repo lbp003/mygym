@@ -3,9 +3,12 @@
 //Login class
 class Login{
     //To check user name and password of Staff
-    function validateLoginStaff($u,$p){
+    function validateStaffLogin($email,$password){
         $con=$GLOBALS['con'];//To get connection string
-        $sql="SELECT * FROM login_staff l,staff s,role r WHERE l.staff_email='$u' AND l.password='$p' AND s.staff_id=l.staff_id AND s.role_id = r.role_id";
+        $sql="  SELECT * 
+                FROM staff 
+                WHERE email='$email' 
+                AND password='$password'";
         $result=$con->query($sql);
         return $result;
     }
@@ -137,14 +140,14 @@ class log{
         $result=$con->query($sql);
     }
     
-    function insertLogStaff($log_ip,$staff_id){
+    function insertStaffLog($log_ip,$staff_id){
         $con=$GLOBALS['con'];
         $sql="INSERT INTO staff_log VALUES('',NOW(),'','$log_ip','in','$staff_id')";
         $result=$con->query($sql);
         $log_id=$con->insert_id;
         return $log_id;
     }
-    function updateLogStaff($log_id){
+    function updateStaffLog($log_id){
         $con=$GLOBALS['con'];
         $sql="UPDATE staff_log SET log_out=NOW(),log_status='out' WHERE log_id='$log_id'";
         $result=$con->query($sql);

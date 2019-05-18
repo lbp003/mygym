@@ -17,7 +17,7 @@
     //print_r($resultRo);
 
     $staff_id = $_REQUEST['staff_id'];
-    $obstUp = new staff();
+    $obstUp = new Staff();
     $result = $obstUp->displayStaff($staff_id);
     if(!$result){
         die("ERROR".mysqli_error($con));

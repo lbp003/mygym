@@ -1,6 +1,5 @@
 <?php
-
-class staff{
+class Staff{
 
     // User Types of the system
     CONST SUPER_ADMIN = "S";
@@ -8,9 +7,13 @@ class staff{
     CONST MANAGER = "M";
     CONST TRAINER = "T";
     
-    function displayAllStaff(){
+    public static function displayAllStaff(){
         $con=$GLOBALS['con'];//To get connection string
-        $sql="SELECT * FROM staff s, role r WHERE s.role_id=r.role_id ORDER BY s.staff_id DESC";
+        $sql="  SELECT  staff.first_name,
+                        staff.last_name 
+                FROM staff 
+                WHERE 1=1
+                ORDER BY staff_id DESC";
         $result=$con->query($sql);
         return $result;
     }

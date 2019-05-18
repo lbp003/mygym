@@ -1,13 +1,12 @@
 <?php
-include '../common/dbconnection.php';
-include '../model/staffModel.php';
-include '../model/loginModel.php';
-include '../common/Session.php';
-include '../common/CommonSql.php';
+include '../config/dbconnection.php';
+include '../config/session.php';
+include '../model/staff.php';
+include '../model/login.php';
 
 $status=$_REQUEST['status'];
 
-$objst= new staff();
+$objst= new Staff();
 $objlo = new Login();
 
 

@@ -6,14 +6,28 @@ class Staff{
     CONST ADMIN = "A";
     CONST MANAGER = "M";
     CONST TRAINER = "T";
+
+    //staff status
+    CONST ACTIVE = "A";
+    CONST INACTIVE = "I";
+    CONST DELETED = "D";
+    CONST SUSPENDED = "S";
     
     public static function displayAllStaff(){
         $con=$GLOBALS['con'];//To get connection string
-        $sql="  SELECT  staff.first_name,
-                        staff.last_name 
-                FROM staff 
-                WHERE 1=1
-                ORDER BY staff_id DESC";
+        $sql="SELECT staff.first_name,
+                    staff.last_name,
+                    staff.email,
+                    staff.address,
+                    staff.gender,
+                    staff.dob,
+                    staff.telephone,
+                    staff.staff_type,
+                    staff.image,
+                    staff.status
+            FROM staff 
+            WHERE 1=1
+            ORDER BY staff.staff_id DESC";
         $result=$con->query($sql);
         return $result;
     }

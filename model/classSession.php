@@ -1,10 +1,26 @@
 <?php
 
-class schedule{
+class classSession{
+
+       //class Schedule status
+       CONST ACTIVE = "A";
+       CONST INACTIVE = "I";
+       CONST DELETED = "D";
+       CONST SUSPENDED = "S";
     
-    function displayAllSchedule(){
+    public static function displayAllClassSession(){
         $con=$GLOBALS['con'];//To get connection string
-        $sql="SELECT * FROM schedule s,trainings t WHERE s.training_id = t.training_id ORDER BY schedule_id DESC";
+        $sql="  SELECT  class_session.class_session_id,
+                        class_session.class_session_name,
+                        class_session.day,
+                        class_session.start_time,
+                        class_session.end_time,
+                        class_session.status,
+                        class.class_name
+                FROM class_session
+                LEFT JOIN class ON class_session.class_id = class.class_id
+                WHERE class_session.status != 'D'
+                ORDER BY class_session_id DESC";
         $result=$con->query($sql);
         return $result;
     }

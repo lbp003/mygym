@@ -1,5 +1,5 @@
 <?php
-include_once '../config/session.php';
+// include_once '../config/session.php';
 class Role{
     // Staff Module
     const MANAGE_STAFF = 1;
@@ -70,6 +70,7 @@ class Role{
 
     public static function checkPermissions($permissionLevels = []){
         $userPermission = $_SESSION['permission'];
+        // print_r($userPermission); exit;
         foreach($permissionLevels as $permission){
             if (!in_array($permission,$userPermission))
                 return false; // if one is missing decline

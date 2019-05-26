@@ -15,7 +15,7 @@ class Package{
                         package.duration,
                         package.status
                 FROM package 
-                WHERE 1=1
+                WHERE package.status != 'D'
                 ORDER BY package_id DESC";
         $result=$con->query($sql);
         return $result;

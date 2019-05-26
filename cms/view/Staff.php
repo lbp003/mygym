@@ -64,7 +64,7 @@ $allStaff = Staff::displayAllStaff();
                             $staffType = "Trainer";
                         }
                 ?>
-                <tr style="<?php if($row['status'] == Staff::DELETED){echo "display:none";}?>">
+                <tr>
                     <td><img src="<?php echo $path; ?>" width="70" height="auto" class="img-responsive img-thumbnail" /></td>
                     <td><?php echo ucfirst($row['first_name']); ?></td>
                     <td><?php echo ucfirst($row['last_name']); ?></td>

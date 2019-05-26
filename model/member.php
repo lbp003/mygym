@@ -16,7 +16,9 @@ class Member{
     // Get all member info
     public static function displayAllMember(){
         $con=$GLOBALS['con'];//To get connection string
-        $sql="  SELECT  member.first_name,
+        $sql="  SELECT  
+                        member.member_id,
+                        member.first_name,
                         member.last_name,
                         member.email,
                         member.address,
@@ -28,7 +30,7 @@ class Member{
                         package.package_name
                 FROM member
                 LEFT JOIN package ON member.package_id = package.package_id
-                WHERE 1=1
+                WHERE member.status != 'D'
                 ORDER BY member.member_id DESC";
         $result=$con->query($sql);
         // print_r($result); exit;

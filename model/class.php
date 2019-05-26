@@ -1,10 +1,24 @@
 <?php
 
-class trainings{
+class Programs{
+
+       //Class status
+       CONST ACTIVE = "A";
+       CONST INACTIVE = "I";
+       CONST DELETED = "D";
     
-    function displayAllTrainings(){
+    public static function displayAllPrograms(){
         $con=$GLOBALS['con'];//To get connection string
-        $sql="SELECT trainings.training_id,trainings.training_name,trainings.training_description,trainings.training_image,trainings.training_status,staff.staff_fname,staff.staff_lname FROM trainings LEFT JOIN staff ON trainings.instructor_id = staff.staff_id ORDER BY trainings.training_id DESC";
+        $sql="  SELECT 
+                    class.class_id,
+                    class.class_name,
+                    class.color,
+                    class.status,
+                    CONCAT_WS(' ',staff.first_name,staff.last_name) AS trainer_name
+                FROM class 
+                LEFT JOIN staff ON class.instructor_id = staff.staff_id 
+                WHERE class.status != 'D'
+                ORDER BY class.class_id DESC";
         $result=$con->query($sql);
         return $result;
     }

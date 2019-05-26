@@ -16,7 +16,9 @@ class Staff{
     //Get all staff Info
     public static function displayAllStaff(){
         $con=$GLOBALS['con'];//To get connection string
-        $sql="SELECT staff.first_name,
+        $sql="  SELECT 
+                    staff.staff_id,
+                    staff.first_name,
                     staff.last_name,
                     staff.email,
                     staff.address,
@@ -26,9 +28,9 @@ class Staff{
                     staff.staff_type,
                     staff.image,
                     staff.status
-            FROM staff 
-            WHERE 1=1
-            ORDER BY staff.staff_id DESC";
+                FROM staff 
+                WHERE staff.status != 'D'
+                ORDER BY staff.staff_id DESC";
         $result=$con->query($sql);
         return $result;
     }

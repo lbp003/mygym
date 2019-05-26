@@ -13,6 +13,7 @@ class Staff{
     CONST DELETED = "D";
     CONST SUSPENDED = "S";
     
+    //Get all staff Info
     public static function displayAllStaff(){
         $con=$GLOBALS['con'];//To get connection string
         $sql="SELECT staff.first_name,

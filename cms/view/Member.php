@@ -1,154 +1,127 @@
-<!--header start ---->
-<?php include '../common/adHeader.php'; ?>
-<?php include '../model/memberModel.php'; ?><!-- including member model ----->
+<!--- header start ---->
+<?php include '../layout/header.php'; ?>
+<!--- header end ---->
+<?php include '../../model/member.php'; ?>
 <?php 
-// Get All  members details for the member tables 
-$obMember= new member();
-$AllMember = $obMember->displayAllMember();
-
+$allMember = Member::displayAllMember();
+// $row = $allMember->fetch_assoc();
+// print_r($row); exit;
 ?>
-    <script>
-            function disConfirm(str){
-                var r=confirm("Do You Want to "+str+"?");
-                if(!r){
-                    return false;
-                    
-                }
-                
-            }
-    </script>
-    <script type="text/javascript">
-        $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-            })
-    </script>
-<!----header end -----> 
-<body onload="startTime()">
-        <!---navbar starting ---------->
-        <?php include '../common/navBar.php';?> 
-        <!---navbar ending ---------->
-                <!--- breadcrumb starting--------->
-        <div class="container-fluid">
-                <div class="row">
-                    <ol class="breadcrumb" style="background-color:#2f2f2f">
-                        <li><a href="Dashboard.php" >Dashboard</a></li>
-                        <li><a href="#" class="active" >Member</a></li>
-                    </ol>
-                </div>
-        </div>
-        <!--- breadcrumb ending--------->
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-3">
-            <!----Admin side nav starting------>
-            <?php include '../common/AdminSideNav.php'; ?>
-            <!----Admin side nav ending------>
-        </div>
-        <div class="col-md-9">
-            <div class="row">
-                <div class="col-md-12" style="text-align: center">
-                    <div>
-                        <h1 align="center" style="font-family: monospace; font-size: 60px;color: #ffff00;background-color:rgba(70,70,70,0.5);"><b> Member List</b></h1>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3">
-                    <p align="left" style="font-family: monospace; padding-top: 20px">
-                        <a href="addMember.php"><button class="btn btn-danger btn-lg" style="padding-bottom: 12px; "><i class="glyphicon glyphicon-user glyphicon-plus"></i>&nbsp; ADD MEMBER</button></a>
-                    </p>    
-                </div>
-                <div class="col-md-9">&nbsp;
-<!--                    <form class="form-inline" style="float: right; padding-top: 20px">
-                        <div class="form-group">
-                        <label class="sr-only">search</label>
-                        <input class="form-control" size="35" type="search" name="search">
-                        </div>
-                        <button class="btn btn-default" type="submit" name="submit">Search</button>
-                    </form>-->
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12" style="text-align: center">
-                    <?php if(isset($_REQUEST['msg'])){ 
-                        $msg= base64_decode($_REQUEST['msg']);
-                    ?>
-            <span class="alert alert-success"><?php echo $msg; ?></span>
-                                
-                    <?php   } ?>
-                            
-                </div>
-            </div><br />
-            <div class="row">
-                <table id="mytable" class="table table-striped table-dark table-responsive" width="100%" cellspacing="0">
-                    <thead>
-                      <tr>
-                        <th scope="col">&nbsp;</th>
-                        <th scope="col">First Name</th>
-                        <th scope="col">Last Name</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Telephone</th>
-                        <th scope="col">&nbsp;</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        if(!$AllMember){
-                            die("Query DEAD ".mysqli_error($con));
+<body>
+    <!---navbar starting ---------->
+    <?php include '../layout/navBar.php';?> 
+    <!---navbar ending ---------->
+    <!--- breadcrumb starting--------->
+    <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item" aria-current="page"><a href="dashboard.php">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="#">Member</a></li>
+    </ol>
+    </nav>
+    <div class="container">
+        <table id="example" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Package</th>
+                    <th>Status</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php 
+                    if(!$allMember){
+                        die("Query DEAD ".mysqli_error($con));
+                    }
+                    $count=0;
+                    while($row = $allMember->fetch_assoc()) {
+                        $count++;
+                        
+                        
+                        if($row['image']==""){
+                            $path="../../".PATH_IMAGE."user.png";
+                        } else {
+                            $path="../../public/image/member_image/".$row['image'];                    
                         }
-                        $count=0;
-                        while($memberrow = $AllMember->fetch_assoc()) {
-                            $count++;
-                            
-                            
-                            if($memberrow['member_image']==""){
-                                $path="../images/user.png";
-                            } else {
-                                $path="../images/member_image/".$memberrow['member_image'];
-                           
-                            }
-                            
-                            if($memberrow['member_status']=="Active"){
-                                $status="Deactive";
-                            }else{
-                                $status="Active";
+                        
+                        if($row['status']==Member::ACTIVE){
+                            $status="Active";
+                        }elseif($row['status']==Member::INACTIVE){
+                            $status="Inactive";
+                        }
+                ?>
+                <tr style="<?php if($row['status'] == Member::DELETED){echo "display:none";}?>">
+                    <td><img src="<?php echo $path; ?>" width="70" height="auto" class="img-responsive img-thumbnail" /></td>
+                    <td><?php echo $row['first_name']; ?></td>
+                    <td><?php echo $row['last_name']; ?></td>
+                    <td><?php echo $row['email']; ?></td>
+                    <td><?php echo $row['telephone']; ?></td>
+                    <td><?php echo $row['package_name'];  ?></td>
+                    <td><span class="badge <?php if($row['status']==Member::ACTIVE){echo "badge-success";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></td>
+                    <td>
+                            <a data-toggle="tooltip" data-placement="top" title="View" href="../../controller/memberController.php?member_id=<?php echo $row['member_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
+                            <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../controller/memberController.php?member_id=<?php echo $row['member_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
+                        <?php 
+
+                            $memberId = $row['member_id'];
+
+                            if($row['status']==Member::ACTIVE){
+                                echo "<a data-toggle='tooltip' data-placement='top' title='Deactivate' href='../../controller/memberController.php?member_id='.$memberId.'&status=Deactivate'><i class='fas fa-ban text-warning'></i></a>";
+                            }elseif($row['status']==Member::INACTIVE){
+                                echo "<a data-toggle='tooltip' data-placement='top' title='Activate' href='../../controller/memberController.php?member_id='.$memberId.'&status=Activate'><i class='far fa-check-circle text-success'></i></a>";
                             }
                         ?>
-                      <tr <?php  if(isset($_REQUEST['msg']) && $count==1){ ?>
-                           class="success" 
-                            <?php  } ?>>
-                        <td>
-                              <img src="<?php echo $path; ?>" width="70" height="auto" class="img-responsive img-thumbnail" />
-                        </td>
-                        <td><?php echo ucfirst($memberrow['member_fname']);?></td>
-                        <td><?php echo ucfirst($memberrow['member_lname']);?></td>
-                        <td><?php echo $memberrow['member_email'];?></td>
-                        <td><?php echo ucfirst($memberrow['member_tel']);?></td>
-                        <td>
-                            <a href="../controller/membercontroller.php?member_id=<?php echo $memberrow['member_id']?>&status=View" class="btn" style="background-color: #66cc00" data-toggle="tooltip" data-placement="top" title="View"><span class="glyphicon glyphicon-list"></span></a>
-                            <a href="../view/updateMember.php?member_id=<?php echo $memberrow['member_id']?>&status=Update" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Update"><span class="glyphicon glyphicon-edit"></span></a>
-                            <a href="../controller/membercontroller.php?member_id=<?php echo $memberrow['member_id']?>&status=<?php echo $status; ?>" class="btn btn-danger" onclick="return disConfirm('<?php echo $status; ?>')">
-                                <?php echo $status ?>
-                            </a>
-                        </td>
-                      </tr>
-                     <?php  } ?>
-                    </tbody>
-                  </table>
-            </div>
-        </div>
+                            <a data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash text-danger"></i></a>
+                    </td>
+                </tr>
+                    <?php } ?>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Package</th>
+                    <th>Status</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </tfoot>
+        </table>
     </div>
-</div>
-<!---- Footer start---->
-<?php include '../common/adFooter.php'; ?>
-<!---- Footer end------>
+<?php include '../layout/footer.php';?>
 <script type="text/javascript">
-            $(document).ready(function() {
-                $('#mytable').DataTable( {
-                    dom: 'Bfrtip',
-                    buttons: [
-                        'copy', 'csv', 'excel', 'pdf', 'print'
-                    ]
-                } );
-            } );
-        </script>
+    $(document).ready(function() {
+      var table = $('#example').DataTable( {
+            dom: 'Bfrtip',
+            buttons: [
+                'copy',
+                'csv',
+                'excel',
+                'pdf',
+                {
+                    extend: 'print',
+                    text: 'Print all',
+                    exportOptions: {
+                        modifier: {
+                            selected: null
+                        }
+                    }
+                },
+                {
+                text: '+ ADD MEMBER',
+                className: 'btn-success',
+                action: function ( e, dt, node, config ) {
+                    window.location.href = "addMember.php";
+                }
+            },
+            ],
+            select: true
+        } );
+    } );
+</script>

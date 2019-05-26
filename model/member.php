@@ -1,11 +1,37 @@
 <?php
 
-class member{
+class Member{
+
+    //Member status
+    CONST ACTIVE = "A";
+    CONST INACTIVE = "I";
+    CONST DELETED = "D";
+    CONST SUSPENDED = "S";
+
+    //Gender
+
+    CONST MALE = "M";
+    CONST FEMALE = "F";
     
-    function displayAllMember(){
+    // Get all member info
+    public static function displayAllMember(){
         $con=$GLOBALS['con'];//To get connection string
-        $sql="SELECT * FROM member m, role r WHERE m.role_id=r.role_id ORDER BY m.member_id DESC";
+        $sql="  SELECT  member.first_name,
+                        member.last_name,
+                        member.email,
+                        member.address,
+                        member.telephone,
+                        member.gender,
+                        member.nic,
+                        member.image,
+                        member.status,
+                        package.package_name
+                FROM member
+                LEFT JOIN package ON member.package_id = package.package_id
+                WHERE 1=1
+                ORDER BY member.member_id DESC";
         $result=$con->query($sql);
+        // print_r($result); exit;
         return $result;
     }
     

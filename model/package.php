@@ -1,10 +1,22 @@
 <?php
 
-class package{
+class Package{
+
+    //Package status
+        CONST ACTIVE = "A";
+        CONST INACTIVE = "I";
+        CONST DELETED = "D";
     
-    function displayAllPackage(){
+    public static function displayAllPackage(){
         $con=$GLOBALS['con'];//To get connection string
-        $sql="SELECT * FROM package ORDER BY package_id DESC";
+        $sql="  SELECT  package.package_id,
+                        package.package_name,
+                        package.fee,
+                        package.duration,
+                        package.status
+                FROM package 
+                WHERE 1=1
+                ORDER BY package_id DESC";
         $result=$con->query($sql);
         return $result;
     }

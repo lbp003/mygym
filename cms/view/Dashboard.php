@@ -32,7 +32,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-users fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                        <a href="#"><h5 class="card-title">MEMBER</h5></a>
+                        <a href="member.php"><h5 class="card-title">MEMBER</h5></a>
                         </div>
                         </div>
                     </div>
@@ -56,7 +56,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-gift fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="#"><h5 class="card-title">PACKAGE</h5></a>
+                            <a href="package.php"><h5 class="card-title">PACKAGE</h5></a>
                         </div>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-skating fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="#"><h5 class="card-title">CLASS</h5></a>
+                            <a href="class.php"><h5 class="card-title">CLASS</h5></a>
                         </div>
                         </div>
                     </div>

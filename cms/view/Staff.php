@@ -58,11 +58,13 @@ $allStaff = Staff::displayAllStaff();
                             $staffType = "Super Admin";
                         }elseif($row['staff_type']==Staff::ADMIN){
                             $staffType = "Admin";
+                        }elseif($row['staff_type']==Staff::MANAGER){
+                            $staffType = "Manager";
                         }else{
                             $staffType = "Trainer";
                         }
                 ?>
-                <tr style="<?php if($status == Staff::DELETED){echo "display:none";}?>">
+                <tr style="<?php if($row['status'] == Staff::DELETED){echo "display:none";}?>">
                     <td><img src="<?php echo $path; ?>" width="70" height="auto" class="img-responsive img-thumbnail" /></td>
                     <td><?php echo ucfirst($row['first_name']); ?></td>
                     <td><?php echo ucfirst($row['last_name']); ?></td>
@@ -71,16 +73,16 @@ $allStaff = Staff::displayAllStaff();
                     <td><?php echo $staffType; ?></td>
                     <td><span class="badge <?php if($row['status']==Staff::ACTIVE){echo "badge-success";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></td>
                     <td>
-                            <a data-toggle="tooltip" data-placement="top" title="View" href="../../controller/staffcontroller.php?staff_id=<?php echo $row['staff_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
-                            <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../controller/staffcontroller.php?staff_id=<?php echo $row['staff_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
+                            <a data-toggle="tooltip" data-placement="top" title="View" href="../../controller/staffController.php?staff_id=<?php echo $row['staff_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
+                            <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../controller/staffController.php?staff_id=<?php echo $row['staff_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
                         <?php 
 
                             $staffId = $row['staff_id'];
 
                             if($row['status']==Staff::ACTIVE){
-                                echo "<a data-toggle='tooltip' data-placement='top' title='Deactivate' href='../../controller/staffcontroller.php?staff_id='.$staffId.'&status=Deactivate'><i class='fas fa-ban text-warning'></i></a>";
+                                echo "<a data-toggle='tooltip' data-placement='top' title='Deactivate' href='../../controller/staffController.php?staff_id='.$staffId.'&status=Deactivate'><i class='fas fa-ban text-warning'></i></a>";
                             }elseif($row['status']==Staff::INACTIVE){
-                                echo "<a data-toggle='tooltip' data-placement='top' title='Activate' href='../../controller/staffcontroller.php?staff_id='.$staffId.'&status=Activate'><i class='far fa-check-circle text-success'></i></a>";
+                                echo "<a data-toggle='tooltip' data-placement='top' title='Activate' href='../../controller/staffController.php?staff_id='.$staffId.'&status=Activate'><i class='far fa-check-circle text-success'></i></a>";
                             }
                         ?>
                             <a data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash text-danger"></i></a>

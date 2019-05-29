@@ -1,9 +1,9 @@
 <!--- header start ---->
 <?php include '../layout/header.php'; ?>
 <!--- header end ---->
-<?php include '../../model/classSchedule.php'; ?>
+<?php include '../../model/classSession.php'; ?>
 <?php 
-$allClassSchedule = classSchedule::displayAllClassSchedule();
+$allClassSession = classSession::displayAllClassSession();
 // $row = $allstaff->fetch_assoc();
 // print_r($row); exit;
 ?>
@@ -22,50 +22,50 @@ $allClassSchedule = classSchedule::displayAllClassSchedule();
         <table id="example" class="display" style="width:100%">
             <thead>
                 <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>User Type</th>
+                    <th>Session Name</th>
+                    <th>Class</th>
+                    <th>Day</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
                     <th>Status</th>
                     <th>&nbsp;</th>
                 </tr>
             </thead>
             <tbody>
                 <?php 
-                    if(!$allClassSchedule){
+                    if(!$allClassSession){
                         die("Query DEAD ".mysqli_error($con));
                     }
                     $count=0;
-                    while($row = $allClassSchedule->fetch_assoc()) {
+                    while($row = $allClassSession->fetch_assoc()) {
                         $count++;
                         
                         
-                        if($row['status']==classSchedule::ACTIVE){
+                        if($row['status']==classSession::ACTIVE){
                             $status="Active";
-                        }elseif($row['status']==classSchedule::INACTIVE){
+                        }elseif($row['status']==classSession::INACTIVE){
                             $status="Inactive";
                         }
 
                 ?>
                 <tr>
-                    <td><?php echo ucfirst($row['first_name']); ?></td>
-                    <td><?php echo ucfirst($row['last_name']); ?></td>
-                    <td><?php echo $row['email']; ?></td>
-                    <td><?php echo $row['telephone']; ?></td>
-                    <td><?php echo $staffType; ?></td>
-                    <td><span class="badge <?php if($row['status']==classSchedule::ACTIVE){echo "badge-success";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></td>
+                    <td><?php echo ucfirst($row['class_session_name']); ?></td>
+                    <td><?php echo ucfirst($row['class_name']); ?></td>
+                    <td><?php echo $row['day']; ?></td>
+                    <td><?php echo $row['start_time']; ?></td>
+                    <td><?php echo $row['end_time']; ?></td>
+                    <td><span class="badge <?php if($row['status']==classSession::ACTIVE){echo "badge-success";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></td>
                     <td>
-                            <a data-toggle="tooltip" data-placement="top" title="View" href="../../controller/classScheduleController.php?classSchedule_id=<?php echo $row['classSchedule_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
-                            <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../controller/classScheduleController.php?classSchedule_id=<?php echo $row['classSchedule_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
+                            <a data-toggle="tooltip" data-placement="top" title="View" href="../../controller/classSessionController.php?classSession_id=<?php echo $row['classSession_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
+                            <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../controller/classSessionController.php?classSession_id=<?php echo $row['classSession_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
                         <?php 
 
-                            $classScheduleId = $row['classSchedule_id'];
+                            $classSessionId = $row['class_session_id'];
 
-                            if($row['status']==classSchedule::ACTIVE){
-                                echo "<a data-toggle='tooltip' data-placement='top' title='Deactivate' href='../../controller/classScheduleController.php?classSchedule_id='.$classScheduleId.'&status=Deactivate'><i class='fas fa-ban text-warning'></i></a>";
-                            }elseif($row['status']==classSchedule::INACTIVE){
-                                echo "<a data-toggle='tooltip' data-placement='top' title='Activate' href='../../controller/classScheduleController.php?classSchedule_id='.$classScheduleId.'&status=Activate'><i class='far fa-check-circle text-success'></i></a>";
+                            if($row['status']==classSession::ACTIVE){
+                                echo "<a data-toggle='tooltip' data-placement='top' title='Deactivate' href='../../controller/classSessionController.php?classSession_id='.$classSessionId.'&status=Deactivate'><i class='fas fa-ban text-warning'></i></a>";
+                            }elseif($row['status']==classSession::INACTIVE){
+                                echo "<a data-toggle='tooltip' data-placement='top' title='Activate' href='../../controller/classSessionController.php?classSession_id='.$classSessionId.'&status=Activate'><i class='far fa-check-circle text-success'></i></a>";
                             }
                         ?>
                             <a data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash text-danger"></i></a>
@@ -75,11 +75,11 @@ $allClassSchedule = classSchedule::displayAllClassSchedule();
             </tbody>
             <tfoot>
                 <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>classSchedule Type</th>
+                    <th>Session Name</th>
+                    <th>Class</th>
+                    <th>Day</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
                     <th>Status</th>
                     <th>&nbsp;</th>
                 </tr>
@@ -106,10 +106,10 @@ $allClassSchedule = classSchedule::displayAllClassSchedule();
                     }
                 },
                 {
-                text: '+ ADD CLASS SCHEDULE',
+                text: '+ ADD CLASS SESSION',
                 className: 'btn-success',
                 action: function ( e, dt, node, config ) {
-                    window.location.href = "addClassSchedule.php";
+                    window.location.href = "addClassSession.php";
                 }
             },
             ],

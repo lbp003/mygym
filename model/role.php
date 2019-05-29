@@ -26,8 +26,8 @@ class Role{
     const MANAGE_CLASS = 12;
 
     // class shedule
-    const VIEW_CLASS_SCHEDULE = 13;
-    const MANAGE_CLASS_SCHEDULE = 14;
+    const VIEW_CLASS_SESSION = 13;
+    const MANAGE_CLASS_SESSION = 14;
 
     // equipment
     const VIEW_EQUIPMENT = 15;

@@ -75,12 +75,12 @@
                 <?php } ?>
             </div>
             <div class="col-3">
-                <?php if($auth->checkPermissions([Role::MANAGE_CLASS_SCHEDULE, Role::VIEW_CLASS_SCHEDULE])){ ?>
+                <?php if($auth->checkPermissions([Role::MANAGE_CLASS_SESSION, Role::VIEW_CLASS_SESSION])){ ?>
                     <div class="mb-3 mr-4">
                         <div class="card align-items-center border-dark" style="width: 15rem;">
                         <i class="far fa-calendar-alt fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="#"><h5 class="card-title">CLASS SCHEDULE</h5></a>
+                            <a href="classSession.php"><h5 class="card-title">CLASS SESSION</h5></a>
                         </div>
                         </div>
                     </div>

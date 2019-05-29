@@ -1,6 +1,5 @@
-<?php include '../common/Session.php'; ?>
-<?php include '../common/dbconnection.php'; ?>
-<?php include '../admin/common/CommonSql.php'; ?>
+<?php include_once '../../config/session.php'; ?>
+<?php include_once '../../config/dbconnection.php'; ?>
 
 <html>
     <head>

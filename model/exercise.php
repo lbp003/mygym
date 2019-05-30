@@ -1,16 +1,23 @@
 <?php
 
-class workout{
+class Exercise{
+
+     //Exercise status
+     CONST ACTIVE = "A";
+     CONST INACTIVE = "I";
+     CONST DELETED = "D";
+     CONST SUSPENDED = "S";
     
-    function displayAllWorkout(){
+    public static function displayAllExercise(){
         $con=$GLOBALS['con'];//To get connection string
-        $sql="SELECT * FROM exercise e, anatomy a WHERE e.anatomy_id=a.anatomy_id ORDER BY e.exercise_id DESC";
-        $result=$con->query($sql);
-        return $result;
-    }
-    function displayAllExercise(){
-        $con=$GLOBALS['con'];//To get connection string
-        $sql="SELECT * FROM exercise";
+        $sql="  SELECT  exercise.exercise_id,
+                        exercise.exercise_name,
+                        exercise.status,
+                        anatomy.anatomy_name 
+                FROM exercise 
+                INNER JOIN anatomy ON exercise.anatomy_id = anatomy.anatomy_id
+                WHERE exercise.status != 'D' 
+                ORDER BY exercise.exercise_id DESC";
         $result=$con->query($sql);
         return $result;
     }

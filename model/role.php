@@ -57,7 +57,7 @@ class Role{
     const MANAGE_BACKUP = 25;
 
     //Access
-    const UNAUTHORIZED_ACCESS = "UNAUTHORIZED_ACCESS";
+    const UNAUTHORIZED_ACCESS = "UNAUTHORIZED ACCESS";
 
     public static function getPermissionList($staff_id){
         $con = $GLOBALS['con'];

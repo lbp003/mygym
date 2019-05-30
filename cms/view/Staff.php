@@ -66,8 +66,8 @@ $allStaff = Staff::displayAllStaff();
                 ?>
                 <tr>
                     <td><img src="<?php echo $path; ?>" width="70" height="auto" class="img-responsive img-thumbnail" /></td>
-                    <td><?php echo ucfirst($row['first_name']); ?></td>
-                    <td><?php echo ucfirst($row['last_name']); ?></td>
+                    <td><?php echo ucwords($row['first_name']); ?></td>
+                    <td><?php echo ucwords($row['last_name']); ?></td>
                     <td><?php echo $row['email']; ?></td>
                     <td><?php echo $row['telephone']; ?></td>
                     <td><?php echo $staffType; ?></td>

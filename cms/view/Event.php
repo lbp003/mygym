@@ -1,149 +1,122 @@
-<!--header start ---->
-<?php include '../common/adHeader.php'; ?>
-<?php include '../model/eventModel.php'; ?><!-- including staff model ----->
+<!--- header start ---->
+<?php include '../layout/header.php'; ?>
+<!--- header end ---->
+<?php include '../../model/event.php'; ?>
 <?php 
-// Get All staff members details for the staff tables 
-$obevent= new event();
-$AllEvent = $obevent->displayAllEvent();
-
+$allEvent = Event::displayAllEvent();
+// $row = $allevent->fetch_assoc();
+// print_r($allEvent); exit;
 ?>
-    <script>
-            function disConfirm(str){
-                var r=confirm("Do You Want to "+str+"?");
-                if(!r){
-                    return false;
-                    
-                }
-                
-            }
-    </script>
-<!----header end -----> 
-<body onload="startTime()">
-        <!---navbar starting ---------->
-        <?php include '../common/navBar.php';?> 
-        <!---navbar ending ---------->
-                <!--- breadcrumb starting--------->
-        <div class="container-fluid">
-                <div class="row">
-                    <ol class="breadcrumb" style="background-color:#2f2f2f">
-                        <li><a href="Dashboard.php" >Dashboard</a></li>
-                        <li><a href="#" class="active" >Event</a></li>
-                    </ol>
-                </div>
-        </div>
-        <!--- breadcrumb ending--------->
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-3">
-            <!----Admin side nav starting------>
-            <?php include '../common/AdminSideNav.php'; ?>
-            <!----Admin side nav ending------>
-        </div>
-        <div class="col-md-9">
-            <div class="row">
-                <div class="col-md-12" style="text-align: center">
-                    <div>
-                        <h1 align="center" style="font-family: monospace; font-size: 60px;color: #ffff00;background-color:rgba(70,70,70,0.5);"><b> Event List</b></h1>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3">
-                    <p align="left" style="font-family: monospace; padding-top: 20px">
-                        <a href="addEvent.php"><button class="btn btn-danger btn-lg" style="padding-bottom: 12px; "><i class="glyphicon glyphicon-user glyphicon-plus"></i>&nbsp; ADD Event</button></a>
-                    </p>    
-                </div>
-                <div class="col-md-9">&nbsp;
-<!--                    <form class="form-inline" style="float: right; padding-top: 20px">
-                        <div class="form-group">
-                        <label class="sr-only">search</label>
-                        <input class="form-control" size="35" type="search" name="search">
-                        </div>
-                        <button class="btn btn-default" type="submit" name="submit">Search</button>
-                    </form>-->
-                </div>
-            </div><hr />
-            <div class="row">
-                <div class="col-md-12" style="text-align: center">
-                    <?php if(isset($_REQUEST['msg'])){ 
-                        $msg= base64_decode($_REQUEST['msg']);
-                    ?>
-            <span class="alert alert-success"><?php echo $msg; ?></span>
-                                
-                    <?php   } ?>
-                            
-                </div>
-            </div><br />
-            <div class="row">
-                <table id="mytable" class="table table-striped table-dark table-responsive" width="100%" cellspacing="0">
-                    <thead>
-                      <tr>
-                        <th scope="col">&nbsp;</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Venue</th>
-                                               
-                        <th scope="col">&nbsp;</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        if(!$AllEvent){
-                            die("Query DEAD ".mysqli_error($con));
+<body>
+    <!---navbar starting ---------->
+    <?php include '../layout/navBar.php';?> 
+    <!---navbar ending ---------->
+    <!--- breadcrumb starting--------->
+    <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item" aria-current="page"><a href="dashboard.php">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="#">Event</a></li>
+    </ol>
+    </nav>
+    <div class="container">
+        <table id="example" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>Event Name</th>
+                    <th>Date</th>
+                    <th>Venue</th>
+                    <th>Status</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php 
+                    if(!$allEvent){
+                        die("Query DEAD ".mysqli_error($con));
+                    }
+                    $count=0;
+                    while($row = $allEvent->fetch_assoc()) {
+                        $count++;
+                        
+                        
+                        if($row['image']==""){
+                            $path="<i class='far fa-calendar-check'></i>";
+                        } else {
+                            $path="../../public/image/event_image/".$row['image'];                    
                         }
-                        $count=0;
-                        while($eventrow = $AllEvent->fetch_assoc()) {
-                            $count++;
-                            
-                            
-                            if($eventrow['event_image']==""){
-                                $path="../images/user.png";
-                            } else {
-                                $path="../images/event_image/".$eventrow['event_image'];
-                           
-                            }
-                            
-                            if($eventrow['event_status']=="Active"){
-                                $status="Deactive";
-                            }else{
-                                $status="Active";
+                        
+                        if($row['status']==Event::ACTIVE){
+                            $status="Active";
+                        }elseif($row['status']==Event::INACTIVE){
+                            $status="Inactive";
+                        }
+                        
+                ?>
+                <tr>
+                    <td><?php if (!empty($row['image'])){echo "<img src='../../public/image/event_image/{$row['image']}' width='70' height='auto' class='img-responsive img-thumbnail' />";}else{echo "<i class='far fa-3x fa-calendar-check'></i>";}?></td>
+                    <td><?php echo ucwords($row['event_title']); ?></td>
+                    <td><?php echo $row['event_date']; ?></td>
+                    <td><?php echo $row['event_venue']; ?></td>
+                    <td><span class="badge <?php if($row['status']==Event::ACTIVE){echo "badge-success";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></td>
+                    <td>
+                            <a data-toggle="tooltip" data-placement="top" title="View" href="../../controller/eventController.php?event_id=<?php echo $row['event_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
+                            <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../controller/eventController.php?event_id=<?php echo $row['event_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
+                        <?php 
+
+                            $eventId = $row['event_id'];
+
+                            if($row['status']==Event::ACTIVE){
+                                echo "<a data-toggle='tooltip' data-placement='top' title='Deactivate' href='../../controller/eventController.php?event_id='.$eventId.'&status=Deactivate'><i class='fas fa-ban text-warning'></i></a>";
+                            }elseif($row['status']==Event::INACTIVE){
+                                echo "<a data-toggle='tooltip' data-placement='top' title='Activate' href='../../controller/eventController.php?event_id='.$eventId.'&status=Activate'><i class='far fa-check-circle text-success'></i></a>";
                             }
                         ?>
-                      <tr <?php  if(isset($_REQUEST['msg']) && $count==1){ ?>
-                           class="success" 
-                            <?php  } ?>>
-                         <td>
-                             <img src="<?php echo $path; ?>" width="70" height="auto" class="img-responsive img-thumbnail" />
-                          </td>
-                          <td><?php echo ucfirst($eventrow['event_title']);?></td>
-                        <td><?php echo ucfirst($eventrow['event_date']);?></td>
-                        <td><?php echo $eventrow['event_venue'];?></td>
-                        
-                        <td>
-                            <a href="../controller/eventcontroller.php?event_id=<?php echo $eventrow['event_id']?>&status=View" class="btn" style="background-color: #66cc00"><span class="glyphicon glyphicon-list"></span></a>
-                            <a href="../view/updateEvent.php?event_id=<?php echo $eventrow['event_id']?>&status=Update" class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span></a>
-                            <a href="../controller/eventcontroller.php?event_id=<?php echo $eventrow['event_id']?>&status=<?php echo $status; ?>" class="btn btn-danger" onclick="return disConfirm('<?php echo $status; ?>')">
-                                <?php echo $status ?>
-                            </a>
-                        </td>
-                      </tr>
-                     <?php  } ?>
-                    </tbody>
-                  </table>
-            </div>
-        </div>
+                            <a data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash text-danger"></i></a>
+                    </td>
+                </tr>
+                    <?php } ?>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>Event Name</th>
+                    <th>Date</th>
+                    <th>Venue</th>
+                    <th>Status</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </tfoot>
+        </table>
     </div>
-</div>
-<!---- Footer start---->
-<?php include '../common/adFooter.php'; ?>
-<!---- Footer end------>
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $('#mytable').DataTable( {
-                    dom: 'Bfrtip',
-                    buttons: [
-                        'copy', 'csv', 'excel', 'pdf', 'print'
-                    ]
-                } );
-            } );
-        </script>
+<?php include '../layout/footer.php';?>
+<script type="text/javascript">
+    $(document).ready(function() {
+      var table = $('#example').DataTable( {
+            dom: 'Bfrtip',
+            buttons: [
+                'copy',
+                'csv',
+                'excel',
+                'pdf',
+                {
+                    extend: 'print',
+                    text: 'Print all',
+                    exportOptions: {
+                        modifier: {
+                            selected: null
+                        }
+                    }
+                },
+                {
+                text: '+ ADD EVENT',
+                className: 'btn-success',
+                action: function ( e, dt, node, config ) {
+                    window.location.href = "addEvent.php";
+                }
+            },
+            ],
+            select: true
+        } );
+    } );
+</script>

@@ -1,10 +1,24 @@
 <?php
 
-class event{
+class Event{
+
+    //Event status
+    CONST ACTIVE = "A";
+    CONST INACTIVE = "I";
+    CONST DELETED = "D";
     
-    function displayAllEvent(){
+    public static function displayAllEvent(){
         $con=$GLOBALS['con'];//To get connection string
-        $sql="SELECT * FROM event ORDER BY event_id DESC";
+        $sql="  SELECT  event.event_id,
+                        event.event_title,
+                        event.event_date,
+                        event.event_venue,
+                        event.event_description,
+                        event.image,
+                        event.status
+                FROM event
+                WHERE event.status != 'D' 
+                ORDER BY event.event_id DESC";
         $result=$con->query($sql);
         return $result;
     }

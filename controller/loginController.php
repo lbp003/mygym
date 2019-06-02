@@ -2,10 +2,11 @@
 date_default_timezone_get("Asia/Colombo");//To change time zone
 //Login controller
 //Server Side Include to include a file
-include '../config/dbconnection.php';
-include '../config/session.php';
-include '../model/login.php';
-include '../model/role.php';
+include_once '../config/dbconnection.php';
+include_once '../config/session.php';
+include_once '../model/login.php';
+include_once '../model/role.php';
+include_once '../model/log.php';
 
 $objRole = new Role();
 
@@ -71,7 +72,7 @@ if($email=="" or $password==""){
 
             $log_ip=get_ip_address();
             
-            $objlogme=new log();
+            $objlogme=new Log();
             $log_id=$objlogme->insertLogMember($log_ip, $user['member_id']); //Maintaining Member logs
     
             //$user['log_id']=$log_id;
@@ -102,7 +103,7 @@ if($email=="" or $password==""){
 
             $log_ip=get_ip_address();
             
-            $objlogst=new log();
+            $objlogst=new Log();
             $log_id=$objlogst->insertStaffLog($log_ip, $user['staff_id']); //Maintaining Staff logs
             
             $staff_type = $user['staff_type'];

@@ -164,7 +164,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-map-marker fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="#"><h5 class="card-title">LOG</h5></a>
+                            <a href="log.php"><h5 class="card-title">LOG</h5></a>
                         </div>
                         </div>
                     </div>          

@@ -1,13 +1,13 @@
 <?php
-    include '../../config/dbconnection.php';
-    include '../../config/session.php';
-    include '../../model/login.php';
+    include_once '../../config/dbconnection.php';
+    include_once '../../config/session.php';
+    include_once '../../model/log.php';
      
 
     $user=$_SESSION['user'];
     $log_id=$_SESSION['log_id'];
           
-    $objlog = new log();
+    $objlog = new Log();
     $objlog->updateStaffLog($log_id); //To update log record
     
     unset($_SESSION['user']);

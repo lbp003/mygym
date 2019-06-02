@@ -3,7 +3,7 @@
 //Login class
 class Login{
     //To check user name and password of Staff
-    function validateStaffLogin($email,$password){
+    public static function validateStaffLogin($email,$password){
         $con=$GLOBALS['con'];//To get connection string
         $sql="  SELECT * 
                 FROM staff 
@@ -13,13 +13,13 @@ class Login{
         return $result;
     }
         //To check user name and password of Staff
-    function validateLoginMember($u,$p){
+    public static function validateLoginMember($u,$p){
         $con=$GLOBALS['con'];//To get connection string
         $sql="SELECT * FROM login_member l,member m,role r WHERE l.member_email='$u' AND l.password='$p' AND m.member_id=l.member_id AND m.role_id = r.role_id";
         $result=$con->query($sql);
         return $result;
     }
-    function addStaffLogin($staff_email,$staff_id){
+    public static function addStaffLogin($staff_email,$staff_id){
         $con=$GLOBALS['con'];//To get connection string
         $password=sha1("123");//Default password
         $sql="INSERT INTO login_staff VALUES('$staff_email','$password','$staff_id','Active')";//To execute the query
@@ -122,35 +122,3 @@ class Login{
 //    }
 //    
 //}
-
-
-class log{
-    
-    function insertLogMember($log_ip,$member_id){
-        $con=$GLOBALS['con'];
-        $sql="INSERT INTO member_log VALUES('',NOW(),'','$log_ip','in','$member_id')";
-        $result=$con->query($sql);
-        $log_id=$con->insert_id;
-        return $log_id;
-    }
-    
-    function updateLogMember($log_id){
-        $con=$GLOBALS['con'];
-        $sql="UPDATE member_log SET log_out=NOW(),log_status='out' WHERE log_id='$log_id'";
-        $result=$con->query($sql);
-    }
-    
-    function insertStaffLog($log_ip,$staff_id){
-        $con=$GLOBALS['con'];
-        $sql="INSERT INTO staff_log VALUES('',NOW(),'','$log_ip','in','$staff_id')";
-        $result=$con->query($sql);
-        $log_id=$con->insert_id;
-        return $log_id;
-    }
-    function updateStaffLog($log_id){
-        $con=$GLOBALS['con'];
-        $sql="UPDATE staff_log SET log_out=NOW(),log_status='out' WHERE log_id='$log_id'";
-        $result=$con->query($sql);
-    }
-    
-}

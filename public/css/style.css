@@ -2,5 +2,9 @@
 .dash-icon-color{
   color: #98C93C;
 }
+/* multiple datatable bottom margin */
+.dataTables_wrapper {
+  margin-bottom: 3em;
+}
 
 

@@ -1,7 +1,7 @@
 <!--- header start ---->
-<?php include '../layout/header.php'; ?>
+<?php include '../../layout/header.php'; ?>
 <!--- header end ---->
-<?php include '../../model/exercise.php'; ?>
+<?php include '../../../model/exercise.php'; ?>
 <?php 
 $allExercise = Exercise::displayAllExercise();
 // $row = $allexercise->fetch_assoc();
@@ -9,12 +9,12 @@ $allExercise = Exercise::displayAllExercise();
 ?>
 <body>
     <!---navbar starting ---------->
-    <?php include '../layout/navBar.php';?> 
+    <?php include '../../layout/navBar.php';?> 
     <!---navbar ending ---------->
     <!--- breadcrumb starting--------->
     <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item" aria-current="page"><a href="dashboard.php">Home</a></li>
+        <li class="breadcrumb-item" aria-current="page"><a href="../dashboard/dashboard.php">Home</a></li>
         <li class="breadcrumb-item active" aria-current="page"><a href="#">Exercise</a></li>
     </ol>
     </nav>
@@ -77,7 +77,7 @@ $allExercise = Exercise::displayAllExercise();
             </tfoot>
         </table>
     </div>
-<?php include '../layout/footer.php';?>
+<?php include '../../layout/footer.php';?>
 <script type="text/javascript">
     $(document).ready(function() {
       var table = $('#example').DataTable( {

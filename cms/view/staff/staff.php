@@ -1,7 +1,7 @@
 <!--- header start ---->
-<?php include '../layout/header.php'; ?>
+<?php include '../../layout/header.php'; ?>
 <!--- header end ---->
-<?php include '../../model/staff.php'; ?>
+<?php include '../../../model/staff.php'; ?>
 <?php 
 $allStaff = Staff::displayAllStaff();
 // $row = $allstaff->fetch_assoc();
@@ -9,12 +9,12 @@ $allStaff = Staff::displayAllStaff();
 ?>
 <body>
     <!---navbar starting ---------->
-    <?php include '../layout/navBar.php';?> 
+    <?php include '../../layout/navBar.php';?> 
     <!---navbar ending ---------->
     <!--- breadcrumb starting--------->
     <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item" aria-current="page"><a href="dashboard.php">Home</a></li>
+        <li class="breadcrumb-item" aria-current="page"><a href="../dashboard/dashboard.php">Home</a></li>
         <li class="breadcrumb-item active" aria-current="page"><a href="#">Staff</a></li>
     </ol>
     </nav>
@@ -43,9 +43,9 @@ $allStaff = Staff::displayAllStaff();
                         
                         
                         if($row['image']==""){
-                            $path="../../".PATH_IMAGE."user.png";
+                            $path="../../../".PATH_IMAGE."user.png";
                         } else {
-                            $path="../../public/image/staff_image/".$row['image'];                    
+                            $path="../../../public/image/staff_image/".$row['image'];                    
                         }
                         
                         if($row['status']==Staff::ACTIVE){
@@ -104,7 +104,7 @@ $allStaff = Staff::displayAllStaff();
             </tfoot>
         </table>
     </div>
-<?php include '../layout/footer.php';?>
+<?php include '../../layout/footer.php';?>
 <script type="text/javascript">
     $(document).ready(function() {
       var table = $('#example').DataTable( {

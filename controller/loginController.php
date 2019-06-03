@@ -25,7 +25,7 @@ if($email=="" or $password==""){
     if($user_type=="member"){
         header("Location:../web/view/login.php?msg=$msg");
     }else{
-        header("Location:../cms/view/index.php?msg=$msg");
+        header("Location:../cms/view/index/index.php?msg=$msg");
         }
     
 } else {
@@ -45,7 +45,7 @@ if($email=="" or $password==""){
         if($user_type=='member'){
             header("Location:../web/view/login.php?msg=$msg");
         }else{
-            header("Location:../cms/view/index.php?msg=$msg");
+            header("Location:../cms/view/index/index.php?msg=$msg");
         }
         
     }else {//Valid user name and password  
@@ -118,7 +118,7 @@ if($email=="" or $password==""){
             $_SESSION['permission'] = $permissionAr; 
 
             $_SESSION['log_id']=$log_id;         
-           header("Location:../cms/view/dashboard.php");
+           header("Location:../cms/view/dashboard/dashboard.php");
         } 
         
      }

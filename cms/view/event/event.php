@@ -1,7 +1,7 @@
 <!--- header start ---->
-<?php include '../layout/header.php'; ?>
+<?php include '../../layout/header.php'; ?>
 <!--- header end ---->
-<?php include '../../model/event.php'; ?>
+<?php include '../../../model/event.php'; ?>
 <?php 
 $allEvent = Event::displayAllEvent();
 // $row = $allevent->fetch_assoc();
@@ -9,12 +9,12 @@ $allEvent = Event::displayAllEvent();
 ?>
 <body>
     <!---navbar starting ---------->
-    <?php include '../layout/navBar.php';?> 
+    <?php include '../../layout/navBar.php';?> 
     <!---navbar ending ---------->
     <!--- breadcrumb starting--------->
     <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item" aria-current="page"><a href="dashboard.php">Home</a></li>
+        <li class="breadcrumb-item" aria-current="page"><a href="../dashboard/dashboard.php">Home</a></li>
         <li class="breadcrumb-item active" aria-current="page"><a href="#">Event</a></li>
     </ol>
     </nav>
@@ -43,7 +43,7 @@ $allEvent = Event::displayAllEvent();
                         if($row['image']==""){
                             $path="<i class='far fa-calendar-check'></i>";
                         } else {
-                            $path="../../public/image/event_image/".$row['image'];                    
+                            $path="../../../public/image/event_image/".$row['image'];                    
                         }
                         
                         if($row['status']==Event::ACTIVE){
@@ -89,7 +89,7 @@ $allEvent = Event::displayAllEvent();
             </tfoot>
         </table>
     </div>
-<?php include '../layout/footer.php';?>
+<?php include '../../layout/footer.php';?>
 <script type="text/javascript">
     $(document).ready(function() {
       var table = $('#example').DataTable( {

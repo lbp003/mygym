@@ -1,19 +1,19 @@
 <!--- header start ---->
-<?php include '../layout/header.php'; ?>
+<?php include '../../layout/header.php'; ?>
 <!--- header end ---->
-<?php include '../../model/log.php'; ?>
+<?php include '../../../model/log.php'; ?>
 <?php 
 $allStaffLog = Log::displayAllStaffLogs();
 $allMemberLog = Log::displayAllMemberLogs();
 ?>
 <body>
     <!---navbar starting ---------->
-    <?php include '../layout/navBar.php';?> 
+    <?php include '../../layout/navBar.php';?> 
     <!---navbar ending ---------->
     <!--- breadcrumb starting--------->
     <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item" aria-current="page"><a href="dashboard.php">Home</a></li>
+        <li class="breadcrumb-item" aria-current="page"><a href="../dashboard/dashboard.php">Home</a></li>
         <li class="breadcrumb-item active" aria-current="page"><a href="#">Log</a></li>
     </ol>
     </nav>
@@ -21,6 +21,9 @@ $allMemberLog = Log::displayAllMemberLogs();
       <!-- Staff Log -->
         <table id="" class="display" style="width:100%">
             <thead>
+                <tr>
+                    <th colspan="6"><span class="badge badge-primary"><h4>STAFF LOG</h4></span></th>
+                </tr>
                 <tr>
                     <th>Log ID</th>
                     <th>Name</th>
@@ -85,6 +88,9 @@ $allMemberLog = Log::displayAllMemberLogs();
         <table id="" class="display" style="width:100%">
             <thead>
                 <tr>
+                    <th colspan="6"><span class="badge badge-primary"><h4>MEMBER LOG</h4></span></th>
+                </tr>
+                <tr>
                     <th>Log ID</th>
                     <th>Name</th>
                     <th>Log In(Date & Time)</th>
@@ -144,7 +150,7 @@ $allMemberLog = Log::displayAllMemberLogs();
             </tfoot>
         </table>
     </div>
-<?php include '../layout/footer.php';?>
+<?php include '../../layout/footer.php';?>
 <script type="text/javascript">
     $(document).ready(function() {
       var table = $('table.display').DataTable( {

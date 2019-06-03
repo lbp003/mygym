@@ -1,7 +1,7 @@
 <!--- header start ---->
-<?php include '../layout/header.php'; ?>
+<?php include '../../layout/header.php'; ?>
 <!--- header end ---->
-<?php include '../../model/class.php'; ?>
+<?php include '../../../model/class.php'; ?>
 <?php 
 $allClass = Programs::displayAllPrograms();
 // $row = $allPrograms->fetch_assoc();
@@ -9,12 +9,12 @@ $allClass = Programs::displayAllPrograms();
 ?>
 <body>
     <!---navbar starting ---------->
-    <?php include '../layout/navBar.php';?> 
+    <?php include '../../layout/navBar.php';?> 
     <!---navbar ending ---------->
     <!--- breadcrumb starting--------->
     <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item" aria-current="page"><a href="dashboard.php">Home</a></li>
+        <li class="breadcrumb-item" aria-current="page"><a href="../dashboard/dashboard.php">Home</a></li>
         <li class="breadcrumb-item active" aria-current="page"><a href="#">Class</a></li>
     </ol>
     </nav>
@@ -45,8 +45,8 @@ $allClass = Programs::displayAllPrograms();
                         }
                 ?>
                 <tr>
-                    <td><?php echo ucfirst($row['class_name']); ?></td>
-                    <td><?php echo ucfirst($row['trainer_name']); ?></td>
+                    <td><?php echo ucwords($row['class_name']); ?></td>
+                    <td><?php echo ucwords($row['trainer_name']); ?></td>
                     <td><?php echo $row['color']; ?></td>
                     <td><span class="badge <?php if($row['status']==Programs::ACTIVE){echo "badge-success";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></td>
                     <td>
@@ -78,7 +78,7 @@ $allClass = Programs::displayAllPrograms();
             </tfoot>
         </table>
     </div>
-<?php include '../layout/footer.php';?>
+<?php include '../../layout/footer.php';?>
 <script type="text/javascript">
     $(document).ready(function() {
       var table = $('#example').DataTable( {

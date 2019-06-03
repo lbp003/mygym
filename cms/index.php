@@ -6,7 +6,7 @@
 		
 	}
 	$uri .= $_SERVER['HTTP_HOST'];
-	header('Location: '.$uri.'/cms/view/index.php');
+	header('Location: '.$uri.'/cms/view/index/');
 	exit;
 ?>
 

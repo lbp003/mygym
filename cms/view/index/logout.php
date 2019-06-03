@@ -1,7 +1,7 @@
 <?php
-    include_once '../../config/dbconnection.php';
-    include_once '../../config/session.php';
-    include_once '../../model/log.php';
+    include_once '../../../config/dbconnection.php';
+    include_once '../../../config/session.php';
+    include_once '../../../model/log.php';
      
 
     $user=$_SESSION['user'];
@@ -14,5 +14,5 @@
     unset($_SESSION['permission']); 
     unset($_SESSION['log_id']);     
     
-    header("refresh:0,url=index.php"); //Redirect to stafflogin page
+    header("refresh:0,url=../../"); //Redirect to stafflogin page
 ?>

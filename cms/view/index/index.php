@@ -1,11 +1,11 @@
-<?php include '../../config/session.php';?>
+<?php include '../../../config/session.php';?>
 <!------Header starting ------>
 <html>
     <head>
         <title>CMS</title>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-        <link type="text/css" rel="stylesheet" href="../../public/css/style.css" />
-        <link type="text/css" rel="stylesheet" href="../../public/css/layout.css" />
+        <link type="text/css" rel="stylesheet" href="../../../public/css/style.css" />
+        <link type="text/css" rel="stylesheet" href="../../../public/css/layout.css" />
         <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
         <link href='https://fonts.googleapis.com/css?family=Arvo' rel='stylesheet'>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -27,7 +27,7 @@
             <div class="row justify-content-center" style="height: 100%;">
                 <div class="col-4 pt-5">
                     <h2 class="text-center">WELCOME</h2>
-                    <form method="post" name="slogin" action="../../controller/loginController.php">
+                    <form method="post" name="slogin" action="../../../controller/loginController.php">
                         <?php $_SESSION['user_type']="staff"; ?>
                         <div id="msg" class="alert-danger">
                             <p style="font-size: 16px">

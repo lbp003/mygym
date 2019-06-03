@@ -1,7 +1,7 @@
 <!--- header start ---->
-<?php include '../layout/header.php'; ?>
+<?php include '../../layout/header.php'; ?>
 <!--- header end ---->
-<?php include '../../model/classSession.php'; ?>
+<?php include '../../../model/classSession.php'; ?>
 <?php 
 $allClassSession = classSession::displayAllClassSession();
 // $row = $allstaff->fetch_assoc();
@@ -9,12 +9,12 @@ $allClassSession = classSession::displayAllClassSession();
 ?>
 <body>
     <!---navbar starting ---------->
-    <?php include '../layout/navBar.php';?> 
+    <?php include '../../layout/navBar.php';?> 
     <!---navbar ending ---------->
     <!--- breadcrumb starting--------->
     <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item" aria-current="page"><a href="dashboard.php">Home</a></li>
+        <li class="breadcrumb-item" aria-current="page"><a href="../dashboard/dashboard.php">Home</a></li>
         <li class="breadcrumb-item active" aria-current="page"><a href="#">Class Session</a></li>
     </ol>
     </nav>
@@ -49,8 +49,8 @@ $allClassSession = classSession::displayAllClassSession();
 
                 ?>
                 <tr>
-                    <td><?php echo ucfirst($row['class_session_name']); ?></td>
-                    <td><?php echo ucfirst($row['class_name']); ?></td>
+                    <td><?php echo ucwords($row['class_session_name']); ?></td>
+                    <td><?php echo ucwords($row['class_name']); ?></td>
                     <td><?php echo $row['day']; ?></td>
                     <td><?php echo $row['start_time']; ?></td>
                     <td><?php echo $row['end_time']; ?></td>
@@ -86,7 +86,7 @@ $allClassSession = classSession::displayAllClassSession();
             </tfoot>
         </table>
     </div>
-<?php include '../layout/footer.php';?>
+<?php include '../../layout/footer.php';?>
 <script type="text/javascript">
     $(document).ready(function() {
       var table = $('#example').DataTable( {

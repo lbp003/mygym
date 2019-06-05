@@ -92,7 +92,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                 <i class="fas fa-dumbbell fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="#"><h5 class="card-title">EQUIPMENT</h5></a>
+                            <a href="../equipment/equipment.php"><h5 class="card-title">EQUIPMENT</h5></a>
                         </div>
                         </div>
                     </div>
@@ -104,7 +104,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-money-check-alt fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="#"><h5 class="card-title">SUBSCRIPTION</h5></a>
+                            <a href="../subscription/subscription.php"><h5 class="card-title">SUBSCRIPTION</h5></a>
                         </div>
                         </div>
                     </div>

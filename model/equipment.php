@@ -1,10 +1,27 @@
 <?php
 
-class item{
-    
-    function displayAllItem(){
+class Equipment{
+
+     //Equipment status
+     CONST ACTIVE = "A";
+     CONST INACTIVE = "I";
+     CONST DELETED = "D";
+
+
+    /** 
+	* Get All Equipment Details
+	* @return object $result 
+	*/
+    public static function displayAllEquipment(){
         $con=$GLOBALS['con'];//To get connection string
-        $sql="SELECT * FROM item i, category c WHERE i.category_id = c.category_id ORDER BY item_id DESC";
+        $sql="  SELECT  equipment.equipment_id,
+                        equipment.equipment_name,
+                        equipment.equipment_description,
+                        equipment.image,
+                        equipment.status 
+                FROM equipment 
+                WHERE 1=1 
+                ORDER BY equipment.equipment_id DESC";
         $result=$con->query($sql);
         return $result;
     }

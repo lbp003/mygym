@@ -24,10 +24,6 @@ $allEquipment = Equipment::displayAllEquipment();
                 <tr>
                     <th>&nbsp;</th>
                     <th>Equipment Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>User Type</th>
                     <th>Status</th>
                     <th>&nbsp;</th>
                 </tr>
@@ -42,12 +38,6 @@ $allEquipment = Equipment::displayAllEquipment();
                         $count++;
                         
                         
-                        if($row['image']==""){
-                            $path="../../../".PATH_IMAGE."user.png";
-                        } else {
-                            $path="../../../public/image/equipment_image/".$row['image'];                    
-                        }
-                        
                         if($row['status']==Equipment::ACTIVE){
                             $status="Active";
                         }elseif($row['status']==Equipment::INACTIVE){
@@ -55,12 +45,8 @@ $allEquipment = Equipment::displayAllEquipment();
                         }
                 ?>
                 <tr>
-                    <td><img src="<?php echo $path; ?>" width="70" height="auto" class="img-responsive img-thumbnail" /></td>
-                    <td><?php echo ucwords($row['first_name']); ?></td>
-                    <td><?php echo ucwords($row['last_name']); ?></td>
-                    <td><?php echo $row['email']; ?></td>
-                    <td><?php echo $row['telephone']; ?></td>
-                    <td><?php echo $equipmentType; ?></td>
+                    <td><?php if (!empty($row['image'])){echo "<img src='../../public/image/equipment_image/{$row['image']}' width='70' height='auto' class='img-responsive img-thumbnail' />";}else{echo "<i class='far fa-3x fa-calendar-check'></i>";}?></td>
+                    <td><?php echo ucwords($row['equipment_name']); ?></td>
                     <td><span class="badge <?php if($row['status']==Equipment::ACTIVE){echo "badge-success";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></td>
                     <td>
                             <a data-toggle="tooltip" data-placement="top" title="View" href="../../controller/equipmentController.php?equipment_id=<?php echo $row['equipment_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
@@ -83,11 +69,7 @@ $allEquipment = Equipment::displayAllEquipment();
             <tfoot>
                 <tr>
                     <th>&nbsp;</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Equipment Type</th>
+                    <th>Equipment Name</th>
                     <th>Status</th>
                     <th>&nbsp;</th>
                 </tr>

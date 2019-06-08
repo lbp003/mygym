@@ -20,7 +20,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-briefcase fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../staff/staff.php"><h5 class="card-title">STAFF</h5></a>
+                            <a href="../staff/"><h5 class="card-title">STAFF</h5></a>
                         </div>
                         </div>
                     </div> 
@@ -32,7 +32,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-users fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                        <a href="../member/member.php"><h5 class="card-title">MEMBER</h5></a>
+                        <a href="../member/"><h5 class="card-title">MEMBER</h5></a>
                         </div>
                         </div>
                     </div>
@@ -56,7 +56,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-gift fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../package/package.php"><h5 class="card-title">PACKAGE</h5></a>
+                            <a href="../package/"><h5 class="card-title">PACKAGE</h5></a>
                         </div>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-skating fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../class/class.php"><h5 class="card-title">CLASS</h5></a>
+                            <a href="../class/"><h5 class="card-title">CLASS</h5></a>
                         </div>
                         </div>
                     </div>
@@ -80,7 +80,7 @@
                         <div class="card align-items-center border-dark" style="width: 15rem;">
                         <i class="far fa-calendar-alt fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../class-session/classSession.php"><h5 class="card-title">CLASS SESSION</h5></a>
+                            <a href="../class-session/"><h5 class="card-title">CLASS SESSION</h5></a>
                         </div>
                         </div>
                     </div>
@@ -92,7 +92,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                 <i class="fas fa-dumbbell fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../equipment/equipment.php"><h5 class="card-title">EQUIPMENT</h5></a>
+                            <a href="../equipment/"><h5 class="card-title">EQUIPMENT</h5></a>
                         </div>
                         </div>
                     </div>
@@ -104,7 +104,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-money-check-alt fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../subscription/subscription.php"><h5 class="card-title">SUBSCRIPTION</h5></a>
+                            <a href="../subscription/"><h5 class="card-title">SUBSCRIPTION</h5></a>
                         </div>
                         </div>
                     </div>
@@ -128,7 +128,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-running fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../exercise/exercise.php"><h5 class="card-title">EXERCISE</h5></a>
+                            <a href="../exercise/"><h5 class="card-title">EXERCISE</h5></a>
                         </div>
                         </div>
                     </div>
@@ -152,7 +152,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-futbol fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../event/event.php"><h5 class="card-title">EVENT</h5></a>
+                            <a href="../event/"><h5 class="card-title">EVENT</h5></a>
                         </div>
                         </div>
                     </div>
@@ -164,7 +164,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-map-marker fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../log/log.php"><h5 class="card-title">LOG</h5></a>
+                            <a href="../log/"><h5 class="card-title">LOG</h5></a>
                         </div>
                         </div>
                     </div>          

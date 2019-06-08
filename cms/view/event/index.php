@@ -40,11 +40,11 @@ $allEvent = Event::displayAllEvent();
                         $count++;
                         
                         
-                        if($row['image']==""){
-                            $path="<i class='far fa-calendar-check'></i>";
-                        } else {
-                            $path="../../../public/image/event_image/".$row['image'];                    
-                        }
+                        // if($row['image']==""){
+                        //     $path="<i class='far fa-calendar-check'></i>";
+                        // } else {
+                        //     $path="../../../public/image/event_image/".$row['image'];                    
+                        // }
                         
                         if($row['status']==Event::ACTIVE){
                             $status="Active";

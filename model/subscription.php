@@ -1,10 +1,38 @@
 <?php
 
-class membership{
-    
-    function displayAllMembership(){
+class Subscription{
+
+     //subscription status
+     CONST ACTIVE = "A";
+     CONST INACTIVE = "I";
+     CONST DELETED = "D";
+     CONST SUSPENDED = "S";
+
+     //payment status
+     CONST PAID = "P";
+     CONST LATE = "L";
+
+     /** 
+	* Get All Subscription Details
+	* @return object $result 
+	*/
+    public static function displayAllSubscription(){
         $con=$GLOBALS['con'];//To get connection string
-        $sql="SELECT * FROM membership ms,member m,package p WHERE ms.member_id = m.member_id AND ms.package_id = p.package_id ORDER BY ms.membership_id DESC";
+        $sql="  SELECT  membership.membership_id,
+                        CONCAT(' ',member.first_name,member.last_name),
+                        package.package_name,
+                        membership.start_date,
+                        membership.end_date,
+                        membership.last_paid_date,
+                        membership.status,
+                        membership.payment_status,
+                        CONCAT(' ',staff.first_name,staff.last_name)
+                FROM membership
+                INNER JOIN staff ON membership.updated_by = staff.staff_id
+                INNER JOIN member ON membership.member_id = member.member_id
+                INNER JOIN package ON membership.package_id = package.package_id
+                WHERE member.member_id != 'D'   
+                ORDER BY membership.membership_id DESC";
         $result=$con->query($sql);
         return $result;
     }

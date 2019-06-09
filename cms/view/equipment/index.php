@@ -45,7 +45,7 @@ $allEquipment = Equipment::displayAllEquipment();
                         }
                 ?>
                 <tr>
-                    <td><?php if (!empty($row['image'])){echo "<img src='../../public/image/equipment_image/{$row['image']}' width='70' height='auto' class='img-responsive img-thumbnail' />";}else{echo "<i class='far fa-3x fa-calendar-check'></i>";}?></td>
+                    <td><?php if (!empty($row['image'])){echo "<img src='../../public/image/equipment_image/{$row['image']}' width='70' height='auto' class='img-responsive img-thumbnail' />";}else{echo "<i class='fas fa-dumbbell fa-3x'></i>";}?></td>
                     <td><?php echo ucwords($row['equipment_name']); ?></td>
                     <td><span class="badge <?php if($row['status']==Equipment::ACTIVE){echo "badge-success";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></td>
                     <td>

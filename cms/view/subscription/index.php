@@ -1,124 +1,124 @@
-<!--header start ---->
-<?php include '../common/adHeader.php'; ?>
-<?php include '../model/membershipModel.php'; ?><!-- including staff model ----->
+<!--- header start ---->
+<?php include '../../layout/header.php'; ?>
+<!--- header end ---->
+<?php include '../../../model/subscription.php'; ?>
 <?php 
-// Get All item details for the item tables 
-$objsm= new membership();
-$allSm = $objsm->displayAllMembership();
-
+$allSubscription = Subscription::displayAllSubscription();
+// $row = $allstaff->fetch_assoc();
+// print_r($row); exit;
 ?>
-    <script>
-            function disConfirm(str){
-                var r=confirm("Do You Want to "+str+"?");
-                if(!r){
-                    return false;
-                    
-                }
-                
-            }      
-            function deleteRow(){
-                var r=confirm("Do you want to DELETE the message ?");
-                if(!r){
-                    return false;
-                    
-                }   
-            }
-    </script>
-<!----header end -----> 
-<body onload="startTime()">
-        <!---navbar starting ---------->
-        <?php include '../common/navBar.php';?> 
-        <!---navbar ending ---------->
-                <!--- breadcrumb starting--------->
-        <div class="container-fluid">
-                <div class="row">
-                    <ol class="breadcrumb" style="background-color:#2f2f2f">
-                        <li><a href="Dashboard.php" >Dashboard</a></li>
-                        <li><a href="#" class="active">subscription</a></li>
-                    </ol>
-                </div>
-        </div>
-        <!--- breadcrumb ending--------->
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-3">
-            <!----Admin side nav starting------>
-            <?php include '../common/AdminSideNav.php'; ?>
-            <!----Admin side nav ending------>
-        </div>
-        <div class="col-md-9">
-            <div class="row">
-                <div class="col-md-12" style="text-align: center">
-                    <div>
-                        <h1 align="center" style="font-family: monospace; font-size: 60px;color: #ffff00;background-color:rgba(70,70,70,0.5);"><b>Subscription List</b></h1>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12" style="text-align: center">
-                    <?php if(isset($_REQUEST['msg'])){ 
-                        $msg= base64_decode($_REQUEST['msg']);
-                    ?>
-            <span class="alert alert-success"><?php echo $msg; ?></span>
-                                
-                    <?php   } ?>
-                            
-                </div>
-            </div><br />
-            <div class="row">
-                <table id="mytable" class="table table-striped table-dark table-responsive" width="100%" cellspacing="0">
-                    <thead>
-                      <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Package</th>  
-                        <th scope="col">Previous Subscription</th>
-                        <th scope="col">Next Subscription</th>                  
-                        <th scope="col">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        if(!$allSm){
-                            die("Query DEAD ".mysqli_error($con));
+<body>
+    <!---navbar starting ---------->
+    <?php include '../../layout/navBar.php';?> 
+    <!---navbar ending ---------->
+    <!--- breadcrumb starting--------->
+    <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item" aria-current="page"><a href="../dashboard/dashboard.php">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="#">Subscription</a></li>
+    </ol>
+    </nav>
+    <div class="container">
+        <table id="example" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>User Type</th>
+                    <th>Status</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php 
+                    if(!$allSubscription){
+                        die("Query DEAD ".mysqli_error($con));
+                    }
+                    $count=0;
+                    while($row = $allSubscription->fetch_assoc()) {
+                        $count++;
+                        
+                        
+                        if($row['status']==Subscription::ACTIVE){
+                            $status="Active";
+                        }elseif($row['status']==Subscription::INACTIVE){
+                            $status="Inactive";
                         }
-                        while($smRow = $allSm->fetch_assoc()) {
-                            
-                            $status = $smRow['status'];
-                            
-                            if($smRow['status']=="Active"){
-                                $status="Deactive";
-                            }else{
-                                $status="Active";
+
+                        if($row['staff_type']==Subscription::SUPER_ADMIN){
+                            $staffType = "Super Admin";
+                        }elseif($row['staff_type']==Subscription::ADMIN){
+                            $staffType = "Admin";
+                        }elseif($row['staff_type']==Subscription::MANAGER){
+                            $staffType = "Manager";
+                        }else{
+                            $staffType = "Trainer";
+                        }
+                ?>
+                <tr>
+                    <td><img src="<?php echo $path; ?>" width="70" height="auto" class="img-responsive img-thumbnail" /></td>
+                    <td><?php echo ucwords($row['first_name']); ?></td>
+                    <td><?php echo ucwords($row['last_name']); ?></td>
+                    <td><?php echo $row['email']; ?></td>
+                    <td><?php echo $row['telephone']; ?></td>
+                    <td><?php echo $staffType; ?></td>
+                    <td><span class="badge <?php if($row['status']==Subscription::ACTIVE){echo "badge-success";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></td>
+                    <td>
+                            <a data-toggle="tooltip" data-placement="top" title="View" href="../../controller/staffController.php?staff_id=<?php echo $row['staff_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
+                            <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../controller/staffController.php?staff_id=<?php echo $row['staff_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
+                        <?php 
+
+                            $staffId = $row['staff_id'];
+
+                            if($row['status']==Subscription::ACTIVE){
+                                echo "<a data-toggle='tooltip' data-placement='top' title='Deactivate' href='../../controller/staffController.php?staff_id='.$staffId.'&status=Deactivate'><i class='fas fa-ban text-warning'></i></a>";
+                            }elseif($row['status']==Subscription::INACTIVE){
+                                echo "<a data-toggle='tooltip' data-placement='top' title='Activate' href='../../controller/staffController.php?staff_id='.$staffId.'&status=Activate'><i class='far fa-check-circle text-success'></i></a>";
                             }
-                            
-                          ?>
-                      <tr 
-                          <?php if($smRow['status'] == "Deleted"){?>
-                          style="display: none"
-                          <?php }?>>
-                        <td><?php echo ucfirst($smRow['member_fname']). " ".ucfirst($smRow['member_lname']);?></td>
-                        <td><?php echo ucfirst($smRow['package_name']);?></td>
-                        <td><?php echo $smRow['start_date'];?></td>
-                        <td><?php echo $smRow['end_date'];?></td>
-                        <td><?php echo $smRow['status'];?></td>
-                      </tr>
-                     <?php  } ?>
-                    </tbody>
-                  </table>
-            </div>
-        </div>
+                        ?>
+                            <a data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash text-danger"></i></a>
+                    </td>
+                </tr>
+                    <?php } ?>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Subscription Type</th>
+                    <th>Status</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </tfoot>
+        </table>
     </div>
-</div>
-<!---- Footer start---->
-<?php include '../common/adFooter.php'; ?>
-<!---- Footer end------>
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $('#mytable').DataTable( {
-                    dom: 'Bfrtip',
-                    buttons: [
-                        'copy', 'csv', 'excel', 'pdf', 'print'
-                    ]
-                } );
-            } );
-        </script>
+<?php include '../../layout/footer.php';?>
+<script type="text/javascript">
+    $(document).ready(function() {
+      var table = $('#example').DataTable( {
+            dom: 'Bfrtip',
+            buttons: [
+                'copy',
+                'csv',
+                'excel',
+                'pdf',
+                {
+                    extend: 'print',
+                    text: 'Print all',
+                    exportOptions: {
+                        modifier: {
+                            selected: null
+                        }
+                    }
+                }
+            ],
+            select: true
+        } );
+    } );
+</script>

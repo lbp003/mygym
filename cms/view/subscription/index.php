@@ -4,7 +4,7 @@
 <?php include '../../../model/subscription.php'; ?>
 <?php 
 $allSubscription = Subscription::displayAllSubscription();
-// $row = $allstaff->fetch_assoc();
+// $row = $allSubscription->fetch_assoc();
 // print_r($row); exit;
 ?>
 <body>
@@ -22,12 +22,11 @@ $allSubscription = Subscription::displayAllSubscription();
         <table id="example" class="display" style="width:100%">
             <thead>
                 <tr>
-                    <th>&nbsp;</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>User Type</th>
+                    <th>Member</th>
+                    <th>Package</th>
+                    <th>Start Date</th>
+                    <th>Next Payment</th>
+                    <th>Paid Date</th>
                     <th>Status</th>
                     <th>&nbsp;</th>
                 </tr>
@@ -42,41 +41,30 @@ $allSubscription = Subscription::displayAllSubscription();
                         $count++;
                         
                         
-                        if($row['status']==Subscription::ACTIVE){
-                            $status="Active";
-                        }elseif($row['status']==Subscription::INACTIVE){
-                            $status="Inactive";
-                        }
-
-                        if($row['staff_type']==Subscription::SUPER_ADMIN){
-                            $staffType = "Super Admin";
-                        }elseif($row['staff_type']==Subscription::ADMIN){
-                            $staffType = "Admin";
-                        }elseif($row['staff_type']==Subscription::MANAGER){
-                            $staffType = "Manager";
-                        }else{
-                            $staffType = "Trainer";
+                        if($row['payment_status']==Subscription::PAID){
+                            $status="Paid";
+                        }elseif($row['payment_status']==Subscription::LATE){
+                            $status="Late";
                         }
                 ?>
                 <tr>
-                    <td><img src="<?php echo $path; ?>" width="70" height="auto" class="img-responsive img-thumbnail" /></td>
-                    <td><?php echo ucwords($row['first_name']); ?></td>
-                    <td><?php echo ucwords($row['last_name']); ?></td>
-                    <td><?php echo $row['email']; ?></td>
-                    <td><?php echo $row['telephone']; ?></td>
-                    <td><?php echo $staffType; ?></td>
-                    <td><span class="badge <?php if($row['status']==Subscription::ACTIVE){echo "badge-success";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></td>
+                    <td><?php echo ucwords($row['member_name']); ?></td>
+                    <td><?php echo ucwords($row['package_name']); ?></td>
+                    <td><?php echo date("Y-m-d", strtotime($row['start_date'])); ?></td>
+                    <td><?php echo date("Y-m-d", strtotime($row['end_date'])); ?></td>
+                    <td><?php echo date("Y-m-d", strtotime($row['last_paid_date'])); ?></td>
+                    <td><span class="badge <?php if($row['payment_status']==Subscription::PAID){echo "badge-success";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></td>
                     <td>
-                            <a data-toggle="tooltip" data-placement="top" title="View" href="../../controller/staffController.php?staff_id=<?php echo $row['staff_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
-                            <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../controller/staffController.php?staff_id=<?php echo $row['staff_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
+                            <a data-toggle="tooltip" data-placement="top" title="View" href="../../controller/membershipController.php?membership_id=<?php echo $row['membership_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
+                            <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../controller/membershipController.php?membership_id=<?php echo $row['membership_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
                         <?php 
 
-                            $staffId = $row['staff_id'];
+                            $membershipId = $row['membership_id'];
 
                             if($row['status']==Subscription::ACTIVE){
-                                echo "<a data-toggle='tooltip' data-placement='top' title='Deactivate' href='../../controller/staffController.php?staff_id='.$staffId.'&status=Deactivate'><i class='fas fa-ban text-warning'></i></a>";
+                                echo "<a data-toggle='tooltip' data-placement='top' title='Deactivate' href='../../controller/membershipController.php?membership_id='.$membershipId.'&status=Deactivate'><i class='fas fa-ban text-warning'></i></a>";
                             }elseif($row['status']==Subscription::INACTIVE){
-                                echo "<a data-toggle='tooltip' data-placement='top' title='Activate' href='../../controller/staffController.php?staff_id='.$staffId.'&status=Activate'><i class='far fa-check-circle text-success'></i></a>";
+                                echo "<a data-toggle='tooltip' data-placement='top' title='Activate' href='../../controller/membershipController.php?membership_id='.$membershipId.'&status=Activate'><i class='far fa-check-circle text-success'></i></a>";
                             }
                         ?>
                             <a data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash text-danger"></i></a>
@@ -86,12 +74,11 @@ $allSubscription = Subscription::displayAllSubscription();
             </tbody>
             <tfoot>
                 <tr>
-                    <th>&nbsp;</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Subscription Type</th>
+                    <th>Member</th>
+                    <th>Package</th>
+                    <th>Start Date</th>
+                    <th>Next Payment</th>
+                    <th>Paid Date</th>
                     <th>Status</th>
                     <th>&nbsp;</th>
                 </tr>

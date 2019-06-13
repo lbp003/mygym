@@ -19,14 +19,14 @@ class Subscription{
     public static function displayAllSubscription(){
         $con=$GLOBALS['con'];//To get connection string
         $sql="  SELECT  membership.membership_id,
-                        CONCAT(' ',member.first_name,member.last_name),
+                        CONCAT(' ',member.first_name,member.last_name) AS member_name,
                         package.package_name,
                         membership.start_date,
                         membership.end_date,
                         membership.last_paid_date,
                         membership.status,
                         membership.payment_status,
-                        CONCAT(' ',staff.first_name,staff.last_name)
+                        CONCAT(' ',staff.first_name,staff.last_name) AS staff_name
                 FROM membership
                 INNER JOIN staff ON membership.updated_by = staff.staff_id
                 INNER JOIN member ON membership.member_id = member.member_id

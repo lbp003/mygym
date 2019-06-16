@@ -26,7 +26,7 @@ $allSubscription = Subscription::displayAllSubscription();
                     <th>Package</th>
                     <th>Start Date</th>
                     <th>Next Payment</th>
-                    <th>Paid Date</th>
+                    <th>Last Paid Date</th>
                     <th>Status</th>
                     <th>&nbsp;</th>
                 </tr>
@@ -78,7 +78,7 @@ $allSubscription = Subscription::displayAllSubscription();
                     <th>Package</th>
                     <th>Start Date</th>
                     <th>Next Payment</th>
-                    <th>Paid Date</th>
+                    <th>Last Paid Date</th>
                     <th>Status</th>
                     <th>&nbsp;</th>
                 </tr>

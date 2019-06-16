@@ -26,6 +26,9 @@
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/select/1.3.0/js/dataTables.select.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.colVis.min.js"></script>  
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript" src="../../../public/plugin/formvalidation/js/formValidation.min.js"></script>
+    <script type="text/javascript" src="../../../public/plugin/formvalidation/js/formValidation.popular.min.js"></script>
+    <script type="text/javascript" src="../../../public/plugin/bootbox/bootbox.min.js"></script>
     <script type="text/javascript">
         $( document ).ready(function() {
             $(function () {

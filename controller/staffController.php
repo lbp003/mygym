@@ -13,9 +13,9 @@ $objlo = new Login();
 switch ($status){
     
     case "Add":
-        
-        $staff_fname=$_POST['fname'];
-        $staff_lname=$_POST['lname'];
+
+        $first_name=$_POST['fname'];
+        $last_name=$_POST['lname'];
         $staff_email=$_POST['email'];
         $gender=$_POST['gender'];
         $dob=$_POST['dob'];
@@ -130,6 +130,18 @@ break;
         header("Location:../view/ViewStaff.php?staff_id=$staff_id");
         
 break;
+
+        //check email exists
+
+    case "checkEmail":
+
+    $email=$_REQUEST['email'];
+    $result = Staff::checkEmail($email);
+    if($result == true){
+        echo(json_encode(true));
+    }else {
+        echo(json_encode(false));
+    }
     
 }
 

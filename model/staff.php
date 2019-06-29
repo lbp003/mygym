@@ -75,11 +75,17 @@ class Staff{
         return $result;
     }
             
-    function checkEmail($email){
+    public static function checkEmail($email){
         $con=$GLOBALS['con'];
-        $sql="SELECT * FROM staff WHERE staff_email='$email'";
+        $sql="  SELECT COUNT(staff.email) 
+                FROM staff 
+                WHERE email='$email'";
         $result=$con->query($sql);
-        return $result;
+        if($result > 0){
+            return false;
+        }else {
+            return true;
+        }
         
     }
     

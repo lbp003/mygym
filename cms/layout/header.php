@@ -23,8 +23,6 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.0/css/select.dataTables.min.css">
         <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"> -->
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.6/css/buttons.bootstrap4.min.css">
-        <!-- Form Validation -->
-        <link rel="stylesheet" type="text/css" href="../../../public/plugin/formvalidation/css/formValidation.min.css"/>
 
         
     </head>

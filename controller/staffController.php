@@ -1,8 +1,13 @@
 <?php
-include '../config/dbconnection.php';
-include '../config/session.php';
-include '../model/staff.php';
-include '../model/login.php';
+include_once '../config/dbconnection.php';
+include_once '../config/session.php';
+include_once '../config/global.php';
+include_once '../model/staff.php';
+include_once '../model/login.php';
+include_once '../model/role.php';
+
+$user=$_SESSION['user'];
+$auth = new Role(); 
 
 $status=$_REQUEST['status'];
 
@@ -14,55 +19,83 @@ switch ($status){
     
     case "Add":
 
-        $first_name=$_POST['fname'];
-        $last_name=$_POST['lname'];
-        $staff_email=$_POST['email'];
+    if(!$user)
+    {
+        $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+        header("Location:../cms/view/index/index.php?msg=$msg");
+        exit;
+    }
+    
+    if(!$auth->checkPermissions(array(Role::MANAGE_STAFF)))
+    {
+        $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+        header("Location:../cms/view/staff/index.php?msg=$msg");
+        exit;
+    }
+
+    // $msg = json_encode(array('title'=>'Success','message'=>'okay','type'=>'success'));
+    //         header("Location:../cms/view/staff/index.php?msg=$msg");
+    //         exit;
+
+        $firstName=$_POST['first_name'];
+        $lastName=$_POST['last_name'];
+        $email=$_POST['email'];
         $gender=$_POST['gender'];
         $dob=$_POST['dob'];
         $nic=$_POST['nic'];
-        $staff_tel=$_POST['tel'];
+        $phone=$_POST['phone'];
         $address=$_POST['address'];
-        $role_id=$_POST['role'];
-        
-        if($_FILES['staff_image']['name'] != ""){
-            
-            $staff_image=$_FILES['staff_image']['name'];
-            $staff_loc = $_FILES['staff_image']['tmp_name'];
-            $new_image = time()."_". $staff_image;
-        }else{
-            $new_image ="";
-        }
+        $user_type=$_POST['user_type'];
+
+        $tmp = $_FILES['pro_pic'];
+
+		$file = $tmp['name'];
+        $file_loc = $tmp['tmp_name'];
+ 		$file_size = $tmp['size'];
+        $file_type = $tmp['type'];
+         
+        $ext = pathinfo($file, PATHINFO_EXTENSION);
+        $newFileName = "pro_pic_".uniqid().".".$ext;
+
+        //upload the image to a temp folder
+
+    if (!file_exists('../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY)) {
+
+        mkdir('../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY, 0777, true);
+    }
+
+    move_uploaded_file($file_loc,'../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY.$newFileName);
+
 
         //check the email for existing or not    
-        $checkE=$objst->checkEmail($email);
-            echo $checkE->num_rows;
-            if($checkE->num_rows==0){
-                echo "LBP"; exit();
-                
-            //add new staff
-            $staff_id=$objst->addStaff($staff_fname,$staff_lname,$staff_email,$gender,$dob,$nic,$staff_tel,$address,$role_id,$new_image);
-            
-            //add login staff
-
-            $objlo->addStaffLogin($staff_email, $staff_id);
-            
-            
-            //Adding an Image into staff_image folder
-            if($new_image!=""){
-            $destination="../images/staff_image/$new_image";
-            move_uploaded_file($staff_loc, $destination);
+        
+    if(Staff::checkEmail($email)){
+echo "lbp"; exit;
+        
+    //add new staff
+    $staffID=$objst->addStaff($staff_fname,$staff_lname,$staff_email,$gender,$dob,$nic,$staff_tel,$address,$role_id,$new_image);
     
-            }
-            
-            $msg=base64_encode("A User has been Added");
-            header("Location:../view/staff.php?msg=$msg");
+    //add login staff
 
-        }else{
-            $msg=base64_encode("Existing Email Address");
-            header("Location:../view/addstaff.php?msg=$msg");
-        }
-        
-        
+    $objlo->addStaffLogin($staff_email, $staff_id);
+    
+    
+    //Adding an Image into staff_image folder
+    if($new_image!=""){
+    $destination="../images/staff_image/$new_image";
+    move_uploaded_file($staff_loc, $destination);
+
+    }
+    
+    $msg=base64_encode("A User has been Added");
+    header("Location:../view/staff.php?msg=$msg");
+
+}else{
+    $msg=base64_encode("Existing Email Address");
+    header("Location:../view/addstaff.php?msg=$msg");
+}
+
+
 break;
 
     case "Update":

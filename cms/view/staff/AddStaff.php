@@ -19,11 +19,11 @@
                 <div class="d-flex flex-wrap">
                     <div class="form-group col-6">
                         <label for="first_name">First Name</label>
-                        <input type="text" class="form-control" id="first_name" aria-describedby="first_name" placeholder="First Name">
+                        <input type="text" class="form-control" id="first_name" name="first_name" aria-describedby="first_name" placeholder="First Name">
                     </div>
                     <div class="form-group col-6">
                         <label for="last_name">Last Name</label>
-                        <input type="text" class="form-control" id="last_name" aria-describedby="last_name" placeholder="Last Name">
+                        <input type="text" class="form-control" id="last_name" name="last_name" aria-describedby="last_name" placeholder="Last Name">
                     </div>
                     <div class="form-group col-6">
                         <label for="email">Email</label>
@@ -62,6 +62,10 @@
                         <label for="address">Address</label>
                         <textarea class="form-control" id="address" name="address" rows="3"></textarea>
                     </div>
+                    <div class="form-group col-6">
+                        <label for="pro_pic">Profile Picture</label>
+                        <input type="file" class="form-control" id="pro_pic" name="pro_pic" rows="3" />
+                    </div>
                     <div class="col-12">
                         <button type="submit" class="btn btn-primary mb-2 float-right">Submit</button>
                     </div>
@@ -75,66 +79,70 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
-        $('#addStaff').validate({
-            rules: {
-                first_name: "required",
-                last_name: "required", 
-                email: {
-					required: true,
-					email: true,
-                    // remote: {
-                    //     url: '../../../controller/staffController.php?status=checkEmail',
-                    //     type: 'post',
-                    //     dataType: 'json'
-                    // }
-				},
-                dob: {
-                    required: true,
-                    date: true
-                },
-                gender: "required",
-                nic: "required",
-                phone: {
-                    required: true,
-                    digits: true,
-                    minlength: 10
-                },
-                user_type: "required",
-                address: "required"
+        // $('#addStaff').validate({
+        //     rules: {
+        //         first_name: "required",
+        //         last_name: "required", 
+        //         email: {
+		// 			required: true,
+		// 			email: true,
+        //             // remote: {
+        //             //     url: '../../../controller/staffController.php?status=checkEmail',
+        //             //     type: 'post',
+        //             //     dataType: 'json'
+        //             // }
+		// 		},
+        //         dob: {
+        //             required: true,
+        //             date: true
+        //         },
+        //         gender: "required",
+        //         nic: "required",
+        //         phone: {
+        //             required: true,
+        //             digits: true,
+        //             minlength: 10
+        //         },
+        //         user_type: "required",
+        //         address: "required",
+        //         pro_pic: {
+        //         required: false,
+        //         extension: "JPEG|JPG"
+        //         }
 
 
-            },
-            messages: {
-                first_name: {
-                    required: "Please enter your first name"
-                },
-                last_name: {
-                    required: "Please enter your last name"
-                },
-                email: {
-                    required: "Please enter your email address",
-                    // remote: "Email already exists"
-                },
-                dob: {
-                    required: "Please enter your birth date"
-                },
-                gender: {
-                    required: "Please enter your gender"
-                },
-                nic: {
-                    required: "Please enter your NIC"
-                },
-                phone: {
-                    required: "Please enter your phone",
-                    minlength: "Invalid phone number"
-                },
-                user_type: {
-                    required: "Please enter user type"
-                },
-                address: {
-                    required: "Please enter your address"
-                },
-            }
-        });
+        //     },
+        //     messages: {
+        //         first_name: {
+        //             required: "Please enter your first name"
+        //         },
+        //         last_name: {
+        //             required: "Please enter your last name"
+        //         },
+        //         email: {
+        //             required: "Please enter your email address",
+        //             // remote: "Email already exists"
+        //         },
+        //         dob: {
+        //             required: "Please enter your birth date"
+        //         },
+        //         gender: {
+        //             required: "Please enter your gender"
+        //         },
+        //         nic: {
+        //             required: "Please enter your NIC"
+        //         },
+        //         phone: {
+        //             required: "Please enter your phone",
+        //             minlength: "Invalid phone number"
+        //         },
+        //         user_type: {
+        //             required: "Please enter user type"
+        //         },
+        //         address: {
+        //             required: "Please enter your address"
+        //         },
+        //     }
+        // });
     });
 </script>

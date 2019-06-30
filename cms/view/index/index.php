@@ -73,7 +73,40 @@
                     </div>
                 </div>
             </div>        
-        </footer>  
+        </footer>
+        <script type="text/javascript">
+        $( document ).ready(function() {
+            $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+            })
+
+            //notify messages
+            <?php 
+            if(isset($_REQUEST['msg'])){
+                $msg = $_REQUEST['msg'];
+                $msgAr = json_decode($msg, true); ?>
+                var title = '<?php echo $msgAr["title"];?>';
+                var message = '<?php echo $msgAr["message"];?>';
+                var type = '<?php echo $msgAr["type"];?>';
+            
+                $.notify({
+                    title: title,
+                    message: message
+                },{
+                    type: type,
+                    delay: 3000,
+                    placement: {
+                        from: "bottom",
+                        align: "right"
+                    },
+                    animate:{
+                        enter: "animated fadeInUp",
+                        exit: "animated fadeOutDown"
+                    }
+                });
+            <?php } ?>
+        });
+    </script>  
     </body>
 </html>
 <!--------footer ending --------->

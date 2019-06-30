@@ -28,6 +28,7 @@
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
     <script type="text/javascript" src="../../../public/plugin/bootbox/bootbox.min.js"></script>
     <script type="text/javascript" src="../../../public/plugin/jquery-validation/jquery.form.min.js"></script>
+    <script type="text/javascript" src="../../../public/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/additional-methods.js"></script>
     <script type="text/javascript">
@@ -35,6 +36,32 @@
             $(function () {
             $('[data-toggle="tooltip"]').tooltip()
             })
+
+            //notify messages
+            <?php 
+            if(isset($_REQUEST['msg'])){
+                $msg = $_REQUEST['msg'];
+                $msgAr = json_decode($msg, true); ?>
+                var title = '<?php echo $msgAr["title"];?>';
+                var message = '<?php echo $msgAr["message"];?>';
+                var type = '<?php echo $msgAr["type"];?>';
+            
+                $.notify({
+                    title: title,
+                    message: message
+                },{
+                    type: type,
+                    delay: 3000,
+                    placement: {
+                        from: "bottom",
+                        align: "right"
+                    },
+                    animate:{
+                        enter: "animated fadeInUp",
+                        exit: "animated fadeOutDown"
+                    }
+                });
+            <?php } ?>
         });
     </script>       
     </body>

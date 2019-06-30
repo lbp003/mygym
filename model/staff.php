@@ -1,4 +1,5 @@
 <?php
+include_once 'role.php';
 class Staff{
 
     // User Types of the system
@@ -12,6 +13,10 @@ class Staff{
     CONST INACTIVE = "I";
     CONST DELETED = "D";
     CONST SUSPENDED = "S";
+
+    private static $adminAr = [Role::MANAGE_STAFF,Role::VIEW_STAFF];
+    private static $managerAr = [];
+    private static $trainerAr = [];
     
     /** 
 	* Get All Staff Details
@@ -77,16 +82,15 @@ class Staff{
             
     public static function checkEmail($email){
         $con=$GLOBALS['con'];
-        $sql="  SELECT COUNT(staff.email) 
+        $sql="  SELECT staff.email 
                 FROM staff 
-                WHERE email='$email'";
+                WHERE staff.email='$email' 
+                AND staff.status != 'D'";
         $result=$con->query($sql);
-        if($result > 0){
-            return false;
-        }else {
+        if($result->num_rows == 0){
             return true;
         }
-        
+        return false;      
     }
     
     function displayStaff($staff_id){

@@ -104,6 +104,7 @@ $allStaff = Staff::displayAllStaff();
     </div>
 <?php include '../../layout/footer.php';?>
 <script type="text/javascript">
+
     $(document).ready(function() {
       var table = $('#example').DataTable( {
             dom: 'Bfrtip',

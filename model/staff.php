@@ -13,10 +13,6 @@ class Staff{
     CONST INACTIVE = "I";
     CONST DELETED = "D";
     CONST SUSPENDED = "S";
-
-    private static $adminAr = [Role::MANAGE_STAFF,Role::VIEW_STAFF];
-    private static $managerAr = [];
-    private static $trainerAr = [];
     
     /** 
 	* Get All Staff Details
@@ -32,6 +28,7 @@ class Staff{
                     staff.address,
                     staff.gender,
                     staff.dob,
+                    staff.nic,
                     staff.telephone,
                     staff.staff_type,
                     staff.image,
@@ -43,13 +40,14 @@ class Staff{
         return $result;
     }
     
-    function addStaff($staff_fname,$staff_lname,$staff_email,$gender,$dob,$nic,$staff_tel,$address,$role_id,$staff_image){
+    function addStaff($firstName,$lastName,$email,$gender,$dob,$nic,$phone,$address,$user_type,$newFileName, $enPassword, $lmd, $status){
         
         $con=$GLOBALS['con']; 
-        $sql="INSERT INTO staff VALUES('','$staff_fname','$staff_lname','$staff_email','$gender','$dob','$nic','$staff_tel','$address','$role_id','$staff_image','Active')";
-        $result=$con->query($sql);
-        $staff_id=$con->insert_id;
-        return $staff_id;
+        $stmt = $con->prepare("INSERT INTO staff (first_name, last_name, email, gender, dob, nic, telephone, address, staff_type, image, password, lmd, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssssssssss", $firstName, $lastName, $email, $gender, $dob, $nic, $phone, $address, $user_type, $newFileName, $enPassword, $lmd, $status);
+        $stmt->execute();
+        $last_id = $con->insert_id;
+        return $last_id;
         
         
     }

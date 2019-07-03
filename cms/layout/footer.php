@@ -51,7 +51,7 @@
                     message: message
                 },{
                     type: type,
-                    delay: 3000,
+                    delay: 5000,
                     placement: {
                         from: "bottom",
                         align: "right"

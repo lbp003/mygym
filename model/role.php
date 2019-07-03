@@ -59,11 +59,31 @@ class Role{
     //Access
     const UNAUTHORIZED_ACCESS = "UNAUTHORIZED ACCESS";
 
-    public static function getPermissionList($staff_id){
+    // For insert permission records 
+
+    // public static function insertRole($staff_type){
+    //     $con = $GLOBALS['con'];
+    //     $sql = "INSERT INTO user_type_role (user_type_id, role_id) 
+    //     VALUES
+    //           (4, 4),
+    //           (4, 11),
+    //           (4, 13),
+    //           (4, 15),
+    //           (4, 19),
+    //           (4, 24),
+    //           (4, 26),
+    //           (4, 27)   
+    //           "; 
+    //     $result=$con->query($sql);
+    //     return $result; 
+    // } 
+
+    public static function getPermissionList($staff_type){
         $con = $GLOBALS['con'];
         $sql = "SELECT role_id
-                FROM staff_role
-                WHERE staff_id = '$staff_id'";
+                FROM user_type_role
+                INNER JOIN user_type ON user_type_role.user_type_id = user_type.user_type_id
+                WHERE user_type_character = '$staff_type'";
         $result=$con->query($sql);
         return $result;         
     }
@@ -72,10 +92,10 @@ class Role{
         $userPermission = $_SESSION['permission'];
         // print_r($userPermission); exit;
         foreach($permissionLevels as $permission){
-            if (!in_array($permission,$userPermission))
-                return false; // if one is missing decline
+            if (in_array($permission,$userPermission))
+                return true; 
         }
-        return true; // if got here mean all found
+        return false; 
     }
     
     public static function viewRoleModule($role_id){

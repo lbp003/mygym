@@ -15,48 +15,12 @@
     <div class="container">
         <div class="row">
             <div class="col-3">
-                <?php if($auth->checkPermissions([Role::MANAGE_STAFF, Role::VIEW_STAFF])){ ?>
-                    <div class="mb-3">
-                        <div class="card align-items-center border-dark" style="width: 100%;">
-                        <i class="fas fa-briefcase fa-5x dash-icon-color"></i>
-                        <div class="card-body">
-                            <a href="../staff/"><h5 class="card-title">STAFF</h5></a>
-                        </div>
-                        </div>
-                    </div> 
-                <?php } ?>
-            </div>
-            <div class="col-3">
                 <?php if($auth->checkPermissions([Role::MANAGE_MEMBER, Role::VIEW_MEMBER])){ ?>
                     <div class="mb-3">
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-users fa-5x dash-icon-color"></i>
                         <div class="card-body">
                         <a href="../member/"><h5 class="card-title">MEMBER</h5></a>
-                        </div>
-                        </div>
-                    </div>
-                <?php } ?>
-            </div>
-            <div class="col-3">
-                <?php if($auth->checkPermissions([Role::MANAGE_PAYMENT, Role::VIEW_PAYMENT])){ ?>
-                    <div class="mb-3">
-                        <div class="card align-items-center border-dark" style="width: 100%;">
-                        <i class="fab fa-cc-paypal fa-5x dash-icon-color"></i>
-                        <div class="card-body">
-                            <a href="#"><h5 class="card-title">ONLINE PAYMENT</h5></a>
-                        </div>
-                        </div>
-                    </div>
-                <?php } ?>
-            </div>
-            <div class="col-3">
-                <?php if($auth->checkPermissions([Role::MANAGE_PACKAGE, Role::VIEW_PACKAGE])){ ?>
-                    <div class="mb-3">
-                        <div class="card align-items-center border-dark" style="width: 100%;">
-                        <i class="fas fa-gift fa-5x dash-icon-color"></i>
-                        <div class="card-body">
-                            <a href="../package/"><h5 class="card-title">PACKAGE</h5></a>
                         </div>
                         </div>
                     </div>
@@ -99,6 +63,54 @@
                 <?php } ?>
             </div>
             <div class="col-3">
+                <?php if($auth->checkPermissions([Role::MANAGE_WORKOUT, Role::VIEW_WORKOUT])){ ?>
+                    <div class="mb-3">
+                        <div class="card align-items-center border-dark" style="width: 100%;">
+                        <i class="fas fa-running fa-5x dash-icon-color"></i>
+                        <div class="card-body">
+                            <a href="../exercise/"><h5 class="card-title">EXERCISE</h5></a>
+                        </div>
+                        </div>
+                    </div>
+                <?php } ?>
+            </div>
+            <div class="col-3">
+                <?php if($auth->checkPermissions([Role::MANAGE_EVENT, Role::VIEW_EVENT])){ ?>
+                    <div class="mb-3">
+                        <div class="card align-items-center border-dark" style="width: 100%;">
+                        <i class="fas fa-futbol fa-5x dash-icon-color"></i>
+                        <div class="card-body">
+                            <a href="../event/"><h5 class="card-title">EVENT</h5></a>
+                        </div>
+                        </div>
+                    </div>
+                <?php } ?>
+            </div>
+            <div class="col-3">
+                <?php if($auth->checkPermissions([Role::MANAGE_PAYMENT, Role::VIEW_PAYMENT])){ ?>
+                    <div class="mb-3">
+                        <div class="card align-items-center border-dark" style="width: 100%;">
+                        <i class="fab fa-cc-paypal fa-5x dash-icon-color"></i>
+                        <div class="card-body">
+                            <a href="#"><h5 class="card-title">ONLINE PAYMENT</h5></a>
+                        </div>
+                        </div>
+                    </div>
+                <?php } ?>
+            </div>
+            <div class="col-3">
+                <?php if($auth->checkPermissions([Role::MANAGE_PACKAGE, Role::VIEW_PACKAGE])){ ?>
+                    <div class="mb-3">
+                        <div class="card align-items-center border-dark" style="width: 100%;">
+                        <i class="fas fa-gift fa-5x dash-icon-color"></i>
+                        <div class="card-body">
+                            <a href="../package/"><h5 class="card-title">PACKAGE</h5></a>
+                        </div>
+                        </div>
+                    </div>
+                <?php } ?>
+            </div>
+            <div class="col-3">
                 <?php if($auth->checkPermissions([Role::MANAGE_SUBSCRIPTION, Role::VIEW_SUBSCRIPTION])){ ?>
                     <div class="mb-3">
                         <div class="card align-items-center border-dark" style="width: 100%;">
@@ -123,18 +135,6 @@
                 <?php } ?>
             </div>
             <div class="col-3">
-                <?php if($auth->checkPermissions([Role::MANAGE_WORKOUT, Role::VIEW_WORKOUT])){ ?>
-                    <div class="mb-3">
-                        <div class="card align-items-center border-dark" style="width: 100%;">
-                        <i class="fas fa-running fa-5x dash-icon-color"></i>
-                        <div class="card-body">
-                            <a href="../exercise/"><h5 class="card-title">EXERCISE</h5></a>
-                        </div>
-                        </div>
-                    </div>
-                <?php } ?>
-            </div>
-            <div class="col-3">
                 <?php if($auth->checkPermissions([Role::MANAGE_MESSAGE, Role::VIEW_MESSAGE])){ ?>
                     <div class="mb-3">
                         <div class="card align-items-center border-dark" style="width: 100%;">
@@ -147,15 +147,15 @@
                 <?php } ?>
             </div>
             <div class="col-3">
-                <?php if($auth->checkPermissions([Role::MANAGE_EVENT, Role::VIEW_EVENT])){ ?>
+                <?php if($auth->checkPermissions([Role::MANAGE_STAFF, Role::VIEW_STAFF])){ ?>
                     <div class="mb-3">
                         <div class="card align-items-center border-dark" style="width: 100%;">
-                        <i class="fas fa-futbol fa-5x dash-icon-color"></i>
+                        <i class="fas fa-briefcase fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../event/"><h5 class="card-title">EVENT</h5></a>
+                            <a href="../staff/"><h5 class="card-title">STAFF</h5></a>
                         </div>
                         </div>
-                    </div>
+                    </div> 
                 <?php } ?>
             </div>
             <div class="col-3">

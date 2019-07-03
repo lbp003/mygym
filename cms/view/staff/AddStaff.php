@@ -86,11 +86,11 @@
         //         email: {
 		// 			required: true,
 		// 			email: true,
-        //             // remote: {
-        //             //     url: '../../../controller/staffController.php?status=checkEmail',
-        //             //     type: 'post',
-        //             //     dataType: 'json'
-        //             // }
+        //             remote: {
+        //                 url: '../../../controller/staffController.php?status=checkEmail',
+        //                 type: 'post',
+        //                 dataType: 'json'
+        //             }
 		// 		},
         //         dob: {
         //             required: true,
@@ -121,7 +121,7 @@
         //         },
         //         email: {
         //             required: "Please enter your email address",
-        //             // remote: "Email already exists"
+        //             remote: function() { return $.validator.format("{0} is already taken", $("#email").val()) }
         //         },
         //         dob: {
         //             required: "Please enter your birth date"

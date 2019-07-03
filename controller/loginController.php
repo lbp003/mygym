@@ -108,7 +108,7 @@ if($email=="" or $password==""){
             
             $staff_type = $user['staff_type'];
 
-            $userPermission = $objRole->getPermissionList($staff_id);
+            $userPermission = $objRole->getPermissionList($staff_type);
             $permissionAr = [];
             while($row = mysqli_fetch_array($userPermission))
                 {

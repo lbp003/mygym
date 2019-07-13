@@ -111,24 +111,24 @@ switch ($status){
         //Whether to use SMTP authentication
         $mail->SMTPAuth = true;
         //Username to use for SMTP authentication - use full email address for gmail
-        $mail->Username = "username@gmail.com";
+        $mail->Username = "pglbuddhika@gmail.com";
         //Password to use for SMTP authentication
-        $mail->Password = "yourpassword";
+        $mail->Password = "LBP@pgl$94";
         //Set who the message is to be sent from
-        $mail->setFrom('from@example.com', 'First Last');
+        $mail->setFrom('pglbuddhika@gmail.com', 'First Last');
         //Set an alternative reply-to address
-        $mail->addReplyTo('replyto@example.com', 'First Last');
+        $mail->addReplyTo('pglbuddhika@gmail.com', 'First Last');
         //Set who the message is to be sent to
-        $mail->addAddress('whoto@example.com', 'John Doe');
+        $mail->addAddress($email, 'John Doe');
         //Set the subject line
         $mail->Subject = 'PHPMailer GMail SMTP test';
         //Read an HTML message body from an external file, convert referenced images to embedded,
         //convert HTML into a basic plain-text alternative body
-        $mail->msgHTML(file_get_contents('contents.html'), __DIR__);
+        $mail->msgHTML(file_get_contents('../cms/view/mail_templates/new_employee.html'), __DIR__);
         //Replace the plain text body with one created manually
         $mail->AltBody = 'This is a plain-text message body';
         //Attach an image file
-        $mail->addAttachment('images/phpmailer_mini.png');
+        // $mail->addAttachment('images/phpmailer_mini.png');
         //send the message, check for errors
         if (!$mail->send()) {
             echo "Mailer Error: " . $mail->ErrorInfo;
@@ -164,18 +164,18 @@ switch ($status){
     
     //add login staff
 
-    $objlo->addStaffLogin($staff_email, $staff_id);
+    // $objlo->addStaffLogin($staff_email, $staff_id);
     
     
     //Adding an Image into staff_image folder
-    if($new_image!=""){
-    $destination="../images/staff_image/$new_image";
-    move_uploaded_file($staff_loc, $destination);
+    // if($new_image!=""){
+    // $destination="../images/staff_image/$new_image";
+    // move_uploaded_file($staff_loc, $destination);
 
-    }
+    // }
     
-    $msg=base64_encode("A User has been Added");
-    header("Location:../view/staff.php?msg=$msg");
+    // $msg=base64_encode("A User has been Added");
+    // header("Location:../view/staff.php?msg=$msg");
 
 }else{
     $msg = json_encode(array('title'=>'Warning','message'=> "Email address already exists",'type'=>'warning'));

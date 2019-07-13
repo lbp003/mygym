@@ -47,9 +47,7 @@ class Staff{
         $stmt->bind_param("sssssssssssss", $firstName, $lastName, $email, $gender, $dob, $nic, $phone, $address, $user_type, $newFileName, $enPassword, $lmd, $status);
         $stmt->execute();
         $last_id = $con->insert_id;
-        return $last_id;
-        
-        
+        return $last_id;    
     }
     
     function updateStaff($staff_fname,$staff_lname,$gender,$dob,$nic,$staff_tel,$address,$role_id,$staff_id){

@@ -8,6 +8,7 @@ include_once '../model/role.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use function GuzzleHttp\json_encode;
 
 $user=$_SESSION['user'];
 $auth = new Role(); 
@@ -37,15 +38,59 @@ switch ($status){
     }
 
         $firstName=$_POST['first_name'];
+        if (empty($firstName)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> "First Name can't be empty",'type'=>'warning'));
+            header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+            exit;
+        }
         $lastName=$_POST['last_name'];
+        if (empty($lastName)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> "Last Name can't be empty",'type'=>'warning'));
+            header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+            exit;
+        }
         $email=$_POST['email'];
+        if (empty($email)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> "Email can't be empty",'type'=>'warning'));
+            header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+            exit;
+        }
         $gender=$_POST['gender'];
+        if (empty($gender)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> "Gender can't be empty",'type'=>'warning'));
+            header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+            exit;
+        }
         $dob=$_POST['dob'];
+        if (empty($dob)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> "Date of Birth can't be empty",'type'=>'warning'));
+            header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+            exit;
+        }
         $nic=$_POST['nic'];
+        if (empty($nic)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> "NIC can't be empty",'type'=>'warning'));
+            header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+            exit;
+        }
         $phone=$_POST['phone'];
+        if (empty($phone)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> "Phone number can't be empty",'type'=>'warning'));
+            header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+            exit;
+        }
         $address=$_POST['address'];
+        if (empty($address)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> "Address can't be empty",'type'=>'warning'));
+            header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+            exit;
+        }
         $user_type=$_POST['user_type'];
-
+        if (empty($user_type)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> "Staff Type can't be empty",'type'=>'warning'));
+            header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+            exit;
+        }
         $tmp = $_FILES['pro_pic'];
 
 		$file = $tmp['name'];
@@ -66,7 +111,6 @@ switch ($status){
     move_uploaded_file($file_loc,'../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY.$newFileName);
 
     $password = mt_rand(1000000, 10000000);
-    echo $password;
     $enPassword = sha1($password);
     $lmd = date('Y-m-d H:i:s', time());
     $status = Staff::ACTIVE;
@@ -74,11 +118,23 @@ switch ($status){
 
     //check the email for existing or not    
         
-    if(Staff::checkEmail($email)){     
+    if(Staff::checkEmail($email)){    
+
     //add new staff
     $staffID=$objst->addStaff($firstName,$lastName,$email,$gender,$dob,$nic,$phone,$address,$user_type,$newFileName, $enPassword, $lmd, $status);
+
     if($staffID){
+
+    //replace html content with php variables
+
+    $fullName = $firstName." ".$lastName;
+        $content = str_replace(
+            array('%fullName%', '%businessName%', '%url%', '%userName%', '%password%', '%footer%', '%path%'),
+            array($fullName, SYSTEM_BUSINESS_NAME, LIVE_HOST_URL_CMS, $email, $password, EMAIL_FOOTER, '../'.PATH_IMAGE.'logo.png'),
+            file_get_contents('../cms/view/mail_templates/new_employee.html')
+        );
         
+        // var_dump($content); exit;
         /**
          * This example shows settings to use when sending via Google's Gmail servers.
          * This uses traditional id & password authentication - look at the gmail_xoauth.phps
@@ -89,7 +145,7 @@ switch ($status){
         //Import PHPMailer classes into the global namespace
         // use PHPMailer\PHPMailer\PHPMailer;
 
-        require '../vendor/autoload.php';
+        require_once '../vendor/autoload.php';
         //Create a new PHPMailer instance
         $mail = new PHPMailer;
         //Tell PHPMailer to use SMTP
@@ -111,20 +167,20 @@ switch ($status){
         //Whether to use SMTP authentication
         $mail->SMTPAuth = true;
         //Username to use for SMTP authentication - use full email address for gmail
-        $mail->Username = "pglbuddhika@gmail.com";
+        $mail->Username = SYSTEM_EMAIL;
         //Password to use for SMTP authentication
-        $mail->Password = "LBP@pgl$94";
+        $mail->Password = APP_KEY;
         //Set who the message is to be sent from
-        $mail->setFrom('pglbuddhika@gmail.com', 'First Last');
+        $mail->setFrom(SYSTEM_EMAIL, SYSTEM_BUSINESS_NAME);
         //Set an alternative reply-to address
-        $mail->addReplyTo('pglbuddhika@gmail.com', 'First Last');
+        $mail->addReplyTo(SYSTEM_EMAIL, SYSTEM_BUSINESS_NAME);
         //Set who the message is to be sent to
-        $mail->addAddress($email, 'John Doe');
+        $mail->addAddress($email, $fullName);
         //Set the subject line
-        $mail->Subject = 'PHPMailer GMail SMTP test';
+        $mail->Subject = 'Employee Registration';
         //Read an HTML message body from an external file, convert referenced images to embedded,
         //convert HTML into a basic plain-text alternative body
-        $mail->msgHTML(file_get_contents('../cms/view/mail_templates/new_employee.html'), __DIR__);
+        $mail->msgHTML($content, __DIR__);
         //Replace the plain text body with one created manually
         $mail->AltBody = 'This is a plain-text message body';
         //Attach an image file

@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 <img src="../../../public/image/logo.png" width="100" height="auto" class="d-inline-block align-top" alt="">
-  <a class="navbar-brand h1 mb-0 h1 ml-3" href="#">HIRU FITNESS CENTER</a>
+  <a class="navbar-brand h1 mb-0 h1 ml-3" href="#"><?php echo strtoupper(SYSTEM_BUSINESS_NAME);?></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>

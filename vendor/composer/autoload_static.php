@@ -18,6 +18,10 @@ class ComposerStaticInit68c69f56485fd965783e2ed809da18c4
         array (
             'phpseclib\\' => 10,
         ),
+        'S' => 
+        array (
+            'Symfony\\Component\\EventDispatcher\\' => 34,
+        ),
         'P' => 
         array (
             'Psr\\Log\\' => 8,
@@ -46,6 +50,10 @@ class ComposerStaticInit68c69f56485fd965783e2ed809da18c4
         'phpseclib\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib',
+        ),
+        'Symfony\\Component\\EventDispatcher\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/event-dispatcher',
         ),
         'Psr\\Log\\' => 
         array (
@@ -99,6 +107,14 @@ class ComposerStaticInit68c69f56485fd965783e2ed809da18c4
         ),
         'G' => 
         array (
+            'Guzzle\\Tests' => 
+            array (
+                0 => __DIR__ . '/..' . '/guzzle/guzzle/tests',
+            ),
+            'Guzzle' => 
+            array (
+                0 => __DIR__ . '/..' . '/guzzle/guzzle/src',
+            ),
             'Google_Service_' => 
             array (
                 0 => __DIR__ . '/..' . '/google/apiclient-services/src',

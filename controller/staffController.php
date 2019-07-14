@@ -125,21 +125,6 @@ switch ($status){
 
     if($staffID){
 
-    //Adding an Image into staff_image folder
-    if(!empty($newFileName)){
-        if (!file_exists('../'.PATH_STAFF_IMAGE)) {
-
-            mkdir('../'.PATH_IMAGE.PATH_STAFF_IMAGE, 0777, true);
-        }
-
-        $profileImg = $staffID."_IMG.".$ext;
-        rename('../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY.$newFileName,'../'.PATH_IMAGE.PATH_STAFF_IMAGE.$profileImg);
-
-        //Updte image name
-        Staff::updateStaffImage($staffID,$profileImg);
-
-    }
-
     //replace html content with php variables
 
     $fullName = $firstName." ".$lastName;
@@ -190,30 +175,21 @@ switch ($status){
         //Set an alternative reply-to address
         $mail->addReplyTo(SYSTEM_EMAIL, SYSTEM_BUSINESS_NAME);
         //Set who the message is to be sent to
-        $mail->addAddress($email,$fullName);
+        $mail->addAddress($email, $fullName);
         //Set the subject line
         $mail->Subject = 'Employee Registration';
         //Read an HTML message body from an external file, convert referenced images to embedded,
         //convert HTML into a basic plain-text alternative body
         $mail->msgHTML($content, __DIR__);
         //Replace the plain text body with one created manually
-        $mail->AltBody = 'Employee Registration';
+        $mail->AltBody = 'This is a plain-text message body';
         //Attach an image file
         // $mail->addAttachment('images/phpmailer_mini.png');
         //send the message, check for errors
         if (!$mail->send()) {
-            $emailError = "Mailer Error: " . $mail->ErrorInfo;
-
-            //write email errors to  a text file 
-            $logFile = ERROR_LOG.'email_error_'.date('YmdH').'.txt';
-            @file_put_contents($logFile, $emailError, FILE_APPEND | LOCK_EX);
-
-
-            $msg = json_encode(array('title'=>'Danger','message'=> "Employee registration failed",'type'=>'danger'));
-            header("Location:../cms/view/staff/addStaff.php?msg=$msg");
-            exit;
+            echo "Mailer Error: " . $mail->ErrorInfo;
         } else {
-            //echo "Message sent!";
+            echo "Message sent!";
             //Section 2: IMAP
             //Uncomment these to save your message in the 'Sent Mail' folder.
             #if (save_mail($mail)) {
@@ -236,15 +212,26 @@ switch ($status){
             return $result;
         }
 
-        $msg = json_encode(array('title'=>'Success','message'=> "Employee has been successfully registered",'type'=>'success'));
-            header("Location:../cms/view/staff/addStaff.php?msg=$msg");
-            exit;
 
     }else {
-        $msg = json_encode(array('title'=>'Danger','message'=> "Employee registration failed",'type'=>'danger'));
-            header("Location:../cms/view/staff/addStaff.php?msg=$msg");
-            exit;
+        echo "failed"; exit;
     }
+    
+    
+    //add login staff
+
+    // $objlo->addStaffLogin($staff_email, $staff_id);
+    
+    
+    //Adding an Image into staff_image folder
+    // if($new_image!=""){
+    // $destination="../images/staff_image/$new_image";
+    // move_uploaded_file($staff_loc, $destination);
+
+    // }
+    
+    // $msg=base64_encode("A User has been Added");
+    // header("Location:../view/staff.php?msg=$msg");
 
 }else{
     $msg = json_encode(array('title'=>'Warning','message'=> "Email address already exists",'type'=>'warning'));

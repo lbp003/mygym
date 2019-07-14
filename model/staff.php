@@ -61,9 +61,9 @@ class Staff{
         $result=$con->query($sql);
     }
     
-    public static function updateStaffImage($staffId,$profileImg){
+    function updateStaffImage($staff_id,$new_image){
         $con=$GLOBALS['con'];
-        $sql="UPDATE staff SET image='$profileImg' WHERE staff_id='$staffId'";
+        $sql="UPDATE staff SET staff_image='$new_image' WHERE staff_id='$staff_id'";
         $result=$con->query($sql);
     }
     

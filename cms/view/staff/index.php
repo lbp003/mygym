@@ -45,7 +45,7 @@ $allStaff = Staff::displayAllStaff();
                         if($row['image']==""){
                             $path="../../../".PATH_IMAGE."user.png";
                         } else {
-                            $path="../../../public/image/staff_image/".$row['image'];                    
+                            $path="../../../".PATH_IMAGE.PATH_STAFF_IMAGE.$row['image'];                    
                         }
                         
                         if($row['status']==Staff::ACTIVE){

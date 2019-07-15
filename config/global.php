@@ -7,7 +7,7 @@ define('PATH_PUBLIC','public/');
 define('PATH_IMAGE','public/image/');
 
 // staff image Path
-define('PATH_STAFF_IMAGE','public/image/staff_image/');
+define('PATH_STAFF_IMAGE','staff_image/');
 
 // temp staff image path
 define('SYSTEM_TEMP_DIRECTORY','temp/');

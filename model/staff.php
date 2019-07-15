@@ -40,11 +40,11 @@ class Staff{
         return $result;
     }
     
-    function addStaff($firstName,$lastName,$email,$gender,$dob,$nic,$phone,$address,$user_type,$newFileName, $enPassword, $lmd, $status){
+    function addStaff($firstName,$lastName,$email,$gender,$dob,$nic,$phone,$address,$user_type, $enPassword, $lmd, $status){
         
         $con=$GLOBALS['con']; 
-        $stmt = $con->prepare("INSERT INTO staff (first_name, last_name, email, gender, dob, nic, telephone, address, staff_type, image, password, lmd, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssssssssss", $firstName, $lastName, $email, $gender, $dob, $nic, $phone, $address, $user_type, $newFileName, $enPassword, $lmd, $status);
+        $stmt = $con->prepare("INSERT INTO staff (first_name, last_name, email, gender, dob, nic, telephone, address, staff_type, password, lmd, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssssssssss", $firstName, $lastName, $email, $gender, $dob, $nic, $phone, $address, $user_type, $enPassword, $lmd, $status);
         $stmt->execute();
         $last_id = $con->insert_id;
         if(isset($last_id) && !empty($last_id)){
@@ -63,7 +63,7 @@ class Staff{
     
     function updateStaffImage($staff_id,$new_image){
         $con=$GLOBALS['con'];
-        $sql="UPDATE staff SET staff_image='$new_image' WHERE staff_id='$staff_id'";
+        $sql="UPDATE staff SET image='$new_image' WHERE staff_id='$staff_id'";
         $result=$con->query($sql);
     }
     

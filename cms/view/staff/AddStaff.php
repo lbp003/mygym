@@ -62,10 +62,10 @@
                         <label for="address">Address</label>
                         <textarea class="form-control" id="address" name="address" rows="3"></textarea>
                     </div>
-                    <div class="form-group col-6">
+                    <!-- <div class="form-group col-6">
                         <label for="pro_pic">Profile Picture</label>
                         <input type="file" class="form-control" id="pro_pic" name="pro_pic" rows="3" />
-                    </div>
+                    </div> -->
                     <div class="col-12">
                         <button type="submit" class="btn btn-primary mb-2 float-right">Submit</button>
                     </div>

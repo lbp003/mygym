@@ -8,7 +8,6 @@ include_once '../model/role.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-use function GuzzleHttp\json_encode;
 
 $user=$_SESSION['user'];
 $auth = new Role(); 
@@ -39,76 +38,76 @@ switch ($status){
 
         $firstName=$_POST['first_name'];
         if (empty($firstName)) {
-            $msg = json_encode(array('title'=>'Warning','message'=> "First Name can't be empty",'type'=>'warning'));
+            $msg = json_encode(array('title'=>'Warning','message'=> 'First Name can not be empty','type'=>'warning'));
             header("Location:../cms/view/staff/addStaff.php?msg=$msg");
             exit;
         }
         $lastName=$_POST['last_name'];
         if (empty($lastName)) {
-            $msg = json_encode(array('title'=>'Warning','message'=> "Last Name can't be empty",'type'=>'warning'));
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Last Name can not be empty','type'=>'warning'));
             header("Location:../cms/view/staff/addStaff.php?msg=$msg");
             exit;
         }
         $email=$_POST['email'];
         if (empty($email)) {
-            $msg = json_encode(array('title'=>'Warning','message'=> "Email can't be empty",'type'=>'warning'));
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Email can not be empty','type'=>'warning'));
             header("Location:../cms/view/staff/addStaff.php?msg=$msg");
             exit;
         }
         $gender=$_POST['gender'];
         if (empty($gender)) {
-            $msg = json_encode(array('title'=>'Warning','message'=> "Gender can't be empty",'type'=>'warning'));
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Gender can not be empty','type'=>'warning'));
             header("Location:../cms/view/staff/addStaff.php?msg=$msg");
             exit;
         }
         $dob=$_POST['dob'];
         if (empty($dob)) {
-            $msg = json_encode(array('title'=>'Warning','message'=> "Date of Birth can't be empty",'type'=>'warning'));
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Date of Birth can not be empty','type'=>'warning'));
             header("Location:../cms/view/staff/addStaff.php?msg=$msg");
             exit;
         }
         $nic=$_POST['nic'];
         if (empty($nic)) {
-            $msg = json_encode(array('title'=>'Warning','message'=> "NIC can't be empty",'type'=>'warning'));
+            $msg = json_encode(array('title'=>'Warning','message'=> 'NIC can not be empty','type'=>'warning'));
             header("Location:../cms/view/staff/addStaff.php?msg=$msg");
             exit;
         }
         $phone=$_POST['phone'];
         if (empty($phone)) {
-            $msg = json_encode(array('title'=>'Warning','message'=> "Phone number can't be empty",'type'=>'warning'));
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Phone number can not be empty','type'=>'warning'));
             header("Location:../cms/view/staff/addStaff.php?msg=$msg");
             exit;
         }
         $address=$_POST['address'];
         if (empty($address)) {
-            $msg = json_encode(array('title'=>'Warning','message'=> "Address can't be empty",'type'=>'warning'));
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Address can not be empty','type'=>'warning'));
             header("Location:../cms/view/staff/addStaff.php?msg=$msg");
             exit;
         }
         $user_type=$_POST['user_type'];
         if (empty($user_type)) {
-            $msg = json_encode(array('title'=>'Warning','message'=> "Staff Type can't be empty",'type'=>'warning'));
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Staff Type can not be empty','type'=>'warning'));
             header("Location:../cms/view/staff/addStaff.php?msg=$msg");
             exit;
         }
-        $tmp = $_FILES['pro_pic'];
+        // $tmp = $_FILES['pro_pic'];
 
-		$file = $tmp['name'];
-        $file_loc = $tmp['tmp_name'];
- 		$file_size = $tmp['size'];
-        $file_type = $tmp['type'];
+		// $file = $tmp['name'];
+        // $file_loc = $tmp['tmp_name'];
+ 		// $file_size = $tmp['size'];
+        // $file_type = $tmp['type'];
          
-        $ext = pathinfo($file, PATHINFO_EXTENSION);
-        $newFileName = "pro_pic_".uniqid().".".$ext;
+        // $ext = pathinfo($file, PATHINFO_EXTENSION);
+        // $newFileName = "pro_pic_".uniqid().".".$ext;
 
         //upload the image to a temp folder
 
-    if (!file_exists('../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY)) {
+    // if (!file_exists('../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY)) {
 
-        mkdir('../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY, 0777, true);
-    }
+    //     mkdir('../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY, 0777, true);
+    // }
 
-    move_uploaded_file($file_loc,'../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY.$newFileName);
+    // move_uploaded_file($file_loc,'../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY.$newFileName);
 
     $password = mt_rand(1000000, 10000000);
     $enPassword = sha1($password);
@@ -121,120 +120,100 @@ switch ($status){
     if(Staff::checkEmail($email)){    
 
     //add new staff
-    $staffID=$objst->addStaff($firstName,$lastName,$email,$gender,$dob,$nic,$phone,$address,$user_type,$newFileName, $enPassword, $lmd, $status);
+    $staffID=$objst->addStaff($firstName,$lastName,$email,$gender,$dob,$nic,$phone,$address,$user_type, $enPassword, $lmd, $status);
 
     if($staffID){
+
+        // if(!empty($newFileName)){
+        //     $profileImg = $staffID."_IMG.".$ext;
+        //      //Updte image name
+        //      Staff::updateStaffImage($staffID,$profileImg);
+        //      rename('../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY.$newFileName,'../'.PATH_IMAGE.PATH_STAFF_IMAGE.$profileImg);
+        //     }
 
     //replace html content with php variables
 
     $fullName = $firstName." ".$lastName;
-        $content = str_replace(
-            array('%fullName%', '%businessName%', '%url%', '%userName%', '%password%', '%footer%', '%path%'),
-            array($fullName, SYSTEM_BUSINESS_NAME, LIVE_HOST_URL_CMS, $email, $password, EMAIL_FOOTER, '../'.PATH_IMAGE.'logo.png'),
-            file_get_contents('../cms/view/mail_templates/new_employee.html')
-        );
+    $mailBody="<div style='font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#444; background:#ffffff; line-height:20px; padding-bottom:20px;'>"
+    . "<h2> Hi ".$fullName." ,</h2>"
+    . "<p>Your employee account has been created in ".SYSTEM_BUSINESS_NAME. " Please find below credentials to access your account.</p>"
+    . "<table width='100%' style='margin-top:20px' cellpadding='10' cellspacing='0'>"
+    . "<tr style='background:#F5F5F5'>"
+    . "<td width='30%'>URL :</td>"
+    . "<td width='70%'>".LIVE_HOST_URL_CMS."</td>"
+    . "</tr>"
+    . "<tr style='background:#FCFCFC'>"
+    . "<td width='30%'>Username :</td>"
+    . "<td width='70%'>".$email."</td>"
+    . "</tr>"
+    . "<tr style='background:#F5F5F5'>"
+    . "<td width='30%'>Password :</td>"
+    . "<td width='70%'>".$password."</td>"
+    . "</tr>"
+    . "</table>"
+    . "<p>Thank you.</p><br />"
+    . "<p align='center'>".EMAIL_FOOTER."</p>"
+    . "</div>";
         
-        // var_dump($content); exit;
-        /**
-         * This example shows settings to use when sending via Google's Gmail servers.
-         * This uses traditional id & password authentication - look at the gmail_xoauth.phps
-         * example to see how to use XOAUTH2.
-         * The IMAP section shows how to save this message to the 'Sent Mail' folder using IMAP commands.
-         */
+    //Send email
 
-        //Import PHPMailer classes into the global namespace
-        // use PHPMailer\PHPMailer\PHPMailer;
-
+            // Load Composer's autoloader
         require_once '../vendor/autoload.php';
-        //Create a new PHPMailer instance
-        $mail = new PHPMailer;
-        //Tell PHPMailer to use SMTP
-        $mail->isSMTP();
-        //Enable SMTP debugging
-        // 0 = off (for production use)
-        // 1 = client messages
-        // 2 = client and server messages
-        $mail->SMTPDebug = 2;
-        //Set the hostname of the mail server
-        $mail->Host = 'smtp.gmail.com';
-        // use
-        // $mail->Host = gethostbyname('smtp.gmail.com');
-        // if your network does not support SMTP over IPv6
-        //Set the SMTP port number - 587 for authenticated TLS, a.k.a. RFC4409 SMTP submission
-        $mail->Port = 587;
-        //Set the encryption system to use - ssl (deprecated) or tls
-        $mail->SMTPSecure = 'tls';
-        //Whether to use SMTP authentication
-        $mail->SMTPAuth = true;
-        //Username to use for SMTP authentication - use full email address for gmail
-        $mail->Username = SYSTEM_EMAIL;
-        //Password to use for SMTP authentication
-        $mail->Password = APP_KEY;
-        //Set who the message is to be sent from
-        $mail->setFrom(SYSTEM_EMAIL, SYSTEM_BUSINESS_NAME);
-        //Set an alternative reply-to address
-        $mail->addReplyTo(SYSTEM_EMAIL, SYSTEM_BUSINESS_NAME);
-        //Set who the message is to be sent to
-        $mail->addAddress($email, $fullName);
-        //Set the subject line
-        $mail->Subject = 'Employee Registration';
-        //Read an HTML message body from an external file, convert referenced images to embedded,
-        //convert HTML into a basic plain-text alternative body
-        $mail->msgHTML($content, __DIR__);
-        //Replace the plain text body with one created manually
-        $mail->AltBody = 'This is a plain-text message body';
-        //Attach an image file
-        // $mail->addAttachment('images/phpmailer_mini.png');
-        //send the message, check for errors
-        if (!$mail->send()) {
-            echo "Mailer Error: " . $mail->ErrorInfo;
-        } else {
-            echo "Message sent!";
-            //Section 2: IMAP
-            //Uncomment these to save your message in the 'Sent Mail' folder.
-            #if (save_mail($mail)) {
-            #    echo "Message saved!";
-            #}
-        }
-        //Section 2: IMAP
-        //IMAP commands requires the PHP IMAP Extension, found at: https://php.net/manual/en/imap.setup.php
-        //Function to call which uses the PHP imap_*() functions to save messages: https://php.net/manual/en/book.imap.php
-        //You can use imap_getmailboxes($imapStream, '/imap/ssl', '*' ) to get a list of available folders or labels, this can
-        //be useful if you are trying to get this working on a non-Gmail IMAP server.
-        function save_mail($mail)
-        {
-            //You can change 'Sent Mail' to any other folder or tag
-            $path = "{imap.gmail.com:993/imap/ssl}[Gmail]/Sent Mail";
-            //Tell your server to open an IMAP connection using the same username and password as you used for SMTP
-            $imapStream = imap_open($path, $mail->Username, $mail->Password);
-            $result = imap_append($imapStream, $path, $mail->getSentMIMEMessage());
-            imap_close($imapStream);
-            return $result;
-        }
 
+        // Instantiation and passing `true` enables exceptions
+        $mail = new PHPMailer(true);
 
+        try {
+            //Server settings
+            $mail->SMTPDebug = 2;                                       // Enable verbose debug output
+            $mail->isSMTP();                                            // Set mailer to use SMTP
+            $mail->Host       = 'smtp.live.com';  // Specify main and backup SMTP servers
+            $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
+            $mail->Username   = 'peramuna49@hotmail.com';                     // SMTP username
+            $mail->Password   = 'lbp@hotmail';                               // SMTP password
+            $mail->SMTPSecure = 'tls';                                  // Enable TLS encryption, `ssl` also accepted
+            $mail->Port       = 25;                                    // TCP port to connect to
+
+            //Recipients
+            $mail->setFrom('peramuna49@hotmail.com', 'Mailer');
+            $mail->addAddress($email, $fullName);     // Add a recipient
+            // $mail->addAddress('ellen@example.com');               // Name is optional
+            // $mail->addReplyTo('info@example.com', 'Information');
+            // $mail->addCC('cc@example.com');
+            // $mail->addBCC('bcc@example.com');
+
+            // Attachments
+            // $mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
+            // $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
+
+            // Content
+            $mail->isHTML(true);                                  // Set email format to HTML
+            $mail->Subject = 'Employee Registration';
+            $mail->Body    = $mailBody;
+            // $mail->AltBody = 'Employee Registration';
+
+            if($mail->send()){
+                    $msg = json_encode(array('title'=>'Success','message'=> 'Employee registration successful','type'=>'success'));
+                    header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+                    exit;
+            }
+            
+        } catch (Exception $e) {
+               //write email errors to  a text file 
+               $logFile = ERROR_LOG.'email_error_'.date('YmdH').'.txt';
+               @file_put_contents($logFile, "Mailer Error: " . $mail->ErrorInfo, FILE_APPEND | LOCK_EX);
+   
+               $msg = json_encode(array('title'=>'Danger','message'=> 'Employee registration failed','type'=>'danger'));
+               header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+               exit;            
+        }
     }else {
-        echo "failed"; exit;
+        $msg = json_encode(array('title'=>'Danger','message'=> 'Employee registration failed','type'=>'danger'));
+        header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+        exit;
     }
-    
-    
-    //add login staff
-
-    // $objlo->addStaffLogin($staff_email, $staff_id);
-    
-    
-    //Adding an Image into staff_image folder
-    // if($new_image!=""){
-    // $destination="../images/staff_image/$new_image";
-    // move_uploaded_file($staff_loc, $destination);
-
-    // }
-    
-    // $msg=base64_encode("A User has been Added");
-    // header("Location:../view/staff.php?msg=$msg");
-
 }else{
-    $msg = json_encode(array('title'=>'Warning','message'=> "Email address already exists",'type'=>'warning'));
+    $msg = json_encode(array('title'=>'Warning','message'=> 'Email address already exists','type'=>'warning'));
         header("Location:../cms/view/staff/addStaff.php?msg=$msg");
         exit;
 }

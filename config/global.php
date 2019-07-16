@@ -34,4 +34,7 @@ define("SYSTEM_EMAIL", "pglbuddhika@gmail.com");
 
 //App key
 define("APP_KEY", "lazxaohjccxcqzmy");
+
+//Unknown error
+define("UNKNOWN_ERROR", "Unknown Error");
 ?>

@@ -73,8 +73,8 @@ $allStaff = Staff::displayAllStaff();
                     <td><?php echo $staffType; ?></td>
                     <td><span class="badge <?php if($row['status']==Staff::ACTIVE){echo "badge-success";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></td>
                     <td>
-                            <a data-toggle="tooltip" data-placement="top" title="View" href="../../controller/staffController.php?staff_id=<?php echo $row['staff_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
-                            <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../controller/staffController.php?staff_id=<?php echo $row['staff_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
+                            <a data-toggle="tooltip" data-placement="top" title="View" href="../../../controller/staffController.php?staff_id=<?php echo $row['staff_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
+                            <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../../controller/staffController.php?staff_id=<?php echo $row['staff_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
                         <?php 
                         $staffId = $row['staff_id'];
 

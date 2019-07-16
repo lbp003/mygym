@@ -94,10 +94,24 @@ class Staff{
         return false;      
     }
     
-    function displayStaff($staff_id){
+    public static function getEmployeeByID($staff_id){
         
         $con=$GLOBALS['con'];
-        $sql="SELECT* FROM staff s,role r WHERE s.role_id=r.role_id AND staff_id='$staff_id'";
+        $sql="  SELECT
+                    staff.staff_id,
+                    staff.first_name,
+                    staff.last_name,
+                    staff.email,
+                    staff.address,
+                    staff.gender,
+                    staff.dob,
+                    staff.nic,
+                    staff.telephone,
+                    staff.staff_type,
+                    staff.image,
+                    staff.status
+                FROM staff 
+                WHERE staff.staff_id = '$staff_id'";
         $result=$con->query($sql);
         return $result;
     }

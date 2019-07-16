@@ -194,7 +194,7 @@ switch ($status){
 
             if($mail->send()){
                     $msg = json_encode(array('title'=>'Success','message'=> 'Employee registration successful','type'=>'success'));
-                    header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+                    header("Location:../cms/view/staff/index.php?msg=$msg");
                     exit;
             }
             
@@ -221,7 +221,56 @@ switch ($status){
 
 break;
 
+    case "Edit":
+
+    if(!$user)
+    {
+        $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+        header("Location:../cms/view/index/index.php?msg=$msg");
+        exit;
+    }
+    
+    if(!$auth->checkPermissions(array(Role::MANAGE_STAFF)))
+    {
+        $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+        header("Location:../cms/view/staff/index.php?msg=$msg");
+        exit;
+    }
+
+    $staffID = $_REQUEST['staff_id'];
+    if(!empty($staffID)){
+        //get employee details
+        $dataSet = Staff::getEmployeeByID($staffID);
+        $employeeData = $dataSet->fetch_assoc();
+
+        $_SESSION['empData'] = $employeeData;
+    
+        header("Location:../cms/view/staff/updateStaff.php");
+        exit;
+    }else {
+        $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
+        header("Location:../cms/view/staff/index.php?msg=$msg");
+        exit;
+    }
+
+    break;
+
     case "Update":
+
+    if(!$user)
+    {
+        $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+        header("Location:../cms/view/index/index.php?msg=$msg");
+        exit;
+    }
+    
+    if(!$auth->checkPermissions(array(Role::MANAGE_STAFF)))
+    {
+        $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+        header("Location:../cms/view/staff/index.php?msg=$msg");
+        exit;
+    }
+
         
         $staff_fname=$_POST['fname'];
         $staff_lname=$_POST['lname'];
@@ -294,9 +343,9 @@ break;
         $email=$_REQUEST['email'];
         $result = Staff::checkEmail($email);
         if($result == true){
-            echo(json_encode(true));
+            echo(json_encode(['Result' => true]));
         }else {
-            echo(json_encode(false));
+            echo(json_encode(['Result' => false]));
         }
     
 }

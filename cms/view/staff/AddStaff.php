@@ -79,70 +79,75 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
-        // $('#addStaff').validate({
-        //     rules: {
-        //         first_name: "required",
-        //         last_name: "required", 
-        //         email: {
-		// 			required: true,
-		// 			email: true,
-        //             remote: {
-        //                 url: '../../../controller/staffController.php?status=checkEmail',
-        //                 type: 'post',
-        //                 dataType: 'json'
-        //             }
-		// 		},
-        //         dob: {
-        //             required: true,
-        //             date: true
-        //         },
-        //         gender: "required",
-        //         nic: "required",
-        //         phone: {
-        //             required: true,
-        //             digits: true,
-        //             minlength: 10
-        //         },
-        //         user_type: "required",
-        //         address: "required",
-        //         pro_pic: {
-        //         required: false,
-        //         extension: "JPEG|JPG"
-        //         }
+        $('#addStaff').validate({
+            rules: {
+                first_name: "required",
+                last_name: "required", 
+                email: {
+					required: true,
+					email: true,
+                    remote: {
+                        url: '../../../controller/staffController.php?status=checkEmail',
+                        type: 'post',
+                        dataType: 'json',
+                        data: {
+                            email: function(){
+                                return $("#email").val();
+                            }
+                        }
+                    }
+				},
+                dob: {
+                    required: true,
+                    date: true
+                },
+                gender: "required",
+                nic: "required",
+                phone: {
+                    required: true,
+                    digits: true,
+                    minlength: 10
+                },
+                user_type: "required",
+                address: "required",
+                pro_pic: {
+                required: false,
+                extension: "JPEG|JPG"
+                }
 
 
-        //     },
-        //     messages: {
-        //         first_name: {
-        //             required: "Please enter your first name"
-        //         },
-        //         last_name: {
-        //             required: "Please enter your last name"
-        //         },
-        //         email: {
-        //             required: "Please enter your email address",
-        //             remote: function() { return $.validator.format("{0} is already taken", $("#email").val()) }
-        //         },
-        //         dob: {
-        //             required: "Please enter your birth date"
-        //         },
-        //         gender: {
-        //             required: "Please enter your gender"
-        //         },
-        //         nic: {
-        //             required: "Please enter your NIC"
-        //         },
-        //         phone: {
-        //             required: "Please enter your phone",
-        //             minlength: "Invalid phone number"
-        //         },
-        //         user_type: {
-        //             required: "Please enter user type"
-        //         },
-        //         address: {
-        //             required: "Please enter your address"
-        //         },
-        //     }
-        // });
+            },
+            messages: {
+                first_name: {
+                    required: "Please enter your first name"
+                },
+                last_name: {
+                    required: "Please enter your last name"
+                },
+                email: {
+                    required: "Please enter your email address",
+                    remote: function() { return $.validator.format("{0} is already taken", $("#email").val()) }
+                },
+                dob: {
+                    required: "Please enter your birth date"
+                },
+                gender: {
+                    required: "Please enter your gender"
+                },
+                nic: {
+                    required: "Please enter your NIC"
+                },
+                phone: {
+                    required: "Please enter your phone",
+                    minlength: "Invalid phone number"
+                },
+                user_type: {
+                    required: "Please enter user type"
+                },
+                address: {
+                    required: "Please enter your address"
+                },
+            }
+        });
     });
 </script>

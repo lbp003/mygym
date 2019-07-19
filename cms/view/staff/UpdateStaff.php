@@ -22,8 +22,16 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <form method="post" id="addStaff" name="addStaff" action="../../../controller/staffController.php?status=Update" enctype="multipart/form-data">
+            <div id="kv-avatar-errors-2" class="center-block" style="width:800px;display:none"></div>
+                <form method="post" id="updateStaff" name="updateStaff" action="../../../controller/staffController.php?status=Update" enctype="multipart/form-data">
                 <div class="d-flex flex-wrap">
+                    <div class="form-group col-6" style="text-align:center">
+                        <div class="kv-avatar">
+                            <div class="file-loading">
+                                <input id="avatar" name="avatar" type="file" required>
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-group col-6">
                         <label for="first_name">First Name</label>
                         <input type="text" class="form-control" id="first_name" name="first_name" aria-describedby="first_name" placeholder="First Name" value="<?php echo $empData['first_name']?>">
@@ -68,11 +76,8 @@
                         <label for="address">Address</label>
                         <textarea class="form-control" id="address" name="address" rows="3"><?php echo $empData['address']?></textarea>
                     </div>
-                    <!-- <div class="form-group col-6">
-                        <label for="pro_pic">Profile Picture</label>
-                        <input type="file" class="form-control" id="pro_pic" name="pro_pic" rows="3" />
-                    </div> -->
                     <div class="col-12">
+                        <input type="hidden" name="staff_id" value="<?php echo $empData['staff_id']?>"> 
                         <button type="submit" class="btn btn-primary mb-2 float-right">Submit</button>
                     </div>
                 </div>
@@ -85,7 +90,7 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
-        $('#addStaff').validate({
+        $('#updateStaff').validate({
             rules: {
                 first_name: "required",
                 last_name: "required", 
@@ -154,6 +159,25 @@
                     required: "Please enter your address"
                 },
             }
+        });
+
+        $("#avatar").fileinput({
+            overwriteInitial: true,
+            maxFileSize: 1500,
+            showClose: false,
+            showCaption: false,
+            showBrowse: false,
+            browseOnZoneClick: true,
+            removeLabel: '',
+            removeIcon: '<i class="fas fa-trash-alt"></i>',
+            removeTitle: 'Cancel or reset changes',
+            elErrorContainer: '#kv-avatar-errors-2',
+            msgErrorClass: 'alert alert-block alert-danger',
+            defaultPreviewContent: '<i class="far fa-user fa-5x"></i><h6 class="text-muted">Click to select</h6>',
+            layoutTemplates: {main2: '{preview} {remove} {browse}'},
+            allowedFileExtensions: ["jpg", "png", "gif"],
+            minFileCount : 0,
+            maxFileCount: 1
         });
     });
 </script>

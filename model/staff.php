@@ -40,6 +40,10 @@ class Staff{
         return $result;
     }
     
+    /** 
+	* Insert a new Staff member
+	* @return object $last_id
+	*/
     function addStaff($firstName,$lastName,$email,$gender,$dob,$nic,$phone,$address,$user_type, $enPassword, $lmd, $status){
         
         $con=$GLOBALS['con']; 
@@ -55,11 +59,30 @@ class Staff{
             
     }
     
-    function updateStaff($staff_fname,$staff_lname,$gender,$dob,$nic,$staff_tel,$address,$role_id,$staff_id){
-        $con = $GLOBALS['con'];
-        $sql="UPDATE staff SET staff_fname='$staff_fname',staff_lname='$staff_lname',gender='$gender',dob='$dob',nic='$nic',staff_tel='$staff_tel',address='$address',role_id='$role_id' WHERE staff_id='$staff_id'";
-        $result=$con->query($sql);
+    /** 
+	* Update a existing Staff member
+	* @return object $result
+	*/
+    function updateStaff($firstName,$lastName,$email,$gender,$dob,$nic,$phone,$address,$user_type, $imgName, $lmd, $staff_id){
+        
+        $con=$GLOBALS['con']; 
+        $stmt = $con->prepare("INSERT INTO staff (first_name, last_name, email, gender, dob, nic, telephone, address, staff_type, password, lmd, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssssssssss", $firstName, $lastName, $email, $gender, $dob, $nic, $phone, $address, $user_type, $imgName, $lmd);
+        $stmt->execute();
+        $last_id = $con->insert_id;
+        if(isset($last_id) && !empty($last_id)){
+            return $last_id;
+        }else {
+            return false;
+        }
+            
     }
+
+    // function updateStaff($staff_fname,$staff_lname,$gender,$dob,$nic,$staff_tel,$address,$role_id,$staff_id){
+    //     $con = $GLOBALS['con'];
+    //     $sql="UPDATE staff SET staff_fname='$staff_fname',staff_lname='$staff_lname',gender='$gender',dob='$dob',nic='$nic',staff_tel='$staff_tel',address='$address',role_id='$role_id' WHERE staff_id='$staff_id'";
+    //     $result=$con->query($sql);
+    // }
     
     function updateStaffImage($staff_id,$new_image){
         $con=$GLOBALS['con'];
@@ -80,13 +103,29 @@ class Staff{
         $result=$con->query($sql);
         return $result;
     }
-            
+    
+    //Check email for existing email address
     public static function checkEmail($email){
         $con=$GLOBALS['con'];
         $sql="  SELECT staff.email 
                 FROM staff 
                 WHERE staff.email='$email' 
                 AND staff.status != 'D'";
+        $result=$con->query($sql);
+        if($result->num_rows == 0){
+            return true;
+        }
+        return false;      
+    }
+
+    //Check email for update email address
+    public static function checkUpdateEmail($email,$staff_id){
+        $con=$GLOBALS['con'];
+        $sql="  SELECT staff.email 
+                FROM staff 
+                WHERE staff.email='$email' 
+                AND staff.status != 'D'
+                AND staff.staff_id !='$staff_id'";
         $result=$con->query($sql);
         if($result->num_rows == 0){
             return true;
@@ -111,7 +150,8 @@ class Staff{
                     staff.image,
                     staff.status
                 FROM staff 
-                WHERE staff.staff_id = '$staff_id'";
+                WHERE staff.staff_id = '$staff_id'
+                AND staff.status != 'D'";
         $result=$con->query($sql);
         return $result;
     }

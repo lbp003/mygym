@@ -90,24 +90,6 @@ switch ($status){
             header("Location:../cms/view/staff/addStaff.php?msg=$msg");
             exit;
         }
-        // $tmp = $_FILES['pro_pic'];
-
-		// $file = $tmp['name'];
-        // $file_loc = $tmp['tmp_name'];
- 		// $file_size = $tmp['size'];
-        // $file_type = $tmp['type'];
-         
-        // $ext = pathinfo($file, PATHINFO_EXTENSION);
-        // $newFileName = "pro_pic_".uniqid().".".$ext;
-
-        //upload the image to a temp folder
-
-    // if (!file_exists('../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY)) {
-
-    //     mkdir('../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY, 0777, true);
-    // }
-
-    // move_uploaded_file($file_loc,'../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY.$newFileName);
 
     $password = mt_rand(1000000, 10000000);
     $enPassword = sha1($password);
@@ -123,15 +105,6 @@ switch ($status){
     $staffID=$objst->addStaff($firstName,$lastName,$email,$gender,$dob,$nic,$phone,$address,$user_type, $enPassword, $lmd, $status);
 
     if($staffID){
-
-        // if(!empty($newFileName)){
-        //     $profileImg = $staffID."_IMG.".$ext;
-        //      //Updte image name
-        //      Staff::updateStaffImage($staffID,$profileImg);
-        //      rename('../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY.$newFileName,'../'.PATH_IMAGE.PATH_STAFF_IMAGE.$profileImg);
-        //     }
-
-    //replace html content with php variables
 
     $fullName = $firstName." ".$lastName;
     $mailBody="<div style='font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#444; background:#ffffff; line-height:20px; padding-bottom:20px;'>"
@@ -221,6 +194,8 @@ switch ($status){
 
 break;
 
+// Get the employee details for Update Employee
+
     case "Edit":
 
     if(!$user)
@@ -255,6 +230,8 @@ break;
 
     break;
 
+// Update the Employee details
+
     case "Update":
 
     if(!$user)
@@ -271,44 +248,97 @@ break;
         exit;
     }
 
-        
-        $staff_fname=$_POST['fname'];
-        $staff_lname=$_POST['lname'];
-        //$staff_email=$_POST['email'];
-        $gender=$_POST['gender'];
-        $dob=$_POST['dob'];
-        $nic=$_POST['nic'];
-        $staff_tel=$_POST['tel'];
-        $address=$_POST['address'];
-        $role_id=$_POST['role'];
-        
-        if($_FILES['staff_image']['name'] != ""){
-            
-            $staff_image=$_FILES['staff_image']['name'];
-            $staff_loc = $_FILES['staff_image']['tmp_name'];
-            $new_image = time()."_". $staff_image;
+    $staffID=$_POST['staff_id'];
+
+    $firstName=$_POST['first_name'];
+    if (empty($firstName)) {
+        $msg = json_encode(array('title'=>'Warning','message'=> 'First Name can not be empty','type'=>'warning'));
+        header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+        exit;
+    }
+    $lastName=$_POST['last_name'];
+    if (empty($lastName)) {
+        $msg = json_encode(array('title'=>'Warning','message'=> 'Last Name can not be empty','type'=>'warning'));
+        header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+        exit;
+    }
+    $email=$_POST['email'];
+    if (empty($email)) {
+        $msg = json_encode(array('title'=>'Warning','message'=> 'Email can not be empty','type'=>'warning'));
+        header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+        exit;
+    }
+    $gender=$_POST['gender'];
+    if (empty($gender)) {
+        $msg = json_encode(array('title'=>'Warning','message'=> 'Gender can not be empty','type'=>'warning'));
+        header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+        exit;
+    }
+    $dob=$_POST['dob'];
+    if (empty($dob)) {
+        $msg = json_encode(array('title'=>'Warning','message'=> 'Date of Birth can not be empty','type'=>'warning'));
+        header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+        exit;
+    }
+    $nic=$_POST['nic'];
+    if (empty($nic)) {
+        $msg = json_encode(array('title'=>'Warning','message'=> 'NIC can not be empty','type'=>'warning'));
+        header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+        exit;
+    }
+    $phone=$_POST['phone'];
+    if (empty($phone)) {
+        $msg = json_encode(array('title'=>'Warning','message'=> 'Phone number can not be empty','type'=>'warning'));
+        header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+        exit;
+    }
+    $address=$_POST['address'];
+    if (empty($address)) {
+        $msg = json_encode(array('title'=>'Warning','message'=> 'Address can not be empty','type'=>'warning'));
+        header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+        exit;
+    }
+    $user_type=$_POST['user_type'];
+    if (empty($user_type)) {
+        $msg = json_encode(array('title'=>'Warning','message'=> 'Staff Type can not be empty','type'=>'warning'));
+        header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+        exit;
+    }
+    $tmp = $_FILES['avatar'];
+
+    $file = $tmp['name'];
+    $file_loc = $tmp['tmp_name'];
+    $file_size = $tmp['size'];
+    $file_type = $tmp['type'];
+     
+    $ext = pathinfo($file, PATHINFO_EXTENSION);
+    $imgName = "IMG_".$staffID.".".$ext;
+
+    $lmd = date('Y-m-d H:i:s', time());
+
+    if(Staff::checkUpdateEmail($email, $staffID)){
+
+        // upload the image to a temp folder
+
+        if (!file_exists('../'.PATH_IMAGE.PATH_STAFF_IMAGE)) {
+
+            mkdir('../'.PATH_IMAGE.PATH_STAFF_IMAGE, 0777, true);
         }
-        
-        $staff_id =$_REQUEST['staff_id']; 
-        
-        //update staff
-            
-        $objst->updateStaff($staff_fname,$staff_lname,$gender,$dob,$nic,$staff_tel,$address,$role_id,$staff_id);
-            
-        
-        //Adding an Image into staff_image folder
-        if($new_image!=""){
-        $destination="../images/staff_image/$new_image";
-        move_uploaded_file($staff_loc, $destination);
-        
-        $objst->updateStaffImage($staff_id, $new_image);
-        }
-        
-        
-        $msg=base64_encode("A User has been Updated");
-        header("Location:../view/staff.php?msg=$msg");
-            
+
+        move_uploaded_file($file_loc,'../'.PATH_IMAGE.PATH_STAFF_IMAGE.$imgName);
+        echo "lbp"; exit;    
+         //update staff
+        $result=$objst->updateStaff($firstName,$lastName,$email,$gender,$dob,$nic,$phone,$address,$user_type, $imgName, $lmd, $staffID);
+
+
+    }else {
+        $msg = json_encode(array('title'=>'Warning','message'=> 'Email address already exists','type'=>'warning'));
+        header("Location:../cms/view/staff/updateStaff.php?msg=$msg");
+        exit;
+    }
+
 break;
+
 // Activate Staff
     case "Active":
         $staff_id=$_REQUEST['staff_id'];

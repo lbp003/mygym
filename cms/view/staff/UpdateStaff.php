@@ -161,6 +161,14 @@
             }
         });
 
+        <?php 
+            if(empty($empData['image'])){ ?>
+                var path = "<?php echo "../../../".PATH_IMAGE."user.png"; ?>";  
+                // console.log(path);
+        <?php }else{ ?>
+                var path = "<?php echo "../../../".PATH_IMAGE.PATH_STAFF_IMAGE.$empData['image']; ?>";                    
+        <?php } ?>
+
         $("#avatar").fileinput({
             overwriteInitial: true,
             maxFileSize: 1500,
@@ -173,11 +181,14 @@
             removeTitle: 'Cancel or reset changes',
             elErrorContainer: '#kv-avatar-errors-2',
             msgErrorClass: 'alert alert-block alert-danger',
-            defaultPreviewContent: '<i class="far fa-user fa-5x"></i><h6 class="text-muted">Click to select</h6>',
+            defaultPreviewContent: '<img src="'+ path +'" width="100" height="auto" class="img-responsive img-thumbnail" />',
             layoutTemplates: {main2: '{preview} {remove} {browse}'},
-            allowedFileExtensions: ["jpg", "png", "gif"],
+            allowedFileExtensions: ["jpg", "png", "gif", "jpeg"],
             minFileCount : 0,
-            maxFileCount: 1
+            maxFileCount: 1,
+            showUpload: true,
+            previewFileType: 'any',
+            initialPreviewFileType: 'image',
         });
     });
 </script>

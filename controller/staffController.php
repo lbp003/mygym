@@ -326,9 +326,32 @@ break;
         }
 
         move_uploaded_file($file_loc,'../'.PATH_IMAGE.PATH_STAFF_IMAGE.$imgName);
-        echo "lbp"; exit;    
+
+        $dataAr = [
+            'fname' => $firstName,
+            'lname' => $lastName,
+            'email' => $email,
+            'gender' => $gender,
+            'dob' => $dob,
+            'nic' => $nic,
+            'phone' => $phone,
+            'address' => $address,
+            'type' => $user_type,
+            'img' => $imgName,
+            'lmd' => $lmd,
+            'id' => $staffID
+        ];
          //update staff
-        $result=$objst->updateStaff($firstName,$lastName,$email,$gender,$dob,$nic,$phone,$address,$user_type, $imgName, $lmd, $staffID);
+        $result=Staff::updateStaff($dataAr);
+        if($result == true){
+            $msg = json_encode(array('title'=>'Success :','message'=> 'Employee has been updated','type'=>'success'));
+            header("Location:../cms/view/staff/updateStaff.php?msg=$msg");
+            exit;
+        }else {
+            $msg = json_encode(array('title'=>'Warning :','message'=> 'Update failed','type'=>'danger'));
+            header("Location:../cms/view/staff/updateStaff.php?msg=$msg");
+            exit;
+        }
 
 
     }else {
@@ -340,24 +363,104 @@ break;
 break;
 
 // Activate Staff
-    case "Active":
-        $staff_id=$_REQUEST['staff_id'];
-        $response = $objst->activateStaff($staff_id);
-        if(!$response==""){
-            $objlo->activateStaffLogin($staff_id);
+
+    case "Activate":
+
+    if(!$user)
+    {
+        $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+        header("Location:../cms/view/index/index.php?msg=$msg");
+        exit;
+    }
+    
+    if(!$auth->checkPermissions(array(Role::MANAGE_STAFF)))
+    {
+        $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+        header("Location:../cms/view/staff/index.php?msg=$msg");
+        exit;
+    }
+
+    $staffID=$_REQUEST['staff_id'];
+
+    $response = Staff::activateEmployee($staffID);
+    if($response == true){
+        $msg = json_encode(array('title'=>'Success :','message'=> 'Employee has been activated','type'=>'success'));
+        header("Location:../cms/view/staff/index.php?msg=$msg");
+        exit;
+    }else{
+        $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
+        header("Location:../cms/view/staff/index.php?msg=$msg");
+        exit;
+    }  
+
+break;
+
+// Deactivate Staff  
+
+    case "Deactivate":
+
+        if(!$user)
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
         }
-        header("Location:../view/staff.php");
-// Deactivate Staff        
-        break;
-    case "Deactive":
-        $staff_id=$_REQUEST['staff_id'];
-        $response = $objst->deactivateStaff($staff_id);
-        if(!$response==""){
-            $objlo->deactivateStaffLogin($staff_id);
-        }
-        header("Location:../view/staff.php");
         
-        break;
+        if(!$auth->checkPermissions(array(Role::MANAGE_STAFF)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            header("Location:../cms/view/staff/index.php?msg=$msg");
+            exit;
+        }
+
+        $staffID=$_REQUEST['staff_id'];
+
+        $response = Staff::deactivateEmployee($staffID);
+        if($response == true){
+            $msg = json_encode(array('title'=>'Success :','message'=> 'Employee has been deactivated','type'=>'success'));
+            header("Location:../cms/view/staff/index.php?msg=$msg");
+            exit;
+        }else{
+            $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
+            header("Location:../cms/view/staff/index.php?msg=$msg");
+            exit;
+        }
+                
+break;
+
+// Delete Staff  
+
+    case "Delete":
+
+        if(!$user)
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
+
+        if(!$auth->checkPermissions(array(Role::MANAGE_STAFF)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            header("Location:../cms/view/staff/index.php?msg=$msg");
+            exit;
+        }
+
+        $staffID=$_REQUEST['staff_id'];
+
+        $response = Staff::deleteEmployee($staffID);
+        if($response == true){
+            $msg = json_encode(array('title'=>'Success :','message'=> 'Employee has been deleted','type'=>'success'));
+            header("Location:../cms/view/staff/index.php?msg=$msg");
+            exit;
+        }else{
+            $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
+            header("Location:../cms/view/staff/index.php?msg=$msg");
+            exit;
+        }
+        
+break;
+
 // View Staff 
     case "View":
         
@@ -377,7 +480,22 @@ break;
         }else {
             echo(json_encode(['Result' => false]));
         }
-    
+break;  
+
+        //check update email exists
+
+        case "checkUpdateEmail":
+
+        $email=$_REQUEST['email'];
+        $staffID=$_REQUEST['staff_id'];
+
+        $result = Staff::checkUpdateEmail($email,$staffID);
+        if($result == true){
+            echo(json_encode(['Result' => true]));
+        }else {
+            echo(json_encode(['Result' => false]));
+        }
+break; 
 }
 
 ?>

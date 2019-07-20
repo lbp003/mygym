@@ -74,16 +74,18 @@ $allStaff = Staff::displayAllStaff();
                     <td><span class="badge <?php if($row['status']==Staff::ACTIVE){echo "badge-success";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></td>
                     <td>
                             <a data-toggle="tooltip" data-placement="top" title="View" href="../../../controller/staffController.php?staff_id=<?php echo $row['staff_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
+                        <?php if($auth->checkPermissions([Role::MANAGE_STAFF])){?>
                             <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../../controller/staffController.php?staff_id=<?php echo $row['staff_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
-                        <?php 
+                        <?php } 
                         $staffId = $row['staff_id'];
-
                         if($row['status']==Staff::ACTIVE){ ?>
                             <a id="deactivate" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../../controller/staffController.php?staff_id=<?php echo $staffId;?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
                         <?php }elseif($row['status']==Staff::INACTIVE){ ?>
                             <a id="activate" data-toggle="tooltip" data-placement="top" title="Activate" href="../../../controller/staffController.php?staff_id=<?php echo $staffId;?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
-                        <?php } ?>
-                        <a id="delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash text-danger"></i></a>
+                        <?php } 
+                         if($auth->checkPermissions([Role::MANAGE_STAFF])){ ?>
+                            <a id="delete" data-toggle="tooltip" data-placement="top" title="Delete" href="../../../controller/staffController.php?staff_id=<?php echo $staffId;?>&status=Delete"><i class="fas fa-trash text-danger"></i></a>
+                         <?php } ?>
                     </td>
                 </tr>
                     <?php } ?>
@@ -122,13 +124,15 @@ $allStaff = Staff::displayAllStaff();
                         }
                     }
                 },
-                {
-                text: '+ ADD STAFF',
-                className: 'btn-success',
-                action: function ( e, dt, node, config ) {
-                    window.location.href = "addStaff.php";
-                }
-            },
+                <?php if($auth->checkPermissions([Role::MANAGE_STAFF])){?>
+                    {
+                    text: '+ ADD STAFF',
+                    className: 'btn-success',
+                    action: function ( e, dt, node, config ) {
+                        window.location.href = "addStaff.php";
+                    }
+                },
+            <?php } ?>
             ],
             select: true
         } );

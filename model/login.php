@@ -5,10 +5,23 @@ class Login{
     //To check user name and password of Staff
     public static function validateStaffLogin($email,$password){
         $con=$GLOBALS['con'];//To get connection string
-        $sql="  SELECT * 
+        $sql="  SELECT 
+                    staff.staff_id,
+                    staff.first_name,
+                    staff.last_name,
+                    staff.email,
+                    staff.address,
+                    staff.gender,
+                    staff.dob,
+                    staff.nic,
+                    staff.telephone,
+                    staff.staff_type,
+                    staff.image,
+                    staff.status
                 FROM staff 
-                WHERE email='$email' 
-                AND password='$password'";
+                WHERE staff.email='$email' 
+                AND staff.password='$password'
+                AND staff.status = 'A'";
         $result=$con->query($sql);
         return $result;
     }

@@ -63,48 +63,71 @@ class Staff{
 	* Update a existing Staff member
 	* @return object $result
 	*/
-    function updateStaff($firstName,$lastName,$email,$gender,$dob,$nic,$phone,$address,$user_type, $imgName, $lmd, $staff_id){
-        
+    public static function updateStaff($dataAr){
+        // var_dump($dataAr); exit;
         $con=$GLOBALS['con']; 
-        $stmt = $con->prepare("INSERT INTO staff (first_name, last_name, email, gender, dob, nic, telephone, address, staff_type, password, lmd, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssssssssss", $firstName, $lastName, $email, $gender, $dob, $nic, $phone, $address, $user_type, $imgName, $lmd);
+        $sql = "UPDATE staff SET first_name=?, last_name=?, email=?, gender=?, dob=?, nic=?, telephone=?, address=?, staff_type=?, image=?, lmd=? WHERE staff_id=?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("sssssssssssi", $dataAr['fname'], $dataAr['lname'], $dataAr['email'], $dataAr['gender'], $dataAr['dob'], $dataAr['nic'], $dataAr['phone'], $dataAr['address'], $dataAr['type'], $dataAr['img'], $dataAr['lmd'], $dataAr['id']);
         $stmt->execute();
-        $last_id = $con->insert_id;
-        if(isset($last_id) && !empty($last_id)){
-            return $last_id;
-        }else {
+        if ($stmt->error) {
             return false;
-        }
-            
+          }
+         return true;
+    }
+    
+    /** 
+	* Activate an employee
+	* @return object $result
+	*/
+    public static function activateEmployee($staff_id){
+        $con=$GLOBALS['con']; 
+        $sql = "UPDATE staff SET status=? WHERE staff_id=?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("si", $status = Staff::ACTIVE, $staff_id);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;
+    }
+    
+    /** 
+	* Deactivate an employee
+	* @return object $result
+	*/
+    public static function deactivateEmployee($staff_id){
+        $con=$GLOBALS['con']; 
+        $sql = "UPDATE staff SET status=? WHERE staff_id=?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("si", $status = Staff::INACTIVE, $staff_id);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;
     }
 
-    // function updateStaff($staff_fname,$staff_lname,$gender,$dob,$nic,$staff_tel,$address,$role_id,$staff_id){
-    //     $con = $GLOBALS['con'];
-    //     $sql="UPDATE staff SET staff_fname='$staff_fname',staff_lname='$staff_lname',gender='$gender',dob='$dob',nic='$nic',staff_tel='$staff_tel',address='$address',role_id='$role_id' WHERE staff_id='$staff_id'";
-    //     $result=$con->query($sql);
-    // }
-    
-    function updateStaffImage($staff_id,$new_image){
-        $con=$GLOBALS['con'];
-        $sql="UPDATE staff SET image='$new_image' WHERE staff_id='$staff_id'";
-        $result=$con->query($sql);
+    /** 
+	* Delete an employee
+	* @return object $result
+	*/
+    public static function deleteEmployee($staff_id){
+        $con=$GLOBALS['con']; 
+        $sql = "UPDATE staff SET status=? WHERE staff_id=?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("si", $status = Staff::DELETED, $staff_id);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;
     }
     
-    function activateStaff($staff_id){
-        $con=$GLOBALS['con'];
-        $sql="UPDATE staff SET staff_status='Active' WHERE staff_id='$staff_id'";
-        $result=$con->query($sql);
-        return $result;
-    }
-    
-    function deactivateStaff($staff_id){
-        $con=$GLOBALS['con'];
-        $sql="UPDATE staff SET staff_status='Deactive' WHERE staff_id='$staff_id'";
-        $result=$con->query($sql);
-        return $result;
-    }
-    
-    //Check email for existing email address
+    /** 
+	* Check email for  add new employee
+	* @return object $result
+	*/
     public static function checkEmail($email){
         $con=$GLOBALS['con'];
         $sql="  SELECT staff.email 
@@ -118,7 +141,10 @@ class Staff{
         return false;      
     }
 
-    //Check email for update email address
+    /** 
+	* Check email for update email address
+	* @return object $result
+	*/
     public static function checkUpdateEmail($email,$staff_id){
         $con=$GLOBALS['con'];
         $sql="  SELECT staff.email 
@@ -133,6 +159,10 @@ class Staff{
         return false;      
     }
     
+    /** 
+	* Get the employee data by staff_id
+	* @return object $result
+	*/
     public static function getEmployeeByID($staff_id){
         
         $con=$GLOBALS['con'];

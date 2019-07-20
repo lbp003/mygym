@@ -228,7 +228,7 @@ break;
         exit;
     }
 
-    break;
+break;
 
 // Update the Employee details
 
@@ -464,8 +464,35 @@ break;
 // View Staff 
     case "View":
         
-        $staff_id=$_REQUEST['staff_id'];
-        header("Location:../view/ViewStaff.php?staff_id=$staff_id");
+        if(!$user)
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
+        
+        if(!$auth->checkPermissions(array(Role::VIEW_STAFF)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            header("Location:../cms/view/staff/index.php?msg=$msg");
+            exit;
+        }
+
+        $staffID = $_REQUEST['staff_id'];
+        if(!empty($staffID)){
+            //get employee details
+            $dataSet = Staff::getEmployeeByID($staffID);
+            $employeeData = $dataSet->fetch_assoc();
+
+            $_SESSION['empData'] = $employeeData;
+        
+            header("Location:../cms/view/staff/viewStaff.php");
+            exit;
+        }else {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
+            header("Location:../cms/view/staff/index.php?msg=$msg");
+            exit;
+        }
         
 break;
 

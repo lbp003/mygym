@@ -1,134 +1,88 @@
-<!--- header start ---->
-<?php include '../common/adHeader.php'; ?>
-<!--- header end ---->
-<?php include '../model/staffModel.php'; ?> <!-- including staff model ----->
-<?php
-    $userDetails=$_SESSION['userDetails'];
-    $role_id=$userDetails['role_id'];
-    $obm = new CommonFun();
-    $resultm=$obm->viewRoleModule($role_id);
-    //echo $userDetails['gender'].$userDetails['dob'];
-    //print_r($resultm);
-?>
+<!--- header  ---->
+<?php include '../../layout/header.php'; ?>
 <?php 
-    $objRo = new CommonFun();
-    $resultRo=$objRo->viewRole();
-    $_SESSION['resultRo']=$resultRo;
-    //print_r($resultRo);
+    $empData = $_SESSION['empData'];
+    // var_dump($empData); exit;
 
-    $staff_id = $_REQUEST['staff_id'];
-    $obstUp = new Staff();
-    $result = $obstUp->displayStaff($staff_id);
-    if(!$result){
-        die("ERROR".mysqli_error($con));
-    }
-    $resultUpSt =$result->fetch_assoc();
-    
-    // Create an array for staff record
-   // $abc=$result->fetch_assoc();
-    //if(!$abc){
-   //     die("Query FAILED".mysqli_error($con));
-    //} else {
-//echo $abc[staff_fname];        
-//}
+    $gender = ['M' => 'Male', 'F' => 'Female'];
+    $type = ['A' => 'Admin', 'M' => 'Manager', 'T' => 'Trainer'];
+
+
+    if(empty($empData['image'])){
+        $path = "../../../".PATH_IMAGE."user.png"; 
+    }else{ 
+        $path = "../../../".PATH_IMAGE.PATH_STAFF_IMAGE.$empData['image'];                    
+    } 
 ?>
-<body onload="startTime()">
-        <!---navbar starting ---------->
-        <?php include '../common/navBar.php';?> 
-        <!---navbar ending ---------->
-                <!--- breadcrumb starting--------->
-        <div class="container-fluid">
-                <div class="row">
-                    <ol class="breadcrumb" style="background-color:#2f2f2f">
-                        <li><a href="Dashboard.php" >Dashboard</a></li>
-                        <li><a href="staff.php" >Staff</a></li>
-                        <li><a href="#" class="active">View Staff</a></li>
-                    </ol>
+<body>
+    <!---navbar starting ---------->
+    <?php include '../../layout/navBar.php';?> 
+    <!---navbar ending ---------->
+    <!--- breadcrumb starting--------->
+    <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item" aria-current="page"><a href="../dashboard/dashboard.php">Home</a></li>
+        <li class="breadcrumb-item" aria-current="page"><a href="index.php">Staff</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="#">View Staff</a></li>
+    </ol>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+            <div id="kv-avatar-errors-2" class="center-block" style="width:800px;display:none"></div>
+                <form method="post" id="updateStaff" name="updateStaff" action="../../../controller/staffController.php?status=Update" enctype="multipart/form-data">
+                <div class="d-flex flex-wrap">
+                    <div class="form-group col-6" style="text-align:center">
+                        <img src="<?php echo $path; ?>" width="120" height="auto" class="img-responsive img-thumbnail" />
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="first_name">First Name</label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" aria-describedby="first_name" placeholder="First Name" value="<?php echo $empData['first_name']?>" readonly>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" aria-describedby="last_name" placeholder="Last Name" value="<?php echo $empData['last_name']?>" readonly>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" aria-describedby="email" placeholder="Email" value="<?php echo $empData['email']?>" readonly>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="gender">Gender</label>
+                        <select id="gender" name="gender" class="form-control" readonly>
+                            <?php foreach($gender as $key => $val){ ?>
+                                <option value="<?php echo $key?>" <?php echo ($key == $empData['gender']) ? "selected" : NULL ?>><?php echo $val ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="dob">Date of Birth</label>
+                        <input type="date" class="form-control" id="dob" name="dob" aria-describedby="dob" placeholder="Date of Birth" value="<?php echo $empData['dob']?>" readonly>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="nic">NIC</label>
+                        <input type="text" class="form-control" id="nic" name="nic" aria-describedby="nic" placeholder="NIC" value="<?php echo $empData['nic']?>" readonly>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="phone">Phone</label>
+                        <input type="text" class="form-control" id="phone" name="phone" aria-describedby="phone" placeholder="Phone" value="<?php echo $empData['telephone']?>" readonly>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="user_type">Type</label>
+                        <select id="user_type" name="user_type" class="form-control" readonly>
+                            <?php foreach($type as $key => $val){?>
+                                <option value="<?php echo $key?>" <?php echo ($key == $empData['staff_type']) ? "selected" : NULL ?>><?php echo $val ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="address">Address</label>
+                        <textarea class="form-control" id="address" name="address" rows="3" readonly><?php echo $empData['address']?></textarea>
+                    </div>
                 </div>
+                </form>
+            </div>
         </div>
-        <!--- breadcrumb ending--------->
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-3">
-                <!----Admin side nav starting------>
-            <?php include '../common/AdminSideNav.php'; ?>
-                <!----Admin side nav ending------>
-                </div>
-                <div class="col-md-9" style="background-color:rgb(250,250,250); ">
-                    <div>
-                        <h1 align="center" style="font-family: monospace; font-size: 60px;color: #ffff00;background-color:rgba(70,70,70,0.5);"><b>Profile</b></h1>
-                    </div><hr />
-                    <form method="post" name="UpdateStaff" action="../controller/staffcontroller.php?status=View&staff_id=<?php echo $staff_id;?>" enctype="multipart/form-data">
-                        <div class="col-md-3">
-                             <div>
-                                 <?php 
-                                   if($resultUpSt['staff_image']==""){
-                                       $path="../images/user.png";
-                                   }else{
-                                       $path="../images/staff_image/".$resultUpSt['staff_image'];
-                                   }
-                                 ?>
-                                <img src="<?php echo $path; ?>" width="150px" height="auto" class="img-responsive img-circle center-block"/>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                           
-                           <div class="form-group">
-                                <label for="funame">Full Name</label>
-                                <input type="text" name="funame" class="form-control readonlyt" id="funame"  value="<?php echo ucfirst($resultUpSt['staff_fname'])." ". ucfirst($resultUpSt['staff_lname']);?>" readonly="">
-                             </div>
-                            <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" name="email" class="form-control readonlyt" id="email" value="<?php echo $resultUpSt['staff_email'];?>" readonly="">
-                            </div>
-                            <div class="form-group">
-                                <label for="dob">Date of Birth</label>
-                                <input type="date" name="dob" class="form-control readonlyt" id="dob" value="<?php echo $resultUpSt['dob'];?>" disabled="">
-                            </div>
-                            <div class="form-group">
-                                <label for="gender">Gender</label><br/>
-                                <input type="radio" class="radio radio-inline readonlyt" id="male" name="gender" value="Male" <?php if(strtolower($resultUpSt['gender'])=="male") echo "Checked"?> disabled=""> &nbsp;&nbsp;Male
-                                <input type="radio" class="radio radio-inline readonlyt" id="female" name="gender" value="Female" <?php if(strtolower($resultUpSt['gender'])=="female") echo "Checked"?> disabled=""> &nbsp;&nbsp;Female
-                            </div>                             
-                             <div class="form-group">
-                                <label for="tel">Telephone</label>
-                                <input name="tel" type="text" class="form-control readonlyt" id="tel" value="<?php echo $resultUpSt['staff_tel'];?>" readonly="">
-                            </div>
-                             <div class="form-group">
-                                <label for="address">Address</label>
-                                <textarea type="text" class="form-control readonlyt" id="address" name="address" rows="4" readonly=""><?php echo $resultUpSt['address'];?></textarea>
-                            </div>
-                             <div class="form-group">
-                                <label for="nic">NIC</label>
-                                <input type="text" class="form-control readonlyt" id="nic" name="nic" value="<?php echo $resultUpSt['nic'];?>" readonly="">
-                            </div>
-                             <div class="form-group">
-                                <label for="role">Role</label>
-                                <select class="form-control" name="role"  disabled="">
-                                   <option>Select Role</option>
-                                    <?php while ($rowRole=$resultRo->fetch_assoc()){ ?>
-                                    <option value="<?php $rowRole['role_id'];?>" 
-                                        <?php    if($rowRole['role_id']==$resultUpSt['role_id']) echo "SELECTED"; ?>>
-                                                 <?php echo ucfirst($rowRole['role_name']);?>
-                                    </option>
-                                    <?php } ?>
-                                </select>
-                            </div>
-                            </div>
-                        <div class="col-md-3">&nbsp;</div>
-                        <div class="col-md-12">
-                           <div class="row">
-                                <div class="col-md-4">&nbsp;</div>
-                                <div class="col-md-4">
-                                    <a href="staff.php" class="btn btn-lg btn-info btn-block" name="back">Okay</a>
-                                </div>
-                                <div class="col-md-4">&nbsp;</div>
-                            </div> 
-                        </div>
-                    </form>
-                </div>
-        </div>
-        </div>
-<!---- Footer start---->
-<?php include '../common/adFooter.php'; ?>
-<!---- Footer end------>
+    </div>
+<!--- footer  ---->
+<?php include '../../layout/footer.php';?>

@@ -7,6 +7,10 @@ class Package{
         CONST INACTIVE = "I";
         CONST DELETED = "D";
     
+    /** 
+	* Get All Package Details
+	* @return object $result 
+	*/
     public static function displayAllPackage(){
         $con=$GLOBALS['con'];//To get connection string
         $sql="  SELECT  package.package_id,
@@ -17,6 +21,20 @@ class Package{
                 FROM package 
                 WHERE package.status != 'D'
                 ORDER BY package_id DESC";
+        $result=$con->query($sql);
+        return $result;
+    }
+
+    /** 
+	* Get All Active packages
+	* @return object $result 
+	*/
+    public static function getActivePackage(){
+        $con=$GLOBALS['con'];//To get connection string
+        $sql="  SELECT  package.package_id,
+                        package.package_name
+                FROM package 
+                WHERE package.status = 'A'";
         $result=$con->query($sql);
         return $result;
     }

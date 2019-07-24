@@ -72,12 +72,6 @@ class Member{
         return $result;
     }
             
-    function checkEmail($email){
-        $con=$GLOBALS['con'];
-        $sql="SELECT * FROM member WHERE member_email='$email'";
-        $result=$con->query($sql);
-        return $result;   
-    }
     
     function displayMember($member_id){
         
@@ -137,5 +131,40 @@ class Member{
         return $member_id;
         
         
+    }
+
+    /** 
+	* Check email for  add new member
+	* @return object $result
+	*/
+    public static function checkEmail($email){
+        $con=$GLOBALS['con'];
+        $sql="  SELECT member.email 
+                FROM member 
+                WHERE member.email='$email' 
+                AND member.status != 'D'";
+        $result=$con->query($sql);
+        if($result->num_rows == 0){
+            return true;
+        }
+        return false;      
+    }
+
+    /** 
+	* Check email for update email address
+	* @return object $result
+	*/
+    public static function checkUpdateEmail($email,$member_id){
+        $con=$GLOBALS['con'];
+        $sql="  SELECT member.email 
+                FROM member 
+                WHERE member.email='$email' 
+                AND member.status != 'D'
+                AND member.member_id !='$member_id'";
+        $result=$con->query($sql);
+        if($result->num_rows == 0){
+            return true;
+        }
+        return false;      
     }
 }

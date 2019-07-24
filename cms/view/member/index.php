@@ -64,18 +64,23 @@ $allMember = Member::displayAllMember();
                     <td><span class="badge <?php if($row['status']==Member::ACTIVE){echo "badge-success";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></td>
                     <td>
                             <a data-toggle="tooltip" data-placement="top" title="View" href="../../controller/memberController.php?member_id=<?php echo $row['member_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
-                            <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../controller/memberController.php?member_id=<?php echo $row['member_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
-                        <?php 
+                        <?php if($auth->checkPermissions([Role::MANAGE_MEMBER])){?>
+                            <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../../controller/memberController.php?member_id=<?php echo $row['member_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
+                        <?php } ?>
+                        <?php
+                        
+                        $memberId = $row['member_id'];
 
-                            $memberId = $row['member_id'];
-
-                            if($row['status']==Member::ACTIVE){
-                                echo "<a data-toggle='tooltip' data-placement='top' title='Deactivate' href='../../controller/memberController.php?member_id='.$memberId.'&status=Deactivate'><i class='fas fa-ban text-warning'></i></a>";
-                            }elseif($row['status']==Member::INACTIVE){
-                                echo "<a data-toggle='tooltip' data-placement='top' title='Activate' href='../../controller/memberController.php?member_id='.$memberId.'&status=Activate'><i class='far fa-check-circle text-success'></i></a>";
-                            }
-                        ?>
-                            <a data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash text-danger"></i></a>
+                        if($auth->checkPermissions([Role::MANAGE_MEMBER])){
+                        if($row['status']==Member::ACTIVE){ ?>
+                            <a id="deactivate" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../../controller/memberController.php?member_id=<?php echo $memberId;?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
+                        <?php }elseif($row['status']==Member::INACTIVE){ ?>
+                            <a id="activate" data-toggle="tooltip" data-placement="top" title="Activate" href="../../../controller/memberController.php?member_id=<?php echo $memberId;?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
+                        <?php }} ?>
+                        <?php
+                         if($auth->checkPermissions([Role::MANAGE_MEMBER])){ ?>
+                            <a id="delete" data-toggle="tooltip" data-placement="top" title="Delete" href="../../../controller/memberController.php?member_id=<?php echo $memberId;?>&status=Delete"><i class="fas fa-trash text-danger"></i></a>
+                         <?php } ?>
                     </td>
                 </tr>
                     <?php } ?>
@@ -113,13 +118,15 @@ $allMember = Member::displayAllMember();
                         }
                     }
                 },
+            <?php if($auth->checkPermissions([Role::MANAGE_MEMBER])){?>
                 {
                 text: '+ ADD MEMBER',
                 className: 'btn-success',
                 action: function ( e, dt, node, config ) {
-                    window.location.href = "addMember.php";
+                    window.location.href = "../../../controller/memberController.php?status=Add";
                 }
             },
+            <?php } ?>
             ],
             select: true
         } );

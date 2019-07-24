@@ -5,6 +5,12 @@
 <?php
     // Get User Details from session
     $user=$_SESSION['user']; 
+    if(!$user)
+    {
+        $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+        header("Location:../../index.php?msg=$msg");
+        exit;
+    }
     $auth = new Role();
 ?>
 <html>

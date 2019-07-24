@@ -2,7 +2,10 @@
 
 //Login class
 class Login{
-    //To check user name and password of Staff
+    /** 
+	* Return All Employee Details
+	* @return object $result 
+	*/
     public static function validateStaffLogin($email,$password){
         $con=$GLOBALS['con'];//To get connection string
         $sql="  SELECT 
@@ -25,13 +28,34 @@ class Login{
         $result=$con->query($sql);
         return $result;
     }
-        //To check user name and password of Staff
-    public static function validateLoginMember($u,$p){
+
+    /** 
+	* Return All member Details
+	* @return object $result 
+	*/
+    public static function validateMemberLogin($email,$password){
         $con=$GLOBALS['con'];//To get connection string
-        $sql="SELECT * FROM login_member l,member m,role r WHERE l.member_email='$u' AND l.password='$p' AND m.member_id=l.member_id AND m.role_id = r.role_id";
+        $sql="  SELECT 
+                    member.member_id,
+                    member.first_name,
+                    member.last_name,
+                    member.email,
+                    member.address,
+                    member.gender,
+                    member.dob,
+                    member.nic,
+                    member.telephone,
+                    member.package_id,
+                    member.image,
+                    member.status
+                FROM member 
+                WHERE member.email='$email' 
+                AND member.password='$password'
+                AND member.status = 'A'";
         $result=$con->query($sql);
         return $result;
     }
+
     public static function addStaffLogin($staff_email,$staff_id){
         $con=$GLOBALS['con'];//To get connection string
         $password=sha1("123");//Default password

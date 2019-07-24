@@ -1,322 +1,157 @@
-<!--- header start ---->
-<?php include '../common/adHeader.php'; ?>
-<!--- header end ---->
-<?php include '../model/memberModel.php'; ?><!-- including member model ----->
-<?php include '../model/packageModel.php';?><!-----including package model --->
+<!--- header  ---->
 <?php
-    $userDetails=$_SESSION['userDetails'];
-    $role_id=$userDetails['role_id'];
-    $obm = new CommonFun();
-    $resultm=$obm->viewRoleModule($role_id);
-    
-    $objpa = new package();
-    $result = $objpa->displayAllPackage();
+include '../../layout/header.php'; ?>
+<?php 
+    $pacData = $_SESSION['pacData'];
+    // echo json_encode($pacData); exit;
+
 ?>
-<body onload="startTime()">
-        <!---navbar starting ---------->
-        <?php include '../common/navBar.php';?> 
-        <!---navbar ending ---------->
-                <!--- breadcrumb starting--------->
-        <div class="container-fluid">
-                <div class="row">
-                    <ol class="breadcrumb" style="background-color:#2f2f2f">
-                        <li><a href="Dashboard.php" >Dashboard</a></li>
-                        <li><a href="Member.php" >Member</a></li>
-                        <li><a href="#" class="active">Add Member</a></li>
-                    </ol>
+<body>
+    <!---navbar starting ---------->
+    <?php include '../../layout/navBar.php';?> 
+    <!---navbar ending ---------->
+    <!--- breadcrumb starting--------->
+    <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item" aria-current="page"><a href="../dashboard/dashboard.php">Home</a></li>
+        <li class="breadcrumb-item" aria-current="page"><a href="index.php">Member</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="#">Add Member</a></li>
+    </ol>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <form method="post" id="addMember" name="addMember" action="../../../controller/memberController.php?status=Insert" enctype="multipart/form-data">
+                <div class="d-flex flex-wrap">
+                    <div class="form-group col-6">
+                        <label for="first_name">First Name</label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" aria-describedby="first_name" placeholder="First Name">
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" aria-describedby="last_name" placeholder="Last Name">
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" aria-describedby="email" placeholder="Email">
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="gender">Gender</label>
+                        <select id="gender" name="gender" class="form-control">
+                            <option selected>Choose...</option>
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="dob">Date of Birth</label>
+                        <input type="date" class="form-control" id="dob" name="dob" aria-describedby="dob" placeholder="Date of Birth">
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="nic">NIC</label>
+                        <input type="text" class="form-control" id="nic" name="nic" aria-describedby="nic" placeholder="NIC">
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="phone">Phone</label>
+                        <input type="text" class="form-control" id="phone" name="phone" aria-describedby="phone" placeholder="Phone">
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="user_type">Package</label>
+                        <select id="user_type" name="user_type" class="form-control">
+                            <option selected>Choose...</option>
+                            <?php foreach($pacData as $key => $val){?>
+                            <option value="<?php echo $key;?>"><?php echo $val;?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="address">Address</label>
+                        <textarea class="form-control" id="address" name="address" rows="3"></textarea>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="membership_number">Membership Number</label>
+                        <input type="text" class="form-control" id="membership_number" name="membership_number" aria-describedby="membership_number" placeholder="Membership Number">
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary mb-2 float-right">Submit</button>
+                    </div>
                 </div>
+                </form>
+            </div>
         </div>
-        <!--- breadcrumb ending--------->
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-3">
-                <!----Admin side nav starting------>
-            <?php include '../common/AdminSideNav.php'; ?>
-                <!----Admin side nav ending------>
-                </div>
-                <div class="col-md-9" style="background-color:rgb(250,250,250); ">
-                    <div>
-                        <h1 align="center" style="font-family: monospace; font-size: 60px;color: #ffff00;background-color:rgba(70,70,70,0.5);"><b>Add Member</b></h1>
-                    </div><hr />
-                    <div class="row">
-                        <div class="col-md-12" style="text-align: center">
-                            <?php if(isset($_REQUEST['msg'])){ 
-                                $msg= base64_decode($_REQUEST['msg']);
-                            ?>
-                            <span class="alert alert-danger"><?php echo $msg; ?></span>
-                                
-                            <?php   } ?>
-                            
-                        </div>
-                        <div class="row">
-                        <div class="col-md-12">
-                            <div id="error_msg" style="text-align: center" >&nbsp;</div>
-                            <div>&nbsp;</div>
-                        </div>
-                        </div>
-                    </div><br />
-                    <form method="post" name="AddMember" action="../controller/membercontroller.php?status=Add" enctype="multipart/form-data">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="fname">First Name</label>
-                                <input type="text" name="fname" class="form-control" id="fname" placeholder="First Name">
-                            </div>
-                            <div class="form-group">
-                                <label for="lname">Last Name</label>
-                                <input type="text" name="lname" class="form-control" id="lname" placeholder="Last Name">
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" name="email" class="form-control" id="email" placeholder="yourEmail@abc.com" onkeyup="showEmail(this.value)">
-                                <div id="showEmail"></div>
-                            </div><br />
-                            <div class="form-group">
-                                <label for="dob">Date of Birth</label>
-                                <input type="date" name="dob" class="form-control" id="dob" placeholder="mm/dd/yyyy">
-                            </div>
-                            <div class="form-group">
-                                <label for="package">Package</label>
-                                <select class="form-control" name="package" id="package">
-                                    <option selected disabled>Select a package</option>
-                                    <?php while ($rowP = $result->fetch_assoc()){?>
-                                    <option value="<?php echo $rowP['package_id']?>"><?php echo $rowP['package_name']?></option>
-                                    <?php } ?>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="gender" id="gender">Gender</label><br/>
-                                <input type="radio" class="radio radio-inline" id="male" name="gender" value="Male"> &nbsp;&nbsp;Male
-                                <input type="radio" class="radio radio-inline" id="female" name="gender" value="Female"> &nbsp;&nbsp;Female
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                             <div class="form-group">
-                                <label for="tel">Telephone</label>
-                                <input name="tel" type="text" class="form-control" id="tel" placeholder="+94123456789">
-                            </div>
-                             <div class="form-group">
-                                <label for="address">Address</label>
-                                <textarea type="text" class="form-control" id="address" name="address" placeholder="Address" rows="4"></textarea>
-                            </div>
-                             <div class="form-group">
-                                <label for="nic">NIC</label>
-                                <input type="text" class="form-control" id="nic" name="nic" placeholder="978976345V">
-                            </div>
-                             <div class="form-group">
-                                <label for="image">Image input</label>
-                                <input type="file" id="img" name="member_image" class="form-control" onchange="readURL(this)">
-                                <img id="img_prev" />
-                            </div>
-                            </div>
-                        <div class="col-md-12">
-                            <div class="row">
-                            <div class="col-md-4"></div>
-                            <div class="col-md-4"><br /><br />
-                                <button class="btn btn-lg btn-danger btn-block" name="reset" type="reset" value="Reset">Reset</button>
-                                <button class="btn btn-lg btn-info btn-block" name="submit" type="submit" value="Submit">Submit</button>
-                            </div>
-                            <div class="col-md-4"></div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-        </div>
-<!---- Footer start---->
-<?php include '../common/adFooter.php'; ?>
-<!---- Footer end------>
-<script type="text/javascript">
-//To check email
-function showEmail(str) {
-    $('#error_msg').text('');
-    $('#error_msg').removeClass('alert-danger');
-  var xhttp; 
-  if (str == "") {
-    document.getElementById("showEmail").innerHTML = "";
-    return;
-  }
-  xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-  
-    if (this.readyState == 4 && this.status == 200) {
-    document.getElementById("showEmail").innerHTML = this.responseText;
-    
-    }
-  };
-  xhttp.open("GET", "getEmail.php?status=member&email="+str, true);
-  xhttp.send();
-}
-</script>
+    </div>
+<!--- footer  ---->
+<?php include '../../layout/footer.php';?>
+
 <script type="text/javascript">
     $(document).ready(function(){
-       $('form').submit(function(){
-           
-           
-       var fname=$('#fname').val();
-       var lname=$('#lname').val();
-       var email=$('#email').val();
-       var dob=$('#dob').val();
-       var role_id=$('#role_id').val();
-       var nic=$('#nic').val();
-       var tel=$('#tel').val(); 
-       var image=$('#img').val();
-       var package = $('package').val(); 
-       
-        var pat_nic=/^[0-9]{9}[vVxX]$/;
-        var pat_tel=/^\+94[0-9]{9}$/;
-        var pat_email=/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z]{2,6})+$/; 
-       
-        
-      if(fname==""){
-           $('#error_msg').text("First Name is empty");//To display error
-           $('#error_msg').addClass('alert-danger');
-           $('#fname').focus();
-           return false; //
-       }
-       if(lname==""){
-           $('#error_msg').text("Last Name is empty");//To display error
-           $('#error_msg').addClass('alert-danger');
-           $('#lname').focus();
-           return false; //
-       }     
-       if(email==""){
-           $('#error_msg').text("Email Address is empty");//To display error
-           $('#error_msg').addClass('alert-danger');
-           $('#email').focus();
-           return false; //
-       }
-       if(!(email.match(pat_email))){ //To check email validity
-           $('#error_msg').text("Email Address is invalid");//To display error
-           $('#error_msg').addClass('alert-danger');
-           $('#email').focus();
-           return false; //
-       }
-       
-       var res=$('#res').val();
-       if(res==0){
-          $('#email').select();
-           return false;
-       }
-            
-       if($('input[name=gender]:checked').length<=0)
-        {
-           $('#error_msg').text("Please select a Gender");//To display error
-           $('#error_msg').addClass('alert-danger');
-           $('#gender').addClass('alert-danger');
-           return false;
-        }
-       if(dob==""){
-           $('#error_msg').text("Date of Birth is empty");//To display error
-           $('#error_msg').addClass('alert-danger');
-           $('#dob').focus();
-           return false; //
-       }
-       //To check dob range
-       //Current Date
-        var current= new Date();
-        var cyear=current.getFullYear();
-        var cmonth=current.getMonth();
-        var cdate=current.getDate();
-        //Birth Date
-        var birth= new Date(dob);
-        var byear=birth.getFullYear();
-        var bmonth=birth.getMonth();
-        var bdate=birth.getDate();
-        
-        var age=cyear-byear;
-        var m=cmonth-bmonth;
-        var d=cdate-bdate;
-        
-        if(m<0 || (m==0 && d<0)){
-            age--;
-        }
-       
-       if(age < 12){
-           $('#error_msg').text("Under Age");
-           $('#error_msg').addClass('alert-danger');
-           $('#dob').focus();
-           return false;   
-        
-       }
-       if(age > 75){
-           $('#error_msg').text("over Age");
-           $('#error_msg').addClass('alert-danger');
-           $('#dob').focus();
-           return false;         
-       }           
-       if(nic!="" && !(nic.match(pat_nic))){
-           $('#error_msg').text("NIC is invalid");
-           $('#error_msg').addClass('alert-danger');
-           $('#nic').focus();
-           return false; //              
-       }       
-       //To compare DOB and NIC
-       if(dob!="" && nic!=""){
-          var doby=dob.substring(2,4);
-          var nicy=nic.substring(0,2);
-          if(doby!=nicy){
-            $('#error_msg').text("DOB and NIC are not matching");
-            $('#error_msg').addClass('alert-danger');
-            return false;
-          }
-           
-       }
-       if(tel==""){
-           $('#error_msg').text("Telephone is empty");//To display error
-           $('#error_msg').addClass('alert-danger');
-           $('#tel').focus();
-           return false; //
-       }
-       if(tel!="" && !(user_tel.match(pat_tel))){
-           $('#error_msg').text("Telephone No is invalid");
-           $('#error_msg').addClass('alert-danger');
-           $('#tel').focus();
-           return false; //        
-           
-       }     
-       if(role_id==""){
-           $('#error_msg').text("Role Name is empty");//To display error
-           $('#error_msg').addClass('alert-danger');
-           $('#role_id').focus();
-           return false; //
-       }   
-       
-      if(image!=""){
-       var arr=image.split(".");
-       var last=arr.length-1;
-       var iext=arr[last].toLowerCase();
-       var extarr=['jpg','jpeg','gif','png','tiff','svg'];
-       if($.inArray(iext,extarr)==-1){
-           $('#error_msg').text("Invalid extension");
-           $('#error_msg').addClass('alert-danger');
-           $('#img').focus();
-           return false; //  
-           
-       }   
-       }
-       
-       if(package==""){
-           $('#error_msg').text("Please Select a Package");//To display error
-           $('#error_msg').addClass('alert-danger');
-           $('#package').focus();
-           return false; //
-       }
-       
+        $('#addMember').validate({
+            rules: {
+                first_name: "required",
+                last_name: "required", 
+                email: {
+					required: true,
+					email: true,
+                    remote: {
+                        url: '../../../controller/memberController.php?status=checkEmail',
+                        type: 'post',
+                        dataType: 'json',
+                        data: {
+                            email: function(){
+                                return $("#email").val();
+                            }
+                        }
+                    }
+				},
+                dob: {
+                    required: true,
+                    date: true
+                },
+                gender: "required",
+                nic: "required",
+                phone: {
+                    required: true,
+                    digits: true,
+                    minlength: 10
+                },
+                user_type: "required",
+                address: "required",
+                membership_number: "required"
+            },
+            messages: {
+                first_name: {
+                    required: "Please enter first name"
+                },
+                last_name: {
+                    required: "Please enter last name"
+                },
+                email: {
+                    required: "Please enter email address",
+                    remote: function() { return $.validator.format("{0} is already taken", $("#email").val()) }
+                },
+                dob: {
+                    required: "Please enter birth date"
+                },
+                gender: {
+                    required: "Please enter gender"
+                },
+                nic: {
+                    required: "Please enter NIC"
+                },
+                phone: {
+                    required: "Please enter phone",
+                    minlength: "Invalid phone number"
+                },
+                user_type: {
+                    required: "Please enter user type"
+                },
+                address: {
+                    required: "Please enter address"
+                },
+                membership_number:{
+                    required: "Please enter membership number"
+                }
+            }
+        });
     });
-    
-});  
-
-function readURL(input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            $('#img_prev')
-            .attr('src', e.target.result)
-            .height(70);
-        };
-
-        reader.readAsDataURL(input.files[0]);
-    }
-}
-
 </script>

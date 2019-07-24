@@ -62,10 +62,6 @@
                         <label for="address">Address</label>
                         <textarea class="form-control" id="address" name="address" rows="3"></textarea>
                     </div>
-                    <!-- <div class="form-group col-6">
-                        <label for="pro_pic">Profile Picture</label>
-                        <input type="file" class="form-control" id="pro_pic" name="pro_pic" rows="3" />
-                    </div> -->
                     <div class="col-12">
                         <button type="submit" class="btn btn-primary mb-2 float-right">Submit</button>
                     </div>
@@ -119,33 +115,33 @@
             },
             messages: {
                 first_name: {
-                    required: "Please enter your first name"
+                    required: "Please enter first name"
                 },
                 last_name: {
-                    required: "Please enter your last name"
+                    required: "Please enter last name"
                 },
                 email: {
-                    required: "Please enter your email address",
+                    required: "Please enter email address",
                     remote: function() { return $.validator.format("{0} is already taken", $("#email").val()) }
                 },
                 dob: {
-                    required: "Please enter your birth date"
+                    required: "Please enter birth date"
                 },
                 gender: {
-                    required: "Please enter your gender"
+                    required: "Please enter gender"
                 },
                 nic: {
-                    required: "Please enter your NIC"
+                    required: "Please enter NIC"
                 },
                 phone: {
-                    required: "Please enter your phone",
+                    required: "Please enter phone",
                     minlength: "Invalid phone number"
                 },
                 user_type: {
                     required: "Please enter user type"
                 },
                 address: {
-                    required: "Please enter your address"
+                    required: "Please enter address"
                 },
             }
         });

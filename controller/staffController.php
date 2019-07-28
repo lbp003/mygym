@@ -140,15 +140,15 @@ switch ($status){
             //Server settings
             $mail->SMTPDebug = 2;                                       // Enable verbose debug output
             $mail->isSMTP();                                            // Set mailer to use SMTP
-            $mail->Host       = 'smtp.live.com';  // Specify main and backup SMTP servers
+            $mail->Host       = EMAIL_HOST;  // Specify main and backup SMTP servers
             $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-            $mail->Username   = 'peramuna49@hotmail.com';                     // SMTP username
-            $mail->Password   = 'lbp@hotmail';                               // SMTP password
+            $mail->Username   = SYSTEM_EMAIL;                     // SMTP username
+            $mail->Password   = APP_KEY;                               // SMTP password
             $mail->SMTPSecure = 'tls';                                  // Enable TLS encryption, `ssl` also accepted
             $mail->Port       = 25;                                    // TCP port to connect to
 
             //Recipients
-            $mail->setFrom('peramuna49@hotmail.com', 'Mailer');
+            $mail->setFrom(SYSTEM_EMAIL, 'Mailer');
             $mail->addAddress($email, $fullName);     // Add a recipient
             // $mail->addAddress('ellen@example.com');               // Name is optional
             // $mail->addReplyTo('info@example.com', 'Information');

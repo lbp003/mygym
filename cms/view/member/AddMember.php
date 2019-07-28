@@ -56,8 +56,8 @@ include '../../layout/header.php'; ?>
                         <input type="text" class="form-control" id="phone" name="phone" aria-describedby="phone" placeholder="Phone">
                     </div>
                     <div class="form-group col-6">
-                        <label for="user_type">Package</label>
-                        <select id="user_type" name="user_type" class="form-control">
+                        <label for="package">Package</label>
+                        <select id="package" name="package" class="form-control">
                             <option selected>Choose...</option>
                             <?php foreach($pacData as $key => $val){?>
                             <option value="<?php echo $key;?>"><?php echo $val;?></option>
@@ -92,16 +92,16 @@ include '../../layout/header.php'; ?>
                 email: {
 					required: true,
 					email: true,
-                    remote: {
-                        url: '../../../controller/memberController.php?status=checkEmail',
-                        type: 'post',
-                        dataType: 'json',
-                        data: {
-                            email: function(){
-                                return $("#email").val();
-                            }
-                        }
-                    }
+                    // remote: {
+                    //     url: '../../../controller/memberController.php?status=checkEmail',
+                    //     type: 'post',
+                    //     dataType: 'json',
+                    //     data: {
+                    //         email: function(){
+                    //             return $("#email").val();
+                    //         }
+                    //     }
+                    // }
 				},
                 dob: {
                     required: true,
@@ -114,7 +114,7 @@ include '../../layout/header.php'; ?>
                     digits: true,
                     minlength: 10
                 },
-                user_type: "required",
+                package: "required",
                 address: "required",
                 membership_number: "required"
             },
@@ -142,8 +142,8 @@ include '../../layout/header.php'; ?>
                     required: "Please enter phone",
                     minlength: "Invalid phone number"
                 },
-                user_type: {
-                    required: "Please enter user type"
+                package: {
+                    required: "Please select a package"
                 },
                 address: {
                     required: "Please enter address"

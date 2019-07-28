@@ -56,7 +56,8 @@
             //notify messages
             <?php 
             if(isset($_REQUEST['msg'])){
-                $msg = $_REQUEST['msg'];
+
+                $msg = base64_decode($_REQUEST['msg']);
                 $msgAr = json_decode($msg, true); ?>
                 var title = '<?php echo $msgAr["title"];?>';
                 var message = '<?php echo $msgAr["message"];?>';
@@ -79,6 +80,13 @@
                 });
             <?php } ?>
         });
+
+        // Remove query strings from the url
+        var uri = window.location.href.toString();
+        if (uri.indexOf("?") > 0) {
+            var clean_uri = uri.substring(0, uri.indexOf("?"));
+            window.history.replaceState({}, document.title, clean_uri);
+        }
     </script>       
     </body>
 </html>

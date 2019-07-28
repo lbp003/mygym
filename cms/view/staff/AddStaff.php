@@ -82,16 +82,16 @@
                 email: {
 					required: true,
 					email: true,
-                    remote: {
-                        url: '../../../controller/staffController.php?status=checkEmail',
-                        type: 'post',
-                        dataType: 'json',
-                        data: {
-                            email: function(){
-                                return $("#email").val();
-                            }
-                        }
-                    }
+                    // remote: {
+                    //     url: '../../../controller/staffController.php?status=checkEmail',
+                    //     type: 'post',
+                    //     dataType: 'json',
+                    //     data: {
+                    //         email: function(){
+                    //             return $("#email").val();
+                    //         }
+                    //     }
+                    // }
 				},
                 dob: {
                     required: true,

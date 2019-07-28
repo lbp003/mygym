@@ -37,13 +37,23 @@ class Member{
         return $result;
     }
     
-    function addMember($member_fname,$member_lname,$member_email,$gender,$dob,$nic,$member_tel,$address,$member_image){
+    /** 
+	* Insert a new member
+	* @return object $last_id
+	*/
+    function addMember($firstName,$lastName,$email,$gender,$dob,$nic,$phone,$address,$packageID, $membershipNumber, $enPassword, $createdBy,$updatedBy, $lmd, $status){
         
-    $con=$GLOBALS['con']; 
-    $sql="INSERT INTO member VALUES('','$member_fname','$member_lname','$member_email','$gender','$dob','$nic','$member_tel','$address',4,'$member_image','Active')";
-    $result=$con->query($sql);
-    $member_id=$con->insert_id;
-    return $member_id; //return last inserted id
+        $con=$GLOBALS['con']; 
+        $stmt = $con->prepare("INSERT INTO member (first_name, last_name, email, gender, dob, nic, telephone, address, package_id, membership_number, password, created_by, updated_by, lmd, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssssssissiiss", $firstName, $lastName, $email, $gender, $dob, $nic, $phone, $address, $packageID, $membershipNumber, $enPassword, $createdBy, $updatedBy, $lmd, $status);
+        $stmt->execute();
+        $last_id = $con->insert_id;
+        if(isset($last_id) && !empty($last_id)){
+            return $last_id;
+        }else {
+            return false;
+        }
+            
     }
     
     function updateMember($member_fname,$member_lname,$gender,$dob,$nic,$member_tel,$address,$member_id){
@@ -166,5 +176,32 @@ class Member{
             return true;
         }
         return false;      
+    }
+
+    /** 
+	* Get the member data by member_id
+	* @return object $result
+	*/
+    public static function getMemberByID($member_id){
+        
+        $con=$GLOBALS['con'];
+        $sql="  SELECT
+                    member.member_id,
+                    member.first_name,
+                    member.last_name,
+                    member.email,
+                    member.address,
+                    member.gender,
+                    member.dob,
+                    member.nic,
+                    member.telephone,
+                    member.package_id,
+                    member.membership_number,
+                    member.status
+                FROM member 
+                WHERE member.member_id = '$member_id'
+                AND member.status != 'D'";
+        $result=$con->query($sql);
+        return $result;
     }
 }

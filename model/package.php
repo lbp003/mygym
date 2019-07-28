@@ -84,10 +84,12 @@ class Package{
         return $result;
     }
     
-    function getDuration($package_id){
+    public static function getPackageDuration($package_id){
         
         $con = $GLOBALS['con'];
-        $sql = "SELECT duration FROM package WHERE package_id='$package_id'";
+        $sql = "SELECT duration 
+                FROM package 
+                WHERE package_id='$package_id'";
         $result = $con->query($sql);
         return $result;
     }

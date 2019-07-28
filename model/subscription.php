@@ -28,7 +28,7 @@ class Subscription{
                         membership.payment_status,
                         CONCAT(' ',staff.first_name,staff.last_name) AS staff_name
                 FROM membership
-                INNER JOIN staff ON membership.updated_by = staff.staff_id
+                INNER JOIN staff ON membership.created_by = staff.staff_id
                 INNER JOIN member ON membership.member_id = member.member_id
                 INNER JOIN package ON membership.package_id = package.package_id
                 WHERE member.member_id != 'D'   
@@ -37,16 +37,34 @@ class Subscription{
         return $result;
     }
     
-    function addMembership($member_id,$package_id,$end_time){
+    /** 
+	* Insert new member subscription
+	* @return object $membership_id
+	*/
+    function addMembership($memberID,$packageID,$date,$endDate,$lastPidDate,$paymentStatus,$status,$createdBy,$updatedBy,$lmd){
         
         $con=$GLOBALS['con']; 
-        $sql="INSERT INTO membership VALUES('',$member_id,'$package_id',CURDATE(),'$end_time','Active',NOW(),NOW())";
-        $result=$con->query($sql);
-        $membership_id=$con->insert_id;
-        return $membership_id;
-        
-        
+        $stmt = $con->prepare("INSERT INTO membership (member_id, package_id, start_date, end_date, last_paid_date, payment_status, status, created_by, updated_by, lmd) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("iisssssiis", $memberID,$packageID,$date,$endDate,$lastPidDate,$paymentStatus,$status,$createdBy,$updatedBy,$lmd);
+        $stmt->execute();
+        $last_id = $con->insert_id;
+        if(isset($last_id) && !empty($last_id)){
+            return $last_id;
+        }else {
+            return false;
+        }
     }
+
+    // function addMembership($member_id,$package_id,$end_time){
+        
+    //     $con=$GLOBALS['con']; 
+    //     $sql="INSERT INTO membership VALUES('',$member_id,'$package_id',CURDATE(),'$end_time','Active',NOW(),NOW())";
+    //     $result=$con->query($sql);
+    //     $membership_id=$con->insert_id;
+    //     return $membership_id;
+        
+        
+    // }
     
     function updateMembership($membership_title,$membership_date,$membership_venue,$membership_description,$membership_id){
         $con = $GLOBALS['con'];

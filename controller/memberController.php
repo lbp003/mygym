@@ -152,8 +152,8 @@ break;
         $enPassword = sha1($password);
         $lmd = date('Y-m-d H:i:s', time());
         $status = Member::ACTIVE;
-        $createdBy = $user['member_id'];
-        $updatedBy = $user['member_id'];
+        $createdBy = $user['staff_id'];
+        $updatedBy = $user['staff_id'];
     
         if(Member::checkEmail($email)){
               //add new member
@@ -254,7 +254,7 @@ break;
                    
                                $msg = json_encode(array('title'=>'Danger','message'=> 'Employee registration failed','type'=>'danger'));
                                $msg = base64_encode($msg);
-                               header("Location:../cms/view/member/addStaff.php?msg=$msg");
+                               header("Location:../cms/view/member/addMember.php?msg=$msg");
                                exit;            
                         }
                 }else {
@@ -308,6 +308,18 @@ break;
 
         $_SESSION['memData'] = $memberData;
 
+        //get packages
+        $dataSet = Package::getActivePackage();
+        $packagAr = [];
+        while($row = $dataSet->fetch_assoc())
+        {
+            $packagAr[$row['package_id']] = $row['package_name'];
+        }
+
+        // print_r($packagAr); exit;
+        
+        $_SESSION['pacData'] = $packagAr;
+
         header("Location:../cms/view/member/updateMember.php");
         exit;
     }else {
@@ -321,41 +333,158 @@ break;
 
 
     case "Update":
-        
-        $member_fname=$_POST['fname'];
-        $member_lname=$_POST['lname'];
-        //$member_email=$_POST['email'];
-        $gender=$_POST['gender'];
-        $dob=$_POST['dob'];
-        $nic=$_POST['nic'];
-        $member_tel=$_POST['tel'];
-        $address=$_POST['address'];
-        
-        if($_FILES['member_image']['name'] != ""){
-            
-            $member_image=$_FILES['member_image']['name'];
-            $member_loc = $_FILES['member_image']['tmp_name'];
-            $new_image = time()."_". $member_image;
+       
+    
+        if(!$user)
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
         }
+
+        if(!$auth->checkPermissions(array(Role::MANAGE_MEMBER)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/member/index.php?msg=$msg");
+            exit;
+        }
+    
+        $memberID=$_POST['member_id'];
+
+        $firstName=$_POST['first_name'];
+        if (empty($firstName)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'First Name can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            exit;
+        }
+        $lastName=$_POST['last_name'];
+        if (empty($lastName)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Last Name can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            exit;
+        }
+        $email=$_POST['email'];
+        if (empty($email)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Email can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            exit;
+        }
+        $gender=$_POST['gender'];
+        if (empty($gender)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Gender can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            exit;
+        }
+        $dob=$_POST['dob'];
+        if (empty($dob)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Date of Birth can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            exit;
+        }
+        $nic=$_POST['nic'];
+        if (empty($nic)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'NIC can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            exit;
+        }
+        $phone=$_POST['phone'];
+        if (empty($phone)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Phone number can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            exit;
+        }
+        $address=$_POST['address'];
+        if (empty($address)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Address can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            exit;
+        }
+        $packageID=$_POST['package'];
+        if (empty($packageID)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Package can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            exit;
+        }
+        $membershipNumber=$_POST['membership_number'];
+        if (empty($membershipNumber)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Membership number can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            exit;
+        } 
         
-        $member_id =$_REQUEST['member_id']; 
-        
-        //update member
-            
-        $objme->updateMember($member_fname,$member_lname,$gender,$dob,$nic,$member_tel,$address,$member_id);
-            
-        
-            //Adding an Image into member_image folder
-            if($new_image!=""){
-            $destination="../images/member_image/$new_image";
-            move_uploaded_file($member_loc, $destination);
-            
-            $objme->updateMemberImage($member_id, $new_image);
+        $tmp = $_FILES['avatar'];
+
+        $file = $tmp['name'];
+        $file_loc = $tmp['tmp_name'];
+        $file_size = $tmp['size'];
+        $file_type = $tmp['type'];
+         
+        $ext = pathinfo($file, PATHINFO_EXTENSION);
+        $imgName = "IMG_".$memberID.".".$ext;
+    
+        $lmd = date('Y-m-d H:i:s', time());
+        $updatedBy = $user['staff_id'];
+
+        if(Member::checkUpdateEmail($email, $memberID)){
+
+            // upload the image to a temp folder
+    
+            if (!file_exists('../'.PATH_IMAGE.PATH_STAFF_IMAGE)) {
+    
+                mkdir('../'.PATH_IMAGE.PATH_STAFF_IMAGE, 0777, true);
             }
-            
-            
-            $msg=base64_encode("A User has been Updated");
-            header("Location:../view/member.php?msg=$msg");
+    
+            move_uploaded_file($file_loc,'../'.PATH_IMAGE.PATH_MEMBER_IMAGE.$imgName);
+    
+            $dataAr = [
+                'fname' => $firstName,
+                'lname' => $lastName,
+                'email' => $email,
+                'gender' => $gender,
+                'dob' => $dob,
+                'nic' => $nic,
+                'phone' => $phone,
+                'address' => $address,
+                'package' => $packageID,
+                'membership_num' => $membershipNumber,
+                'updated_by' => $updatedBy,
+                'img' => $imgName,
+                'lmd' => $lmd,
+                'id' => $memberID
+            ];
+             //update member
+            $result=Member::updateMember($dataAr);
+            if($result == true){
+                $msg = json_encode(array('title'=>'Success :','message'=> 'Member has been updated','type'=>'success'));
+                $msg = base64_encode($msg);
+                header("Location:../cms/view/member/updateMember.php?msg=$msg");
+                exit;
+            }else {
+                $msg = json_encode(array('title'=>'Warning :','message'=> 'Update failed','type'=>'danger'));
+                $msg = base64_encode($msg);
+                header("Location:../cms/view/member/updateMember.php?msg=$msg");
+                exit;
+            }
+    
+    
+        }else {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Email address already exists','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/member/updateMember.php?msg=$msg");
+            exit;
+        }
             
 break;
 

@@ -56,10 +56,21 @@ class Member{
             
     }
     
-    function updateMember($member_fname,$member_lname,$gender,$dob,$nic,$member_tel,$address,$member_id){
-        $con = $GLOBALS['con'];
-        $sql="UPDATE member SET member_fname='$member_fname',member_lname='$member_lname',gender='$gender',dob='$dob',nic='$nic',member_tel='$member_tel',address='$address' WHERE member_id='$member_id'";
-        $result=$con->query($sql);
+    /** 
+	* Update a existing  member
+	* @return object $result
+	*/
+    public static function updateMember($dataAr){
+        // var_dump($dataAr); exit;
+        $con=$GLOBALS['con']; 
+        $sql = "UPDATE member SET first_name=?, last_name=?, email=?, gender=?, dob=?, nic=?, telephone=?, address=?, package_id=?, membership_number=?, updated_by=?, image=?, lmd=? WHERE member_id=?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("ssssssssisissi", $dataAr['fname'], $dataAr['lname'], $dataAr['email'], $dataAr['gender'], $dataAr['dob'], $dataAr['nic'], $dataAr['phone'], $dataAr['address'],  $dataAr['package'], $dataAr['membership_num'], $dataAr['updated_by'], $dataAr['img'], $dataAr['lmd'], $dataAr['id']);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;
     }
     
     function updateMemberImage($member_id,$new_image){
@@ -197,6 +208,7 @@ class Member{
                     member.telephone,
                     member.package_id,
                     member.membership_number,
+                    member.image,
                     member.status
                 FROM member 
                 WHERE member.member_id = '$member_id'

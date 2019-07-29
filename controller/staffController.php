@@ -25,6 +25,7 @@ switch ($status){
     if(!$user)
     {
         $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+        $msg = base64_encode($msg);
         header("Location:../cms/view/index/index.php?msg=$msg");
         exit;
     }
@@ -32,6 +33,7 @@ switch ($status){
     if(!$auth->checkPermissions(array(Role::MANAGE_STAFF)))
     {
         $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+        $msg = base64_encode($msg);
         header("Location:../cms/view/staff/index.php?msg=$msg");
         exit;
     }
@@ -39,54 +41,63 @@ switch ($status){
         $firstName=$_POST['first_name'];
         if (empty($firstName)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'First Name can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
             header("Location:../cms/view/staff/addStaff.php?msg=$msg");
             exit;
         }
         $lastName=$_POST['last_name'];
         if (empty($lastName)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Last Name can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
             header("Location:../cms/view/staff/addStaff.php?msg=$msg");
             exit;
         }
         $email=$_POST['email'];
         if (empty($email)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Email can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
             header("Location:../cms/view/staff/addStaff.php?msg=$msg");
             exit;
         }
         $gender=$_POST['gender'];
         if (empty($gender)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Gender can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
             header("Location:../cms/view/staff/addStaff.php?msg=$msg");
             exit;
         }
         $dob=$_POST['dob'];
         if (empty($dob)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Date of Birth can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
             header("Location:../cms/view/staff/addStaff.php?msg=$msg");
             exit;
         }
         $nic=$_POST['nic'];
         if (empty($nic)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'NIC can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
             header("Location:../cms/view/staff/addStaff.php?msg=$msg");
             exit;
         }
         $phone=$_POST['phone'];
         if (empty($phone)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Phone number can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
             header("Location:../cms/view/staff/addStaff.php?msg=$msg");
             exit;
         }
         $address=$_POST['address'];
         if (empty($address)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Address can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
             header("Location:../cms/view/staff/addStaff.php?msg=$msg");
             exit;
         }
         $user_type=$_POST['user_type'];
         if (empty($user_type)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Staff Type can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
             header("Location:../cms/view/staff/addStaff.php?msg=$msg");
             exit;
         }
@@ -167,6 +178,7 @@ switch ($status){
 
             if($mail->send()){
                     $msg = json_encode(array('title'=>'Success','message'=> 'Employee registration successful','type'=>'success'));
+                    $msg = base64_encode($msg);
                     header("Location:../cms/view/staff/index.php?msg=$msg");
                     exit;
             }
@@ -177,16 +189,19 @@ switch ($status){
                @file_put_contents($logFile, "Mailer Error: " . $mail->ErrorInfo, FILE_APPEND | LOCK_EX);
    
                $msg = json_encode(array('title'=>'Danger','message'=> 'Employee registration failed','type'=>'danger'));
+               $msg = base64_encode($msg);
                header("Location:../cms/view/staff/addStaff.php?msg=$msg");
                exit;            
         }
     }else {
         $msg = json_encode(array('title'=>'Danger','message'=> 'Employee registration failed','type'=>'danger'));
+        $msg = base64_encode($msg);
         header("Location:../cms/view/staff/addStaff.php?msg=$msg");
         exit;
     }
 }else{
     $msg = json_encode(array('title'=>'Warning','message'=> 'Email address already exists','type'=>'warning'));
+    $msg = base64_encode($msg);
         header("Location:../cms/view/staff/addStaff.php?msg=$msg");
         exit;
 }
@@ -201,6 +216,7 @@ break;
     if(!$user)
     {
         $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+        $msg = base64_encode($msg);
         header("Location:../cms/view/index/index.php?msg=$msg");
         exit;
     }
@@ -208,6 +224,7 @@ break;
     if(!$auth->checkPermissions(array(Role::MANAGE_STAFF)))
     {
         $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+        $msg = base64_encode($msg);
         header("Location:../cms/view/staff/index.php?msg=$msg");
         exit;
     }
@@ -224,6 +241,7 @@ break;
         exit;
     }else {
         $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
+        $msg = base64_encode($msg);
         header("Location:../cms/view/staff/index.php?msg=$msg");
         exit;
     }
@@ -237,6 +255,7 @@ break;
     if(!$user)
     {
         $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+        $msg = base64_encode($msg);
         header("Location:../cms/view/index/index.php?msg=$msg");
         exit;
     }
@@ -244,6 +263,7 @@ break;
     if(!$auth->checkPermissions(array(Role::MANAGE_STAFF)))
     {
         $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+        $msg = base64_encode($msg);
         header("Location:../cms/view/staff/index.php?msg=$msg");
         exit;
     }
@@ -253,54 +273,63 @@ break;
     $firstName=$_POST['first_name'];
     if (empty($firstName)) {
         $msg = json_encode(array('title'=>'Warning','message'=> 'First Name can not be empty','type'=>'warning'));
+        $msg = base64_encode($msg);
         header("Location:../cms/view/staff/addStaff.php?msg=$msg");
         exit;
     }
     $lastName=$_POST['last_name'];
     if (empty($lastName)) {
         $msg = json_encode(array('title'=>'Warning','message'=> 'Last Name can not be empty','type'=>'warning'));
+        $msg = base64_encode($msg);
         header("Location:../cms/view/staff/addStaff.php?msg=$msg");
         exit;
     }
     $email=$_POST['email'];
     if (empty($email)) {
         $msg = json_encode(array('title'=>'Warning','message'=> 'Email can not be empty','type'=>'warning'));
+        $msg = base64_encode($msg);
         header("Location:../cms/view/staff/addStaff.php?msg=$msg");
         exit;
     }
     $gender=$_POST['gender'];
     if (empty($gender)) {
         $msg = json_encode(array('title'=>'Warning','message'=> 'Gender can not be empty','type'=>'warning'));
+        $msg = base64_encode($msg);
         header("Location:../cms/view/staff/addStaff.php?msg=$msg");
         exit;
     }
     $dob=$_POST['dob'];
     if (empty($dob)) {
         $msg = json_encode(array('title'=>'Warning','message'=> 'Date of Birth can not be empty','type'=>'warning'));
+        $msg = base64_encode($msg);
         header("Location:../cms/view/staff/addStaff.php?msg=$msg");
         exit;
     }
     $nic=$_POST['nic'];
     if (empty($nic)) {
         $msg = json_encode(array('title'=>'Warning','message'=> 'NIC can not be empty','type'=>'warning'));
+        $msg = base64_encode($msg);
         header("Location:../cms/view/staff/addStaff.php?msg=$msg");
         exit;
     }
     $phone=$_POST['phone'];
     if (empty($phone)) {
         $msg = json_encode(array('title'=>'Warning','message'=> 'Phone number can not be empty','type'=>'warning'));
+        $msg = base64_encode($msg);
         header("Location:../cms/view/staff/addStaff.php?msg=$msg");
         exit;
     }
     $address=$_POST['address'];
     if (empty($address)) {
         $msg = json_encode(array('title'=>'Warning','message'=> 'Address can not be empty','type'=>'warning'));
+        $msg = base64_encode($msg);
         header("Location:../cms/view/staff/addStaff.php?msg=$msg");
         exit;
     }
     $user_type=$_POST['user_type'];
     if (empty($user_type)) {
         $msg = json_encode(array('title'=>'Warning','message'=> 'Staff Type can not be empty','type'=>'warning'));
+        $msg = base64_encode($msg);
         header("Location:../cms/view/staff/addStaff.php?msg=$msg");
         exit;
     }
@@ -356,6 +385,7 @@ break;
 
     }else {
         $msg = json_encode(array('title'=>'Warning','message'=> 'Email address already exists','type'=>'warning'));
+        $msg = base64_encode($msg);
         header("Location:../cms/view/staff/updateStaff.php?msg=$msg");
         exit;
     }
@@ -369,6 +399,7 @@ break;
     if(!$user)
     {
         $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+        $msg = base64_encode($msg);
         header("Location:../cms/view/index/index.php?msg=$msg");
         exit;
     }
@@ -376,6 +407,7 @@ break;
     if(!$auth->checkPermissions(array(Role::MANAGE_STAFF)))
     {
         $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+        $msg = base64_encode($msg);
         header("Location:../cms/view/staff/index.php?msg=$msg");
         exit;
     }
@@ -385,10 +417,12 @@ break;
     $response = Staff::activateEmployee($staffID);
     if($response == true){
         $msg = json_encode(array('title'=>'Success :','message'=> 'Employee has been activated','type'=>'success'));
+        $msg = base64_encode($msg);
         header("Location:../cms/view/staff/index.php?msg=$msg");
         exit;
     }else{
         $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
+        $msg = base64_encode($msg);
         header("Location:../cms/view/staff/index.php?msg=$msg");
         exit;
     }  
@@ -402,6 +436,7 @@ break;
         if(!$user)
         {
             $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+            $msg = base64_encode($msg);
             header("Location:../cms/view/index/index.php?msg=$msg");
             exit;
         }
@@ -409,6 +444,7 @@ break;
         if(!$auth->checkPermissions(array(Role::MANAGE_STAFF)))
         {
             $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
             header("Location:../cms/view/staff/index.php?msg=$msg");
             exit;
         }
@@ -418,10 +454,12 @@ break;
         $response = Staff::deactivateEmployee($staffID);
         if($response == true){
             $msg = json_encode(array('title'=>'Success :','message'=> 'Employee has been deactivated','type'=>'success'));
+            $msg = base64_encode($msg);
             header("Location:../cms/view/staff/index.php?msg=$msg");
             exit;
         }else{
             $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
+            $msg = base64_encode($msg);
             header("Location:../cms/view/staff/index.php?msg=$msg");
             exit;
         }
@@ -435,6 +473,7 @@ break;
         if(!$user)
         {
             $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+            $msg = base64_encode($msg);
             header("Location:../cms/view/index/index.php?msg=$msg");
             exit;
         }
@@ -442,6 +481,7 @@ break;
         if(!$auth->checkPermissions(array(Role::MANAGE_STAFF)))
         {
             $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
             header("Location:../cms/view/staff/index.php?msg=$msg");
             exit;
         }
@@ -451,10 +491,12 @@ break;
         $response = Staff::deleteEmployee($staffID);
         if($response == true){
             $msg = json_encode(array('title'=>'Success :','message'=> 'Employee has been deleted','type'=>'success'));
+            $msg = base64_encode($msg);
             header("Location:../cms/view/staff/index.php?msg=$msg");
             exit;
         }else{
             $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
+            $msg = base64_encode($msg);
             header("Location:../cms/view/staff/index.php?msg=$msg");
             exit;
         }
@@ -467,6 +509,7 @@ break;
         if(!$user)
         {
             $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+            $msg = base64_encode($msg);
             header("Location:../cms/view/index/index.php?msg=$msg");
             exit;
         }
@@ -474,6 +517,7 @@ break;
         if(!$auth->checkPermissions(array(Role::VIEW_STAFF)))
         {
             $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
             header("Location:../cms/view/staff/index.php?msg=$msg");
             exit;
         }
@@ -490,6 +534,7 @@ break;
             exit;
         }else {
             $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
+            $msg = base64_encode($msg);
             header("Location:../cms/view/staff/index.php?msg=$msg");
             exit;
         }

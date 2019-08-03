@@ -29,7 +29,7 @@
                     <div class="form-group col-6" style="text-align:center">
                         <div class="kv-avatar">
                             <div class="file-loading">
-                                <input id="avatar" name="avatar" type="file" required>
+                                <input id="avatar" name="avatar" type="file">
                             </div>
                         </div>
                     </div>
@@ -69,7 +69,7 @@
                         <label for="address">Address</label>
                         <textarea class="form-control" id="address" name="address" rows="3"><?php echo $memData['address']?></textarea>
                     </div>
-                    <div class="form-group col-6">
+                    <!-- <div class="form-group col-6">
                         <label for="package">Package</label>
                         <select id="package" name="package" class="form-control">
                             <option selected>Choose...</option>
@@ -77,7 +77,7 @@
                             <option value="<?php echo $key;?>" <?php echo ($key == $memData['package_id']) ? "selected" : NULL ?>><?php echo $val;?></option>
                             <?php } ?>
                         </select>
-                    </div>
+                    </div> -->
                     <div class="form-group col-6">
                         <label for="membership_number">Membership Number</label>
                         <input type="text" class="form-control" id="membership_number" name="membership_number" aria-describedby="membership_number" placeholder="Membership Number"  value="<?php echo $memData['membership_number']?>">
@@ -122,15 +122,14 @@
                 nic: "required",
                 phone: {
                     required: true,
-                    digits: true,
                     minlength: 10
                 },
                 address: "required",
-                pro_pic: {
+                avatar: {
                 required: false,
                 extension: "JPEG|JPG"
                 },
-                package: "required",
+                // package: "required",
                 membership_number: "required"
 
 
@@ -162,9 +161,9 @@
                 address: {
                     required: "Please enter address"
                 },
-                package: {
-                    required: "Please select a package"
-                },
+                // package: {
+                //     required: "Please select a package"
+                // },
                 membership_number:{
                     required: "Please enter membership number"
                 }
@@ -172,11 +171,9 @@
         });
 
         <?php 
-            if(empty($memData['image'])){ ?>
-                var path = "<?php echo "../../../".PATH_IMAGE."user.png"; ?>";  
+            if(!empty($memData['image'])){ ?>
+                var path = "<?php echo "../../../".PATH_IMAGE.PATH_MEMBER_IMAGE.$memData['image']; ?>";   
                 // console.log(path);
-        <?php }else{ ?>
-                var path = "<?php echo "../../../".PATH_IMAGE.PATH_MEMBER_IMAGE.$memData['image']; ?>";                    
         <?php } ?>
 
         $("#avatar").fileinput({
@@ -191,7 +188,7 @@
             removeTitle: 'Cancel or reset changes',
             elErrorContainer: '#kv-avatar-errors-2',
             msgErrorClass: 'alert alert-block alert-danger',
-            defaultPreviewContent: '<img src="'+ path +'" width="100" height="auto" class="img-responsive img-thumbnail" />',
+            defaultPreviewContent: '<?php if(!empty($memData['image'])){ ?><img src="'+ path +'" width="100" height="auto" class="img-responsive img-thumbnail" /> <?php }else{ ?> <i class="fas fa-user fa-7x"></i> <?php } ?>',
             layoutTemplates: {main2: '{preview} {remove} {browse}'},
             allowedFileExtensions: ["jpg", "png", "gif", "jpeg"],
             minFileCount : 0,

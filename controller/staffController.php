@@ -334,27 +334,29 @@ break;
         exit;
     }
     $tmp = $_FILES['avatar'];
-
+    if(!empty($tmp['name'])){
     $file = $tmp['name'];
     $file_loc = $tmp['tmp_name'];
     $file_size = $tmp['size'];
     $file_type = $tmp['type'];
-     
+
     $ext = pathinfo($file, PATHINFO_EXTENSION);
     $imgName = "IMG_".$staffID.".".$ext;
+    }
 
     $lmd = date('Y-m-d H:i:s', time());
 
     if(Staff::checkUpdateEmail($email, $staffID)){
 
         // upload the image to a temp folder
-
+    if(!empty($imgName)){
         if (!file_exists('../'.PATH_IMAGE.PATH_STAFF_IMAGE)) {
 
             mkdir('../'.PATH_IMAGE.PATH_STAFF_IMAGE, 0777, true);
         }
 
         move_uploaded_file($file_loc,'../'.PATH_IMAGE.PATH_STAFF_IMAGE.$imgName);
+    }
 
         $dataAr = [
             'fname' => $firstName,
@@ -366,7 +368,7 @@ break;
             'phone' => $phone,
             'address' => $address,
             'type' => $user_type,
-            'img' => $imgName,
+            'img' => (!empty($imgName)) ? $imgName : NULL,
             'lmd' => $lmd,
             'id' => $staffID
         ];
@@ -374,10 +376,12 @@ break;
         $result=Staff::updateStaff($dataAr);
         if($result == true){
             $msg = json_encode(array('title'=>'Success :','message'=> 'Employee has been updated','type'=>'success'));
+            $msg = base64_encode($msg);
             header("Location:../cms/view/staff/updateStaff.php?msg=$msg");
             exit;
         }else {
             $msg = json_encode(array('title'=>'Warning :','message'=> 'Update failed','type'=>'danger'));
+            $msg = base64_encode($msg);
             header("Location:../cms/view/staff/updateStaff.php?msg=$msg");
             exit;
         }

@@ -63,9 +63,25 @@ class Member{
     public static function updateMember($dataAr){
         // var_dump($dataAr); exit;
         $con=$GLOBALS['con']; 
-        $sql = "UPDATE member SET first_name=?, last_name=?, email=?, gender=?, dob=?, nic=?, telephone=?, address=?, package_id=?, membership_number=?, updated_by=?, image=?, lmd=? WHERE member_id=?";
+        $sql = "UPDATE member SET first_name=?, last_name=?, email=?, gender=?, dob=?, nic=?, telephone=?, address=?, membership_number=?, updated_by=?, image=?, lmd=? WHERE member_id=?";
         $stmt = $con->prepare($sql);
-        $stmt->bind_param("ssssssssisissi", $dataAr['fname'], $dataAr['lname'], $dataAr['email'], $dataAr['gender'], $dataAr['dob'], $dataAr['nic'], $dataAr['phone'], $dataAr['address'],  $dataAr['package'], $dataAr['membership_num'], $dataAr['updated_by'], $dataAr['img'], $dataAr['lmd'], $dataAr['id']);
+        $stmt->bind_param("sssssssssissi", $dataAr['fname'], $dataAr['lname'], $dataAr['email'], $dataAr['gender'], $dataAr['dob'], $dataAr['nic'], $dataAr['phone'], $dataAr['address'], $dataAr['membership_num'], $dataAr['updated_by'], $dataAr['img'], $dataAr['lmd'], $dataAr['id']);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;
+    }
+
+    /** 
+	* Activate an member
+	* @return object $result
+	*/
+    public static function activateMember($member_id){
+        $con=$GLOBALS['con']; 
+        $sql = "UPDATE member SET status=? WHERE member_id=?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("si", $status = Member::ACTIVE, $member_id);
         $stmt->execute();
         if ($stmt->error) {
             return false;
@@ -73,85 +89,36 @@ class Member{
          return true;
     }
     
-    function updateMemberImage($member_id,$new_image){
-        $con=$GLOBALS['con'];
-        $sql="UPDATE member SET member_image='$new_image' WHERE member_id='$member_id'";
-        $result =$con->query($sql);
-    }
-    
-    function activateMember($member_id){
-        $con=$GLOBALS['con'];
-        $sql="UPDATE member SET member_status='Active' WHERE member_id='$member_id'";
-        $result=$con->query($sql);
-        return $result;
-    }
-    
-    function deactivateMember($member_id){
-        $con=$GLOBALS['con'];
-        $sql="UPDATE member SET member_status='Deactive' WHERE member_id='$member_id'";
-        $result=$con->query($sql);
-        return $result;
-    }
-            
-    
-    function displayMember($member_id){
-        
-        $con=$GLOBALS['con'];
-        $sql="SELECT* FROM member m,login_member l WHERE m.member_id=l.member_id AND m.member_id='$member_id'";
-        $result=$con->query($sql);
-        return $result;
-    }
-   
-    function addReg($uname,$email,$password,$activation){
-        
+    /** 
+	* Deactivate an employee
+	* @return object $result
+	*/
+    public static function deactivateMember($member_id){
         $con=$GLOBALS['con']; 
-        $sql="INSERT INTO register_member VALUES('','$uname','$email','$password','$activation','Unverified')";
-        $result=$con->query($sql);
-        $reg_id=$con->insert_id;
-        return $reg_id;
-        
-        
+        $sql = "UPDATE member SET status=? WHERE member_id=?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("si", $status = Member::INACTIVE, $member_id);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;
     }
-    
-    function regMember($reg_id){
-        
-        $con=$GLOBALS['con'];
-        $sql="SELECT * FROM register_member WHERE reg_id='$reg_id'";
-        $result=$con->query($sql);
-        return $result;
-    }
-    
-    function verifyMember($reg_id,$activation){
-        
-        $con=$GLOBALS['con'];
-        $sql="SELECT * FROM register_member WHERE reg_id='$reg_id' AND activation_code='$activation'";
-        $result=$con->query($sql);
-        return $result;
-    }
-    
-        function ConfirmMember($reg_id){
-        $con=$GLOBALS['con'];
-        $sql="UPDATE register_member SET email_status='Confirmed' WHERE reg_id='$reg_id'";
-        $result=$con->query($sql);
-        return $result;
-    }
-    
-    function getMember($reg_id){
-        
-        $con=$GLOBALS['con'];
-        $sql="SELECT* FROM register_member WHERE reg_id='$reg_id'";
-        $result=$con->query($sql);
-        return $result;
-    }
-    function addOnlineMember($email){
-        
+
+    /** 
+	* Delete an employee
+	* @return object $result
+	*/
+    public static function deleteMember($member_id){
         $con=$GLOBALS['con']; 
-        $sql="INSERT INTO member VALUES('','','','$email','','','','','',4,'','Active')";
-        $result=$con->query($sql);
-        $member_id=$con->insert_id;
-        return $member_id;
-        
-        
+        $sql = "UPDATE member SET status=? WHERE member_id=?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("si", $status = Member::DELETED, $member_id);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;
     }
 
     /** 

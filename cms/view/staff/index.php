@@ -77,13 +77,15 @@ $allStaff = Staff::displayAllStaff();
                         <?php if($auth->checkPermissions([Role::MANAGE_STAFF])){?>
                             <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../../controller/staffController.php?staff_id=<?php echo $row['staff_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
                         <?php } 
+
                         $staffId = $row['staff_id'];
-                        if($row['status']==Staff::ACTIVE){ ?>
+                        
+                        if($row['status']==Staff::ACTIVE && $staffId != $user['staff_id']){ ?>
                             <a id="deactivate" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../../controller/staffController.php?staff_id=<?php echo $staffId;?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
-                        <?php }elseif($row['status']==Staff::INACTIVE){ ?>
+                        <?php }elseif($row['status']==Staff::INACTIVE && $staffId != $user['staff_id']){ ?>
                             <a id="activate" data-toggle="tooltip" data-placement="top" title="Activate" href="../../../controller/staffController.php?staff_id=<?php echo $staffId;?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
                         <?php } 
-                         if($auth->checkPermissions([Role::MANAGE_STAFF])){ ?>
+                         if($auth->checkPermissions([Role::MANAGE_STAFF]) && $staffId != $user['staff_id']){ ?>
                             <a id="delete" data-toggle="tooltip" data-placement="top" title="Delete" href="../../../controller/staffController.php?staff_id=<?php echo $staffId;?>&status=Delete"><i class="fas fa-trash text-danger"></i></a>
                          <?php } ?>
                     </td>

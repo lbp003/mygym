@@ -28,7 +28,7 @@
                     <div class="form-group col-6" style="text-align:center">
                         <div class="kv-avatar">
                             <div class="file-loading">
-                                <input id="avatar" name="avatar" type="file" required>
+                                <input id="avatar" name="avatar" type="file">
                             </div>
                         </div>
                     </div>
@@ -162,11 +162,9 @@
         });
 
         <?php 
-            if(empty($empData['image'])){ ?>
-                var path = "<?php echo "../../../".PATH_IMAGE."user.png"; ?>";  
+            if(!empty($empData['image'])){ ?>
+                var path = "<?php echo "../../../".PATH_IMAGE.PATH_STAFF_IMAGE.$empData['image']; ?>"; 
                 // console.log(path);
-        <?php }else{ ?>
-                var path = "<?php echo "../../../".PATH_IMAGE.PATH_STAFF_IMAGE.$empData['image']; ?>";                    
         <?php } ?>
 
         $("#avatar").fileinput({
@@ -181,7 +179,7 @@
             removeTitle: 'Cancel or reset changes',
             elErrorContainer: '#kv-avatar-errors-2',
             msgErrorClass: 'alert alert-block alert-danger',
-            defaultPreviewContent: '<img src="'+ path +'" width="100" height="auto" class="img-responsive img-thumbnail" />',
+            defaultPreviewContent: '<?php if(!empty($empData['image'])){ ?><img src="'+ path +'" width="100" height="auto" class="img-responsive img-thumbnail" /> <?php }else{ ?> <i class="fas fa-user fa-7x"></i> <?php } ?>',
             layoutTemplates: {main2: '{preview} {remove} {browse}'},
             allowedFileExtensions: ["jpg", "png", "gif", "jpeg"],
             minFileCount : 0,

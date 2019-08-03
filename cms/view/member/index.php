@@ -63,23 +63,23 @@ $allMember = Member::displayAllMember();
                     <td><?php echo $row['package_name'];  ?></td>
                     <td><span class="badge <?php if($row['status']==Member::ACTIVE){echo "badge-success";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></td>
                     <td>
-                            <a data-toggle="tooltip" data-placement="top" title="View" href="../../controller/memberController.php?member_id=<?php echo $row['member_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
+                            <a data-toggle="tooltip" data-placement="top" title="View" href="../../../controller/memberController.php?member_id=<?php echo $row['member_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
                         <?php if($auth->checkPermissions([Role::MANAGE_MEMBER])){?>
                             <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../../controller/memberController.php?member_id=<?php echo $row['member_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
                         <?php } ?>
                         <?php
                         
-                        $memberId = $row['member_id'];
+                        $memberID = $row['member_id'];
 
                         if($auth->checkPermissions([Role::MANAGE_MEMBER])){
                         if($row['status']==Member::ACTIVE){ ?>
-                            <a id="deactivate" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../../controller/memberController.php?member_id=<?php echo $memberId;?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
+                            <a id="deactivate" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../../controller/memberController.php?member_id=<?php echo $memberID;?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
                         <?php }elseif($row['status']==Member::INACTIVE){ ?>
-                            <a id="activate" data-toggle="tooltip" data-placement="top" title="Activate" href="../../../controller/memberController.php?member_id=<?php echo $memberId;?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
+                            <a id="activate" data-toggle="tooltip" data-placement="top" title="Activate" href="../../../controller/memberController.php?member_id=<?php echo $memberID;?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
                         <?php }} ?>
                         <?php
                          if($auth->checkPermissions([Role::MANAGE_MEMBER])){ ?>
-                            <a id="delete" data-toggle="tooltip" data-placement="top" title="Delete" href="../../../controller/memberController.php?member_id=<?php echo $memberId;?>&status=Delete"><i class="fas fa-trash text-danger"></i></a>
+                            <a id="delete" data-toggle="tooltip" data-placement="top" title="Delete" href="../../../controller/memberController.php?member_id=<?php echo $memberID;?>&status=Delete"><i class="fas fa-trash text-danger"></i></a>
                          <?php } ?>
                     </td>
                 </tr>
@@ -130,5 +130,77 @@ $allMember = Member::displayAllMember();
             ],
             select: true
         } );
+
+            // deactivate confirmation
+            $('#deactivate').on('click', function(event){
+            event.preventDefault();
+                bootbox.confirm({
+                message: "Are you sure you want to deactivate ?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if(result){
+                    var href = $('#deactivate').attr('href');
+                    window.location.href = href;
+                    }
+                }
+            });
+        });
+
+    //    activate confirmation
+        $('#activate').on('click', function(event){
+            event.preventDefault();
+                bootbox.confirm({
+                message: "Are you sure you want to activate ?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if(result){
+                    var href = $('#activate').attr('href');
+                    window.location.href = href;
+                    }
+                }
+            });
+        });
+
+    // delete confirmation
+        $('#delete').on('click', function(event){
+            event.preventDefault();
+                bootbox.confirm({
+                message: "Are you sure you want to delete ?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if(result){
+                    var href = $('#delete').attr('href');
+                    window.location.href = href;
+                    }
+                }
+            });
+        });
     } );
 </script>

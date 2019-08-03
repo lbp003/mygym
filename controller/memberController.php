@@ -357,82 +357,84 @@ break;
         if (empty($firstName)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'First Name can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            header("Location:../cms/view/member/updateMember.php?msg=$msg");
             exit;
         }
         $lastName=$_POST['last_name'];
         if (empty($lastName)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Last Name can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            header("Location:../cms/view/member/updateMember.php?msg=$msg");
             exit;
         }
         $email=$_POST['email'];
         if (empty($email)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Email can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            header("Location:../cms/view/member/updateMember.php?msg=$msg");
             exit;
         }
         $gender=$_POST['gender'];
         if (empty($gender)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Gender can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            header("Location:../cms/view/member/updateMember.php?msg=$msg");
             exit;
         }
         $dob=$_POST['dob'];
         if (empty($dob)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Date of Birth can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            header("Location:../cms/view/member/updateMember.php?msg=$msg");
             exit;
         }
         $nic=$_POST['nic'];
         if (empty($nic)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'NIC can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            header("Location:../cms/view/member/updateMember.php?msg=$msg");
             exit;
         }
         $phone=$_POST['phone'];
         if (empty($phone)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Phone number can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            header("Location:../cms/view/member/updateMember.php?msg=$msg");
             exit;
         }
         $address=$_POST['address'];
         if (empty($address)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Address can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            header("Location:../cms/view/member/updateMember.php?msg=$msg");
             exit;
         }
-        $packageID=$_POST['package'];
-        if (empty($packageID)) {
-            $msg = json_encode(array('title'=>'Warning','message'=> 'Package can not be empty','type'=>'warning'));
-            $msg = base64_encode($msg);
-            header("Location:../cms/view/member/addMember.php?msg=$msg");
-            exit;
-        }
+        // $packageID=$_POST['package'];
+        // if (empty($packageID)) {
+        //     $msg = json_encode(array('title'=>'Warning','message'=> 'Package can not be empty','type'=>'warning'));
+        //     $msg = base64_encode($msg);
+        //     header("Location:../cms/view/member/addMember.php?msg=$msg");
+        //     exit;
+        // }
         $membershipNumber=$_POST['membership_number'];
         if (empty($membershipNumber)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Membership number can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            header("Location:../cms/view/member/updateMember.php?msg=$msg");
             exit;
         } 
         
         $tmp = $_FILES['avatar'];
-
-        $file = $tmp['name'];
-        $file_loc = $tmp['tmp_name'];
-        $file_size = $tmp['size'];
-        $file_type = $tmp['type'];
-         
-        $ext = pathinfo($file, PATHINFO_EXTENSION);
-        $imgName = "IMG_".$memberID.".".$ext;
+        if(!empty($tmp['name'])){
+            // print_r($tmp); exit;
+            $file = $tmp['name'];
+            $file_loc = $tmp['tmp_name'];
+            $file_size = $tmp['size'];
+            $file_type = $tmp['type'];
+             
+            $ext = pathinfo($file, PATHINFO_EXTENSION);
+            $imgName = "IMG_".$memberID.".".$ext;
+        }
     
         $lmd = date('Y-m-d H:i:s', time());
         $updatedBy = $user['staff_id'];
@@ -440,14 +442,16 @@ break;
         if(Member::checkUpdateEmail($email, $memberID)){
 
             // upload the image to a temp folder
+
+            if(!empty($imgName)){
+                if (!file_exists('../'.PATH_IMAGE.PATH_STAFF_IMAGE)) {
     
-            if (!file_exists('../'.PATH_IMAGE.PATH_STAFF_IMAGE)) {
-    
-                mkdir('../'.PATH_IMAGE.PATH_STAFF_IMAGE, 0777, true);
+                    mkdir('../'.PATH_IMAGE.PATH_STAFF_IMAGE, 0777, true);
+                }
+        
+                move_uploaded_file($file_loc,'../'.PATH_IMAGE.PATH_MEMBER_IMAGE.$imgName);
             }
-    
-            move_uploaded_file($file_loc,'../'.PATH_IMAGE.PATH_MEMBER_IMAGE.$imgName);
-    
+            // var_dump($imgName); exit;
             $dataAr = [
                 'fname' => $firstName,
                 'lname' => $lastName,
@@ -457,10 +461,9 @@ break;
                 'nic' => $nic,
                 'phone' => $phone,
                 'address' => $address,
-                'package' => $packageID,
                 'membership_num' => $membershipNumber,
                 'updated_by' => $updatedBy,
-                'img' => $imgName,
+                'img' => (!empty($imgName)) ? $imgName : NULL,
                 'lmd' => $lmd,
                 'id' => $memberID
             ];
@@ -469,7 +472,7 @@ break;
             if($result == true){
                 $msg = json_encode(array('title'=>'Success :','message'=> 'Member has been updated','type'=>'success'));
                 $msg = base64_encode($msg);
-                header("Location:../cms/view/member/updateMember.php?msg=$msg");
+                header("Location:../cms/view/member/index.php?msg=$msg");
                 exit;
             }else {
                 $msg = json_encode(array('title'=>'Warning :','message'=> 'Update failed','type'=>'danger'));
@@ -488,69 +491,152 @@ break;
             
 break;
 
-    case "Edit":
-        
-        $member_fname=$_POST['fname'];
-        $member_lname=$_POST['lname'];
-        //$member_email=$_POST['email'];
-        $gender=$_POST['gender'];
-        $dob=$_POST['dob'];
-        $nic=$_POST['nic'];
-        $member_tel=$_POST['tel'];
-        $address=$_POST['address'];
-        
-        if($_FILES['member_image']['name'] != ""){
-            
-            $member_image=$_FILES['member_image']['name'];
-            $member_loc = $_FILES['member_image']['tmp_name'];
-            $new_image = time()."_". $member_image;
-        }
-        
-        $member_id =$_REQUEST['member_id']; 
-        
-        //update member
-            
-        $objme->updateMember($member_fname,$member_lname,$gender,$dob,$nic,$member_tel,$address,$member_id);
-            
-        
-            //Adding an Image into member_image folder
-            if($new_image!=""){
-            $destination="../images/member_image/$new_image";
-            move_uploaded_file($member_loc, $destination);
-            
-            $objme->updateMemberImage($member_id, $new_image);
-            }
-            
-            
-            $msg=base64_encode("Your profile has been Updated");
-            header("Location:../../view/member.php?msg=$msg");
-            
-break;
-// Activate member
-    case "Active":
-        $member_id=$_REQUEST['member_id'];
-        $response = $objme->activateMember($member_id);
-        if(!$response==""){
-            $objlo->activateMemberLogin($member_id);   
-        }      
-        header("Location:../view/member.php");
-// Deactivate member        
-        break;
-    case "Deactive":
-        $member_id=$_REQUEST['member_id'];
-        $response = $objme->deactivateMember($member_id);
-        if(!$response==""){
-            $objlo->deactivateMemberLogin($member_id);
-        }
-        header("Location:../view/member.php");
-        
-        break;
-// View Member 
+    // View Member
     case "View":
+            
+        if(!$user)
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
+
+        if(!$auth->checkPermissions(array(Role::VIEW_MEMBER)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/member/index.php?msg=$msg");
+            exit;
+        }
+
+        $memberID = $_REQUEST['member_id'];
+        if(!empty($memberID)){
+            //get employee details
+            $dataSet = Member::getMemberByID($memberID);
+            $memberData = $dataSet->fetch_assoc();
+
+            $_SESSION['memData'] = $memberData;
+
+            header("Location:../cms/view/member/viewMember.php");
+            exit;
+        }else {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/member/index.php?msg=$msg");
+            exit;
+        }
+
+break;
+
+// Activate member
+
+    case "Activate":
         
-        $member_id=$_REQUEST['member_id'];
-        header("Location:../view/ViewMember.php?member_id=$member_id");
+    if(!$user)
+    {
+        $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+        $msg = base64_encode($msg);
+        header("Location:../cms/view/index/index.php?msg=$msg");
+        exit;
+    }
+    
+    if(!$auth->checkPermissions(array(Role::MANAGE_MEMBER)))
+    {
+        $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+        $msg = base64_encode($msg);
+        header("Location:../cms/view/member/index.php?msg=$msg");
+        exit;
+    }
+
+    $memberID=$_REQUEST['member_id'];
+
+    $response = Member::activateMember($memberID);
+    if($response == true){
+        $msg = json_encode(array('title'=>'Success :','message'=> 'Member has been activated','type'=>'success'));
+        $msg = base64_encode($msg);
+        header("Location:../cms/view/member/index.php?msg=$msg");
+        exit;
+    }else{
+        $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
+        $msg = base64_encode($msg);
+        header("Location:../cms/view/member/index.php?msg=$msg");
+        exit;
+    }  
+
+break;
+
+// Dectivate member
+
+    case "Deactivate":
+    if(!$user)
+    {
+        $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+        $msg = base64_encode($msg);
+        header("Location:../cms/view/index/index.php?msg=$msg");
+        exit;
+    }
+    
+    if(!$auth->checkPermissions(array(Role::MANAGE_MEMBER)))
+    {
+        $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+        $msg = base64_encode($msg);
+        header("Location:../cms/view/member/index.php?msg=$msg");
+        exit;
+    }
+
+    $memberID=$_REQUEST['member_id'];
+
+    $response = Member::deactivateMember($memberID);
+    if($response == true){
+        $msg = json_encode(array('title'=>'Success :','message'=> 'Member has been deactivated','type'=>'success'));
+        $msg = base64_encode($msg);
+        header("Location:../cms/view/member/index.php?msg=$msg");
+        exit;
+    }else{
+        $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
+        $msg = base64_encode($msg);
+        header("Location:../cms/view/member/index.php?msg=$msg");
+        exit;
+    }
         
+break;
+
+// Delete Staff  
+
+    case "Delete":
+
+        if(!$user)
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
+
+        if(!$auth->checkPermissions(array(Role::MANAGE_MEMBER)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/member/index.php?msg=$msg");
+            exit;
+        }
+
+        $memberID=$_REQUEST['member_id'];
+
+        $response = Member::deleteMember($memberID);
+        if($response == true){
+            $msg = json_encode(array('title'=>'Success :','message'=> 'Member has been deleted','type'=>'success'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/member/index.php?msg=$msg");
+            exit;
+        }else{
+            $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/member/index.php?msg=$msg");
+            exit;
+        }
+
 break;
 
        //check email exists

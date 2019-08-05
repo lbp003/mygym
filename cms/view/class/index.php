@@ -22,11 +22,11 @@ $allClass = Programs::displayAllPrograms();
         <table id="example" class="display" style="width:100%">
             <thead>
                 <tr>
-                    <th>Class</th>
-                    <th>Trainer</th>
-                    <th>Color</th>
-                    <th>Status</th>
-                    <th>&nbsp;</th>
+                    <th style="width :15%">Class</th>
+                    <th>Class Description</th>
+                    <th style="width :10%">Color</th>
+                    <th style="width :10%">Status</th>
+                    <th style="width :10%">&nbsp;</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,20 +46,20 @@ $allClass = Programs::displayAllPrograms();
                 ?>
                 <tr>
                     <td><?php echo ucwords($row['class_name']); ?></td>
-                    <td><?php echo ucwords($row['trainer_name']); ?></td>
+                    <td><?php echo ucfirst($row['class_description']); ?></td>
                     <td><?php echo $row['color']; ?></td>
                     <td><span class="badge <?php if($row['status']==Programs::ACTIVE){echo "badge-success";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></td>
                     <td>
-                            <a data-toggle="tooltip" data-placement="top" title="View" href="../../controller/classController.php?Programs_id=<?php echo $row['class_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
-                            <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../controller/classController.php?Programs_id=<?php echo $row['class_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
+                            <a data-toggle="tooltip" data-placement="top" title="View" href="../../controller/classController.php?class_id=<?php echo $row['class_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
+                            <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../controller/classController.php?class_id=<?php echo $row['class_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
                         <?php 
 
-                            $classId = $row['class_id'];
+                            $classID = $row['class_id'];
 
                             if($row['status']==Programs::ACTIVE){
-                                echo "<a data-toggle='tooltip' data-placement='top' title='Deactivate' href='../../controller/classController.php?class_id='.$classId.'&status=Deactivate'><i class='fas fa-ban text-warning'></i></a>";
+                                echo "<a data-toggle='tooltip' data-placement='top' title='Deactivate' href='../../controller/classController.php?class_id='.$classID.'&status=Deactivate'><i class='fas fa-ban text-warning'></i></a>";
                             }elseif($row['status']==Programs::INACTIVE){
-                                echo "<a data-toggle='tooltip' data-placement='top' title='Activate' href='../../controller/classController.php?class_id='.$classId.'&status=Activate'><i class='far fa-check-circle text-success'></i></a>";
+                                echo "<a data-toggle='tooltip' data-placement='top' title='Activate' href='../../controller/classController.php?class_id='.$classID.'&status=Activate'><i class='far fa-check-circle text-success'></i></a>";
                             }
                         ?>
                             <a data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash text-danger"></i></a>
@@ -70,7 +70,7 @@ $allClass = Programs::displayAllPrograms();
             <tfoot>
                 <tr>
                     <th>Class</th>
-                    <th>Trainer</th>
+                    <th>Class Description</th>
                     <th>Color</th>
                     <th>Status</th>
                     <th>&nbsp;</th>
@@ -101,11 +101,83 @@ $allClass = Programs::displayAllPrograms();
                 text: '+ ADD CLASS',
                 className: 'btn-success',
                 action: function ( e, dt, node, config ) {
-                    window.location.href = "addClass.php";
+                    window.location.href = "../../../controller/classController.php?status=Add";
                 }
             },
             ],
             select: true
         } );
+
+    // deactivate confirmation
+        $('#deactivate').on('click', function(event){
+            event.preventDefault();
+                bootbox.confirm({
+                message: "Are you sure that you want to Deactivate ?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if(result){
+                    var href = $('#deactivate').attr('href');
+                    window.location.href = href;
+                    }
+                }
+            });
+        });
+
+    //    activate confirmation
+        $('#activate').on('click', function(event){
+            event.preventDefault();
+                bootbox.confirm({
+                message: "Are you sure that you want to Activate ?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if(result){
+                    var href = $('#activate').attr('href');
+                    window.location.href = href;
+                    }
+                }
+            });
+        });
+
+    // delete confirmation
+        $('#delete').on('click', function(event){
+            event.preventDefault();
+                bootbox.confirm({
+                message: "Are you sure that you want to Delete ?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if(result){
+                    var href = $('#delete').attr('href');
+                    window.location.href = href;
+                    }
+                }
+            });
+        });
     } );
 </script>

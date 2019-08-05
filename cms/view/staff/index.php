@@ -143,7 +143,7 @@ $allStaff = Staff::displayAllStaff();
         $('#deactivate').on('click', function(event){
             event.preventDefault();
                 bootbox.confirm({
-                message: "Are you sure you want to deactivate ?",
+                message: "Are you sure that you want to Deactivate ?",
                 buttons: {
                     confirm: {
                         label: 'Yes',
@@ -167,7 +167,7 @@ $allStaff = Staff::displayAllStaff();
         $('#activate').on('click', function(event){
             event.preventDefault();
                 bootbox.confirm({
-                message: "Are you sure you want to activate ?",
+                message: "Are you sure that you want to Activate ?",
                 buttons: {
                     confirm: {
                         label: 'Yes',
@@ -191,7 +191,7 @@ $allStaff = Staff::displayAllStaff();
         $('#delete').on('click', function(event){
             event.preventDefault();
                 bootbox.confirm({
-                message: "Are you sure you want to delete ?",
+                message: "Are you sure that you want to Delete ?",
                 buttons: {
                     confirm: {
                         label: 'Yes',

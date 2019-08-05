@@ -16,9 +16,11 @@ class classSession{
                         class_session.start_time,
                         class_session.end_time,
                         class_session.status,
-                        class.class_name
+                        class.class_name,
+                        CONCAT_WS(' ',staff.first_name,staff.last_name) AS trainer_name
                 FROM class_session
                 LEFT JOIN class ON class_session.class_id = class.class_id
+                LEFT JOIN staff ON class.instructor_id = staff.staff_id 
                 WHERE class_session.status != 'D'
                 ORDER BY class_session_id DESC";
         $result=$con->query($sql);

@@ -3,7 +3,6 @@ include_once '../config/dbconnection.php';
 include_once '../config/session.php';
 include_once '../config/global.php';
 include_once '../model/member.php';
-include_once '../model/login.php';
 include_once '../model/role.php';
 include_once '../model/package.php';
 include_once '../model/subscription.php';
@@ -18,7 +17,6 @@ $status=$_REQUEST['status'];
 
 $objme= new Member();
 $objsu = new Subscription();
-$objlo = new Login();
 
 switch ($status){
    

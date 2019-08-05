@@ -131,35 +131,35 @@ $allMember = Member::displayAllMember();
             select: true
         } );
 
-            // deactivate confirmation
-            $('#deactivate').on('click', function(event){
-            event.preventDefault();
-                bootbox.confirm({
-                message: "Are you sure you want to deactivate ?",
-                buttons: {
-                    confirm: {
-                        label: 'Yes',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'No',
-                        className: 'btn-danger'
-                    }
+        // deactivate confirmation
+        $('#deactivate').on('click', function(event){
+        event.preventDefault();
+            bootbox.confirm({
+            message: "Are you sure that you want to Deactivate ?",
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-success'
                 },
-                callback: function (result) {
-                    if(result){
-                    var href = $('#deactivate').attr('href');
-                    window.location.href = href;
-                    }
+                cancel: {
+                    label: 'No',
+                    className: 'btn-danger'
                 }
-            });
+            },
+            callback: function (result) {
+                if(result){
+                var href = $('#deactivate').attr('href');
+                window.location.href = href;
+                }
+            }
+        });
         });
 
     //    activate confirmation
         $('#activate').on('click', function(event){
             event.preventDefault();
                 bootbox.confirm({
-                message: "Are you sure you want to activate ?",
+                message: "Are you sure that you want to Activate ?",
                 buttons: {
                     confirm: {
                         label: 'Yes',
@@ -183,7 +183,7 @@ $allMember = Member::displayAllMember();
         $('#delete').on('click', function(event){
             event.preventDefault();
                 bootbox.confirm({
-                message: "Are you sure you want to delete ?",
+                message: "Are you sure that you want to Delete ?",
                 buttons: {
                     confirm: {
                         label: 'Yes',

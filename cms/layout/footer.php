@@ -47,6 +47,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.1/js/fileinput.min.js"></script>
     <!-- following theme script is needed to use the Font Awesome 5.x theme (`fas`) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.1/themes/fas/theme.min.js"></script>
+    <!-- color picker -->
+    <script src="../../../public/plugin/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.js"></script>
     <script type="text/javascript">
         $( document ).ready(function() {
             $(function () {

@@ -25,7 +25,7 @@ include '../../layout/header.php'; ?>
                 <div class="d-flex flex-wrap">
                     <div class="form-group col-6">
                         <label for="first_name">First Name</label>
-                        <input type="text" class="form-control" id="first_name" name="first_name" aria-describedby="first_name" placeholder="First Name">
+                        <input type="text" class="form-control is-valid" id="first_name" name="first_name" aria-describedby="first_name" placeholder="First Name" required>
                     </div>
                     <div class="form-group col-6">
                         <label for="last_name">Last Name</label>

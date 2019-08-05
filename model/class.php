@@ -12,11 +12,10 @@ class Programs{
         $sql="  SELECT 
                     class.class_id,
                     class.class_name,
+                    class.class_description,
                     class.color,
-                    class.status,
-                    CONCAT_WS(' ',staff.first_name,staff.last_name) AS trainer_name
+                    class.status
                 FROM class 
-                LEFT JOIN staff ON class.instructor_id = staff.staff_id 
                 WHERE class.status != 'D'
                 ORDER BY class.class_id DESC";
         $result=$con->query($sql);
@@ -65,6 +64,23 @@ class Programs{
         $sql="SELECT* FROM trainings WHERE training_id='$training_id'";
         $result=$con->query($sql);
         return $result;
+    }
+
+    /** 
+	* Check class name for  add new class
+	* @return object $result
+	*/
+    public static function checkClassName($className){
+        $con=$GLOBALS['con'];
+        $sql="  SELECT class.class_name 
+                FROM class 
+                WHERE class.class_name='$className' 
+                AND class.status != 'D'";
+        $result=$con->query($sql);
+        if($result->num_rows == 0){
+            return true;
+        }
+        return false;      
     }
    
 }

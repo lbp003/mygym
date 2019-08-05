@@ -185,5 +185,22 @@ class Staff{
         $result=$con->query($sql);
         return $result;
     }
+
+    /** 
+	* Get trainers of the gym
+	* @return object $result
+	*/
+    public static function getTrainers(){
+        
+        $con=$GLOBALS['con'];
+        $sql="  SELECT
+                    staff.staff_id,
+                    CONCAT_WS(' ',staff.first_name,staff.last_name) AS trainer_name
+                FROM staff 
+                WHERE 1=1
+                AND staff.status != 'D' AND staff.staff_type = 'T'";
+        $result=$con->query($sql);
+        return $result;
+    }
    
 }

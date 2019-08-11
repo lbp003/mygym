@@ -12,6 +12,10 @@ define('PATH_STAFF_IMAGE','staff_image/');
 // member image Path
 define('PATH_MEMBER_IMAGE','member_image/');
 
+// class image Path
+define('PATH_CLASS_IMAGE','class_image/');
+
+
 // temp staff image path
 define('SYSTEM_TEMP_DIRECTORY','temp/');
 

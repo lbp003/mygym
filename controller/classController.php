@@ -91,130 +91,54 @@ break;
             header("Location:../cms/view/class/addClass.php?msg=$msg");
             exit;
         }
+
+        $tmp = $_FILES['avatar'];
+        if(!empty($tmp['name'])){
+            // print_r($tmp); exit;
+            $file = $tmp['name'];
+            $file_loc = $tmp['tmp_name'];
+            $file_size = $tmp['size'];
+            $file_type = $tmp['type'];
+             
+            // $ext = pathinfo($file, PATHINFO_EXTENSION);
+            // $imgName = "IMG_".$memberID.".".$ext;
+        }
+
+        if(!empty($tmp['name'])){
+            if (!file_exists('../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY)) {
+
+                mkdir('../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY, 0777, true);
+            }
+    
+            move_uploaded_file($file_loc,'../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY.$file);
+        }
        
         $status = Programs::ACTIVE;
-        $createdBy = $user['staff_id'];
-        $updatedBy = $user['staff_id'];
-    
-        if(Member::checkEmail($email)){
-              //add new member
-            $memberID=$objme->addMember($firstName,$lastName,$email,$gender,$dob,$nic,$phone,$address,$packageID, $membershipNumber, $enPassword, $createdBy, $updatedBy, $lmd, $status);
+
+        if(Programs::checkClassName($className)){
+              //add new class
+            $classID=$objpro->addClass($className, $color, $description, $status);
             
-            if($memberID){
-                // Get package duration
-                $packageDuration = Package::getPackageDuration($packageID);
-                $duration = $packageDuration->fetch_assoc();
-
-                //subscription end date
-                $date = date("Y-m-d");
-                $lastPidDate = date("Y-m-d");
-                $lmd = date('Y-m-d H:i:s', time());
-
-                $endDate = date('Y-m-d', strtotime("+".$duration['duration']." months", strtotime($date)));
-                // print_r($endDate); exit;
-
-                $paymentStatus = Subscription::PAID;
-                $status = Subscription::ACTIVE;
-
-                // Add subscription
-
-                $subscriptionID=$objsu->addMembership($memberID,$packageID,$date,$endDate,$lastPidDate,$paymentStatus,$status,$createdBy,$updatedBy,$lmd);
-                if($subscriptionID){
-                    
-                    // Send mail
-                    $fullName = $firstName." ".$lastName;
-                    $mailBody="<div style='font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#444; background:#ffffff; line-height:20px; padding-bottom:20px;'>"
-                    . "<h2> Hi ".$fullName." ,</h2>"
-                    . "<p>Your member account has been created in ".SYSTEM_BUSINESS_NAME. " Please find below credentials to access your account.</p>"
-                    . "<table width='100%' style='margin-top:20px' cellpadding='10' cellspacing='0'>"
-                    . "<tr style='background:#F5F5F5'>"
-                    . "<td width='30%'>URL :</td>"
-                    . "<td width='70%'>".LIVE_HOST_URL_WEB."</td>"
-                    . "</tr>"
-                    . "<tr style='background:#FCFCFC'>"
-                    . "<td width='30%'>Username :</td>"
-                    . "<td width='70%'>".$email."</td>"
-                    . "</tr>"
-                    . "<tr style='background:#F5F5F5'>"
-                    . "<td width='30%'>Password :</td>"
-                    . "<td width='70%'>".$password."</td>"
-                    . "</tr>"
-                    . "</table>"
-                    . "<p>Thank you.</p><br />"
-                    . "<p align='center'>".EMAIL_FOOTER."</p>"
-                    . "</div>";
-                        
-                    //Send email
-                
-                        // Load Composer's autoloader
-                        require_once '../vendor/autoload.php';
-                
-                        // Instantiation and passing `true` enables exceptions
-                        $mail = new PHPMailer(true);
-                
-                        try {
-                            //Server settings
-                            $mail->SMTPDebug = 2;                                       // Enable verbose debug output
-                            $mail->isSMTP();                                            // Set mailer to use SMTP
-                            $mail->Host       = EMAIL_HOST;  // Specify main and backup SMTP servers
-                            $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-                            $mail->Username   = SYSTEM_EMAIL;                     // SMTP username
-                            $mail->Password   = APP_KEY;                               // SMTP password
-                            $mail->SMTPSecure = 'tls';                                  // Enable TLS encryption, `ssl` also accepted
-                            $mail->Port       = 25;                                    // TCP port to connect to
-                
-                            //Recipients
-                            $mail->setFrom(SYSTEM_EMAIL, 'Mailer');
-                            $mail->addAddress($email, $fullName);     // Add a recipient
-                            // $mail->addAddress('ellen@example.com');               // Name is optional
-                            // $mail->addReplyTo('info@example.com', 'Information');
-                            // $mail->addCC('cc@example.com');
-                            // $mail->addBCC('bcc@example.com');
-                
-                            // Attachments
-                            // $mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
-                            // $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
-                
-                            // Content
-                            $mail->isHTML(true);                                  // Set email format to HTML
-                            $mail->Subject = 'Member Registration';
-                            $mail->Body    = $mailBody;
-                            // $mail->AltBody = 'Employee Registration';
-                
-                            if($mail->send()){
-                                $msg = json_encode(array('title'=>'Success','message'=>'Member registration successful','type'=>'success'));
-                                $msg = base64_encode($msg);
-                                header("Location:../cms/view/member/index.php?msg=$msg");
-                                exit;
-                            }
-                            
-                        } catch (Exception $e) {
-                               //write email errors to  a text file 
-                               $logFile = ERROR_LOG.'email_error_'.date('YmdH').'.txt';
-                               @file_put_contents($logFile, "Mailer Error: " . $mail->ErrorInfo, FILE_APPEND | LOCK_EX);
-                   
-                               $msg = json_encode(array('title'=>'Danger','message'=> 'Employee registration failed','type'=>'danger'));
-                               $msg = base64_encode($msg);
-                               header("Location:../cms/view/member/addMember.php?msg=$msg");
-                               exit;            
-                        }
-                }else {
-                    $msg = json_encode(array('title'=>'Warning','message'=> 'Member subscription failed','type'=>'danger'));
-                    $msg = base64_encode($msg);
-                    header("Location:../cms/view/member/addMember.php?msg=$msg");
-                    exit;
+            
+            
+            if($classID){
+                echo "lbp"; exit;
+                if (!file_exists('../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY)) {
+    
+                    mkdir('../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY, 0777, true);
                 }
-            }else{
-                $msg = json_encode(array('title'=>'Warning','message'=> 'Member registration failed','type'=>'danger'));
-                $msg = base64_encode($msg);
-                header("Location:../cms/view/member/addMember.php?msg=$msg");
-                exit;
-            }
+        
+                $ext = pathinfo($file, PATHINFO_EXTENSION);
+                $imgName = "IMG_".$classID.".".$ext;
+
+                rename("../".PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY.$file, "../".PATH_IMAGE.PATH_CLASS_IMAGE.$imgName);
+            }                  
+
 
         }else{
-            $msg = json_encode(array('title'=>'Warning','message'=> 'Email address already exists','type'=>'warning'));
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Class name already exists','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            header("Location:../cms/view/class/addClass.php?msg=$msg");
             exit;
         }    
                 

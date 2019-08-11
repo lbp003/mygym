@@ -22,14 +22,23 @@ class Programs{
         return $result;
     }
     
-    function addTraining($training_name,$training_description,$instructor_id,$training_image){        
+    /** 
+	* Insert a new class
+	* @return object $last_id
+	*/
+    function addClass($className, $color, $description, $status){
+        
         $con=$GLOBALS['con']; 
-        $sql="INSERT INTO trainings VALUES('','$training_name','$training_description','$instructor_id','$training_image','Active',3)";
-        $result=$con->query($sql);
-        $training_id=$con->insert_id;
-        return $training_id;
-        
-        
+        $stmt = $con->prepare("INSERT INTO class (class_name, class_description, color, status) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $className, $description, $color, $status);
+        $stmt->execute();
+        $last_id = $con->insert_id;
+        if(isset($last_id) && !empty($last_id)){
+            return $last_id;
+        }else {
+            return false;
+        }
+            
     }
     
     function updateTraining($training_name,$training_description,$instructor_id,$training_id){

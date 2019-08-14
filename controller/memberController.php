@@ -289,7 +289,7 @@ break;
         exit;
     }
 
-    if(!$auth->checkPermissions(array(Role::MANAGE_STAFF)))
+    if(!$auth->checkPermissions(array(Role::MANAGE_MEMBER)))
     {
         $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
         $msg = base64_encode($msg);
@@ -442,9 +442,9 @@ break;
             // upload the image to a temp folder
 
             if(!empty($imgName)){
-                if (!file_exists('../'.PATH_IMAGE.PATH_STAFF_IMAGE)) {
+                if (!file_exists('../'.PATH_IMAGE.PATH_MEMBER_IMAGE)) {
     
-                    mkdir('../'.PATH_IMAGE.PATH_STAFF_IMAGE, 0777, true);
+                    mkdir('../'.PATH_IMAGE.PATH_MEMBER_IMAGE, 0777, true);
                 }
         
                 move_uploaded_file($file_loc,'../'.PATH_IMAGE.PATH_MEMBER_IMAGE.$imgName);
@@ -600,7 +600,7 @@ break;
         
 break;
 
-// Delete Staff  
+// Delete Member
 
     case "Delete":
 

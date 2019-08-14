@@ -22,6 +22,7 @@ $allClass = Programs::displayAllPrograms();
         <table id="example" class="display" style="width:100%">
             <thead>
                 <tr>
+                    <th>&nbsp;</th>
                     <th style="width :15%">Class</th>
                     <th>Class Description</th>
                     <th style="width :10%">Color</th>
@@ -43,15 +44,22 @@ $allClass = Programs::displayAllPrograms();
                         }elseif($row['status']==Programs::INACTIVE){
                             $status="Inactive";
                         }
+
+                        if($row['image']==""){
+                            $path="../../../".PATH_IMAGE."user.png";
+                        } else {
+                            $path="../../../public/image/class_image/".$row['image'];                    
+                        }
                 ?>
                 <tr>
+                    <td><img src="<?php echo $path; ?>" width="70" height="auto" class="img-responsive img-thumbnail" /></td>
                     <td><?php echo ucwords($row['class_name']); ?></td>
                     <td><?php echo ucfirst($row['class_description']); ?></td>
                     <td><?php echo $row['color']; ?></td>
                     <td><span class="badge <?php if($row['status']==Programs::ACTIVE){echo "badge-success";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></td>
                     <td>
-                            <a data-toggle="tooltip" data-placement="top" title="View" href="../../controller/classController.php?class_id=<?php echo $row['class_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
-                            <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../controller/classController.php?class_id=<?php echo $row['class_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
+                            <a data-toggle="tooltip" data-placement="top" title="View" href="../../../controller/classController.php?class_id=<?php echo $row['class_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
+                            <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../../controller/classController.php?class_id=<?php echo $row['class_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
                         <?php 
 
                             $classID = $row['class_id'];
@@ -69,6 +77,7 @@ $allClass = Programs::displayAllPrograms();
             </tbody>
             <tfoot>
                 <tr>
+                    <th>&nbsp;</th>
                     <th>Class</th>
                     <th>Class Description</th>
                     <th>Color</th>

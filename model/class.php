@@ -6,7 +6,10 @@ class Programs{
        CONST ACTIVE = "A";
        CONST INACTIVE = "I";
        CONST DELETED = "D";
-    
+
+    /* Get all class info
+	* @return object $result
+	*/
     public static function displayAllPrograms(){
         $con=$GLOBALS['con'];//To get connection string
         $sql="  SELECT 
@@ -14,6 +17,7 @@ class Programs{
                     class.class_name,
                     class.class_description,
                     class.color,
+                    class.image,
                     class.status
                 FROM class 
                 WHERE class.status != 'D'
@@ -40,11 +44,37 @@ class Programs{
         }
             
     }
+
+    /** 
+	* Add class image
+	* @return object $result
+	*/
+    public static function addClassImage($class_id, $image){
+        $con=$GLOBALS['con']; 
+        $sql = "UPDATE class SET image=? WHERE class_id=?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("si", $image, $class_id);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;
+    }
     
-    function updateTraining($training_name,$training_description,$instructor_id,$training_id){
-        $con = $GLOBALS['con'];
-        $sql="UPDATE trainings SET training_name='$training_name',training_description='$training_description',instructor_id='$instructor_id' WHERE training_id='$training_id'";
-        $result=$con->query($sql);
+    /** 
+	* Update an existing class
+	* @return object $result
+	*/
+    public static function updateClass($dataAr){
+        $con=$GLOBALS['con']; 
+        $sql = "UPDATE class SET class_name = ?, class_description = ?, color = ?, image = ? WHERE class_id = ?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("ssssi", $dataAr['name'], $dataAr['description'], $dataAr['color'], $dataAr['img'], $dataAr['id']);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;
     }
     
     function updateTrainingImage($training_id,$new_image){
@@ -90,6 +120,45 @@ class Programs{
             return true;
         }
         return false;      
+    }
+
+    /** 
+	* Check class name for update an existing class
+	* @return object $result
+	*/
+    public static function checkUpdateClassName($className, $class_id){
+        $con=$GLOBALS['con'];
+        $sql="  SELECT class.class_name 
+                FROM class 
+                WHERE class.class_name='$className' 
+                AND class.status != 'D'
+                AND class.class_id != $class_id";
+        $result=$con->query($sql);
+        if($result->num_rows == 0){
+            return true;
+        }
+        return false;      
+    }
+
+    /** 
+	* Get the class data by class_id
+	* @return object $result
+	*/
+    public static function getClassByID($class_id){
+        
+        $con=$GLOBALS['con'];
+        $sql="  SELECT
+                    class.class_id,
+                    class.class_name,
+                    class.class_description,
+                    class.color,
+                    class.image,
+                    class.status
+                FROM class 
+                WHERE class.class_id = '$class_id'
+                AND class.status != 'D'";
+        $result=$con->query($sql);
+        return $result;
     }
    
 }

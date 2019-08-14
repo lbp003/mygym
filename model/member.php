@@ -12,8 +12,10 @@ class Member{
 
     CONST MALE = "M";
     CONST FEMALE = "F";
-    
-    // Get all member info
+
+    /* Get all member info
+	* @return object $result
+	*/
     public static function displayAllMember(){
         $con=$GLOBALS['con'];//To get connection string
         $sql="  SELECT  

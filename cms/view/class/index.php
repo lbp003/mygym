@@ -64,13 +64,14 @@ $allClass = Programs::displayAllPrograms();
 
                             $classID = $row['class_id'];
 
-                            if($row['status']==Programs::ACTIVE){
-                                echo "<a data-toggle='tooltip' data-placement='top' title='Deactivate' href='../../controller/classController.php?class_id='.$classID.'&status=Deactivate'><i class='fas fa-ban text-warning'></i></a>";
-                            }elseif($row['status']==Programs::INACTIVE){
-                                echo "<a data-toggle='tooltip' data-placement='top' title='Activate' href='../../controller/classController.php?class_id='.$classID.'&status=Activate'><i class='far fa-check-circle text-success'></i></a>";
-                            }
+                            if($row['status']==Programs::ACTIVE){ ?>
+                                <a id="deactivate" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../../controller/classController.php?class_id=<?php echo $classID; ?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
+                            <?php
+                            }elseif($row['status']==Programs::INACTIVE){?>
+                                <a id="activate" data-toggle="tooltip" data-placement="top" title="Activate" href="../../../controller/classController.php?class_id=<?php echo $classID; ?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
+                           <?php }
                         ?>
-                            <a data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash text-danger"></i></a>
+                            <a id="delete" data-toggle="tooltip" data-placement="top" title="Delete" href="../../../controller/classController.php?class_id=<?php echo $classID; ?>&status=Delete"><i class="fas fa-trash text-danger"></i></a>
                     </td>
                 </tr>
                     <?php } ?>

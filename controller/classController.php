@@ -4,7 +4,6 @@ include_once '../config/session.php';
 include_once '../config/global.php';
 include_once '../model/class.php';
 include_once '../model/role.php';
-include_once '../model/package.php';
 
 $user=$_SESSION['user'];
 $auth = new Role(); 
@@ -318,34 +317,34 @@ break;
             exit;
         }
 
-        if(!$auth->checkPermissions(array(Role::VIEW_MEMBER)))
+        if(!$auth->checkPermissions(array(Role::VIEW_CLASS)))
         {
             $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/index.php?msg=$msg");
+            header("Location:../cms/view/class/index.php?msg=$msg");
             exit;
         }
 
-        $memberID = $_REQUEST['member_id'];
-        if(!empty($memberID)){
+        $classID = $_REQUEST['class_id'];
+        if(!empty($classID)){
             //get employee details
-            $dataSet = Member::getMemberByID($memberID);
-            $memberData = $dataSet->fetch_assoc();
+            $dataSet = Programs::getClassByID($classID);
+            $clsData = $dataSet->fetch_assoc();
 
-            $_SESSION['memData'] = $memberData;
+            $_SESSION['clsData'] = $clsData;
 
-            header("Location:../cms/view/member/viewMember.php");
+            header("Location:../cms/view/class/viewClass.php");
             exit;
         }else {
             $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/index.php?msg=$msg");
+            header("Location:../cms/view/class/index.php?msg=$msg");
             exit;
         }
 
 break;
 
-// Activate member
+// Activate class
 
     case "Activate":
         
@@ -357,32 +356,32 @@ break;
         exit;
     }
     
-    if(!$auth->checkPermissions(array(Role::MANAGE_MEMBER)))
+    if(!$auth->checkPermissions(array(Role::MANAGE_CLASS)))
     {
         $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
         $msg = base64_encode($msg);
-        header("Location:../cms/view/member/index.php?msg=$msg");
+        header("Location:../cms/view/class/index.php?msg=$msg");
         exit;
     }
 
-    $memberID=$_REQUEST['member_id'];
+    $classID=$_REQUEST['class_id'];
 
-    $response = Member::activateMember($memberID);
+    $response = Programs::activateClass($classID);
     if($response == true){
-        $msg = json_encode(array('title'=>'Success :','message'=> 'Member has been activated','type'=>'success'));
+        $msg = json_encode(array('title'=>'Success :','message'=> 'Class has been activated','type'=>'success'));
         $msg = base64_encode($msg);
-        header("Location:../cms/view/member/index.php?msg=$msg");
+        header("Location:../cms/view/class/index.php?msg=$msg");
         exit;
     }else{
         $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
         $msg = base64_encode($msg);
-        header("Location:../cms/view/member/index.php?msg=$msg");
+        header("Location:../cms/view/class/index.php?msg=$msg");
         exit;
     }  
 
 break;
 
-// Dectivate member
+// Dectivate class
 
     case "Deactivate":
     if(!$user)
@@ -393,32 +392,32 @@ break;
         exit;
     }
     
-    if(!$auth->checkPermissions(array(Role::MANAGE_MEMBER)))
+    if(!$auth->checkPermissions(array(Role::MANAGE_CLASS)))
     {
         $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
         $msg = base64_encode($msg);
-        header("Location:../cms/view/member/index.php?msg=$msg");
+        header("Location:../cms/view/class/index.php?msg=$msg");
         exit;
     }
 
-    $memberID=$_REQUEST['member_id'];
+    $classID=$_REQUEST['class_id'];
 
-    $response = Member::deactivateMember($memberID);
+    $response = Programs::deactivateClass($classID);
     if($response == true){
-        $msg = json_encode(array('title'=>'Success :','message'=> 'Member has been deactivated','type'=>'success'));
+        $msg = json_encode(array('title'=>'Success :','message'=> 'Class has been deactivated','type'=>'success'));
         $msg = base64_encode($msg);
-        header("Location:../cms/view/member/index.php?msg=$msg");
+        header("Location:../cms/view/class/index.php?msg=$msg");
         exit;
     }else{
         $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
         $msg = base64_encode($msg);
-        header("Location:../cms/view/member/index.php?msg=$msg");
+        header("Location:../cms/view/class/index.php?msg=$msg");
         exit;
     }
         
 break;
 
-// Delete Staff  
+// Delete class
 
     case "Delete":
 
@@ -430,59 +429,30 @@ break;
             exit;
         }
 
-        if(!$auth->checkPermissions(array(Role::MANAGE_MEMBER)))
+        if(!$auth->checkPermissions(array(Role::MANAGE_CLASS)))
         {
             $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/index.php?msg=$msg");
+            header("Location:../cms/view/class/index.php?msg=$msg");
             exit;
         }
 
-        $memberID=$_REQUEST['member_id'];
+        $classID=$_REQUEST['class_id'];
 
-        $response = Member::deleteMember($memberID);
+        $response = Programs::deleteClass($classID);
         if($response == true){
-            $msg = json_encode(array('title'=>'Success :','message'=> 'Member has been deleted','type'=>'success'));
+            $msg = json_encode(array('title'=>'Success :','message'=> 'Class has been deleted','type'=>'success'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/index.php?msg=$msg");
+            header("Location:../cms/view/class/index.php?msg=$msg");
             exit;
         }else{
             $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/index.php?msg=$msg");
+            header("Location:../cms/view/class/index.php?msg=$msg");
             exit;
         }
 
 break;
-
-       //check email exists
-
-       case "checkEmail":
-
-       $email=$_REQUEST['email'];
-       $result = Member::checkEmail($email);
-       if($result == true){
-           echo(json_encode(['Result' => true]));
-       }else {
-           echo(json_encode(['Result' => false]));
-       }
-break;  
-
-       //check update email exists
-
-       case "checkUpdateEmail":
-
-       $email=$_REQUEST['email'];
-       $memberID=$_REQUEST['member_id'];
-
-       $result = Member::checkUpdateEmail($email,$memberID);
-       if($result == true){
-           echo(json_encode(['Result' => true]));
-       }else {
-           echo(json_encode(['Result' => false]));
-       }
-break; 
-    
 }
 
 ?>

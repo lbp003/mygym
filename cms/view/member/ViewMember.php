@@ -30,7 +30,7 @@
         <div class="row">
             <div class="col-12">
             <div id="kv-avatar-errors-2" class="center-block" style="width:800px;display:none"></div>
-                <form method="post" id="updateMember" name="updateMember" action="../../../controller/memberController.php?status=Update" enctype="multipart/form-data">
+                <form>
                 <div class="d-flex flex-wrap">
                     <div class="form-group col-6" style="text-align:center">
                         <img src="<?php echo $path; ?>" width="120" height="auto" class="img-responsive img-thumbnail" />

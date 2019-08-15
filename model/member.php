@@ -92,7 +92,7 @@ class Member{
     }
     
     /** 
-	* Deactivate an employee
+	* Deactivate a member
 	* @return object $result
 	*/
     public static function deactivateMember($member_id){
@@ -108,7 +108,7 @@ class Member{
     }
 
     /** 
-	* Delete an employee
+	* Delete a member
 	* @return object $result
 	*/
     public static function deleteMember($member_id){

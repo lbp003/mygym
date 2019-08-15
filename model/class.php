@@ -76,35 +76,55 @@ class Programs{
           }
          return true;
     }
-    
-    function updateTrainingImage($training_id,$new_image){
-        $con=$GLOBALS['con'];
-        $sql="UPDATE trainings SET training_image='$new_image' WHERE training_id='$training_id'";
-        $result =$con->query($sql);
-    }
-    
-    function activateTraining($training_id){
-        $con=$GLOBALS['con'];
-        $sql="UPDATE trainings SET training_status='Active' WHERE training_id='$training_id'";
-        $result=$con->query($sql);
-        return $result;
-    }
-    
-    function deactivateTraining($training_id){
-        $con=$GLOBALS['con'];
-        $sql="UPDATE trainings SET training_status='Deactive' WHERE training_id='$training_id'";
-        $result=$con->query($sql);
-        return $result;
-    }
-            
-    function displayTraining($training_id){
-        
-        $con=$GLOBALS['con'];
-        $sql="SELECT* FROM trainings WHERE training_id='$training_id'";
-        $result=$con->query($sql);
-        return $result;
+   
+    /** 
+	* Activate an class
+	* @return object $result
+	*/
+    public static function activateClass($class_id){
+        $con=$GLOBALS['con']; 
+        $sql = "UPDATE class SET status=? WHERE class_id=?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("si", $status = Programs::ACTIVE, $class_id);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;
     }
 
+    /** 
+	* Deactivate a class
+	* @return object $result
+	*/
+    public static function deactivateClass($class_id){
+        $con=$GLOBALS['con']; 
+        $sql = "UPDATE class SET status=? WHERE class_id=?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("si", $status = Programs::INACTIVE, $class_id);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;
+    }
+
+    /** 
+	* Delete a class
+	* @return object $result
+	*/
+    public static function deleteClass($class_id){
+        $con=$GLOBALS['con']; 
+        $sql = "UPDATE class SET status=? WHERE class_id=?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("si", $status = Programs::DELETED, $class_id);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;
+    }
+   
     /** 
 	* Check class name for  add new class
 	* @return object $result

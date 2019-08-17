@@ -14,7 +14,9 @@ $objpro= new Programs();
 
 switch ($status){
    
-// Redirect to Add Member
+/**
+ * Redirect to Add Member
+ */ 
 
     case "Add":
 
@@ -50,6 +52,10 @@ switch ($status){
 
 
 break;
+
+/**
+ * Insert a new gym class
+ */
     
     case "Insert":
 
@@ -159,7 +165,9 @@ break;
                 
 break;
 
-// Get the employee details for Update Employee
+/**
+ *  Get the class details for Update class 
+ **/ 
 
     case "Edit":
 
@@ -198,6 +206,9 @@ break;
 
 break;
 
+/**  
+ * Update class details 
+ * **/
 
     case "Update":
     
@@ -306,7 +317,9 @@ break;
             
 break;
 
-    // View Member
+/**
+ * View Class
+ */ 
     case "View":
             
         if(!$user)
@@ -344,7 +357,9 @@ break;
 
 break;
 
-// Activate class
+/**
+ * Activate class 
+ * */ 
 
     case "Activate":
         
@@ -381,7 +396,9 @@ break;
 
 break;
 
-// Dectivate class
+/**
+ * Dectivate class
+ */ 
 
     case "Deactivate":
     if(!$user)
@@ -417,7 +434,9 @@ break;
         
 break;
 
-// Delete class
+/**
+ * Delete class
+ */ 
 
     case "Delete":
 

@@ -663,7 +663,31 @@ break;
        }else {
            echo(json_encode(['Result' => false]));
        }
-break; 
+break;
+
+/**
+ * Index actiton
+ */
+
+    default:
+
+        if(!$user)
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
+
+        if(!$auth->checkPermissions(array(Role::MANAGE_MEMBER, Role::VIEW_MEMBER)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/dashboard/dashboard.php?msg=$msg");
+            exit;
+        }
+
+        header("Location:../cms/view/member/");
     
 }
 

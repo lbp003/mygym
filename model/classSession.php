@@ -7,7 +7,11 @@ class classSession{
        CONST INACTIVE = "I";
        CONST DELETED = "D";
        CONST SUSPENDED = "S";
-    
+
+
+     /* Get all class seassion info
+	* @return object $result
+	*/
     public static function displayAllClassSession(){
         $con=$GLOBALS['con'];//To get connection string
         $sql="  SELECT  class_session.class_session_id,
@@ -20,7 +24,7 @@ class classSession{
                         CONCAT_WS(' ',staff.first_name,staff.last_name) AS trainer_name
                 FROM class_session
                 LEFT JOIN class ON class_session.class_id = class.class_id
-                LEFT JOIN staff ON class.instructor_id = staff.staff_id 
+                LEFT JOIN staff ON class_session.instructor_id = staff.staff_id 
                 WHERE class_session.status != 'D'
                 ORDER BY class_session_id DESC";
         $result=$con->query($sql);

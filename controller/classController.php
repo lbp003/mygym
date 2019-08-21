@@ -472,6 +472,30 @@ break;
         }
 
 break;
+
+/**
+ * Index actiton
+ */
+
+    default:
+
+        if(!$user)
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
+
+        if(!$auth->checkPermissions(array(Role::MANAGE_CLASS, Role::VIEW_CLASS)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/dashboard/dashboard.php?msg=$msg");
+            exit;
+        }
+
+        header("Location:../cms/view/class/");
 }
 
 ?>

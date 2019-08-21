@@ -20,7 +20,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-users fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                        <a href="../member/"><h5 class="card-title">MEMBER</h5></a>
+                        <a href="../../../controller/memberController.php"><h5 class="card-title">MEMBER</h5></a>
                         </div>
                         </div>
                     </div>
@@ -32,7 +32,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-skating fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../class/"><h5 class="card-title">CLASS</h5></a>
+                            <a href="../../../controller/classController.php"><h5 class="card-title">CLASS</h5></a>
                         </div>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                         <div class="card align-items-center border-dark" style="width: 15rem;">
                         <i class="far fa-calendar-alt fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../class-session/"><h5 class="card-title">CLASS SESSION</h5></a>
+                            <a href="../../../controller/classSessionController.php"><h5 class="card-title">CLASS SESSION</h5></a>
                         </div>
                         </div>
                     </div>
@@ -152,7 +152,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-briefcase fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../staff/"><h5 class="card-title">STAFF</h5></a>
+                            <a href="../../../controller/staffController.php"><h5 class="card-title">STAFF</h5></a>
                         </div>
                         </div>
                     </div> 

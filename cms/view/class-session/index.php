@@ -4,8 +4,7 @@
 <?php include '../../../model/classSession.php'; ?>
 <?php 
 $allClassSession = classSession::displayAllClassSession();
-// $row = $allstaff->fetch_assoc();
-// print_r($row); exit;
+// print_r($allClassSession); exit;
 ?>
 <body>
     <!---navbar starting ---------->
@@ -24,6 +23,7 @@ $allClassSession = classSession::displayAllClassSession();
                 <tr>
                     <th>Session Name</th>
                     <th>Class</th>
+                    <th>Trainer</th>
                     <th>Day</th>
                     <th>Start Time</th>
                     <th>End Time</th>
@@ -51,6 +51,7 @@ $allClassSession = classSession::displayAllClassSession();
                 <tr>
                     <td><?php echo ucwords($row['class_session_name']); ?></td>
                     <td><?php echo ucwords($row['class_name']); ?></td>
+                    <td><?php echo ucwords($row['trainer_name']); ?></td>
                     <td><?php echo $row['day']; ?></td>
                     <td><?php echo $row['start_time']; ?></td>
                     <td><?php echo $row['end_time']; ?></td>
@@ -60,15 +61,17 @@ $allClassSession = classSession::displayAllClassSession();
                             <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../controller/classSessionController.php?classSession_id=<?php echo $row['classSession_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
                         <?php 
 
-                            $classSessionId = $row['class_session_id'];
+                            $classSessionID = $row['class_session_id'];
 
-                            if($row['status']==classSession::ACTIVE){
-                                echo "<a data-toggle='tooltip' data-placement='top' title='Deactivate' href='../../controller/classSessionController.php?classSession_id='.$classSessionId.'&status=Deactivate'><i class='fas fa-ban text-warning'></i></a>";
-                            }elseif($row['status']==classSession::INACTIVE){
-                                echo "<a data-toggle='tooltip' data-placement='top' title='Activate' href='../../controller/classSessionController.php?classSession_id='.$classSessionId.'&status=Activate'><i class='far fa-check-circle text-success'></i></a>";
+                            if($row['status']==classSession::ACTIVE){ ?>
+                                <a id="deactivate" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../controller/classSessionController.php?classSession_id=<?php echo $classSessionID;?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
+                            <?php
+                            }elseif($row['status']==classSession::INACTIVE){ ?>
+                                <a id="activate" data-toggle="tooltip" data-placement="top" title="Activate" href="../../controller/classSessionController.php?classSession_id=<?php echo $classSessionID;?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
+                            <?php
                             }
                         ?>
-                            <a data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash text-danger"></i></a>
+                            <a id="delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash text-danger"></i></a>
                     </td>
                 </tr>
                     <?php } ?>
@@ -77,6 +80,7 @@ $allClassSession = classSession::displayAllClassSession();
                 <tr>
                     <th>Session Name</th>
                     <th>Class</th>
+                    <th>Trainer</th>
                     <th>Day</th>
                     <th>Start Time</th>
                     <th>End Time</th>
@@ -109,11 +113,84 @@ $allClassSession = classSession::displayAllClassSession();
                 text: '+ ADD CLASS SESSION',
                 className: 'btn-success',
                 action: function ( e, dt, node, config ) {
-                    window.location.href = "addClassSession.php";
+                    window.location.href = "../../../controller/classSessionController.php?status=Add";
                 }
             },
             ],
             select: true
         } );
+
+        // deactivate confirmation
+        $('#deactivate').on('click', function(event){
+            event.preventDefault();
+                bootbox.confirm({
+                message: "Are you sure that you want to Deactivate ?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if(result){
+                    var href = $('#deactivate').attr('href');
+                    window.location.href = href;
+                    }
+                }
+            });
+        });
+
+    //    activate confirmation
+        $('#activate').on('click', function(event){
+            event.preventDefault();
+                bootbox.confirm({
+                message: "Are you sure that you want to Activate ?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if(result){
+                    var href = $('#activate').attr('href');
+                    window.location.href = href;
+                    }
+                }
+            });
+        });
+
+    // delete confirmation
+        $('#delete').on('click', function(event){
+            event.preventDefault();
+                bootbox.confirm({
+                message: "Are you sure that you want to Delete ?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if(result){
+                    var href = $('#delete').attr('href');
+                    window.location.href = href;
+                    }
+                }
+            });
+        });
+
     } );
 </script>

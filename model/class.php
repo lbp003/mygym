@@ -180,5 +180,20 @@ class Programs{
         $result=$con->query($sql);
         return $result;
     }
-   
+
+    /* Get all active class info
+	* @return object $result
+	*/
+    public static function getAllActiveClass(){
+        $con=$GLOBALS['con'];//To get connection string
+        $sql="  SELECT 
+                    class.class_id,
+                    class.class_name
+                FROM class 
+                WHERE class.status = 'A'
+                ORDER BY class.class_id DESC";
+        $result=$con->query($sql);
+        return $result;
+    }
+    
 }

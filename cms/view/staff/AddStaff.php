@@ -27,7 +27,7 @@
                     </div>
                     <div class="form-group col-6">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" aria-describedby="email" placeholder="Email">
+                        <input type="text" class="form-control" id="email" name="email" aria-describedby="email" placeholder="Email">
                     </div>
                     <div class="form-group col-6">
                         <label for="gender">Gender</label>
@@ -79,20 +79,11 @@
             rules: {
                 first_name: "required",
                 last_name: "required", 
-                email: {
-					required: true,
-					email: true,
-                    // remote: {
-                    //     url: '../../../controller/staffController.php?status=checkEmail',
-                    //     type: 'post',
-                    //     dataType: 'json',
-                    //     data: {
-                    //         email: function(){
-                    //             return $("#email").val();
-                    //         }
-                    //     }
-                    // }
-				},
+                // email: {
+				// 	required: true,
+				// 	email: true,
+                //     remote: "../../../controller/staffController.php?status=checkEmail"
+				// },
                 dob: {
                     required: true,
                     date: true
@@ -122,7 +113,7 @@
                 },
                 email: {
                     required: "Please enter email address",
-                    remote: function() { return $.validator.format("{0} is already taken", $("#email").val()) }
+                    // remote: function() { return $.validator.format("{0} is already taken", $("#email").val()) }
                 },
                 dob: {
                     required: "Please enter birth date"

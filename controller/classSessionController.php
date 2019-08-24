@@ -12,7 +12,7 @@ $auth = new Role();
 
 $status=$_REQUEST['status'];
 
-$objses= new classSession();
+$objses= new Session();
 
 switch ($status){
 
@@ -85,89 +85,98 @@ break;
             exit;
         }
       
-        $className=$_POST['class_name'];
-        if (empty($className)) {
-            $msg = json_encode(array('title'=>'Warning','message'=> 'Class Name can not be empty','type'=>'warning'));
-            $msg = base64_encode($msg);
-            header("Location:../cms/view/class-session/addClassSession.php?msg=$msg");
-            exit;
-        }
-        $color=$_POST['color'];
-        if (empty($color)) {
-            $msg = json_encode(array('title'=>'Warning','message'=> 'Color can not be empty','type'=>'warning'));
-            $msg = base64_encode($msg);
-            header("Location:../cms/view/class-session/addClassSession.php?msg=$msg");
-            exit;
-        }
-        $description=$_POST['description'];
-        if (empty($description)) {
-            $msg = json_encode(array('title'=>'Warning','message'=> 'Description can not be empty','type'=>'warning'));
+        $sessionName=$_POST['session_name'];
+
+        if (empty($sessionName)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Session Name can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
             header("Location:../cms/view/class-session/addClassSession.php?msg=$msg");
             exit;
         }
 
-        $tmp = $_FILES['avatar'];
-        if(!empty($tmp['name'])){
-            // print_r($tmp); exit;
-            $file = $tmp['name'];
-            $file_loc = $tmp['tmp_name'];
-            $file_size = $tmp['size'];
-            $file_type = $tmp['type'];
-             
-            // $ext = pathinfo($file, PATHINFO_EXTENSION);
-            // $imgName = "IMG_".$memberID.".".$ext;
+        $class=$_POST['class'];
+
+        if (empty($class)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Class name can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/class-session/addClassSession.php?msg=$msg");
+            exit;
+        }
+        $day=$_POST['day'];
+        if (empty($day)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Day can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/class-session/addClassSession.php?msg=$msg");
+            exit;
         }
 
-        if(!empty($tmp['name'])){
-            if (!file_exists('../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY)) {
+        $startTime=$_POST['start_time'];
 
-                mkdir('../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY, 0777, true);
-            }
-    
-            move_uploaded_file($file_loc,'../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY.$file);
+        if (empty($startTime)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Start time can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/class-session/addClassSession.php?msg=$msg");
+            exit;
+        }
+        if (!preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $startTime)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Start time incorrect format','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/class-session/addClassSession.php?msg=$msg");
+            exit;
+        }
+
+        $endTime=$_POST['end_time'];
+
+        if (empty($endTime)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'End time can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/class-session/addClassSession.php?msg=$msg");
+            exit;
+        }
+        if (!preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $endTime)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'End time incorrect format','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/class-session/addClassSession.php?msg=$msg");
+            exit;
+        }
+
+        if($startTime > $endTime){
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Wrong start time and end time','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/class-session/addClassSession.php?msg=$msg");
+            exit;
+        }
+
+        $instructor=$_POST['instructor'];
+
+        if (empty($instructor)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Instructor can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/class-session/addClassSession.php?msg=$msg");
+            exit;
         }
        
-        $status = Programs::ACTIVE;
+        $status = Session::ACTIVE;
 
-        if(Programs::checkClassName($className)){
-              //add new class
-            $classSessionID=$objpro->addClass($className, $color, $description, $status);        
+        if(Session::checkSessionName($sessionName)){
+            //add new class session
+            $classSessionID=$objses->addClassSession($sessionName, $class, $day, $startTime, $endTime, $instructor, $status);        
             
             if($classSessionID){
-                // echo "lbp"; exit;
-                if (!file_exists('../'.PATH_IMAGE.PATH_CLASS_IMAGE)) {
-    
-                    mkdir('../'.PATH_IMAGE.PATH_CLASS_IMAGE, 0777, true);
-                }
-        
-                $ext = pathinfo($file, PATHINFO_EXTENSION);
-                $imgName = "IMG_".$classSessionID.".".$ext;
 
-                // Add class image
-                if(Programs::addClassImage($classSessionID, $imgName)){
-
-                    rename("../".PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY.$file, "../".PATH_IMAGE.PATH_CLASS_IMAGE.$imgName);
-
-                    $msg = json_encode(array('title'=>'Success','message'=>'Class registration successful','type'=>'success'));
-                    $msg = base64_encode($msg);
-                    header("Location:../cms/view/class-session/index.php?msg=$msg");
-                    exit;
+                $msg = json_encode(array('title'=>'Success','message'=>'Class session registration successful','type'=>'success'));
+                $msg = base64_encode($msg);
+                header("Location:../cms/view/class-session/index.php?msg=$msg");
+                exit;
                     
-                }else{
-                    $msg = json_encode(array('title'=>'Warning','message'=> 'Failed to add the class image','type'=>'warning'));
-                    $msg = base64_encode($msg);
-                    header("Location:../cms/view/class-session/index.php?msg=$msg");
-                    exit; 
-                }
             }else{
-                $msg = json_encode(array('title'=>'Danger','message'=> 'Failed to add the class','type'=>'danger'));
+                $msg = json_encode(array('title'=>'Danger','message'=> 'Failed to add the class session','type'=>'danger'));
                 $msg = base64_encode($msg);
                 header("Location:../cms/view/class-session/addClassSession.php?msg=$msg");
                 exit;  
             }                  
         }else{
-            $msg = json_encode(array('title'=>'Warning','message'=> 'Class name already exists','type'=>'warning'));
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Session name already exists','type'=>'warning'));
             $msg = base64_encode($msg);
             header("Location:../cms/view/class-session/addClassSession.php?msg=$msg");
             exit;
@@ -176,7 +185,7 @@ break;
 break;
 
 /**
- *  Get the class details for Update class 
+ *  Get the class session details for Update class 
  **/ 
 
     case "Edit":
@@ -197,13 +206,34 @@ break;
         exit;
     }
 
-    $classSessionID = $_REQUEST['class_id'];
+    $classSessionID = $_REQUEST['class_session_id'];
+
     if(!empty($classSessionID)){
         //get class details
-        $dataSet = Programs::getClassByID($classSessionID);       
-        $classData = $dataSet->fetch_assoc();
+        $dataSet = Session::getClassSessionByID($classSessionID);       
+        $sessionData = $dataSet->fetch_assoc();
         // var_dump($classData); exit;
-        $_SESSION['clsData'] = $classData;
+
+        //get trainers list
+        $tDataSet = Staff::getTrainers();
+        $trainersAr = [];
+        while($row = $tDataSet->fetch_assoc())
+        {
+            $trainersAr[$row['staff_id']] = $row['trainer_name'];
+        }
+
+        //get class list
+        $cDataSet = Programs::getAllActiveClass();
+        $classAr = [];
+        while($row = $cDataSet->fetch_assoc())
+        {
+            $classAr[$row['class_id']] = $row['class_name'];
+        }
+
+        // var_dump($trainersAr); exit;
+        $_SESSION['classData'] = $classAr;
+        $_SESSION['trainersData'] = $trainersAr;
+        $_SESSION['sessionData'] = $sessionData;
 
         header("Location:../cms/view/class-session/updateClassSession.php");
         exit;
@@ -217,7 +247,7 @@ break;
 break;
 
 /**  
- * Update class details 
+ * Update class session details 
  * **/
 
     case "Update":
@@ -238,75 +268,95 @@ break;
             exit;
         }
     
-        $memberID=$_POST['class_id'];
+        $classSessionID=$_POST['class_session_id'];
 
-        $className=$_POST['class_name'];
-        if (empty($className)) {
-            $msg = json_encode(array('title'=>'Warning','message'=> 'Class Name can not be empty','type'=>'warning'));
-            $msg = base64_encode($msg);
-            header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
-            exit;
-        }
-        $color=$_POST['color'];
-        if (empty($color)) {
-            $msg = json_encode(array('title'=>'Warning','message'=> 'Color can not be empty','type'=>'warning'));
-            $msg = base64_encode($msg);
-            header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
-            exit;
-        }
-        $description=$_POST['description'];
-        if (empty($description)) {
-            $msg = json_encode(array('title'=>'Warning','message'=> 'Description can not be empty','type'=>'warning'));
+        $sessionName=$_POST['session_name'];
+
+        if (empty($sessionName)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Session Name can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
             header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
             exit;
         }
 
-        $tmp = $_FILES['avatar'];
-        if(!empty($tmp['name'])){
-            // print_r($tmp); exit;
-            $file = $tmp['name'];
-            $file_loc = $tmp['tmp_name'];
-            $file_size = $tmp['size'];
-            $file_type = $tmp['type'];
+        $class=$_POST['class'];
 
-            $ext = pathinfo($file, PATHINFO_EXTENSION);
-            $imgName = "IMG_".$classSessionID.".".$ext;      
+        if (empty($class)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Class name can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
+            exit;
+        }
+        $day=$_POST['day'];
+        if (empty($day)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Day can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
+            exit;
         }
 
-        if(!empty($tmp['name'])){
-            if (!file_exists('../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY)) {
+        $startTime=$_POST['start_time'];
 
-                mkdir('../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY, 0777, true);
-            }
-    
-            move_uploaded_file($file_loc,'../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY.$file);
+        if (empty($startTime)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Start time can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
+            exit;
+        }
+        // if (!preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $startTime)) {
+        //     $msg = json_encode(array('title'=>'Warning','message'=> 'Start time incorrect format','type'=>'warning'));
+        //     $msg = base64_encode($msg);
+        //     header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
+        //     exit;
+        // }
+
+        $endTime=$_POST['end_time'];
+
+        if (empty($endTime)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'End time can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
+            exit;
+        }
+        // if (!preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $endTime)) {
+        //     $msg = json_encode(array('title'=>'Warning','message'=> 'End time incorrect format','type'=>'warning'));
+        //     $msg = base64_encode($msg);
+        //     header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
+        //     exit;
+        // }
+
+        if($startTime > $endTime){
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Wrong start time and end time','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
+            exit;
+        }
+
+        $instructor=$_POST['instructor'];
+
+        if (empty($instructor)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Instructor can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
+            exit;
         }
        
-        if(Programs::checkUpdateClassName($className, $classSessionID)){
+        if(Session::checkUpdateSessionName($sessionName, $classSessionID)){
 
-            // upload the image to a temp folder
-
-            if(!empty($imgName)){
-                if (!file_exists('../'.PATH_IMAGE.PATH_CLASS_IMAGE)) {
-    
-                    mkdir('../'.PATH_IMAGE.PATH_CLASS_IMAGE, 0777, true);
-                }
-
-                rename("../".PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY.$file, "../".PATH_IMAGE.PATH_CLASS_IMAGE.$imgName);
-            }
             // var_dump($imgName); exit;
             $dataAr = [
-                'name' => $className,
-                'description' => $description,
-                'color' => $color,
-                'img' => (!empty($imgName)) ? $imgName : NULL,
+                'name' => $sessionName,
+                'class' => $class,
+                'day' => $day,
+                'start_time' => $startTime,
+                'end_time' => $endTime,
+                'instructor' => $instructor,
                 'id' => $classSessionID
             ];
              //update class
-            $result=Programs::updateClass($dataAr);
+            $result=Session::updateClassSession($dataAr);
             if($result == true){
-                $msg = json_encode(array('title'=>'Success :','message'=> 'Class has been updated','type'=>'success'));
+                $msg = json_encode(array('title'=>'Success :','message'=> 'Class session has been updated','type'=>'success'));
                 $msg = base64_encode($msg);
                 header("Location:../cms/view/class-session/index.php?msg=$msg");
                 exit;
@@ -319,7 +369,7 @@ break;
     
     
         }else {
-            $msg = json_encode(array('title'=>'Warning','message'=> 'Class name already exists','type'=>'warning'));
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Class session name already exists','type'=>'warning'));
             $msg = base64_encode($msg);
             header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
             exit;
@@ -328,7 +378,7 @@ break;
 break;
 
 /**
- * View Class
+ * View Class session
  */ 
     case "View":
             

@@ -228,7 +228,7 @@ break;
             exit;
         }
     
-        $memberID=$_POST['class_id'];
+        $classID=$_POST['class_id'];
 
         $className=$_POST['class_name'];
         if (empty($className)) {

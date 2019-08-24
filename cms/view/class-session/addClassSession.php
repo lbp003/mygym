@@ -29,8 +29,8 @@ include '../../layout/header.php'; ?>
                         <input type="text" class="form-control is-valid" id="session_name" name="session_name" aria-describedby="session_name" placeholder="Session Name" required>
                     </div>
                     <div class="form-group col-6">
-                        <label for="class_name">Class</label>
-                        <select id="class_name" name="class_name" class="form-control">
+                        <label for="class">Class</label>
+                        <select id="class" name="class" class="form-control">
                             <option selected>Choose...</option>
                             <?php foreach($classData as $key => $val){?>
                                 <option value="<?php echo $key?>"><?php echo $val?></option>
@@ -86,67 +86,42 @@ include '../../layout/header.php'; ?>
             rules: {
                 class_name: "required",
                 day: "required", 
-                session_name: {
-					required: true,
-					email: true,
-                    // remote: {
-                    //     url: '../../../controller/memberController.php?status=checkEmail',
-                    //     type: 'post',
-                    //     dataType: 'json',
-                    //     data: {
-                    //         email: function(){
-                    //             return $("#email").val();
-                    //         }
-                    //     }
-                    // }
-				},
-                dob: {
-                    required: true,
-                    date: true
+                // session_name: {
+				// 	required: true,
+				// 	session_name: true,
+                //     remote: {
+                //         url: '../../../controller/classSessionController.php?status=checkSessionName',
+                //         type: 'post',
+                //         data: {
+                //             session_name: function(){
+                //                 return $("#session_name").val();
+                //             }
+                //         }
+                //     }
+				// },
+                start_time: {
+                    required: true
                 },
-                gender: "required",
-                nic: "required",
-                phone: {
-                    required: true,
-                    digits: true,
-                    minlength: 10
+                end_time: {
+                    required: function(element) {
+                        return $("#start_time").val() < $("#end_time").val();
+                    }
                 },
-                package: "required",
-                address: "required",
-                membership_number: "required"
+                instructor: "required"
             },
             messages: {
-                first_name: {
-                    required: "Please enter first name"
+                class_name: {
+                    required: "Please enter class name"
                 },
                 last_name: {
                     required: "Please enter last name"
                 },
-                email: {
-                    required: "Please enter email address",
-                    remote: function() { return $.validator.format("{0} is already taken", $("#email").val()) }
+                session_name: {
+                    required: "Please enter session name",
+                    remote: function() { return $.validator.format("{0} is already taken", $("#session_name").val()) }
                 },
-                dob: {
-                    required: "Please enter birth date"
-                },
-                gender: {
-                    required: "Please enter gender"
-                },
-                nic: {
-                    required: "Please enter NIC"
-                },
-                phone: {
-                    required: "Please enter phone",
-                    minlength: "Invalid phone number"
-                },
-                package: {
-                    required: "Please select a package"
-                },
-                address: {
-                    required: "Please enter address"
-                },
-                membership_number:{
-                    required: "Please enter membership number"
+                instructor: {
+                    required: "Please select a instructor"
                 }
             }
         });

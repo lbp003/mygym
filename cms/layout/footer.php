@@ -27,10 +27,10 @@
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.colVis.min.js"></script>  
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
     <script type="text/javascript" src="../../../public/plugin/bootbox/bootbox.min.js"></script>
-    <script type="text/javascript" src="../../../public/plugin/jquery-validation/jquery.form.min.js"></script>
     <script type="text/javascript" src="../../../public/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/additional-methods.js"></script>
+    <!-- JqueryValidation -->
+    <script type="text/javascript" src="../../../public/plugin/jquery-validation/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="../../../public/plugin/jquery-validation/additional-methods.min.js"></script>
     <!-- piexif.min.js is needed for auto orienting image files OR when restoring exif data in resized images and when you
     wish to resize images before upload. This must be loaded before fileinput.min.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.1/js/plugins/piexif.min.js" type="text/javascript"></script>

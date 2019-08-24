@@ -133,7 +133,8 @@ class Staff{
         $sql="  SELECT staff.email 
                 FROM staff 
                 WHERE staff.email='$email' 
-                AND staff.status != 'D'";
+                AND staff.status != 'D' 
+                LIMIT 1";
         $result=$con->query($sql);
         if($result->num_rows == 0){
             return true;
@@ -151,7 +152,8 @@ class Staff{
                 FROM staff 
                 WHERE staff.email='$email' 
                 AND staff.status != 'D'
-                AND staff.staff_id !='$staff_id'";
+                AND staff.staff_id !='$staff_id'
+                LIMIT 1";
         $result=$con->query($sql);
         if($result->num_rows == 0){
             return true;

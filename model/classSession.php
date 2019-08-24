@@ -1,6 +1,6 @@
 <?php
 
-class classSession{
+class Session{
 
        //class Schedule status
        CONST ACTIVE = "A";
@@ -31,22 +31,41 @@ class classSession{
         return $result;
     }
     
-    function addSchedule($training_id,$day,$stime,$etime,$color){
+    /** 
+	* Insert a new class session
+	* @return object $last_id
+	*/
+    function addClassSession($sessionName, $class, $day, $startTime, $endTime, $instructor, $status){
         
         $con=$GLOBALS['con']; 
-        $sql="INSERT INTO schedule VALUES('','$training_id','$day','$stime','$etime','$color','Active')";
-        $result=$con->query($sql);
-        $schedule_id=$con->insert_id;
-        return $schedule_id;
-        
-        
+        $stmt = $con->prepare("INSERT INTO class_session (class_session_name, class_id, day, start_time, end_time, instructor_id, status) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sisssis", $sessionName, $class, $day, $startTime, $endTime, $instructor, $status);
+        $stmt->execute();
+        $last_id = $con->insert_id;
+        if(isset($last_id) && !empty($last_id)){
+            return $last_id;
+        }else {
+            return false;
+        }
+            
     }
     
-    function updateSchedule($training_id,$day,$stime,$etime,$color,$schedule_id){
-        $con=$GLOBALS['con'];
-        $sql="UPDATE schedule SET training_id='$training_id',day='$day',start_time='$stime',end_time='$etime',color='$color' WHERE schedule_id='$schedule_id'";
-        $result=$con->query($sql);
+    /** 
+	* Update an existing class session
+	* @return object $result
+	*/
+    public static function updateClassSession($dataAr){
+        $con=$GLOBALS['con']; 
+        $sql = "UPDATE class_session SET class_session_name = ?, class_id = ?, day = ?, start_time = ?, end_time = ?, instructor_id = ? WHERE class_session_id = ?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("sisssii", $dataAr['name'], $dataAr['class'], $dataAr['day'], $dataAr['start_time'], $dataAr['end_time'], $dataAr['instructor'], $dataAr['id']);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;
     }
+   
 
     function activateSchedule($schedule_id){
         $con=$GLOBALS['con'];
@@ -66,6 +85,66 @@ class classSession{
         
         $con=$GLOBALS['con'];
         $sql="SELECT* FROM schedule s,trainings t WHERE s.training_id=t.training_id && schedule_id='$schedule_id'";
+        $result=$con->query($sql);
+        return $result;
+    }
+
+    /** 
+	* Check class session name for  add new class
+	* @return object $result
+	*/
+    public static function checkSessionName($session_name){
+        $con=$GLOBALS['con'];
+        $sql="  SELECT class_session.class_name 
+                FROM class_session 
+                WHERE class_session.class_session_name='$session_name' 
+                AND class_session.status != 'D'
+                LIMIT 1";
+        $result=$con->query($sql);
+        if($result->num_rows == 0){
+            return true;
+        }
+        return false;      
+    }
+
+    /** 
+	* Check class session name for update an existing class
+	* @return object $result
+	*/
+    public static function checkUpdateSessionName($session_name, $session_id){
+        $con=$GLOBALS['con'];
+        $sql="  SELECT class_session.class_session_name 
+                FROM class_session 
+                WHERE class_session.class_name='$session_name' 
+                AND class_session.status != 'D'
+                AND class_session.class_session_id != $session_id
+                LIMIT 1";
+        $result=$con->query($sql);
+        if($result->num_rows == 0){
+            return true;
+        }
+        return false;      
+    }
+
+    /** 
+	* Get the class data by class_session_id
+	* @return object $result
+	*/
+    public static function getClassSessionByID($class_session_id){
+        
+        $con=$GLOBALS['con'];
+        $sql="  SELECT
+                    class_session.class_session_id,
+                    class_session.class_session_name,
+                    class_session.class_id,
+                    class_session.day,
+                    class_session.start_time,
+                    class_session.end_time,
+                    class_session.instructor_id,
+                    class_session.status
+                FROM class_session 
+                WHERE class_session.class_session_id = '$class_session_id'
+                AND class_session.status != 'D'";
         $result=$con->query($sql);
         return $result;
     }

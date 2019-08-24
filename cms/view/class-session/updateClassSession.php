@@ -1,177 +1,135 @@
-<!--- header start ---->
-<?php include '../common/adHeader.php'; ?>
-<?php include '../model/trainingModel.php';?>
-<?php include '../model/scheduleModel.php';?>
-<!--- header end ---->
+<!--- header  ---->
 <?php
-    $userDetails=$_SESSION['userDetails'];
-    $role_id=$userDetails['role_id'];
-    
-    $objT = new trainings();    
-    $reT = $objT->displayAllTrainings();
-    
-    $objSc = new schedule();  
-    $schedule_id=$_REQUEST['schedule_id']; //Request schedule_id
-    $reSc = $objSc->displaySchedule($schedule_id);
-    $rowSch = $reSc->fetch_assoc();
-    
-    $days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-//    $obm = new CommonFun();
-//    $resultm=$obm->viewRoleModule($role_id);
-    //echo $userDetails['gender'].$userDetails['dob'];
-    //print_r($resultm);
-    
-?>
+include '../../layout/header.php'; ?>
 <?php 
-//    $objRo = new CommonFun();
-//    $resultRo=$objRo->viewRole();
-//    $_SESSION['resultRo']=$resultRo;
-//    //print_r($resultRo);
-//?>
-<body onload="startTime()">
-        <!---navbar starting ---------->
-        <?php include '../common/navBar.php';?> 
-        <!---navbar ending ---------->
-                <!--- breadcrumb starting--------->
-        <div class="container-fluid">
-                <div class="row">
-                    <ol class="breadcrumb" style="background-color:#2f2f2f">
-                        <li><a href="Dashboard.php" >Dashboard</a></li>
-                        <li><a href="schedule.php" >Schedule</a></li>
-                        <li><a href="#" class="active">Update time slot</a></li>
-                    </ol>
+    $trainersData = $_SESSION['trainersData'];
+    $classData = $_SESSION['classData'];
+    $sessionData = $_SESSION['sessionData'];
+    // echo var_dump($classData); exit;
+
+    $daysAr = ['Mon' => 'Monday',
+                'Tue' => 'Tuesday',
+                'Wed' => 'Wednesday',
+                'Thu' => 'Thursday',
+                'Fri' => 'Friday',
+                'Sat' => 'Saturday',
+                'Sun' => 'Sunday'
+            ];
+
+?>
+<body>
+    <!---navbar starting ---------->
+    <?php include '../../layout/navBar.php';?> 
+    <!---navbar ending ---------->
+    <!--- breadcrumb starting--------->
+    <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item" aria-current="page"><a href="../dashboard/dashboard.php">Home</a></li>
+        <li class="breadcrumb-item" aria-current="page"><a href="index.php">Class Session</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="#">Update Class Session</a></li>
+    </ol>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <form method="post" id="addClassSession" name="addClassSession" action="../../../controller/classSessionController.php?status=Update" enctype="multipart/form-data">
+                <div class="d-flex flex-wrap">
+                    <div class="form-group col-6">
+                        <label for="session_name">Session Name</label>
+                        <input type="text" class="form-control is-valid" id="session_name" name="session_name" aria-describedby="session_name" placeholder="Session Name" required value="<?php echo $sessionData['class_session_name']?>">
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="class">Class</label>
+                        <select id="class" name="class" class="form-control">
+                            <option selected>Choose...</option>
+                            <?php foreach($classData as $key => $val){?>
+                                <option value="<?php echo $key?>" <?php echo ($key == $sessionData['class_id']) ? "selected" : NULL ?>><?php echo $val?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="day">Day</label>
+                        <select id="day" name="day" class="form-control">
+                            <?php foreach($daysAr as $key => $val){ ?>
+                            <option value="<?php echo $key;?>" <?php echo ($key == $sessionData['day']) ? "selected" : NULL ?>><?php echo $val;?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="start_time">Start Time</label>
+                        <input type="time" class="form-control" id="start_time" name="start_time" aria-describedby="start_time" value="<?php echo $sessionData['start_time']?>">
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="end_time">End Time</label>
+                        <input type="time" class="form-control" id="end_time" name="end_time" aria-describedby="end_time" placeholder="end_time" value="<?php echo $sessionData['end_time']?>"> 
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="Instructor">Instructor</label>
+                        <select id="instructor" name="instructor" class="form-control">
+                            <option selected>Choose...</option>
+                            <?php foreach($trainersData as $key => $val){?>
+                            <option value="<?php echo $key;?>" <?php echo ($key == $sessionData['instructor_id']) ? "selected" : NULL ?>><?php echo $val;?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                    <input type="hidden" name="class_session_id" value="<?php echo $sessionData['class_session_id']?>"> 
+                        <button type="submit" class="btn btn-primary mb-2 float-right">Submit</button>
+                    </div>
                 </div>
+                </form>
+            </div>
         </div>
-        <!--- breadcrumb ending--------->
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-3">
-                <!----Admin side nav starting------>
-            <?php include '../common/AdminSideNav.php'; ?>
-                <!----Admin side nav ending------>
-                </div>
-                <div class="col-md-9" style="background-color:rgb(250,250,250); ">
-                    <div>
-                        <h1 align="center" style="font-family: monospace; font-size: 60px;color: #ffff00;background-color:rgba(70,70,70,0.5);"><b>Update Time Slot</b></h1>
-                    </div><hr />
-                    <div class="row">
-                        <div class="col-md-12" style="text-align: center">
-                            <?php if(isset($_REQUEST['msg'])){ 
-                                $msg= base64_decode($_REQUEST['msg']);
-                            ?>
-                            <span class="alert alert-danger"><?php echo $msg; ?></span>
-                                
-                            <?php   } ?>
-                            
-                        </div>
-                        <div class="row">
-                        <div class="col-md-12">
-                            <div id="error_msg" style="text-align: center" >&nbsp;</div>
-                            <div>&nbsp;</div>
-                        </div>
-                        </div>
-                    </div><br />
-                    <form method="post" name="UpdateTimeSlot" action="../controller/scheduleController.php?status=Update&schedule_id=<?php echo $schedule_id ?>" enctype="multipart/form-data">
-                        <div class="col-md-3">&nbsp;</div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="training">Training program</label>
-                                <select class="form-control" id="training" name="training">
-                                  <?php while($rowT=$reT->fetch_assoc()){
-                                      if($rowT['training_id']==$rowSch['training_id']){?>
-                                  <option value="<?php echo $rowT['training_id'];?>" selected><?php echo $rowT['training_name'];?></option>
-                                  <?php }else{ ?>
-                                  <option value="<?php echo $rowT['training_id'];?>"><?php echo $rowT['training_name'];?></option>
-                                  <?php   } } ?>
-                                </select>
-                            </div>
-                             <div class="form-group">
-                                <label for="day">Day</label>
-                                <select class="form-control" id="day" name="day">
-                                    <option>Select a day</option>
-                                    <?php foreach ($days as $value) { 
-                                        if($rowSch['day'] == $value){?>                                         
-                                    <option value="<?php echo $value?>" selected><?php echo $value?></option>
-                                        <?php }else{ 
-                                            if($rowSch['day']){?>
-                                    <option value="<?php echo $value?>" style="display: none"><?php echo $value?></option>
-                                        <?php}else{?>
-                                    <option value="<?php echo $value?>"><?php echo $value?></option>
-                                    <?php }}}?>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="start_time">Start Time</label>
-                                <input type="time" class="form-control" id="stime" name="stime" value="<?php echo $rowSch['start_time']?>">
-                            </div>
-                            <div class="form-group">
-                                <label for="end_time">End Time</label>
-                                <input type="time" class="form-control" id="etime" name="etime" value="<?php echo $rowSch['end_time']?>">
-                            </div>
-                            <div class="form-group">
-                                <label for="color">Background Color</label>
-                                <input type="color" class="form-control" value="#577f92" id="color" name="color">
-                            </div>
-                        </div>
-                        <div class="col-md-3">&nbsp;</div>
-                        <div class="col-md-12">
-                            <div class="row">
-                                <div class="col-md-4">&nbsp;</div>
-                            <div class="col-md-4"><br /><br />
-                                <button class="btn btn-lg btn-danger btn-block" name="reset" type="reset" value="Reset">Reset</button>
-                                <button class="btn btn-lg btn-info btn-block" name="submit" type="submit" value="Submit">Submit</button>
-                            </div>
-                            <div class="col-md-4">&nbsp;</div>
-                        </div>
-                        </div>                       
-                    </form>
-                </div>
-        </div>
-        </div><br />
-<!---- Footer start---->
-<?php include '../common/adFooter.php'; ?>
-<!---- Footer end------>
+    </div>
+<!--- footer  ---->
+<?php include '../../layout/footer.php';?>
+
 <script type="text/javascript">
-    
     $(document).ready(function(){
-        $('form').submit(function(){
-            
-            var training = $('#training').val();
-            var day = $('#day').val();
-            var stime = $('#stime').val();
-            var etime = $('#etime').val();
-            var color = $('#color').val();
-            
-           if(training==""){
-           $('#error_msg').text("Training program is empty");//To display error
-           $('#error_msg').addClass('alert-danger');
-           $('#training').focus();
-           return false;
-           }
-           if(day==""){
-           $('#error_msg').text("Day is empty");//To display error
-           $('#error_msg').addClass('alert-danger');
-           $('#day').focus();
-           return false; //
-           }
-           if(stime==""){
-           $('#error_msg').text("Start time is empty");//To display error
-           $('#error_msg').addClass('alert-danger');
-           $('#stime').focus();
-           return false; //
-           }
-           if(etime==""){
-           $('#error_msg').text("End time is empty");//To display error
-           $('#error_msg').addClass('alert-danger');
-           $('#etime').focus();
-           return false; //
-           }
-           if(color==""){
-           $('#error_msg').text("End time is empty");//To display error
-           $('#error_msg').addClass('alert-danger');
-           $('#etime').focus();
-           return false; //
-           }
-               });
+
+        // Form validation
+        $('#addClassSession').validate({
+            rules: {
+                class_name: "required",
+                day: "required", 
+                // session_name: {
+				// 	required: true,
+				// 	session_name: true,
+                //     remote: {
+                //         url: '../../../controller/classSessionController.php?status=checkUpdateSessionName',
+                //         type: 'post',
+                //         data: {
+                //             session_name: function(){
+                //                 return $("#session_name").val();
+                //             }
+                //         }
+                //     }
+				// },
+                start_time: {
+                    required: true
+                },
+                end_time: {
+                    required: function(element) {
+                        return $("#start_time").val() < $("#end_time").val();
+                    }
+                },
+                instructor: "required"
+            },
+            messages: {
+                class_name: {
+                    required: "Please enter class name"
+                },
+                last_name: {
+                    required: "Please enter last name"
+                },
+                session_name: {
+                    required: "Please enter session name",
+                    remote: function() { return $.validator.format("{0} is already taken", $("#session_name").val()) }
+                },
+                instructor: {
+                    required: "Please select a instructor"
+                }
+            }
+        });
     });
 </script>

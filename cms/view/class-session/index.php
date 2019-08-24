@@ -3,7 +3,10 @@
 <!--- header end ---->
 <?php include '../../../model/classSession.php'; ?>
 <?php 
-$allClassSession = classSession::displayAllClassSession();
+// $day = "sat";
+// $jd=gregoriantojd();
+// echo date('w', strtotime($day)); exit;
+$allClassSession = Session::displayAllClassSession();
 // print_r($allClassSession); exit;
 ?>
 <body>
@@ -41,9 +44,9 @@ $allClassSession = classSession::displayAllClassSession();
                         $count++;
                         
                         
-                        if($row['status']==classSession::ACTIVE){
+                        if($row['status']==Session::ACTIVE){
                             $status="Active";
-                        }elseif($row['status']==classSession::INACTIVE){
+                        }elseif($row['status']==Session::INACTIVE){
                             $status="Inactive";
                         }
 
@@ -53,21 +56,21 @@ $allClassSession = classSession::displayAllClassSession();
                     <td><?php echo ucwords($row['class_name']); ?></td>
                     <td><?php echo ucwords($row['trainer_name']); ?></td>
                     <td><?php echo $row['day']; ?></td>
-                    <td><?php echo $row['start_time']; ?></td>
-                    <td><?php echo $row['end_time']; ?></td>
-                    <td><span class="badge <?php if($row['status']==classSession::ACTIVE){echo "badge-success";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></td>
+                    <td><?php echo date('H:i',strtotime($row['start_time'])); ?></td>
+                    <td><?php echo date('H:i',strtotime($row['end_time'])); ?></td>
+                    <td><span class="badge <?php if($row['status']==Session::ACTIVE){echo "badge-success";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></td>
                     <td>
-                            <a data-toggle="tooltip" data-placement="top" title="View" href="../../controller/classSessionController.php?classSession_id=<?php echo $row['classSession_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
-                            <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../controller/classSessionController.php?classSession_id=<?php echo $row['classSession_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
+                            <a data-toggle="tooltip" data-placement="top" title="View" href="../../controller/classSessionController.php?class_session_id=<?php echo $row['class_session_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
+                            <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../../controller/classSessionController.php?class_session_id=<?php echo $row['class_session_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
                         <?php 
 
                             $classSessionID = $row['class_session_id'];
 
-                            if($row['status']==classSession::ACTIVE){ ?>
-                                <a id="deactivate" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../controller/classSessionController.php?classSession_id=<?php echo $classSessionID;?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
+                            if($row['status']==Session::ACTIVE){ ?>
+                                <a id="deactivate" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../controller/classSessionController.php?class_session_id=<?php echo $classSessionID;?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
                             <?php
-                            }elseif($row['status']==classSession::INACTIVE){ ?>
-                                <a id="activate" data-toggle="tooltip" data-placement="top" title="Activate" href="../../controller/classSessionController.php?classSession_id=<?php echo $classSessionID;?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
+                            }elseif($row['status']==Session::INACTIVE){ ?>
+                                <a id="activate" data-toggle="tooltip" data-placement="top" title="Activate" href="../../controller/classSessionController.php?class_session_id=<?php echo $classSessionID;?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
                             <?php
                             }
                         ?>

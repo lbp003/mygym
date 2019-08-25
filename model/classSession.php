@@ -66,29 +66,54 @@ class Session{
          return true;
     }
    
-
-    function activateSchedule($schedule_id){
-        $con=$GLOBALS['con'];
-        $sql="UPDATE schedule SET schedule_status='Active' WHERE schedule_id='$schedule_id'";
-        $result=$con->query($sql);
-        return $result;
-    }
-    
-    function deactivateSchedule($schedule_id){
-        $con=$GLOBALS['con'];
-        $sql="UPDATE schedule SET schedule_status='Deactive' WHERE schedule_id='$schedule_id'";
-        $result=$con->query($sql);
-        return $result;
-    }
-            
-    function displaySchedule($schedule_id){
-        
-        $con=$GLOBALS['con'];
-        $sql="SELECT* FROM schedule s,trainings t WHERE s.training_id=t.training_id && schedule_id='$schedule_id'";
-        $result=$con->query($sql);
-        return $result;
+    /** 
+	* Activate an class session
+	* @return object $result
+	*/
+    public static function activateClassSession($class_session_id){
+        $con=$GLOBALS['con']; 
+        $sql = "UPDATE class_session SET status = ? WHERE class_session_id = ?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("si", $status = Session::ACTIVE, $class_session_id);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;
     }
 
+    /** 
+	* Deactivate a class session
+	* @return object $result
+	*/
+    public static function deactivateClassSession($class_session_id){
+        $con=$GLOBALS['con']; 
+        $sql = "UPDATE class_session SET status=? WHERE class_session_id=?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("si", $status = Session::INACTIVE, $class_session_id);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;
+    }
+
+    /** 
+	* Delete a class session
+	* @return object $result
+	*/
+    public static function deleteClassSession($class_session_id){
+        $con=$GLOBALS['con']; 
+        $sql = "UPDATE class_session SET status=? WHERE class_session_id=?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("si", $status = Session::DELETED, $class_session_id);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;
+    }
+   
     /** 
 	* Check class session name for  add new class
 	* @return object $result

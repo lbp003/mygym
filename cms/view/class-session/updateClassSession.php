@@ -66,7 +66,7 @@ include '../../layout/header.php'; ?>
                     <div class="form-group col-6">
                         <label for="Instructor">Instructor</label>
                         <select id="instructor" name="instructor" class="form-control">
-                            <option selected>Choose...</option>
+                            <option>Choose...</option>
                             <?php foreach($trainersData as $key => $val){?>
                             <option value="<?php echo $key;?>" <?php echo ($key == $sessionData['instructor_id']) ? "selected" : NULL ?>><?php echo $val;?></option>
                             <?php } ?>

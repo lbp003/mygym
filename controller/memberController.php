@@ -516,6 +516,16 @@ break;
 
             $_SESSION['memData'] = $memberData;
 
+            //get packages
+            $dataSet = Package::getActivePackage();
+            $packagAr = [];
+            while($row = $dataSet->fetch_assoc())
+            {
+                $packagAr[$row['package_id']] = $row['package_name'];
+            }
+            
+            $_SESSION['pacData'] = $packagAr;
+
             header("Location:../cms/view/member/viewMember.php");
             exit;
         }else {

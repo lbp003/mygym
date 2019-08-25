@@ -398,13 +398,34 @@ break;
             exit;
         }
 
-        $classSessionID = $_REQUEST['class_id'];
-        if(!empty($classSessionID)){
-            //get employee details
-            $dataSet = Programs::getClassByID($classSessionID);
-            $clsData = $dataSet->fetch_assoc();
+        $classSessionID = $_REQUEST['class_session_id'];
+            if(!empty($classSessionID)){
+                
+            //get class details
+            $dataSet = Session::getClassSessionByID($classSessionID);       
+            $sessionData = $dataSet->fetch_assoc();
+            // var_dump($classData); exit;
 
-            $_SESSION['clsData'] = $clsData;
+            //get trainers list
+            $tDataSet = Staff::getTrainers();
+            $trainersAr = [];
+            while($row = $tDataSet->fetch_assoc())
+            {
+                $trainersAr[$row['staff_id']] = $row['trainer_name'];
+            }
+
+            //get class list
+            $cDataSet = Programs::getAllActiveClass();
+            $classAr = [];
+            while($row = $cDataSet->fetch_assoc())
+            {
+                $classAr[$row['class_id']] = $row['class_name'];
+            }
+
+            // var_dump($trainersAr); exit;
+            $_SESSION['classData'] = $classAr;
+            $_SESSION['trainersData'] = $trainersAr;
+            $_SESSION['sessionData'] = $sessionData;
 
             header("Location:../cms/view/class-session/viewClassSession.php");
             exit;
@@ -439,11 +460,11 @@ break;
         exit;
     }
 
-    $classSessionID=$_REQUEST['class_id'];
+    $classSessionID=$_REQUEST['class_session_id'];
 
-    $response = Programs::activateClass($classSessionID);
+    $response = Session::activateClassSession($classSessionID);
     if($response == true){
-        $msg = json_encode(array('title'=>'Success :','message'=> 'Class has been activated','type'=>'success'));
+        $msg = json_encode(array('title'=>'Success :','message'=> 'Class session has been activated','type'=>'success'));
         $msg = base64_encode($msg);
         header("Location:../cms/view/class-session/index.php?msg=$msg");
         exit;
@@ -477,11 +498,11 @@ break;
         exit;
     }
 
-    $classSessionID=$_REQUEST['class_id'];
+    $classSessionID=$_REQUEST['class_session_id'];
 
-    $response = Programs::deactivateClass($classSessionID);
+    $response = Session::deactivateClassSession($classSessionID);
     if($response == true){
-        $msg = json_encode(array('title'=>'Success :','message'=> 'Class has been deactivated','type'=>'success'));
+        $msg = json_encode(array('title'=>'Success :','message'=> 'Class session has been deactivated','type'=>'success'));
         $msg = base64_encode($msg);
         header("Location:../cms/view/class-session/index.php?msg=$msg");
         exit;
@@ -516,9 +537,9 @@ break;
             exit;
         }
 
-        $classSessionID=$_REQUEST['class_id'];
+        $classSessionID=$_REQUEST['class_session_id'];
 
-        $response = Programs::deleteClass($classSessionID);
+        $response = Session::deleteClassSession($classSessionID);
         if($response == true){
             $msg = json_encode(array('title'=>'Success :','message'=> 'Class has been deleted','type'=>'success'));
             $msg = base64_encode($msg);

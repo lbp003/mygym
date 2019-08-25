@@ -60,21 +60,21 @@ $allClassSession = Session::displayAllClassSession();
                     <td><?php echo date('H:i',strtotime($row['end_time'])); ?></td>
                     <td><span class="badge <?php if($row['status']==Session::ACTIVE){echo "badge-success";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></td>
                     <td>
-                            <a data-toggle="tooltip" data-placement="top" title="View" href="../../controller/classSessionController.php?class_session_id=<?php echo $row['class_session_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
+                            <a data-toggle="tooltip" data-placement="top" title="View" href="../../../controller/classSessionController.php?class_session_id=<?php echo $row['class_session_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
                             <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../../controller/classSessionController.php?class_session_id=<?php echo $row['class_session_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
                         <?php 
 
                             $classSessionID = $row['class_session_id'];
 
                             if($row['status']==Session::ACTIVE){ ?>
-                                <a id="deactivate" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../controller/classSessionController.php?class_session_id=<?php echo $classSessionID;?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
+                                <a id="deactivate" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../../controller/classSessionController.php?class_session_id=<?php echo $classSessionID;?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
                             <?php
                             }elseif($row['status']==Session::INACTIVE){ ?>
-                                <a id="activate" data-toggle="tooltip" data-placement="top" title="Activate" href="../../controller/classSessionController.php?class_session_id=<?php echo $classSessionID;?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
+                                <a id="activate" data-toggle="tooltip" data-placement="top" title="Activate" href="../../../controller/classSessionController.php?class_session_id=<?php echo $classSessionID;?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
                             <?php
                             }
                         ?>
-                            <a id="delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash text-danger"></i></a>
+                            <a id="delete" data-toggle="tooltip" data-placement="top" title="Delete" href="../../../controller/classSessionController.php?class_session_id=<?php echo $classSessionID;?>&status=Delete"><i class="fas fa-trash text-danger"></i></a>
                     </td>
                 </tr>
                     <?php } ?>

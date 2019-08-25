@@ -2,7 +2,7 @@
 include_once '../config/dbconnection.php';
 include_once '../config/session.php';
 include_once '../config/global.php';
-include_once '../model/class.php';
+include_once '../model/equipment.php';
 include_once '../model/role.php';
 
 $user=$_SESSION['user'];
@@ -10,12 +10,12 @@ $auth = new Role();
 
 $status=$_REQUEST['status'];
 
-$objpro= new Programs();
+$objequ= new Equipment();
 
 switch ($status){
    
 /**
- * Redirect to Add Member
+ * Redirect to Add Equipment
  */ 
 
     case "Add":
@@ -28,21 +28,21 @@ switch ($status){
         exit;
     }
 
-    if(!$auth->checkPermissions(array(Role::MANAGE_CLASS)))
+    if(!$auth->checkPermissions(array(Role::MANAGE_EQUIPMENT)))
     {
         $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
         $msg = base64_encode($msg);
-        header("Location:../cms/view/class/index.php?msg=$msg");
+        header("Location:../cms/view/equipment/index.php?msg=$msg");
         exit;
     }
 
-    header("Location:../cms/view/class/addClass.php");
+    header("Location:../cms/view/equipment/addEquipment.php");
 
 
 break;
 
 /**
- * Insert a new gym class
+ * Insert a new gym equipment
  */
     
     case "Insert":
@@ -55,46 +55,39 @@ break;
             exit;
         }
 
-        if(!$auth->checkPermissions(array(Role::MANAGE_CLASS)))
+        if(!$auth->checkPermissions(array(Role::MANAGE_EQUIPMENT)))
         {
             $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class/index.php?msg=$msg");
+            header("Location:../cms/view/equipment/index.php?msg=$msg");
             exit;
         }
       
-        $className=$_POST['class_name'];
-        if (empty($className)) {
-            $msg = json_encode(array('title'=>'Warning','message'=> 'Class Name can not be empty','type'=>'warning'));
+        $equipmentName=$_POST['equipment_name'];
+
+        if (empty($equipmentName)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Equipment Name can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class/addClass.php?msg=$msg");
+            header("Location:../cms/view/equipment/addEquipment.php?msg=$msg");
             exit;
         }
-        $color=$_POST['color'];
-        if (empty($color)) {
-            $msg = json_encode(array('title'=>'Warning','message'=> 'Color can not be empty','type'=>'warning'));
-            $msg = base64_encode($msg);
-            header("Location:../cms/view/class/addClass.php?msg=$msg");
-            exit;
-        }
+ 
         $description=$_POST['description'];
+
         if (empty($description)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Description can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class/addClass.php?msg=$msg");
+            header("Location:../cms/view/equipment/addEquipment.php?msg=$msg");
             exit;
         }
 
         $tmp = $_FILES['avatar'];
         if(!empty($tmp['name'])){
-            // print_r($tmp); exit;
             $file = $tmp['name'];
             $file_loc = $tmp['tmp_name'];
             $file_size = $tmp['size'];
             $file_type = $tmp['type'];
              
-            // $ext = pathinfo($file, PATHINFO_EXTENSION);
-            // $imgName = "IMG_".$memberID.".".$ext;
         }
 
         if(!empty($tmp['name'])){
@@ -106,55 +99,55 @@ break;
             move_uploaded_file($file_loc,'../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY.$file);
         }
        
-        $status = Programs::ACTIVE;
+        $status = Equipment::ACTIVE;
 
-        if(Programs::checkClassName($className)){
-              //add new class
-            $classID=$objpro->addClass($className, $color, $description, $status);        
+        if(Equipment::checkEquipmentName($equipmentName)){
+              //add new equipment
+            $equipmentID=$objequ->addEquipment($equipmentName, $description, $status);        
             
-            if($classID){
+            if($equipmentID){
                 // echo "lbp"; exit;
-                if (!file_exists('../'.PATH_IMAGE.PATH_CLASS_IMAGE)) {
+                if (!file_exists('../'.PATH_IMAGE.PATH_EQUIPMENT_IMAGE)) {
     
-                    mkdir('../'.PATH_IMAGE.PATH_CLASS_IMAGE, 0777, true);
+                    mkdir('../'.PATH_IMAGE.PATH_EQUIPMENT_IMAGE, 0777, true);
                 }
         
                 $ext = pathinfo($file, PATHINFO_EXTENSION);
-                $imgName = "IMG_".$classID.".".$ext;
+                $imgName = "IMG_".$equipmentID.".".$ext;
 
-                // Add class image
-                if(Programs::addClassImage($classID, $imgName)){
+                // Add equipment image
+                if(Equipment::addEquipmentImage($equipmentID, $imgName)){
 
-                    rename("../".PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY.$file, "../".PATH_IMAGE.PATH_CLASS_IMAGE.$imgName);
+                    rename("../".PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY.$file, "../".PATH_IMAGE.PATH_EQUIPMENT_IMAGE.$imgName);
 
-                    $msg = json_encode(array('title'=>'Success','message'=>'Class registration successful','type'=>'success'));
+                    $msg = json_encode(array('title'=>'Success','message'=>'Equipment registration successful','type'=>'success'));
                     $msg = base64_encode($msg);
-                    header("Location:../cms/view/class/index.php?msg=$msg");
+                    header("Location:../cms/view/equipment/index.php?msg=$msg");
                     exit;
                     
                 }else{
-                    $msg = json_encode(array('title'=>'Warning','message'=> 'Failed to add the class image','type'=>'warning'));
+                    $msg = json_encode(array('title'=>'Warning','message'=> 'Failed to add the equipment image','type'=>'warning'));
                     $msg = base64_encode($msg);
-                    header("Location:../cms/view/class/index.php?msg=$msg");
+                    header("Location:../cms/view/equipment/index.php?msg=$msg");
                     exit; 
                 }
             }else{
-                $msg = json_encode(array('title'=>'Danger','message'=> 'Failed to add the class','type'=>'danger'));
+                $msg = json_encode(array('title'=>'Danger','message'=> 'Failed to add the equipment','type'=>'danger'));
                 $msg = base64_encode($msg);
-                header("Location:../cms/view/class/addClass.php?msg=$msg");
+                header("Location:../cms/view/equipment/addEquipment.php?msg=$msg");
                 exit;  
             }                  
         }else{
-            $msg = json_encode(array('title'=>'Warning','message'=> 'Class name already exists','type'=>'warning'));
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Equipment name already exists','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class/addClass.php?msg=$msg");
+            header("Location:../cms/view/equipment/addEquipment.php?msg=$msg");
             exit;
         }    
                 
 break;
 
 /**
- *  Get the class details for Update class 
+ *  Get the equipment details for Update equipment 
  **/ 
 
     case "Edit":
@@ -167,35 +160,36 @@ break;
         exit;
     }
 
-    if(!$auth->checkPermissions(array(Role::MANAGE_CLASS)))
+    if(!$auth->checkPermissions(array(Role::MANAGE_EQUIPMENT)))
     {
         $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
         $msg = base64_encode($msg);
-        header("Location:../cms/view/class/index.php?msg=$msg");
+        header("Location:../cms/view/equipment/index.php?msg=$msg");
         exit;
     }
 
-    $classID = $_REQUEST['class_id'];
-    if(!empty($classID)){
-        //get class details
-        $dataSet = Programs::getClassByID($classID);       
-        $classData = $dataSet->fetch_assoc();
-        // var_dump($classData); exit;
-        $_SESSION['clsData'] = $classData;
+    $equipmentID = $_REQUEST['equipment_id'];
 
-        header("Location:../cms/view/class/updateClass.php");
+    if(!empty($equipmentID)){
+        //get equipment details
+        $dataSet = Equipment::getEquipmentByID($equipmentID);       
+        $equData = $dataSet->fetch_assoc();
+        // var_dump($classData); exit;
+        $_SESSION['equData'] = $equData;
+
+        header("Location:../cms/view/equipment/updateEquipment.php");
         exit;
     }else {
         $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
         $msg = base64_encode($msg);
-        header("Location:../cms/view/class/index.php?msg=$msg");
+        header("Location:../cms/view/equipment/index.php?msg=$msg");
         exit;
     }
 
 break;
 
 /**  
- * Update class details 
+ * Update equipment details 
  * **/
 
     case "Update":
@@ -208,35 +202,30 @@ break;
             exit;
         }
 
-        if(!$auth->checkPermissions(array(Role::MANAGE_CLASS)))
+        if(!$auth->checkPermissions(array(Role::MANAGE_EQUIPMENT)))
         {
             $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class/index.php?msg=$msg");
+            header("Location:../cms/view/equipment/index.php?msg=$msg");
             exit;
         }
     
-        $classID=$_POST['class_id'];
+        $equipmentID=$_POST['equipment_id'];
 
-        $className=$_POST['class_name'];
-        if (empty($className)) {
-            $msg = json_encode(array('title'=>'Warning','message'=> 'Class Name can not be empty','type'=>'warning'));
+        $equipmentName=$_POST['equipment_name'];
+
+        if (empty($equipmentName)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Equipment Name can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class/updateClass.php?msg=$msg");
+            header("Location:../cms/view/equipment/updateEquipment.php?msg=$msg");
             exit;
         }
-        $color=$_POST['color'];
-        if (empty($color)) {
-            $msg = json_encode(array('title'=>'Warning','message'=> 'Color can not be empty','type'=>'warning'));
-            $msg = base64_encode($msg);
-            header("Location:../cms/view/class/updateClass.php?msg=$msg");
-            exit;
-        }
+
         $description=$_POST['description'];
         if (empty($description)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Description can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class/updateClass.php?msg=$msg");
+            header("Location:../cms/view/equipment/updateEquipment.php?msg=$msg");
             exit;
         }
 
@@ -249,7 +238,7 @@ break;
             $file_type = $tmp['type'];
 
             $ext = pathinfo($file, PATHINFO_EXTENSION);
-            $imgName = "IMG_".$classID.".".$ext;      
+            $imgName = "IMG_".$equipmentID.".".$ext;      
         }
 
         if(!empty($tmp['name'])){
@@ -261,37 +250,36 @@ break;
             move_uploaded_file($file_loc,'../'.PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY.$file);
         }
        
-        if(Programs::checkUpdateClassName($className, $classID)){
+        if(Equipment::checkUpdateEquipmentName($equipmentName, $equipmentID)){
 
             // upload the image to a temp folder
 
             if(!empty($imgName)){
-                if (!file_exists('../'.PATH_IMAGE.PATH_CLASS_IMAGE)) {
+                if (!file_exists('../'.PATH_IMAGE.PATH_EQUIPMENT_IMAGE)) {
     
-                    mkdir('../'.PATH_IMAGE.PATH_CLASS_IMAGE, 0777, true);
+                    mkdir('../'.PATH_IMAGE.PATH_EQUIPMENT_IMAGE, 0777, true);
                 }
 
-                rename("../".PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY.$file, "../".PATH_IMAGE.PATH_CLASS_IMAGE.$imgName);
+                rename("../".PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY.$file, "../".PATH_IMAGE.PATH_EQUIPMENT_IMAGE.$imgName);
             }
             // var_dump($imgName); exit;
             $dataAr = [
-                'name' => $className,
+                'name' => $equipmentName,
                 'description' => $description,
-                'color' => $color,
                 'img' => (!empty($imgName)) ? $imgName : NULL,
-                'id' => $classID
+                'id' => $equipmentID
             ];
-             //update class
-            $result=Programs::updateClass($dataAr);
+             //update equipment
+            $result=Equipment::updateEquipment($dataAr);
             if($result == true){
-                $msg = json_encode(array('title'=>'Success :','message'=> 'Class has been updated','type'=>'success'));
+                $msg = json_encode(array('title'=>'Success :','message'=> 'Equipment has been updated','type'=>'success'));
                 $msg = base64_encode($msg);
-                header("Location:../cms/view/class/index.php?msg=$msg");
+                header("Location:../cms/view/equipment/index.php?msg=$msg");
                 exit;
             }else {
                 $msg = json_encode(array('title'=>'Warning :','message'=> 'Update failed','type'=>'danger'));
                 $msg = base64_encode($msg);
-                header("Location:../cms/view/class/updateClass.php?msg=$msg");
+                header("Location:../cms/view/equipment/updateEquipment.php?msg=$msg");
                 exit;
             }
     
@@ -299,7 +287,7 @@ break;
         }else {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Class name already exists','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class/updateClass.php?msg=$msg");
+            header("Location:../cms/view/equipment/updateEquipment.php?msg=$msg");
             exit;
         }
             
@@ -318,35 +306,35 @@ break;
             exit;
         }
 
-        if(!$auth->checkPermissions(array(Role::VIEW_CLASS)))
+        if(!$auth->checkPermissions(array(Role::VIEW_EQUIPMENT)))
         {
             $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class/index.php?msg=$msg");
+            header("Location:../cms/view/equipment/index.php?msg=$msg");
             exit;
         }
 
-        $classID = $_REQUEST['class_id'];
-        if(!empty($classID)){
+        $equipmentID = $_REQUEST['equipment_id'];
+        if(!empty($equipmentID)){
             //get employee details
-            $dataSet = Programs::getClassByID($classID);
+            $dataSet = Equipment::getClassByID($equipmentID);
             $clsData = $dataSet->fetch_assoc();
 
             $_SESSION['clsData'] = $clsData;
 
-            header("Location:../cms/view/class/viewClass.php");
+            header("Location:../cms/view/equipment/viewClass.php");
             exit;
         }else {
             $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class/index.php?msg=$msg");
+            header("Location:../cms/view/equipment/index.php?msg=$msg");
             exit;
         }
 
 break;
 
 /**
- * Activate class 
+ * Activate equipment 
  * */ 
 
     case "Activate":
@@ -359,33 +347,33 @@ break;
         exit;
     }
     
-    if(!$auth->checkPermissions(array(Role::MANAGE_CLASS)))
+    if(!$auth->checkPermissions(array(Role::MANAGE_EQUIPMENT)))
     {
         $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
         $msg = base64_encode($msg);
-        header("Location:../cms/view/class/index.php?msg=$msg");
+        header("Location:../cms/view/equipment/index.php?msg=$msg");
         exit;
     }
 
-    $classID=$_REQUEST['class_id'];
+    $equipmentID=$_REQUEST['equipment_id'];
 
-    $response = Programs::activateClass($classID);
+    $response = Equipment::activateClass($equipmentID);
     if($response == true){
         $msg = json_encode(array('title'=>'Success :','message'=> 'Class has been activated','type'=>'success'));
         $msg = base64_encode($msg);
-        header("Location:../cms/view/class/index.php?msg=$msg");
+        header("Location:../cms/view/equipment/index.php?msg=$msg");
         exit;
     }else{
         $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
         $msg = base64_encode($msg);
-        header("Location:../cms/view/class/index.php?msg=$msg");
+        header("Location:../cms/view/equipment/index.php?msg=$msg");
         exit;
     }  
 
 break;
 
 /**
- * Dectivate class
+ * Dectivate equipment
  */ 
 
     case "Deactivate":
@@ -397,33 +385,33 @@ break;
         exit;
     }
     
-    if(!$auth->checkPermissions(array(Role::MANAGE_CLASS)))
+    if(!$auth->checkPermissions(array(Role::MANAGE_EQUIPMENT)))
     {
         $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
         $msg = base64_encode($msg);
-        header("Location:../cms/view/class/index.php?msg=$msg");
+        header("Location:../cms/view/equipment/index.php?msg=$msg");
         exit;
     }
 
-    $classID=$_REQUEST['class_id'];
+    $equipmentID=$_REQUEST['equipment_id'];
 
-    $response = Programs::deactivateClass($classID);
+    $response = Equipment::deactivateClass($equipmentID);
     if($response == true){
         $msg = json_encode(array('title'=>'Success :','message'=> 'Class has been deactivated','type'=>'success'));
         $msg = base64_encode($msg);
-        header("Location:../cms/view/class/index.php?msg=$msg");
+        header("Location:../cms/view/equipment/index.php?msg=$msg");
         exit;
     }else{
         $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
         $msg = base64_encode($msg);
-        header("Location:../cms/view/class/index.php?msg=$msg");
+        header("Location:../cms/view/equipment/index.php?msg=$msg");
         exit;
     }
         
 break;
 
 /**
- * Delete class
+ * Delete equipment
  */ 
 
     case "Delete":
@@ -436,26 +424,26 @@ break;
             exit;
         }
 
-        if(!$auth->checkPermissions(array(Role::MANAGE_CLASS)))
+        if(!$auth->checkPermissions(array(Role::MANAGE_EQUIPMENT)))
         {
             $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class/index.php?msg=$msg");
+            header("Location:../cms/view/equipment/index.php?msg=$msg");
             exit;
         }
 
-        $classID=$_REQUEST['class_id'];
+        $equipmentID=$_REQUEST['equipment_id'];
 
-        $response = Programs::deleteClass($classID);
+        $response = Equipment::deleteClass($equipmentID);
         if($response == true){
             $msg = json_encode(array('title'=>'Success :','message'=> 'Class has been deleted','type'=>'success'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class/index.php?msg=$msg");
+            header("Location:../cms/view/equipment/index.php?msg=$msg");
             exit;
         }else{
             $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class/index.php?msg=$msg");
+            header("Location:../cms/view/equipment/index.php?msg=$msg");
             exit;
         }
 
@@ -475,7 +463,7 @@ break;
             exit;
         }
 
-        if(!$auth->checkPermissions(array(Role::MANAGE_CLASS, Role::VIEW_CLASS)))
+        if(!$auth->checkPermissions(array(Role::MANAGE_EQUIPMENT, Role::VIEW_EQUIPMENT)))
         {
             $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
             $msg = base64_encode($msg);
@@ -483,7 +471,7 @@ break;
             exit;
         }
 
-        header("Location:../cms/view/class/");
+        header("Location:../cms/view/equipment/");
 }
 
 ?>

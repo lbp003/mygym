@@ -200,7 +200,8 @@ class Staff{
                     CONCAT_WS(' ',staff.first_name,staff.last_name) AS trainer_name
                 FROM staff 
                 WHERE 1=1
-                AND staff.status != 'D' AND staff.staff_type = 'T'";
+                AND staff.status = 'A' 
+                AND staff.staff_type = 'T'";
         $result=$con->query($sql);
         return $result;
     }

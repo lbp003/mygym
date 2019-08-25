@@ -26,46 +26,159 @@ class Equipment{
         return $result;
     }
     
-    function addItem($item_name,$item_category,$qty,$unit_price,$created_user,$last_updated_user){
+    /** 
+	* Insert a new equipment
+	* @return object $last_id
+	*/
+    function addEquipment($equipmentName, $description, $status){
         
         $con=$GLOBALS['con']; 
-        $sql="INSERT INTO item VALUES('','$item_name','$item_category','$qty','$unit_price',NOW(),NOW(),'$created_user','$last_updated_user','Activate')";
-        $result=$con->query($sql);
-        $item_id=$con->insert_id;
-        return $item_id;           
+        $stmt = $con->prepare("INSERT INTO equipment (equipment_name, equipment_description, status) VALUES (?, ?, ?)");
+        $stmt->bind_param("sss", $equipmentName, $description, $status);
+        $stmt->execute();
+        $last_id = $con->insert_id;
+        if(isset($last_id) && !empty($last_id)){
+            return $last_id;
+        }else {
+            return false;
+        }
+            
+    }
+
+    /** 
+	* Add equipment image
+	* @return object $result
+	*/
+    public static function addEquipmentImage($equipment_id, $image){
+        $con=$GLOBALS['con']; 
+        $sql = "UPDATE equipment SET image = ? WHERE equipment_id = ?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("si", $image, $equipment_id);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;
     }  
-    function updateItem($item_name,$category_id,$qty,$unit_price,$last_updated_user,$item_id){
-        $con = $GLOBALS['con'];
-        $sql="UPDATE item SET item_name='$item_name',category_id='$category_id',qty='$qty',unit_price='$unit_price',last_updated_time=NOW(),last_updated_user='$last_updated_user' WHERE item_id='$item_id'";
-        $result=$con->query($sql);
-    }
-    
-    function activateItem($item_id){
-        $con=$GLOBALS['con'];
-        $sql="UPDATE item SET item_status='Activate' WHERE item_id='$item_id'";
-        $result=$con->query($sql);
-        return $result;
-    }
-    
-    function deactivateItem($item_id){
-        $con=$GLOBALS['con'];
-        $sql="UPDATE item  SET item_status='Deactivate' WHERE item_id='$item_id'";
-        $result=$con->query($sql);
-        return $result;
-    }
-    
-    function deleteItem($item_id){
-        $con=$GLOBALS['con'];
-        $sql="UPDATE item SET item_status='Deleted' WHERE item_id='$item_id'";
-        $result=$con->query($sql);
-        return $result;
-    }
-    function displayItem($item_id){
-        
-        $con=$GLOBALS['con'];
-        $sql="SELECT* FROM item i,category c WHERE i.category_id = c.category_id AND item_id='$item_id'";
-        $result=$con->query($sql);
-        return $result;
+
+    /** 
+	* Update an existing class
+	* @return object $result
+	*/
+    public static function updateClass($dataAr){
+        $con=$GLOBALS['con']; 
+        $sql = "UPDATE class SET class_name = ?, class_description = ?, color = ?, image = ? WHERE class_id = ?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("ssssi", $dataAr['name'], $dataAr['description'], $dataAr['color'], $dataAr['img'], $dataAr['id']);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;
     }
    
+    /** 
+	* Activate an class
+	* @return object $result
+	*/
+    public static function activateClass($class_id){
+        $con=$GLOBALS['con']; 
+        $sql = "UPDATE class SET status=? WHERE class_id=?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("si", $status = Programs::ACTIVE, $class_id);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;
+    }
+
+    /** 
+	* Deactivate a class
+	* @return object $result
+	*/
+    public static function deactivateClass($class_id){
+        $con=$GLOBALS['con']; 
+        $sql = "UPDATE class SET status=? WHERE class_id=?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("si", $status = Programs::INACTIVE, $class_id);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;
+    }
+
+    /** 
+	* Delete a class
+	* @return object $result
+	*/
+    public static function deleteClass($class_id){
+        $con=$GLOBALS['con']; 
+        $sql = "UPDATE class SET status=? WHERE class_id=?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("si", $status = Programs::DELETED, $class_id);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;
+    }
+
+    /** 
+	* Check equipment name for  add new equipment
+	* @return object $result
+	*/
+    public static function checkEquipmentName($equipmentName){
+        $con=$GLOBALS['con'];
+        $sql="  SELECT equipment.equipment_name 
+                FROM equipment 
+                WHERE equipment.equipment_name='$equipmentName' 
+                AND equipment.status != 'D'
+                LIMIT 1";
+        $result=$con->query($sql);
+        if($result->num_rows == 0){
+            return true;
+        }
+        return false;      
+    }
+
+    /** 
+	* Check equipment name for update an existing equipment
+	* @return object $result
+	*/
+    public static function checkUpdateEquipmentName($equipmentName, $equipment_id){
+        $con=$GLOBALS['con'];
+        $sql="  SELECT equipment.equipment_name 
+                FROM equipment 
+                WHERE equipment.equipment_name='$equipmentName' 
+                AND equipment.status != 'D'
+                AND equipment.equipment_id != $equipment_id
+                LIMIT 1";
+        $result=$con->query($sql);
+        if($result->num_rows == 0){
+            return true;
+        }
+        return false;      
+    }
+
+    /** 
+	* Get the equipment data by equipment_id
+	* @return object $result
+	*/
+    public static function getEquipmentByID($equipment_id){
+        
+        $con=$GLOBALS['con'];
+        $sql="  SELECT
+                    equipment.equipment_id,
+                    equipment.equipment_name,
+                    equipment.equipment_description,
+                    equipment.image,
+                    equipment.status
+                FROM equipment 
+                WHERE equipment.equipment_id = '$equipment_id'
+                AND equipment.status != 'D'";
+        $result=$con->query($sql);
+        return $result;
+    }
 }

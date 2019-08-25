@@ -56,7 +56,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                 <i class="fas fa-dumbbell fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../equipment/"><h5 class="card-title">EQUIPMENT</h5></a>
+                            <a href="../../../controller/equipmentController.php"><h5 class="card-title">EQUIPMENT</h5></a>
                         </div>
                         </div>
                     </div>

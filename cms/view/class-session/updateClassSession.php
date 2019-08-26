@@ -73,7 +73,7 @@ include '../../layout/header.php'; ?>
                         </select>
                     </div>
                     <div class="col-12">
-                    <input type="hidden" name="class_session_id" value="<?php echo $sessionData['class_session_id']?>"> 
+                        <input type="hidden" name="class_session_id" value="<?php echo $sessionData['class_session_id']?>"> 
                         <button type="submit" class="btn btn-primary mb-2 float-right">Submit</button>
                     </div>
                 </div>

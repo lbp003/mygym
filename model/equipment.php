@@ -83,7 +83,7 @@ class Equipment{
 	*/
     public static function activateEquipment($equipment_id){
         $con=$GLOBALS['con']; 
-        $sql = "UPDATE equipment SET status = ? WHERE equipment_id=?";
+        $sql = "UPDATE equipment SET status = ? WHERE equipment_id = ?";
         $stmt = $con->prepare($sql);
         $stmt->bind_param("si", $status = self::ACTIVE, $equipment_id);
         $stmt->execute();
@@ -99,7 +99,7 @@ class Equipment{
 	*/
     public static function deactivateEquipment($equipment_id){
         $con=$GLOBALS['con']; 
-        $sql = "UPDATE equipment SET status=? WHERE equipment_id=?";
+        $sql = "UPDATE equipment SET status = ? WHERE equipment_id = ?";
         $stmt = $con->prepare($sql);
         $stmt->bind_param("si", $status = self::INACTIVE, $equipment_id);
         $stmt->execute();
@@ -115,7 +115,7 @@ class Equipment{
 	*/
     public static function deleteEquipment($equipment_id){
         $con=$GLOBALS['con']; 
-        $sql = "UPDATE equipment SET status=? WHERE equipment_id=?";
+        $sql = "UPDATE equipment SET status = ? WHERE equipment_id = ?";
         $stmt = $con->prepare($sql);
         $stmt->bind_param("si", $status = self::DELETED, $equipment_id);
         $stmt->execute();
@@ -153,7 +153,7 @@ class Equipment{
                 FROM equipment 
                 WHERE equipment.equipment_name='$equipmentName' 
                 AND equipment.status != 'D'
-                AND equipment.equipment_id != $equipment_id
+                AND equipment.equipment_id != '$equipment_id'
                 LIMIT 1";
         $result=$con->query($sql);
         if($result->num_rows == 0){

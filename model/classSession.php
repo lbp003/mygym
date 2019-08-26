@@ -142,7 +142,7 @@ class Session{
                 FROM class_session 
                 WHERE class_session.class_name='$session_name' 
                 AND class_session.status != 'D'
-                AND class_session.class_session_id != $session_id
+                AND class_session.class_session_id != '$session_id'
                 LIMIT 1";
         $result=$con->query($sql);
         if($result->num_rows == 0){

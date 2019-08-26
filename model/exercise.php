@@ -78,7 +78,7 @@ class Exercise{
 	*/
     public static function activateExercise($exercise_id){
         $con=$GLOBALS['con']; 
-        $sql = "UPDATE exercise SET status = ? WHERE exercise_id=?";
+        $sql = "UPDATE exercise SET status = ? WHERE exercise_id = ?";
         $stmt = $con->prepare($sql);
         $stmt->bind_param("si", $status = self::ACTIVE, $exercise_id);
         $stmt->execute();
@@ -94,7 +94,7 @@ class Exercise{
 	*/
     public static function deactivateExercise($exercise_id){
         $con=$GLOBALS['con']; 
-        $sql = "UPDATE exercise SET status=? WHERE exercise_id=?";
+        $sql = "UPDATE exercise SET status=? WHERE exercise_id = ?";
         $stmt = $con->prepare($sql);
         $stmt->bind_param("si", $status = self::INACTIVE, $exercise_id);
         $stmt->execute();
@@ -110,7 +110,7 @@ class Exercise{
 	*/
     public static function deleteExercise($exercise_id){
         $con=$GLOBALS['con']; 
-        $sql = "UPDATE exercise SET status=? WHERE exercise_id=?";
+        $sql = "UPDATE exercise SET status=? WHERE exercise_id = ?";
         $stmt = $con->prepare($sql);
         $stmt->bind_param("si", $status = self::DELETED, $exercise_id);
         $stmt->execute();
@@ -148,7 +148,7 @@ class Exercise{
                 FROM exercise 
                 WHERE exercise.exercise_name='$exerciseName' 
                 AND exercise.status != 'D'
-                AND exercise.exercise_id != $exercise_id
+                AND exercise.exercise_id != '$exercise_id'
                 LIMIT 1";
         $result=$con->query($sql);
         if($result->num_rows == 0){

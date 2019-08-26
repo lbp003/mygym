@@ -38,6 +38,7 @@ include '../../layout/header.php'; ?>
                         </select>
                     </div>
                     <div class="col-12">
+                        <input type="hidden" name="exercise_id" value="<?php echo $excData['exercise_id']?>"> 
                         <button type="submit" class="btn btn-primary mb-2 float-right">Submit</button>
                     </div>
                 </div>

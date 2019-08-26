@@ -153,7 +153,7 @@ class Programs{
                 FROM class 
                 WHERE class.class_name='$className' 
                 AND class.status != 'D'
-                AND class.class_id != $class_id
+                AND class.class_id != '$class_id'
                 LIMIT 1";
         $result=$con->query($sql);
         if($result->num_rows == 0){

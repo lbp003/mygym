@@ -132,7 +132,8 @@ class Member{
         $sql="  SELECT member.email 
                 FROM member 
                 WHERE member.email='$email' 
-                AND member.status != 'D'";
+                AND member.status != 'D'
+                LIMIT 1";
         $result=$con->query($sql);
         if($result->num_rows == 0){
             return true;
@@ -150,7 +151,8 @@ class Member{
                 FROM member 
                 WHERE member.email='$email' 
                 AND member.status != 'D'
-                AND member.member_id !='$member_id'";
+                AND member.member_id !='$member_id'
+                LIMIT 1";
         $result=$con->query($sql);
         if($result->num_rows == 0){
             return true;

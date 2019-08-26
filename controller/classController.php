@@ -15,7 +15,7 @@ $objpro= new Programs();
 switch ($status){
    
 /**
- * Redirect to Add Member
+ * Redirect to Add Class
  */ 
 
     case "Add":

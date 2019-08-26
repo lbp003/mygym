@@ -21,60 +21,158 @@ class Exercise{
         $result=$con->query($sql);
         return $result;
     }
-    function displayAllAnatomy(){
+
+    /* Get all anatomy info
+	* @return object $result
+	*/
+    public static function getAllAnatomy(){
         $con=$GLOBALS['con'];//To get connection string
-        $sql="SELECT * FROM anatomy";
+        $sql="  SELECT 
+                    anatomy.anatomy_id,
+                    anatomy.anatomy_name
+                FROM anatomy
+                WHERE 1=1
+                ORDER BY anatomy.anatomy_id DESC";
         $result=$con->query($sql);
         return $result;
     }
     
-    function displayAllAnatomyExercise(){
-        $con=$GLOBALS['con'];//To get connection string
-        $sql="SELECT * FROM anatomy a,exercise e WHERE a.anatomy_id = e.anatomy_id";
-        $result=$con->query($sql);
-        return $result;
-    }
-    
-    function addWorkout($exercise_name,$anatomy_id){
+    /** 
+	* Insert a new exercise
+	* @return object $last_id
+	*/
+    function addExercise($exerciseName, $anatomy, $status){
         
         $con=$GLOBALS['con']; 
-        $sql="INSERT INTO exercise VALUES('','$exercise_name','$anatomy_id','Active')";
-        $result=$con->query($sql);
-        $exercise_id=$con->insert_id;
-        return $exercise_id;
-        
-        
+        $stmt = $con->prepare("INSERT INTO exercise (exercise_name, anatomy_id, status) VALUES (?, ?, ?)");
+        $stmt->bind_param("sis", $exerciseName, $anatomy, $status);
+        $stmt->execute();
+        $last_id = $con->insert_id;
+        if(isset($last_id) && !empty($last_id)){
+            return $last_id;
+        }else {
+            return false;
+        }
+            
     }
-    
-    function updateWorkout($exercise_name,$anatomy_id,$exercise_id){
-        $con = $GLOBALS['con'];
-        $sql="UPDATE exercise SET exercise_name='$exercise_name',anatomy_id='$anatomy_id' WHERE exercise_id='$exercise_id'";
-        $result=$con->query($sql);
+
+    /** 
+	* Update an existing exercise
+	* @return object $result
+	*/
+    public static function updateExercise($dataAr){
+        $con=$GLOBALS['con']; 
+        $sql = "UPDATE exercise SET exercise_name = ?, anatomy_id = ? WHERE exercise_id = ?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("sii", $dataAr['name'], $dataAr['anatomy'], $dataAr['id']);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;
     }
-    
-    
-    function activateWorkout($exercise_id){
+   
+    /** 
+	* Activate an class
+	* @return object $result
+	*/
+    public static function activateExercise($exercise_id){
+        $con=$GLOBALS['con']; 
+        $sql = "UPDATE exercise SET status = ? WHERE exercise_id=?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("si", $status = self::ACTIVE, $exercise_id);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;
+    }
+
+    /** 
+	* Deactivate a exercise
+	* @return object $result
+	*/
+    public static function deactivateExercise($exercise_id){
+        $con=$GLOBALS['con']; 
+        $sql = "UPDATE exercise SET status=? WHERE exercise_id=?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("si", $status = self::INACTIVE, $exercise_id);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;
+    }
+
+    /** 
+	* Delete a exercise
+	* @return object $result
+	*/
+    public static function deleteExercise($exercise_id){
+        $con=$GLOBALS['con']; 
+        $sql = "UPDATE exercise SET status=? WHERE exercise_id=?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("si", $status = self::DELETED, $exercise_id);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;
+    }
+
+    /** 
+	* Check exercise name for  add new exercise
+	* @return object $result
+	*/
+    public static function checkExerciseName($exerciseName){
         $con=$GLOBALS['con'];
-        $sql="UPDATE exercise SET exercise_status='Active' WHERE exercise_id='$exercise_id'";
+        $sql="  SELECT exercise.exercise_name 
+                FROM exercise 
+                WHERE exercise.exercise_name='$exerciseName' 
+                AND exercise.status != 'D'
+                LIMIT 1";
+        $result=$con->query($sql);
+        if($result->num_rows == 0){
+            return true;
+        }
+        return false;      
+    }
+
+    /** 
+	* Check exercise name for update an existing exercise
+	* @return object $result
+	*/
+    public static function checkUpdateExerciseName($exerciseName, $exercise_id){
+        $con=$GLOBALS['con'];
+        $sql="  SELECT exercise.exercise_name 
+                FROM exercise 
+                WHERE exercise.exercise_name='$exerciseName' 
+                AND exercise.status != 'D'
+                AND exercise.exercise_id != $exercise_id
+                LIMIT 1";
+        $result=$con->query($sql);
+        if($result->num_rows == 0){
+            return true;
+        }
+        return false;      
+    }
+
+    /** 
+	* Get the exercise data by exercise_id
+	* @return object $result
+	*/
+    public static function getExerciseByID($exercise_id){
+        
+        $con=$GLOBALS['con'];
+        $sql="  SELECT
+                    exercise.exercise_id,
+                    exercise.exercise_name,
+                    exercise.anatomy_id,
+                    exercise.status
+                FROM exercise 
+                WHERE exercise.exercise_id = '$exercise_id'
+                AND exercise.status != 'D'";
         $result=$con->query($sql);
         return $result;
     }
-    
-    function deactivateWorkout($exercise_id){
-        $con=$GLOBALS['con'];
-        $sql="UPDATE exercise SET exercise_status='Deactive' WHERE exercise_id='$exercise_id'";
-        $result=$con->query($sql);
-        return $result;
-    }         
-    
-    function displayWorkout($exercise_id){
-        
-        $con=$GLOBALS['con'];
-        $sql="SELECT* FROM exercise e,anatomy a WHERE e.anatomy_id=a.anatomy_id AND exercise_id='$exercise_id'";
-        $result=$con->query($sql);
-        return $result;
-    }
-    
-    
-    
 }

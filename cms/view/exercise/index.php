@@ -33,9 +33,8 @@ $allExercise = Exercise::displayAllExercise();
                     if(!$allExercise){
                         die("Query DEAD ".mysqli_error($con));
                     }
-                    $count=0;
+
                     while($row = $allExercise->fetch_assoc()) {
-                        $count++;
                         
                         if($row['status']==Exercise::ACTIVE){
                             $status="Active";
@@ -49,26 +48,24 @@ $allExercise = Exercise::displayAllExercise();
                     <td><?php echo ucwords($row['anatomy_name']); ?></td>
                     <td><span class="badge <?php if($row['status']==Exercise::ACTIVE){echo "badge-success";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></td>
                     <td>
-                            <a data-toggle="tooltip" data-placement="top" title="View" href="../../controller/exerciseController.php?exercise_id=<?php echo $row['exercise_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
-                            <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../controller/exerciseController.php?exercise_id=<?php echo $row['exercise_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="View" href="../../../controller/exerciseController.php?exercise_id=<?php echo $row['exercise_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../../controller/exerciseController.php?exercise_id=<?php echo $row['exercise_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
                         <?php 
+                        $exerciseId = $row['exercise_id'];
 
-                            $exerciseId = $row['exercise_id'];
-
-                            if($row['status']==Exercise::ACTIVE){
-                                echo "<a data-toggle='tooltip' data-placement='top' title='Deactivate' href='../../controller/exerciseController.php?exercise_id='.$exerciseId.'&status=Deactivate'><i class='fas fa-ban text-warning'></i></a>";
-                            }elseif($row['status']==Exercise::INACTIVE){
-                                echo "<a data-toggle='tooltip' data-placement='top' title='Activate' href='../../controller/exerciseController.php?exercise_id='.$exerciseId.'&status=Activate'><i class='far fa-check-circle text-success'></i></a>";
-                            }
-                        ?>
-                            <a data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash text-danger"></i></a>
+                        if($row['status']==Exercise::ACTIVE){?>
+                            <a id="deactivate" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../../controller/exerciseController.php?exercise_id=<?php echo $exerciseId;?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
+                        <?php 
+                        }elseif($row['status']==Exercise::INACTIVE){?>
+                            <a id="activate" data-toggle="tooltip" data-placement="top" title="Activate" href="../../../controller/exerciseController.php?exercise_id=<?php echo $exerciseId;?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
+                        <?php } ?>
+                        <a id="delete" data-toggle="tooltip" data-placement="top" title="Delete" href="../../../controller/exerciseController.php?exercise_id=<?php echo $exerciseId;?>&status=Delete"><i class="fas fa-trash text-danger"></i></a>
                     </td>
                 </tr>
                     <?php } ?>
             </tbody>
             <tfoot>
                 <tr>
-                    <th>&nbsp;</th>
                     <th>Exercise Name</th>
                     <th>Anatomy Name</th>
                     <th>Status</th>
@@ -100,11 +97,83 @@ $allExercise = Exercise::displayAllExercise();
                 text: '+ ADD EXERCISE',
                 className: 'btn-success',
                 action: function ( e, dt, node, config ) {
-                    window.location.href = "addExercise.php";
+                    window.location.href = "../../../controller/exerciseController.php?status=Add";
                 }
             },
             ],
             select: true
         } );
+
+        // deactivate confirmation
+        $('#deactivate').on('click', function(event){
+            event.preventDefault();
+                bootbox.confirm({
+                message: "Are you sure that you want to Deactivate ?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if(result){
+                    var href = $('#deactivate').attr('href');
+                    window.location.href = href;
+                    }
+                }
+            });
+        });
+
+    //    activate confirmation
+        $('#activate').on('click', function(event){
+            event.preventDefault();
+                bootbox.confirm({
+                message: "Are you sure that you want to Activate ?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if(result){
+                    var href = $('#activate').attr('href');
+                    window.location.href = href;
+                    }
+                }
+            });
+        });
+
+    // delete confirmation
+        $('#delete').on('click', function(event){
+            event.preventDefault();
+                bootbox.confirm({
+                message: "Are you sure that you want to Delete ?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if(result){
+                    var href = $('#delete').attr('href');
+                    window.location.href = href;
+                    }
+                }
+            });
+        });
     } );
 </script>

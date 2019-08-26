@@ -20,7 +20,7 @@
         <div class="row">
             <div class="col-12">
             <div id="kv-avatar-errors-2" class="center-block" style="width:800px;display:none"></div>
-                <form method="post" id="updateClass" name="updateClass" action="../../../controller/equipmentController.php?status=Update" enctype="multipart/form-data">
+                <form method="post" id="updateEquipment" name="updateEquipment" action="../../../controller/equipmentController.php?status=Update" enctype="multipart/form-data">
                 <div class="d-flex flex-wrap">
                     <div class="form-group col-6" style="text-align:center">
                         <div class="kv-avatar">
@@ -51,14 +51,14 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
-        $('#updateClass').validate({
+        $('#updateEquipment').validate({
             rules: {
                 equipment_name: "required",
                 description: "required"
             },
             messages: {
                 equipment_name: {
-                    required: "Please enter class name"
+                    required: "Please enter equipment name"
                 },
                 description: {
                     required: "Please enter description"

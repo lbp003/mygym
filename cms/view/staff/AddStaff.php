@@ -39,7 +39,7 @@
                     </div>
                     <div class="form-group col-6">
                         <label for="dob">Date of Birth</label>
-                        <input type="date" class="form-control" id="dob" name="dob" aria-describedby="dob" placeholder="Date of Birth">
+                        <input type="date" class="form-control" id="dob" name="dob" aria-describedby="dob">
                     </div>
                     <div class="form-group col-6">
                         <label for="nic">NIC</label>

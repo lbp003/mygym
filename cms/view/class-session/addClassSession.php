@@ -113,8 +113,8 @@ include '../../layout/header.php'; ?>
                 class_name: {
                     required: "Please enter class name"
                 },
-                last_name: {
-                    required: "Please enter last name"
+                day: {
+                    required: "Please enter day"
                 },
                 session_name: {
                     required: "Please enter session name",

@@ -35,16 +35,8 @@ $allEvent = Event::displayAllEvent();
                     if(!$allEvent){
                         die("Query DEAD ".mysqli_error($con));
                     }
-                    $count=0;
+         
                     while($row = $allEvent->fetch_assoc()) {
-                        $count++;
-                        
-                        
-                        // if($row['image']==""){
-                        //     $path="<i class='far fa-calendar-check'></i>";
-                        // } else {
-                        //     $path="../../../public/image/event_image/".$row['image'];                    
-                        // }
                         
                         if($row['status']==Event::ACTIVE){
                             $status="Active";
@@ -54,25 +46,24 @@ $allEvent = Event::displayAllEvent();
                         
                 ?>
                 <tr>
-                    <td><?php if (!empty($row['image'])){echo "<img src='../../public/image/event_image/{$row['image']}' width='70' height='auto' class='img-responsive img-thumbnail' />";}else{echo "<i class='far fa-3x fa-calendar-check'></i>";}?></td>
+                    <td><?php if (!empty($row['image'])){echo "<img src='../../../public/image/event_image/{$row['image']}' width='70' height='auto' class='img-responsive img-thumbnail' />";}else{echo "<i class='far fa-3x fa-calendar-check'></i>";}?></td>
                     <td><?php echo ucwords($row['event_title']); ?></td>
                     <td><?php echo $row['event_date']; ?></td>
                     <td><?php echo $row['event_venue']; ?></td>
                     <td><span class="badge <?php if($row['status']==Event::ACTIVE){echo "badge-success";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></td>
                     <td>
-                            <a data-toggle="tooltip" data-placement="top" title="View" href="../../controller/eventController.php?event_id=<?php echo $row['event_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
-                            <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../controller/eventController.php?event_id=<?php echo $row['event_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
-                        <?php 
+                        <a data-toggle="tooltip" data-placement="top" title="View" href="../../../controller/eventController.php?event_id=<?php echo $row['event_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../../controller/eventController.php?event_id=<?php echo $row['event_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
+                    <?php 
+                        $eventID = $row['event_id']; 
 
-                            $eventId = $row['event_id'];
-
-                            if($row['status']==Event::ACTIVE){
-                                echo "<a data-toggle='tooltip' data-placement='top' title='Deactivate' href='../../controller/eventController.php?event_id='.$eventId.'&status=Deactivate'><i class='fas fa-ban text-warning'></i></a>";
-                            }elseif($row['status']==Event::INACTIVE){
-                                echo "<a data-toggle='tooltip' data-placement='top' title='Activate' href='../../controller/eventController.php?event_id='.$eventId.'&status=Activate'><i class='far fa-check-circle text-success'></i></a>";
-                            }
-                        ?>
-                            <a data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash text-danger"></i></a>
+                        if($row['status']==Event::ACTIVE){ ?>
+                            <a id="deactivate" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../../controller/eventController.php?event_id=<?php $eventID;?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
+                    <?php        
+                        }elseif($row['status']==Event::INACTIVE){ ?>
+                            <a id="activate" data-toggle="tooltip" data-placement="top" title="Activate" href="../../../controller/eventController.php?event_id=<?php $eventID;?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
+                    <?php } ?>
+                        <a id="delete" data-toggle="tooltip" data-placement="top" title="Delete" href="../../../controller/eventController.php?event_id=<?php $eventID;?>&status=Delete"><i class="fas fa-trash text-danger"></i></a>
                     </td>
                 </tr>
                     <?php } ?>
@@ -112,11 +103,83 @@ $allEvent = Event::displayAllEvent();
                 text: '+ ADD EVENT',
                 className: 'btn-success',
                 action: function ( e, dt, node, config ) {
-                    window.location.href = "addEvent.php";
+                    window.location.href = "../../../controller/eventController.php?status=Add";
                 }
             },
             ],
             select: true
         } );
+
+        // deactivate confirmation
+        $('#deactivate').on('click', function(event){
+            event.preventDefault();
+                bootbox.confirm({
+                message: "Are you sure that you want to Deactivate ?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if(result){
+                    var href = $('#deactivate').attr('href');
+                    window.location.href = href;
+                    }
+                }
+            });
+        });
+
+    //    activate confirmation
+        $('#activate').on('click', function(event){
+            event.preventDefault();
+                bootbox.confirm({
+                message: "Are you sure that you want to Activate ?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if(result){
+                    var href = $('#activate').attr('href');
+                    window.location.href = href;
+                    }
+                }
+            });
+        });
+
+    // delete confirmation
+        $('#delete').on('click', function(event){
+            event.preventDefault();
+                bootbox.confirm({
+                message: "Are you sure that you want to Delete ?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if(result){
+                    var href = $('#delete').attr('href');
+                    window.location.href = href;
+                    }
+                }
+            });
+        });
     } );
 </script>

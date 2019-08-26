@@ -16,7 +16,7 @@ include '../../layout/header.php'; ?>
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <form method="post" id="addEquipment" name="addClass" action="../../../controller/equipmentController.php?status=Insert" enctype="multipart/form-data">
+                <form method="post" id="addEquipment" action="../../../controller/equipmentController.php?status=Insert" enctype="multipart/form-data">
                 <div class="d-flex flex-wrap">
                     <div class="form-group col-6" style="text-align:center">
                         <div class="kv-avatar">

@@ -1,172 +1,126 @@
-<!--- header start ---->
-<?php include '../common/adHeader.php'; ?>
-<!--- header end ---->
+<!--- header  ---->
 <?php
-    $userDetails=$_SESSION['userDetails'];
-    $role_id=$userDetails['role_id'];
-    $obm = new CommonFun();
-    $resultm=$obm->viewRoleModule($role_id);
-    //echo $userDetails['gender'].$userDetails['dob'];
-    //print_r($resultm);
-?>
-<?php 
-//    $objRo = new CommonFun();
-//    $resultRo=$objRo->viewRole();
-//    $_SESSION['resultRo']=$resultRo;
-//    //print_r($resultRo);
-//?>
-<script type="text/javascript">
-    $( "#edate" ).datepicker();
-</script>
-<body onload="startTime()">
-        <!---navbar starting ---------->
-        <?php include '../common/navBar.php';?> 
-        <!---navbar ending ---------->
-                <!--- breadcrumb starting--------->
-        <div class="container-fluid">
-                <div class="row">
-                    <ol class="breadcrumb" style="background-color:#2f2f2f">
-                        <li><a href="Dashboard.php" >Dashboard</a></li>
-                        <li><a href="staff.php" >Event</a></li>
-                        <li><a href="#" class="active">Add Event</a></li>
-                    </ol>
+include '../../layout/header.php'; ?>
+<body>
+    <!---navbar starting ---------->
+    <?php include '../../layout/navBar.php';?> 
+    <!---navbar ending ---------->
+    <!--- breadcrumb starting--------->
+    <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item" aria-current="page"><a href="../dashboard/dashboard.php">Home</a></li>
+        <li class="breadcrumb-item" aria-current="page"><a href="index.php">Event</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="#">Add Event</a></li>
+    </ol>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <form method="post" id="addEvent" name="addEvent" action="../../../controller/eventController.php?status=Insert" enctype="multipart/form-data">
+                <div class="d-flex flex-wrap">
+                    <div class="form-group col-6" style="text-align:center">
+                        <div class="kv-avatar">
+                            <div class="file-loading">
+                                <input id="avatar" name="avatar" type="file">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="event_title">Event Title</label>
+                        <input type="text" class="form-control" id="event_title" name="event_title" aria-describedby="event_title" placeholder="Event Title" required>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="date">Date</label>
+                        <input type="date" class="form-control" id="date" name="date" aria-describedby="date">
+                    </div>           
+                    <div class="form-group col-6">
+                        <label for="start_time">Start Time</label>
+                        <input type="time" class="form-control" id="start_time" name="start_time" aria-describedby="start_time">
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="end_time">End Time</label>
+                        <input type="time" class="form-control" id="end_time" name="end_time" aria-describedby="end_time">
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="venue">Venue</label>
+                        <input type="text" class="form-control" id="venue" name="venue" aria-describedby="venue" placeholder="Venue">
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="description">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary mb-2 float-right">Submit</button>
+                    </div>
                 </div>
+                </form>
+            </div>
         </div>
-        <!--- breadcrumb ending--------->
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-3">
-                <!----Admin side nav starting------>
-            <?php include '../common/AdminSideNav.php'; ?>
-                <!----Admin side nav ending------>
-                </div>
-                <div class="col-md-9" style="background-color:rgb(250,250,250); ">
-                    <div>
-                        <h1 align="center" style="font-family: monospace; font-size: 60px;color: #ffff00;background-color:rgba(70,70,70,0.5);"><b>Add Event</b></h1>
-                    </div><hr />
-                    <div class="row">
-                        <div class="col-md-12" id="msg" style="text-align: center">
-                            <?php if(isset($_REQUEST['msg'])){ 
-                                $msg= base64_decode($_REQUEST['msg']);
-                            ?>
-                            <span class="alert alert-danger"><?php echo $msg; ?></span>
-                                
-                            <?php   } ?>
-                            
-                        </div>
-                        <div class="row">
-                        <div class="col-md-12">
-                            <div id="error_msg" style="text-align: center" >&nbsp;</div>
-                            <div>&nbsp;</div>
-                        </div>
-                        </div>
-                    </div><br />
-                    <form method="post" name="AddEvent" action="../controller/eventcontroller.php?status=Add" enctype="multipart/form-data">
-                        <div class="col-md-3">&nbsp;</div>
-                        <div class="col-md-6">
-                             <div class="form-group">
-                                <label for="event_title">Event Title</label>
-                                <input name="event_title" type="text" class="form-control" id="etitle" placeholder="Annual Cricket Tournament">
-                            </div>
-                            <div class="form-group">
-                                <label for="event_date">Event Date</label>
-                                <input type="date" class="form-control" id="edate" name="event_date">
-                            </div>
-                            <div class="form-group">
-                                <label for="event_date">Event Venue</label>
-                                <input type="text" class="form-control" id="evenue" name="event_venue">
-                            </div>
-                             <div class="form-group">
-                                <label for="event_description">Event Description</label>
-                                <textarea type="text" class="form-control" id="edes" name="event_description"  rows="15"></textarea>
-                            </div>
-                             
-                             <div class="form-group">
-                                <label for="event_image">Event Banner</label>
-                                <input type="file" id="img" name="event_image" class="form-control" onchange="readURL(this)">
-                                <img id="img_prev" />
-                            </div>
-                            </div>
-                        <div class="col-md-3">&nbsp;</div>
-                        <div class="col-md-12">
-                            <div class="row">
-                                <div class="col-md-4">&nbsp;</div>
-                            <div class="col-md-4"><br /><br />
-                                <button class="btn btn-lg btn-danger btn-block" name="reset" type="reset" value="Reset">Reset</button>
-                                <button class="btn btn-lg btn-info btn-block" name="submit" type="submit" value="Submit">Submit</button>
-                            </div>
-                            <div class="col-md-4">&nbsp;</div>
-                        </div>
-                        </div>                       
-                    </form>
-                </div>
-        </div>
-        </div><br />
-<!---- Footer start---->
-<?php include '../common/adFooter.php'; ?>
-<!---- Footer end------>
+    </div>
+<!--- footer  ---->
+<?php include '../../layout/footer.php';?>
+
 <script type="text/javascript">
-    
     $(document).ready(function(){
-        $('form').submit(function(){
-            
-            var title = $('#etitle').val();
-            var date = $('#edate').val();
-            var venue = $('#evenue').val();
-            var description = $('#edes').val();
-            var image = $('#img').val();
-            
-           if(title==""){
-           $('#error_msg').text("Event Title is empty");//To display error
-           $('#error_msg').addClass('alert-danger');
-           $('#etitle').focus();
-           return false;
-           }
-           if(date==""){
-           $('#error_msg').text("Event Date is empty");//To display error
-           $('#error_msg').addClass('alert-danger');
-           $('#edate').focus();
-           return false; //
-           }
-           if(venue==""){
-           $('#error_msg').text("Event Venue is empty");//To display error
-           $('#error_msg').addClass('alert-danger');
-           $('#evenue').focus();
-           return false; //
-           }
-           if(description==""){
-           $('#error_msg').text("Event Description is empty");//To display error
-           $('#error_msg').addClass('alert-danger');
-           $('#edes').focus();
-           return false; //
-           }
-           if(image!=""){
-           var arr=image.split(".");
-           var last=arr.length-1;
-           var iext=arr[last].toLowerCase();
-           var extarr=['jpg','jpeg','gif','png','tiff','svg'];
-           if($.inArray(iext,extarr)==-1){
-           $('#error_msg').text("Invalid extension");
-           $('#error_msg').addClass('alert-danger');
-           $('#img').focus();
-           return false; //  
-           
-       }   
-       }
-       function readURL(input) {
-        if (input.files && input.files[0]) {
-        var reader = new FileReader();
 
-        reader.onload = function (e) {
-            $('#img_prev')
-            .attr('src', e.target.result)
-            .height(70);
-        };
+        // Form validation
+        $('#addEvent').validate({
+            rules: {
+                venue: "required",
+                date: "required", 
+                // event_title: {
+				// 	required: true,
+				// 	event_title: true,
+                //     remote: {
+                //         url: '../../../controller/classSessionController.php?status=checkSessionName',
+                //         type: 'post',
+                //         data: {
+                //             event_title: function(){
+                //                 return $("#event_title").val();
+                //             }
+                //         }
+                //     }
+				// },
+                description: "required"
+            },
+            messages: {
+                venue: {
+                    required: "Please enter venue"
+                },
+                date: {
+                    required: "Please enter Date"
+                },
+                event_title: {
+                    required: "Please enter Event Title",
+                    remote: function() { return $.validator.format("{0} is already taken", $("#event_title").val()) }
+                },
+                description: {
+                    required: "Please enter description"
+                }
+            }
+        });
 
-        reader.readAsDataURL(input.files[0]);
-    }
-}
-     
+        // file input plugin
+        $("#avatar").fileinput({
+            overwriteInitial: true,
+            maxFileSize: 1500,
+            showClose: false,
+            showCaption: false,
+            showBrowse: false,
+            browseOnZoneClick: true,
+            removeLabel: '',
+            removeIcon: '<i class="fas fa-trash-alt"></i>',
+            removeTitle: 'Cancel or reset changes',
+            elErrorContainer: '#kv-avatar-errors-2',
+            msgErrorClass: 'alert alert-block alert-danger',
+            defaultPreviewContent: '<i class="far fa-image fa-5x"></i>',
+            layoutTemplates: {main2: '{preview} {remove} {browse}'},
+            allowedFileExtensions: ["jpg", "png", "gif", "jpeg"],
+            minFileCount : 0,
+            maxFileCount: 1,
+            showUpload: true,
+            previewFileType: 'any',
+            initialPreviewFileType: 'image',
         });
     });
 </script>

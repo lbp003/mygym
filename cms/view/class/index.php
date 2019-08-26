@@ -35,10 +35,9 @@ $allClass = Programs::displayAllPrograms();
                     if(!$allClass){
                         die("Query DEAD ".mysqli_error($con));
                     }
-                    $count=0;
+
                     while($row = $allClass->fetch_assoc()) {
-                        $count++;
-                        
+
                         if($row['status']==Programs::ACTIVE){
                             $status="Active";
                         }elseif($row['status']==Programs::INACTIVE){

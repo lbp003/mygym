@@ -285,7 +285,7 @@ break;
     
     
         }else {
-            $msg = json_encode(array('title'=>'Warning','message'=> 'Class name already exists','type'=>'warning'));
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Equipment name already exists','type'=>'warning'));
             $msg = base64_encode($msg);
             header("Location:../cms/view/equipment/updateEquipment.php?msg=$msg");
             exit;
@@ -294,7 +294,7 @@ break;
 break;
 
 /**
- * View Class
+ * View Equipment
  */ 
     case "View":
             
@@ -315,14 +315,15 @@ break;
         }
 
         $equipmentID = $_REQUEST['equipment_id'];
+
         if(!empty($equipmentID)){
             //get employee details
-            $dataSet = Equipment::getClassByID($equipmentID);
-            $clsData = $dataSet->fetch_assoc();
+            $dataSet = Equipment::getEquipmentByID($equipmentID);
+            $equData = $dataSet->fetch_assoc();
 
-            $_SESSION['clsData'] = $clsData;
+            $_SESSION['equData'] = $equData;
 
-            header("Location:../cms/view/equipment/viewClass.php");
+            header("Location:../cms/view/equipment/viewEquipment.php");
             exit;
         }else {
             $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
@@ -357,9 +358,9 @@ break;
 
     $equipmentID=$_REQUEST['equipment_id'];
 
-    $response = Equipment::activateClass($equipmentID);
+    $response = Equipment::activateEquipment($equipmentID);
     if($response == true){
-        $msg = json_encode(array('title'=>'Success :','message'=> 'Class has been activated','type'=>'success'));
+        $msg = json_encode(array('title'=>'Success :','message'=> 'Equipment has been activated','type'=>'success'));
         $msg = base64_encode($msg);
         header("Location:../cms/view/equipment/index.php?msg=$msg");
         exit;
@@ -377,6 +378,7 @@ break;
  */ 
 
     case "Deactivate":
+
     if(!$user)
     {
         $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
@@ -395,9 +397,9 @@ break;
 
     $equipmentID=$_REQUEST['equipment_id'];
 
-    $response = Equipment::deactivateClass($equipmentID);
+    $response = Equipment::deactivateEquipment($equipmentID);
     if($response == true){
-        $msg = json_encode(array('title'=>'Success :','message'=> 'Class has been deactivated','type'=>'success'));
+        $msg = json_encode(array('title'=>'Success :','message'=> 'Equipment has been deactivated','type'=>'success'));
         $msg = base64_encode($msg);
         header("Location:../cms/view/equipment/index.php?msg=$msg");
         exit;
@@ -434,9 +436,9 @@ break;
 
         $equipmentID=$_REQUEST['equipment_id'];
 
-        $response = Equipment::deleteClass($equipmentID);
+        $response = Equipment::deleteEquipment($equipmentID);
         if($response == true){
-            $msg = json_encode(array('title'=>'Success :','message'=> 'Class has been deleted','type'=>'success'));
+            $msg = json_encode(array('title'=>'Success :','message'=> 'Equipment has been deleted','type'=>'success'));
             $msg = base64_encode($msg);
             header("Location:../cms/view/equipment/index.php?msg=$msg");
             exit;

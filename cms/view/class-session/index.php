@@ -39,10 +39,8 @@ $allClassSession = Session::displayAllClassSession();
                     if(!$allClassSession){
                         die("Query DEAD ".mysqli_error($con));
                     }
-                    $count=0;
+ 
                     while($row = $allClassSession->fetch_assoc()) {
-                        $count++;
-                        
                         
                         if($row['status']==Session::ACTIVE){
                             $status="Active";

@@ -37,11 +37,9 @@ $allStaff = Staff::displayAllStaff();
                     if(!$allStaff){
                         die("Query DEAD ".mysqli_error($con));
                     }
-                    $count=0;
+
                     while($row = $allStaff->fetch_assoc()) {
-                        $count++;
-                        
-                        
+
                         if($row['image']==""){
                             $path="../../../".PATH_IMAGE."user.png";
                         } else {

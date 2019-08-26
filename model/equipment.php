@@ -20,7 +20,7 @@ class Equipment{
                         equipment.image,
                         equipment.status 
                 FROM equipment 
-                WHERE 1=1 
+                WHERE equipment.status != 'D' 
                 ORDER BY equipment.equipment_id DESC";
         $result=$con->query($sql);
         return $result;
@@ -62,14 +62,14 @@ class Equipment{
     }  
 
     /** 
-	* Update an existing class
+	* Update an existing equipment
 	* @return object $result
 	*/
-    public static function updateClass($dataAr){
+    public static function updateEquipment($dataAr){
         $con=$GLOBALS['con']; 
-        $sql = "UPDATE class SET class_name = ?, class_description = ?, color = ?, image = ? WHERE class_id = ?";
+        $sql = "UPDATE equipment SET equipment_name = ?, equipment_description = ?, image = ? WHERE equipment_id = ?";
         $stmt = $con->prepare($sql);
-        $stmt->bind_param("ssssi", $dataAr['name'], $dataAr['description'], $dataAr['color'], $dataAr['img'], $dataAr['id']);
+        $stmt->bind_param("sssi", $dataAr['name'], $dataAr['description'], $dataAr['img'], $dataAr['id']);
         $stmt->execute();
         if ($stmt->error) {
             return false;
@@ -81,11 +81,11 @@ class Equipment{
 	* Activate an class
 	* @return object $result
 	*/
-    public static function activateClass($class_id){
+    public static function activateEquipment($equipment_id){
         $con=$GLOBALS['con']; 
-        $sql = "UPDATE class SET status=? WHERE class_id=?";
+        $sql = "UPDATE equipment SET status = ? WHERE equipment_id=?";
         $stmt = $con->prepare($sql);
-        $stmt->bind_param("si", $status = Programs::ACTIVE, $class_id);
+        $stmt->bind_param("si", $status = self::ACTIVE, $equipment_id);
         $stmt->execute();
         if ($stmt->error) {
             return false;
@@ -94,14 +94,14 @@ class Equipment{
     }
 
     /** 
-	* Deactivate a class
+	* Deactivate a equipment
 	* @return object $result
 	*/
-    public static function deactivateClass($class_id){
+    public static function deactivateEquipment($equipment_id){
         $con=$GLOBALS['con']; 
-        $sql = "UPDATE class SET status=? WHERE class_id=?";
+        $sql = "UPDATE equipment SET status=? WHERE equipment_id=?";
         $stmt = $con->prepare($sql);
-        $stmt->bind_param("si", $status = Programs::INACTIVE, $class_id);
+        $stmt->bind_param("si", $status = self::INACTIVE, $equipment_id);
         $stmt->execute();
         if ($stmt->error) {
             return false;
@@ -110,14 +110,14 @@ class Equipment{
     }
 
     /** 
-	* Delete a class
+	* Delete a equipment
 	* @return object $result
 	*/
-    public static function deleteClass($class_id){
+    public static function deleteEquipment($equipment_id){
         $con=$GLOBALS['con']; 
-        $sql = "UPDATE class SET status=? WHERE class_id=?";
+        $sql = "UPDATE equipment SET status=? WHERE equipment_id=?";
         $stmt = $con->prepare($sql);
-        $stmt->bind_param("si", $status = Programs::DELETED, $class_id);
+        $stmt->bind_param("si", $status = self::DELETED, $equipment_id);
         $stmt->execute();
         if ($stmt->error) {
             return false;

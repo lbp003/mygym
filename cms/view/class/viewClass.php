@@ -25,8 +25,6 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-            <div id="kv-avatar-errors-2" class="center-block" style="width:800px;display:none"></div>
-                <form>
                 <div class="d-flex flex-wrap">
                     <div class="form-group col-6" style="text-align:center">
                         <img src="<?php echo $path; ?>" width="120" height="auto" class="img-responsive img-thumbnail" />
@@ -44,7 +42,6 @@
                         <textarea class="form-control" id="description" name="description" rows="3" readonly><?php echo $clsData['class_description']?></textarea>
                     </div>
                 </div>
-                </form>
             </div>
         </div>
     </div>

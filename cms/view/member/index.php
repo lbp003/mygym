@@ -37,11 +37,9 @@ $allMember = Member::displayAllMember();
                     if(!$allMember){
                         die("Query DEAD ".mysqli_error($con));
                     }
-                    $count=0;
+
                     while($row = $allMember->fetch_assoc()) {
-                        $count++;
-                        
-                        
+
                         if($row['image']==""){
                             $path="../../../".PATH_IMAGE."user.png";
                         } else {

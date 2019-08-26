@@ -34,11 +34,9 @@ $allEquipment = Equipment::displayAllEquipment();
                     if(!$allEquipment){
                         die("Query DEAD ".mysqli_error($con));
                     }
-                    $count=0;
+                    
                     while($row = $allEquipment->fetch_assoc()) {
-                        $count++;
-                        
-                        
+
                         if($row['status']==Equipment::ACTIVE){
                             $status="Active";
                         }elseif($row['status']==Equipment::INACTIVE){
@@ -63,7 +61,7 @@ $allEquipment = Equipment::displayAllEquipment();
                             }elseif($row['status']==Equipment::INACTIVE){ ?>
                                 <a id="activate" data-toggle="tooltip" data-placement="top" title="Activate" href="../../../controller/equipmentController.php?equipment_id=<?php echo $equipmentID; ?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
                         <?php } ?>
-                            <a id="delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash text-danger"></i></a>
+                            <a id="delete" data-toggle="tooltip" data-placement="top" title="Delete" href="../../../controller/equipmentController.php?equipment_id=<?php echo $equipmentID; ?>&status=Delete"><i class="fas fa-trash text-danger"></i></a>
                     </td>
                 </tr>
                     <?php } ?>

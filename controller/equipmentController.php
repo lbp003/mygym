@@ -106,30 +106,38 @@ break;
             $equipmentID=$objequ->addEquipment($equipmentName, $description, $status);        
             
             if($equipmentID){
-                // echo "lbp"; exit;
-                if (!file_exists('../'.PATH_IMAGE.PATH_EQUIPMENT_IMAGE)) {
-    
-                    mkdir('../'.PATH_IMAGE.PATH_EQUIPMENT_IMAGE, 0777, true);
-                }
+
+                if(!empty($tmp['name'])){
+                    
+                    if (!file_exists('../'.PATH_IMAGE.PATH_EQUIPMENT_IMAGE)) {
         
-                $ext = pathinfo($file, PATHINFO_EXTENSION);
-                $imgName = "IMG_".$equipmentID.".".$ext;
+                        mkdir('../'.PATH_IMAGE.PATH_EQUIPMENT_IMAGE, 0777, true);
+                    }
+            
+                    $ext = pathinfo($file, PATHINFO_EXTENSION);
+                    $imgName = "IMG_".$equipmentID.".".$ext;
 
-                // Add equipment image
-                if(Equipment::addEquipmentImage($equipmentID, $imgName)){
+                    // Add equipment image
+                    if(Equipment::addEquipmentImage($equipmentID, $imgName)){
 
-                    rename("../".PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY.$file, "../".PATH_IMAGE.PATH_EQUIPMENT_IMAGE.$imgName);
+                        rename("../".PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY.$file, "../".PATH_IMAGE.PATH_EQUIPMENT_IMAGE.$imgName);
 
+                        $msg = json_encode(array('title'=>'Success','message'=>'Equipment registration successful','type'=>'success'));
+                        $msg = base64_encode($msg);
+                        header("Location:../cms/view/equipment/index.php?msg=$msg");
+                        exit;
+                        
+                    }else{
+                        $msg = json_encode(array('title'=>'Warning','message'=> 'Failed to add the equipment image','type'=>'warning'));
+                        $msg = base64_encode($msg);
+                        header("Location:../cms/view/equipment/index.php?msg=$msg");
+                        exit; 
+                    }
+                }else{
                     $msg = json_encode(array('title'=>'Success','message'=>'Equipment registration successful','type'=>'success'));
                     $msg = base64_encode($msg);
                     header("Location:../cms/view/equipment/index.php?msg=$msg");
                     exit;
-                    
-                }else{
-                    $msg = json_encode(array('title'=>'Warning','message'=> 'Failed to add the equipment image','type'=>'warning'));
-                    $msg = base64_encode($msg);
-                    header("Location:../cms/view/equipment/index.php?msg=$msg");
-                    exit; 
                 }
             }else{
                 $msg = json_encode(array('title'=>'Danger','message'=> 'Failed to add the equipment','type'=>'danger'));

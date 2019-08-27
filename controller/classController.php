@@ -113,30 +113,38 @@ break;
             $classID=$objpro->addClass($className, $color, $description, $status);        
             
             if($classID){
-                // echo "lbp"; exit;
-                if (!file_exists('../'.PATH_IMAGE.PATH_CLASS_IMAGE)) {
+
+                if(!empty($tmp['name'])){
+
+                    if (!file_exists('../'.PATH_IMAGE.PATH_CLASS_IMAGE)) {
     
-                    mkdir('../'.PATH_IMAGE.PATH_CLASS_IMAGE, 0777, true);
-                }
-        
-                $ext = pathinfo($file, PATHINFO_EXTENSION);
-                $imgName = "IMG_".$classID.".".$ext;
-
-                // Add class image
-                if(Programs::addClassImage($classID, $imgName)){
-
-                    rename("../".PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY.$file, "../".PATH_IMAGE.PATH_CLASS_IMAGE.$imgName);
-
+                        mkdir('../'.PATH_IMAGE.PATH_CLASS_IMAGE, 0777, true);
+                    }
+            
+                    $ext = pathinfo($file, PATHINFO_EXTENSION);
+                    $imgName = "IMG_".$classID.".".$ext;
+    
+                    // Add class image
+                    if(Programs::addClassImage($classID, $imgName)){
+    
+                        rename("../".PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY.$file, "../".PATH_IMAGE.PATH_CLASS_IMAGE.$imgName);
+    
+                        $msg = json_encode(array('title'=>'Success','message'=>'Class registration successful','type'=>'success'));
+                        $msg = base64_encode($msg);
+                        header("Location:../cms/view/class/index.php?msg=$msg");
+                        exit;
+                        
+                    }else{
+                        $msg = json_encode(array('title'=>'Warning','message'=> 'Failed to add the class image','type'=>'warning'));
+                        $msg = base64_encode($msg);
+                        header("Location:../cms/view/class/index.php?msg=$msg");
+                        exit; 
+                    }
+                }else{
                     $msg = json_encode(array('title'=>'Success','message'=>'Class registration successful','type'=>'success'));
                     $msg = base64_encode($msg);
                     header("Location:../cms/view/class/index.php?msg=$msg");
                     exit;
-                    
-                }else{
-                    $msg = json_encode(array('title'=>'Warning','message'=> 'Failed to add the class image','type'=>'warning'));
-                    $msg = base64_encode($msg);
-                    header("Location:../cms/view/class/index.php?msg=$msg");
-                    exit; 
                 }
             }else{
                 $msg = json_encode(array('title'=>'Danger','message'=> 'Failed to add the class','type'=>'danger'));

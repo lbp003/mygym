@@ -104,7 +104,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-gift fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../package/"><h5 class="card-title">PACKAGE</h5></a>
+                            <a href="../../../controller/packageController.php"><h5 class="card-title">PACKAGE</h5></a>
                         </div>
                         </div>
                     </div>

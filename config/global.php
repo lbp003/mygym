@@ -21,8 +21,12 @@ define('PATH_EVENT_IMAGE','event_image/');
 // equipment image Path
 define('PATH_EQUIPMENT_IMAGE','equipment_image/');
 
+// package image Path
+define('PATH_PACKAGE_IMAGE','package_image/');
 
-// temp staff image path
+
+
+// temp image path
 define('SYSTEM_TEMP_DIRECTORY','temp/');
 
 // unauthorized access

@@ -1,182 +1,135 @@
-<!--- header start ---->
-<?php include '../common/adHeader.php'; ?>
-<!--- header end ---->
-<?php include '../model/packageModel.php';?>
+<!--- header  ---->
 <?php
-    $userDetails=$_SESSION['userDetails'];
-    $role_id=$userDetails['role_id'];
-    $obm = new CommonFun();
-    $resultm=$obm->viewRoleModule($role_id);
-    //echo $userDetails['gender'].$userDetails['dob'];
-    //print_r($resultm);
-    $package_id=$_REQUEST['package_id'];
-    
-    $objpa = new package();
-    $resultpa = $objpa->displayPackage($package_id);
-    $rePa=$resultpa->fetch_assoc();
-    echo $rePa['package_name'];
-?>
-<?php 
-//    $objRo = new CommonFun();
-//    $resultRo=$objRo->viewRole();
-//    $_SESSION['resultRo']=$resultRo;
-//    //print_r($resultRo);
-//?>
-<body onload="startTime()">
-        <!---navbar starting ---------->
-        <?php include '../common/navBar.php';?> 
-        <!---navbar ending ---------->
-                <!--- breadcrumb starting--------->
-        <div class="container-fluid">
-                <div class="row">
-                    <ol class="breadcrumb" style="background-color:#2f2f2f">
-                        <li><a href="Dashboard.php" >Dashboard</a></li>
-                        <li><a href="package.php" >Package</a></li>
-                        <li><a href="#" class="active">Update Package</a></li>
-                    </ol>
+include '../../layout/header.php'; ?>
+<?php
+    $packData = $_SESSION['packData'];
+?> 
+<body>
+    <!---navbar starting ---------->
+    <?php include '../../layout/navBar.php';?> 
+    <!---navbar ending ---------->
+    <!--- breadcrumb starting--------->
+    <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item" aria-current="page"><a href="../dashboard/dashboard.php">Home</a></li>
+        <li class="breadcrumb-item" aria-current="page"><a href="index.php">Package</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="#">Update Package</a></li>
+    </ol>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <form method="post" id="updatePackage" name="updatePackage" action="../../../controller/packageController.php?status=Update" enctype="multipart/form-data">
+                <div class="d-flex flex-wrap">
+                    <div class="form-group col-6" style="text-align:center">
+                        <div class="kv-avatar">
+                            <div class="file-loading">
+                                <input id="avatar" name="avatar" type="file">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="package_name">Package Name</label>
+                        <input type="text" class="form-control" id="package_name" name="package_name" aria-describedby="package_name" placeholder="Package Name" value="<?php echo $packData['package_name'];?>">
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="fee">Fee</label>
+                        <input type="text" class="form-control" id="fee" name="fee" aria-describedby="fee" value="<?php echo $packData['fee'];?>">
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="duration">Duration</label>
+                        <input type="number" class="form-control" id="duration" name="duration" aria-describedby="duration" value="<?php echo $packData['duration'];?>">
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="description">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="3"><?php echo $packData['package_description'];?></textarea>
+                    </div>
+                    <div class="col-12">
+                        <input type="hidden" id="package_id" name="package_id" aria-describedby="package_id" value="<?php echo $packData['package_id'];?>">
+                        <button type="submit" class="btn btn-primary mb-2 float-right">Submit</button>
+                    </div>
                 </div>
+                </form>
+            </div>
         </div>
-        <!--- breadcrumb ending--------->
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-3">
-                <!----Admin side nav starting------>
-            <?php include '../common/AdminSideNav.php'; ?>
-                <!----Admin side nav ending------>
-                </div>
-                <div class="col-md-9" style="background-color:rgb(250,250,250); ">
-                    <div>
-                        <h1 align="center" style="font-family: monospace; font-size: 60px;color: #ffff00;background-color:rgba(70,70,70,0.5);"><b>Update Package</b></h1>
-                    </div><hr />
-                    <div class="row">
-                        <div class="col-md-12" style="text-align: center">
-                            <?php if(isset($_REQUEST['msg'])){ 
-                                $msg= base64_decode($_REQUEST['msg']);
-                            ?>
-                            <span class="alert alert-danger"><?php echo $msg; ?></span>
-                                
-                            <?php   } ?>
-                            
-                        </div>
-                        <div class="row">
-                        <div class="col-md-12">
-                            <div id="error_msg" style="text-align: center" >&nbsp;</div>
-                            <div>&nbsp;</div>
-                        </div>
-                        </div>
-                    </div><br />
-                    <form method="post" name="UpdatePackage" action="../controller/packageController.php?status=Update&package_id=<?php echo $package_id;?>" enctype="multipart/form-data">
-                        <div class="col-md-3">&nbsp;</div>
-                        <div class="col-md-6">
-                             <div class="form-group">
-                                <label for="package_name">Package Name</label>
-                                <input name="package_name" type="text" class="form-control" id="pname" value="<?php echo $rePa['package_name'];?>">
-                            </div>
-                             <div class="form-group">
-                                <label for="package_description">Package Description</label>
-                                <textarea type="text" class="form-control" id="pdes" name="package_description"  rows="15" ><?php echo $rePa['package_description'];?></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="package_ammount">Package Ammount</label>
-                                <input type="text" class="form-control" id="pam" name="package_ammount" value="<?php echo $rePa['price'];?>" >
-                            </div>
-                            <div class="form-group">
-                                <label for="duration">Duration in Months</label>
-                                <input type="text" class="form-control" id="duration" name="duration" value="<?php echo $rePa['duration'];?>">
-                            </div>
-                             <div class="form-group">
-                                <label for="package_image">Package Image</label>
-                                <input type="file" id="img" name="package_image" class="form-control" onchange="readURL(this)"><br/>
-                                <?php 
-                                    if($rePa['package_image']==""){
-                                        $path="../images/user.png";
-                                    }else{
-                                        $path="../images/package_image/".$rePa['package_image'];
-                                    }
-                                ?>
-                                <img id="img_prev" class="center-block" src="<?php echo $path;?>" width="200" height="auto"/>
-                            </div>
-                            </div>
-                        <div class="col-md-3">&nbsp;</div>
-                        <div class="col-md-12">
-                            <div class="row">
-                                <div class="col-md-4">&nbsp;</div>
-                            <div class="col-md-4"><br /><br />
-                                <button class="btn btn-lg btn-danger btn-block" name="reset" type="reset" value="Reset">Reset</button>
-                                <button class="btn btn-lg btn-info btn-block" name="submit" type="submit" value="Submit">Submit</button>
-                            </div>
-                            <div class="col-md-4">&nbsp;</div>
-                        </div>
-                        </div>                       
-                    </form>
-                </div>
-        </div>
-        </div><br />
-<!---- Footer start---->
-<?php include '../common/adFooter.php'; ?>
-<!---- Footer end------>
+    </div>
+<!--- footer  ---->
+<?php include '../../layout/footer.php';?>
+
 <script type="text/javascript">
-    
     $(document).ready(function(){
-        $('form').submit(function(){
-            
-            var name = $('#pname').val();
-            var des = $('#pdes').val();
-            var ammount = $('#pam').val();
-            var duration = $('#duration').val();
-            var image = $('#img').val();
-            
-           if(name==""){
-           $('#error_msg').text("Package Name is empty");//To display error
-           $('#error_msg').addClass('alert-danger');
-           $('#pname').focus();
-           return false;
-           }
-           if(des==""){
-           $('#error_msg').text("Package Description is empty");//To display error
-           $('#error_msg').addClass('alert-danger');
-           $('#pdes').focus();
-           return false; //
-           }
-           if(ammount==""){
-           $('#error_msg').text("Ammount is empty");//To display error
-           $('#error_msg').addClass('alert-danger');
-           $('#pam').focus();
-           return false; //
-           }
-           if(duration==""){
-           $('#error_msg').text("Ammount is empty");//To display error
-           $('#error_msg').addClass('alert-danger');
-           $('#duration').focus();
-           return false; //
-           }
-           if(image!=""){
-           var arr=image.split(".");
-           var last=arr.length-1;
-           var iext=arr[last].toLowerCase();
-           var extarr=['jpg','jpeg','gif','png','tiff','svg'];
-           if($.inArray(iext,extarr)==-1){
-           $('#error_msg').text("Invalid extension");
-           $('#error_msg').addClass('alert-danger');
-           $('#img').focus();
-           return false; //  
-           
-       }   
-       }
-               });
+
+        // Form validation
+        $('#updatePackage').validate({
+            rules: {
+                fee: {
+                    required: true,
+                    number: true
+                }, 
+                duration: {
+                    required: true,
+                    number: true,
+                    max: 12
+                }, 
+                // package_name: {
+				// 	required: true,
+				// 	package_name: true,
+                //     remote: {
+                //         url: '../../../controller/classSessionController.php?status=checkSessionName',
+                //         type: 'post',
+                //         data: {
+                //             package_name: function(){
+                //                 return $("#package_name").val();
+                //             }
+                //         }
+                //     }
+				// },
+                description: "required"
+            },
+            messages: {
+                fee: {
+                    required: "Please enter fee"
+                },
+                duration: {
+                    required: "Please enter Duration"
+                },
+                package_name: {
+                    required: "Please enter Package Name",
+                    remote: function() { return $.validator.format("{0} is already taken", $("#package_name").val()) }
+                },
+                description: {
+                    required: "Please enter description"
+                }
+            }
+        });
+
+        <?php 
+            if(!empty($packData['image'])){ ?>
+                var path = "<?php echo "../../../".PATH_IMAGE.PATH_PACKAGE_IMAGE.$packData['image']; ?>";   
+                // console.log(path);
+        <?php } ?>
+
+        // file input plugin
+        $("#avatar").fileinput({
+            overwriteInitial: true,
+            maxFileSize: 1500,
+            showClose: false,
+            showCaption: false,
+            showBrowse: false,
+            browseOnZoneClick: true,
+            removeLabel: '',
+            removeIcon: '<i class="fas fa-trash-alt"></i>',
+            removeTitle: 'Cancel or reset changes',
+            elErrorContainer: '#kv-avatar-errors-2',
+            msgErrorClass: 'alert alert-block alert-danger',
+            defaultPreviewContent: '<?php if(!empty($packData['image'])){ ?><img src="'+ path +'" width="100" height="auto" class="img-responsive img-thumbnail" /> <?php }else{ ?> <i class="fas fa-gift fa-7x"></i> <?php } ?>',
+            layoutTemplates: {main2: '{preview} {remove} {browse}'},
+            allowedFileExtensions: ["jpg", "png", "gif", "jpeg"],
+            minFileCount : 0,
+            maxFileCount: 1,
+            showUpload: true,
+            previewFileType: 'any',
+            initialPreviewFileType: 'image',
+        });
     });
-       function readURL(input) {
-        if (input.files && input.files[0]) {
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            $('#img_prev')
-            .attr('src', e.target.result)
-            .height(100);
-        };
-
-        reader.readAsDataURL(input.files[0]);
-    }
-}
-
 </script>

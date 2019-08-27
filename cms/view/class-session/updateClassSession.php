@@ -57,11 +57,11 @@ include '../../layout/header.php'; ?>
                     </div>
                     <div class="form-group col-6">
                         <label for="start_time">Start Time</label>
-                        <input type="time" class="form-control" id="start_time" name="start_time" aria-describedby="start_time" value="<?php echo $sessionData['start_time']?>">
+                        <input type="time" class="form-control" id="start_time" name="start_time" aria-describedby="start_time" value="<?php echo date('H:i', strtotime($sessionData['start_time']));?>">
                     </div>
                     <div class="form-group col-6">
                         <label for="end_time">End Time</label>
-                        <input type="time" class="form-control" id="end_time" name="end_time" aria-describedby="end_time" placeholder="end_time" value="<?php echo $sessionData['end_time']?>"> 
+                        <input type="time" class="form-control" id="end_time" name="end_time" aria-describedby="end_time" value="<?php echo  date('H:i', strtotime($sessionData['end_time']));?>"> 
                     </div>
                     <div class="form-group col-6">
                         <label for="Instructor">Instructor</label>

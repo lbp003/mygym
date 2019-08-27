@@ -6,7 +6,11 @@ class Event{
     CONST ACTIVE = "A";
     CONST INACTIVE = "I";
     CONST DELETED = "D";
-    
+
+    /**
+	* get all event details
+	* @return object $result
+	*/
     public static function displayAllEvent(){
         $con=$GLOBALS['con'];//To get connection string
         $sql="  SELECT  event.event_id,
@@ -22,14 +26,13 @@ class Event{
         $result=$con->query($sql);
         return $result;
     }
-    
-    /** 
+
+    /**
 	* Insert a new event
-	* @return object $last_id
+	* @return bool
 	*/
     function addEvent($event_title, $date, $venue, $startTime, $endTime, $description, $status){
-        
-        $con=$GLOBALS['con']; 
+        $con=$GLOBALS['con'];
         $stmt = $con->prepare("INSERT INTO event (event_title, event_date, event_venue, start_time, end_time, event_description, status) VALUES (?, ?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("sssssss", $event_title, $date, $venue, $startTime, $endTime, $description, $status);
         $stmt->execute();
@@ -39,16 +42,16 @@ class Event{
         }else {
             return false;
         }
-            
+
     }
 
-    /** 
+    /**
 	* Add event image
-	* @return object $result
+	* @return bool
 	*/
     public static function addEventImage($event_id, $image){
-        $con=$GLOBALS['con']; 
-        $sql = "UPDATE event SET image=? WHERE event_id=?";
+        $con=$GLOBALS['con'];
+        $sql = "UPDATE event SET image = ? WHERE event_id = ?";
         $stmt = $con->prepare($sql);
         $stmt->bind_param("si", $image, $event_id);
         $stmt->execute();
@@ -57,30 +60,30 @@ class Event{
           }
          return true;
     }
-    
-    /** 
+
+    /**
 	* Update an existing event
-	* @return object $result
+	* @return bool
 	*/
     public static function updateEvent($dataAr){
-        $con=$GLOBALS['con']; 
-        $sql = "UPDATE event SET event_title = ?, class_description = ?, color = ?, image = ? WHERE event_id = ?";
+        $con=$GLOBALS['con'];
+        $sql = "UPDATE event SET event_title = ?, event_date = ?, start_time = ?, end_time = ?, event_venue = ?, event_description = ?, image = ? WHERE event_id = ?";
         $stmt = $con->prepare($sql);
-        $stmt->bind_param("ssssi", $dataAr['name'], $dataAr['description'], $dataAr['color'], $dataAr['img'], $dataAr['id']);
+        $stmt->bind_param("sssssssi", $dataAr['name'], $dataAr['date'], $dataAr['start_time'], $dataAr['end_time'], $dataAr['venue'], $dataAr['description'], $dataAr['img'], $dataAr['id']);
         $stmt->execute();
         if ($stmt->error) {
             return false;
           }
          return true;
     }
-   
-    /** 
+
+    /**
 	* Activate an event
-	* @return object $result
+	* @return bool 
 	*/
     public static function activateEvent($event_id){
-        $con=$GLOBALS['con']; 
-        $sql = "UPDATE event SET status=? WHERE event_id=?";
+        $con=$GLOBALS['con'];
+        $sql = "UPDATE event SET status = ? WHERE event_id = ?";
         $stmt = $con->prepare($sql);
         $stmt->bind_param("si", $status = self::ACTIVE, $event_id);
         $stmt->execute();
@@ -90,13 +93,13 @@ class Event{
          return true;
     }
 
-    /** 
+    /**
 	* Deactivate a event
-	* @return object $result
+	* @return bool 
 	*/
     public static function deactivateEvent($event_id){
-        $con=$GLOBALS['con']; 
-        $sql = "UPDATE event SET status=? WHERE event_id=?";
+        $con=$GLOBALS['con'];
+        $sql = "UPDATE event SET status = ? WHERE event_id = ?";
         $stmt = $con->prepare($sql);
         $stmt->bind_param("si", $status = self::INACTIVE, $event_id);
         $stmt->execute();
@@ -106,13 +109,13 @@ class Event{
          return true;
     }
 
-    /** 
+    /**
 	* Delete a event
-	* @return object $result
+	* @return bool 
 	*/
     public static function deleteEvent($event_id){
-        $con=$GLOBALS['con']; 
-        $sql = "UPDATE event SET status=? WHERE event_id=?";
+        $con=$GLOBALS['con'];
+        $sql = "UPDATE event SET status = ? WHERE event_id = ?";
         $stmt = $con->prepare($sql);
         $stmt->bind_param("si", $status = self::DELETED, $event_id);
         $stmt->execute();
@@ -121,10 +124,10 @@ class Event{
           }
          return true;
     }
-   
-    /** 
+
+    /**
 	* Check event name for  add new event
-	* @return object $result
+	* @return bool 
 	*/
     public static function checkEventName($event_title){
         $con=$GLOBALS['con'];
@@ -137,12 +140,12 @@ class Event{
         if($result->num_rows == 0){
             return true;
         }
-        return false;      
+        return false;
     }
 
-    /** 
+    /**
 	* Check event name for update an existing event
-	* @return object $result
+	* @return bool
 	*/
     public static function checkUpdateEventName($event_title, $event_id){
         $con=$GLOBALS['con'];
@@ -156,15 +159,15 @@ class Event{
         if($result->num_rows == 0){
             return true;
         }
-        return false;      
+        return false;
     }
 
-    /** 
+    /**
 	* Get the event data by event_id
 	* @return object $result
 	*/
     public static function getEventByID($event_id){
-        
+
         $con=$GLOBALS['con'];
         $sql="  SELECT
                     event.event_id,

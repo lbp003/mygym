@@ -303,12 +303,12 @@ break;
             header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
             exit;
         }
-        // if (!preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $startTime)) {
-        //     $msg = json_encode(array('title'=>'Warning','message'=> 'Start time incorrect format','type'=>'warning'));
-        //     $msg = base64_encode($msg);
-        //     header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
-        //     exit;
-        // }
+        if (!preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $startTime)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Start time incorrect format','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
+            exit;
+        }
 
         $endTime=$_POST['end_time'];
 
@@ -318,12 +318,12 @@ break;
             header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
             exit;
         }
-        // if (!preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $endTime)) {
-        //     $msg = json_encode(array('title'=>'Warning','message'=> 'End time incorrect format','type'=>'warning'));
-        //     $msg = base64_encode($msg);
-        //     header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
-        //     exit;
-        // }
+        if (!preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $endTime)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'End time incorrect format','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
+            exit;
+        }
 
         if($startTime > $endTime){
             $msg = json_encode(array('title'=>'Warning','message'=> 'Wrong start time and end time','type'=>'warning'));

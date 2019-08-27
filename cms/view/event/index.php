@@ -58,12 +58,12 @@ $allEvent = Event::displayAllEvent();
                         $eventID = $row['event_id']; 
 
                         if($row['status']==Event::ACTIVE){ ?>
-                            <a id="deactivate" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../../controller/eventController.php?event_id=<?php $eventID;?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
+                            <a id="Deactivate" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../../controller/eventController.php?event_id=<?php echo $eventID;?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
                     <?php        
                         }elseif($row['status']==Event::INACTIVE){ ?>
-                            <a id="activate" data-toggle="tooltip" data-placement="top" title="Activate" href="../../../controller/eventController.php?event_id=<?php $eventID;?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
+                            <a id="Activate" data-toggle="tooltip" data-placement="top" title="Activate" href="../../../controller/eventController.php?event_id=<?php echo $eventID;?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
                     <?php } ?>
-                        <a id="delete" data-toggle="tooltip" data-placement="top" title="Delete" href="../../../controller/eventController.php?event_id=<?php $eventID;?>&status=Delete"><i class="fas fa-trash text-danger"></i></a>
+                        <a id="Delete" data-toggle="tooltip" data-placement="top" title="Delete" href="../../../controller/eventController.php?event_id=<?php echo $eventID;?>&status=Delete"><i class="fas fa-trash text-danger"></i></a>
                     </td>
                 </tr>
                     <?php } ?>
@@ -111,7 +111,7 @@ $allEvent = Event::displayAllEvent();
         } );
 
         // deactivate confirmation
-        $('#deactivate').on('click', function(event){
+        $('#Deactivate').on('click', function(event){
             event.preventDefault();
                 bootbox.confirm({
                 message: "Are you sure that you want to Deactivate ?",
@@ -127,15 +127,15 @@ $allEvent = Event::displayAllEvent();
                 },
                 callback: function (result) {
                     if(result){
-                    var href = $('#deactivate').attr('href');
+                    var href = $('#Deactivate').attr('href');
                     window.location.href = href;
                     }
                 }
             });
         });
 
-    //    activate confirmation
-        $('#activate').on('click', function(event){
+    // activate confirmation
+        $('#Activate').on('click', function(event){
             event.preventDefault();
                 bootbox.confirm({
                 message: "Are you sure that you want to Activate ?",
@@ -151,7 +151,7 @@ $allEvent = Event::displayAllEvent();
                 },
                 callback: function (result) {
                     if(result){
-                    var href = $('#activate').attr('href');
+                    var href = $('#Activate').attr('href');
                     window.location.href = href;
                     }
                 }
@@ -159,7 +159,7 @@ $allEvent = Event::displayAllEvent();
         });
 
     // delete confirmation
-        $('#delete').on('click', function(event){
+        $('#Delete').on('click', function(event){
             event.preventDefault();
                 bootbox.confirm({
                 message: "Are you sure that you want to Delete ?",
@@ -175,7 +175,7 @@ $allEvent = Event::displayAllEvent();
                 },
                 callback: function (result) {
                     if(result){
-                    var href = $('#delete').attr('href');
+                    var href = $('#Delete').attr('href');
                     window.location.href = href;
                     }
                 }

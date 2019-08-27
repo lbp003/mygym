@@ -63,11 +63,18 @@ include '../../layout/header.php'; ?>
 <script type="text/javascript">
     $(document).ready(function(){
 
+        //get today
+        var today = new Date().toISOString().split('T')[0];
+
         // Form validation
         $('#addEvent').validate({
             rules: {
                 venue: "required",
-                date: "required", 
+                date: {
+                    required: true,
+                    date: true,
+                    min: today
+                    }, 
                 // event_title: {
 				// 	required: true,
 				// 	event_title: true,

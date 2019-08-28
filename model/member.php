@@ -1,5 +1,6 @@
 <?php
-
+include_once 'package.php';
+include_once 'subscription.php';
 class Member{
 
     //Member status
@@ -43,17 +44,70 @@ class Member{
 	* Insert a new member
 	* @return object $last_id
 	*/
+    // function addMember($firstName,$lastName,$email,$gender,$dob,$nic,$phone,$address,$packageID, $membershipNumber, $enPassword, $createdBy,$updatedBy, $lmd, $status){
+        
+    //     $con=$GLOBALS['con']; 
+    //     $stmt = $con->prepare("INSERT INTO member (first_name, last_name, email, gender, dob, nic, telephone, address, package_id, membership_number, password, created_by, updated_by, lmd, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    //     $stmt->bind_param("ssssssssissiiss", $firstName, $lastName, $email, $gender, $dob, $nic, $phone, $address, $packageID, $membershipNumber, $enPassword, $createdBy, $updatedBy, $lmd, $status);
+    //     $stmt->execute();
+    //     $last_id = $con->insert_id;
+    //     if(isset($last_id) && !empty($last_id)){
+    //         return $last_id;
+    //     }else {
+    //         return false;
+    //     }
+            
+    // }
+
     function addMember($firstName,$lastName,$email,$gender,$dob,$nic,$phone,$address,$packageID, $membershipNumber, $enPassword, $createdBy,$updatedBy, $lmd, $status){
         
+        /* activate reporting */
+        $driver = new mysqli_driver();
+        $driver->report_mode = MYSQLI_REPORT_ALL;
+
         $con=$GLOBALS['con']; 
-        $stmt = $con->prepare("INSERT INTO member (first_name, last_name, email, gender, dob, nic, telephone, address, package_id, membership_number, password, created_by, updated_by, lmd, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssssssissiiss", $firstName, $lastName, $email, $gender, $dob, $nic, $phone, $address, $packageID, $membershipNumber, $enPassword, $createdBy, $updatedBy, $lmd, $status);
-        $stmt->execute();
-        $last_id = $con->insert_id;
-        if(isset($last_id) && !empty($last_id)){
-            return $last_id;
-        }else {
+        try {
+            // First of all, let's begin a transaction
+            $con->begin_transaction();
+        
+            // A set of queries; if one fails, an exception should be thrown
+            // $con->query("INSERT INTO member (first_name, last_name, email, gender, dob, nic, telephone, address, package_id, membership_number, password, created_by, updated_by, lmd, status) VALUES ($firstName, $lastName, $email, $gender, $dob, $nic, $phone, $address, $packageID, $membershipNumber, $enPassword, $createdBy, $updatedBy, $lmd, $status)");
+            // $memberID = $con->insert_id;
+            $stmt = $con->prepare("INSERT INTO member (first_name, last_name, email, gender, dob, nic, telephone, address, package_id, membership_number, password, created_by, updated_by, lmd, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("ssssssssissiiss", $firstName, $lastName, $email, $gender, $dob, $nic, $phone, $address, $packageID, $membershipNumber, $enPassword, $createdBy, $updatedBy, $lmd, $status);
+            $stmt->execute();
+            $memberID = $con->insert_id;
+
+            // Get package duration
+            $packageDuration = Package::getPackageDuration($packageID);
+            $duration = $packageDuration->fetch_assoc();
+
+            //subscription end date
+            $date = date("Y-m-d");
+            $lastPidDate = date("Y-m-d");
+            $lmd = date('Y-m-d H:i:s', time());
+
+            $endDate = date('Y-m-d', strtotime("+".$duration['duration']." months", strtotime($date)));
+
+            $paymentStatus = Subscription::PAID;
+            $status = Subscription::ACTIVE;
+
+            // $con->query("INSERT INTO membership (member_id, package_id, start_date, end_date, last_paid_date, payment_status, status, created_by, updated_by, lmd) VALUES ($memberID, $packageID, $date, $endDate, $lastPidDate, $paymentStatus, $status, $createdBy, $updatedBy, $lmd)");
+            $stmt = $con->prepare("INSERT INTO membership (member_id, package_id, start_date, end_date, last_paid_date, payment_status, status, created_by, updated_by, lmd) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("iisssssiis", $memberID,$packageID,$date,$endDate,$lastPidDate,$paymentStatus,$status,$createdBy,$updatedBy,$lmd);
+            $stmt->execute();
+            // If we arrive here, it means that no exception was thrown
+            // i.e. no query has failed, and we can commit the transaction
+            $con->commit();
+
+            return true;
+
+        } catch (mysqli_sql_exception $e) {
+            // An exception has been thrown
+            // We must rollback the transaction
+            $con->rollback();
             return false;
+            echo $e->__toString();
         }
             
     }
@@ -109,18 +163,29 @@ class Member{
 
     /** 
 	* Delete a member
-	* @return object $result
+	* @return bool
 	*/
     public static function deleteMember($member_id){
         $con=$GLOBALS['con']; 
-        $sql = "UPDATE member SET status=? WHERE member_id=?";
-        $stmt = $con->prepare($sql);
-        $stmt->bind_param("si", $status = Member::DELETED, $member_id);
-        $stmt->execute();
-        if ($stmt->error) {
+        $status = self::DELETED;
+        try {
+            // First of all, let's begin a transaction
+            $con->begin_transaction();
+        
+            // A set of queries; if one fails, an exception should be thrown
+            $con->query("UPDATE member SET member.status = '$status' WHERE member.member_id = '$member_id'");
+            $con->query("UPDATE membership SET membership.status = '$status' WHERE membership.member_id = '$member_id'");
+        
+            // If we arrive here, it means that no exception was thrown
+            // i.e. no query has failed, and we can commit the transaction
+            $con->commit();
+            return true;
+        } catch (Exception $e) {
+            // An exception has been thrown
+            // We must rollback the transaction
+            $con->rollback();
             return false;
-          }
-         return true;
+        }
     }
 
     /** 

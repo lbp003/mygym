@@ -33,6 +33,7 @@ class Member{
                         package.package_name
                 FROM member
                 LEFT JOIN package ON member.package_id = package.package_id
+                INNER JOIN membership ON member.member_id = membership.member_id
                 WHERE member.status != 'D'
                 ORDER BY member.member_id DESC";
         $result=$con->query($sql);
@@ -95,6 +96,13 @@ class Member{
             // $con->query("INSERT INTO membership (member_id, package_id, start_date, end_date, last_paid_date, payment_status, status, created_by, updated_by, lmd) VALUES ($memberID, $packageID, $date, $endDate, $lastPidDate, $paymentStatus, $status, $createdBy, $updatedBy, $lmd)");
             $stmt = $con->prepare("INSERT INTO membership (member_id, package_id, start_date, end_date, last_paid_date, payment_status, status, created_by, updated_by, lmd) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             $stmt->bind_param("iisssssiis", $memberID,$packageID,$date,$endDate,$lastPidDate,$paymentStatus,$status,$createdBy,$updatedBy,$lmd);
+            $stmt->execute();
+            $membershipID = $con->insert_id;
+
+            $method = Subscription::CASH;
+
+            $stmt = $con->prepare("INSERT INTO payment_history (membership_id, member_id, start_date, end_date, paid_date, payment_method, lmd) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("iisssss", $membershipID, $memberID, $date, $endDate, $lastPidDate, $method, $lmd);
             $stmt->execute();
             // If we arrive here, it means that no exception was thrown
             // i.e. no query has failed, and we can commit the transaction
@@ -251,5 +259,38 @@ class Member{
                 AND member.status != 'D'";
         $result=$con->query($sql);
         return $result;
+    }
+
+    /** 
+	* Deactivate bulk members
+	* @return bool 
+	*/
+    public static function deactivateBulkMember($outMemberAr){
+        /* activate reporting */
+        $driver = new mysqli_driver();
+        $driver->report_mode = MYSQLI_REPORT_ALL;
+
+        $status = self::INACTIVE;
+
+        $con=$GLOBALS['con']; 
+        try{
+            // First of all, let's begin a transaction
+            $con->begin_transaction();
+
+            foreach($outMemberAr as $member_id){
+                $sql = "UPDATE member SET  member.status = ? WHERE member_id = ?";
+                $stmt = $con->prepare($sql);
+                $stmt->bind_param("si", $status, $member_id);
+                $stmt->execute();
+            }  
+            $con->commit();
+            return true;             
+        } catch (mysqli_sql_exception $e) {
+            // An exception has been thrown
+            // We must rollback the transaction
+            $con->rollback();
+            return false;
+            echo $e->__toString();
+        }        
     }
 }

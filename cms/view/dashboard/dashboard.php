@@ -116,7 +116,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-money-check-alt fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../subscription/"><h5 class="card-title">SUBSCRIPTION</h5></a>
+                            <a href="../../../controller/subscriptionController.php"><h5 class="card-title">SUBSCRIPTION</h5></a>
                         </div>
                         </div>
                     </div>

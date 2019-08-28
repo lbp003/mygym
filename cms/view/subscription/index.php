@@ -55,19 +55,15 @@ $allSubscription = Subscription::displayAllSubscription();
                     <td><?php echo date("Y-m-d", strtotime($row['last_paid_date'])); ?></td>
                     <td><span class="badge <?php if($row['payment_status']==Subscription::PAID){echo "badge-success";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></td>
                     <td>
-                            <a data-toggle="tooltip" data-placement="top" title="View" href="../../controller/membershipController.php?membership_id=<?php echo $row['membership_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
-                            <a data-toggle="tooltip" data-placement="top" title="Edit" href="../../controller/membershipController.php?membership_id=<?php echo $row['membership_id']?>&status=Edit"><i class="fas fa-pencil-alt text-info"></i></a>
-                        <?php 
+                        <a data-toggle="tooltip" data-placement="top" title="View" href="../../controller/membershipController.php?membership_id=<?php echo $row['membership_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
+                    <?php
+                    $today = date("Y-m-d");
 
-                            $membershipId = $row['membership_id'];
-
-                            if($row['status']==Subscription::ACTIVE){
-                                echo "<a data-toggle='tooltip' data-placement='top' title='Deactivate' href='../../controller/membershipController.php?membership_id='.$membershipId.'&status=Deactivate'><i class='fas fa-ban text-warning'></i></a>";
-                            }elseif($row['status']==Subscription::INACTIVE){
-                                echo "<a data-toggle='tooltip' data-placement='top' title='Activate' href='../../controller/membershipController.php?membership_id='.$membershipId.'&status=Activate'><i class='far fa-check-circle text-success'></i></a>";
-                            }
-                        ?>
-                            <a data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash text-danger"></i></a>
+                    if($row['end_date'] <= $today){ ?>
+                        <a data-toggle="tooltip" data-placement="top" title="Mark as Paid" href="../../controller/membershipController.php?membership_id=<?php echo $row['membership_id']?>&status=Payment"><i class="fas fa-hand-holding-usd text-warning"></i></a>
+                    <?php }else{ ?>
+                        <a data-toggle="tooltip" data-placement="top" title="Paid"><i class="far fa-check-circle text-success"></i></a>
+                    <?php } ?>
                     </td>
                 </tr>
                     <?php } ?>

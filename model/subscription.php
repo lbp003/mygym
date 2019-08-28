@@ -12,6 +12,10 @@ class Subscription{
      CONST PAID = "P";
      CONST LATE = "L";
 
+     //payment method
+     CONST CASH = "C";
+     CONST WEB = "W";
+
      /** 
 	* Get All Subscription Details
 	* @return object $result 
@@ -55,38 +59,55 @@ class Subscription{
     //     }
     // }
     
-    function updateMembership($membership_title,$membership_date,$membership_venue,$membership_description,$membership_id){
-        $con = $GLOBALS['con'];
-        $sql="UPDATE membership SET membership_title='$membership_title',membership_date='$membership_date',membership_venue='$membership_venue',membership_description='$membership_description' WHERE membership_id='$membership_id'";
-        $result=$con->query($sql);
-    }
-    
-    function updateMembershipImage($membership_id,$new_image){
-        $con=$GLOBALS['con'];
-        $sql="UPDATE membership SET membership_image='$new_image' WHERE membership_id='$membership_id'";
-        $result =$con->query($sql);
-    }
-    
-    function activateMembership($membership_id){
-        $con=$GLOBALS['con'];
-        $sql="UPDATE membership SET membership_status='Active' WHERE membership_id='$membership_id'";
-        $result=$con->query($sql);
-        return $result;
-    }
-    
-    function deactivateMembership($membership_id){
-        $con=$GLOBALS['con'];
-        $sql="UPDATE membership SET membership_status='Deactive' WHERE membership_id='$membership_id'";
+   /** 
+	* Get All Late Subscription
+	* @return object $result 
+	*/
+    public static function getAllLateSubscription($today){
+        $con=$GLOBALS['con'];//To get connection string
+        $sql="  SELECT  membership.membership_id,
+                        membership.end_date,
+                        membership.member_id
+                FROM membership
+                INNER JOIN member ON membership.member_id = member.member_id
+                WHERE member.status != 'D'   
+                AND membership.end_date < '$today'
+                ORDER BY membership.membership_id DESC";
+                // echo $sql; exit;
         $result=$con->query($sql);
         return $result;
     }
-            
-    function displayMembership($membership_id){
-        
-        $con=$GLOBALS['con'];
-        $sql="SELECT* FROM membership WHERE membership_id='$membership_id'";
-        $result=$con->query($sql);
-        return $result;
+
+    /** 
+	* Update Late Subscriptions
+	* @return bool 
+	*/
+    public static function updateBulkPaymentStatus($lateSubaAr){
+        /* activate reporting */
+        $driver = new mysqli_driver();
+        $driver->report_mode = MYSQLI_REPORT_ALL;
+
+        $status = self::LATE;
+
+        $con=$GLOBALS['con']; 
+        try{
+            // First of all, let's begin a transaction
+            $con->begin_transaction();
+
+            foreach($lateSubaAr as $membership_id){
+                $sql = "UPDATE membership SET  membership.payment_status = ? WHERE membership_id = ?";
+                $stmt = $con->prepare($sql);
+                $stmt->bind_param("si", $status, $membership_id);
+                $stmt->execute();
+            }  
+            $con->commit();
+            return true;             
+        } catch (mysqli_sql_exception $e) {
+            // An exception has been thrown
+            // We must rollback the transaction
+            $con->rollback();
+            return false;
+            echo $e->__toString();
+        }        
     }
-   
 }

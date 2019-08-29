@@ -173,9 +173,41 @@ break;
 
 break;
 
-/**
- * Index actiton
- */
+    /**
+     * Index actiton
+     */
+    case "View":
+        if(!$user)
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
+
+        if(!$auth->checkPermissions(array(Role::VIEW_SUBSCRIPTION)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/dashboard/dashboard.php?msg=$msg");
+            exit;
+        }
+
+        
+        $membershipID = $_REQUEST['membership_id'];
+
+        $dataSet = Subscription::getSubscriptionDetailsByID($membershipID);
+        $subscriptionData = $dataSet->fetch_assoc();
+
+        $_SESSION['subscriptionData'] = $subscriptionData;
+
+        header("Location:../cms/view/subscription/viewSubscription.php");
+        exit;
+break;
+
+    /**
+     * Index actiton
+     */
 
     default:
 

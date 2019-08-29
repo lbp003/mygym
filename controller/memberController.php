@@ -535,18 +535,29 @@ break;
 
     $memberID=$_REQUEST['member_id'];
 
-    $response = Member::activateMember($memberID);
-    if($response == true){
-        $msg = json_encode(array('title'=>'Success :','message'=> 'Member has been activated','type'=>'success'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/member/index.php?msg=$msg");
-        exit;
+    // check member subscription before activate
+    $res = Subscription::checkSubscriptionStatus($memberID);
+    $status = $res->fetch_assoc();
+
+    if($status['status'] == Subscription::ACTIVE){
+        $response = Member::activateMember($memberID);
+        if($response == true){
+            $msg = json_encode(array('title'=>'Success :','message'=> 'Member has been activated','type'=>'success'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/member/index.php?msg=$msg");
+            exit;
+        }else{
+            $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/member/index.php?msg=$msg");
+            exit;
+        }  
     }else{
-        $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
+        $msg = json_encode(array('title'=>'Warning :','message'=> 'Can not activate the member. membership has been expired','type'=>'danger'));
         $msg = base64_encode($msg);
         header("Location:../cms/view/member/index.php?msg=$msg");
         exit;
-    }  
+    }
 
 break;
 
@@ -671,6 +682,45 @@ break;
             $msg = base64_encode($msg);
             header("Location:../cms/view/dashboard/dashboard.php?msg=$msg");
             exit;
+        }
+
+        
+        $today = date("Y-m-d");
+        //Get late payment members
+        $lateSubData = Subscription::getAllLateSubscription($today);
+
+        $lateSubaAr = [];
+        $outMemberAr = [];
+        while($row = $lateSubData->fetch_assoc())
+        {
+            $lateSubaAr[] = $row['membership_id'];
+
+            $endDate = $row['end_date'];
+            $graceDate = date('Y-m-d', strtotime("+7 days", strtotime($endDate)));
+
+            if($graceDate < $today){
+
+                $outMemberAr[] = $row['member_id'];
+            }
+        }
+
+        // var_dump($outMemberAr); exit;
+        //Update payment status of subscription
+        if(!empty($lateSubaAr) || !empty($outMemberAr)){
+
+            $result1 = Member::deactivateBulkMember($outMemberAr);
+            $result2 = Subscription::updateBulkPaymentStatus($lateSubaAr);
+
+            if($result1 && $result2){
+
+                header("Location:../cms/view/member/");
+
+            }else{
+                $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
+                $msg = base64_encode($msg);
+                header("Location:../cms/view/dashboard/dashboard.php?msg=$msg");
+                exit;
+            }
         }
 
         header("Location:../cms/view/member/");

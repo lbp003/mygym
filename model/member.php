@@ -43,23 +43,8 @@ class Member{
     
     /** 
 	* Insert a new member
-	* @return object $last_id
+	* @return bool
 	*/
-    // function addMember($firstName,$lastName,$email,$gender,$dob,$nic,$phone,$address,$packageID, $membershipNumber, $enPassword, $createdBy,$updatedBy, $lmd, $status){
-        
-    //     $con=$GLOBALS['con']; 
-    //     $stmt = $con->prepare("INSERT INTO member (first_name, last_name, email, gender, dob, nic, telephone, address, package_id, membership_number, password, created_by, updated_by, lmd, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    //     $stmt->bind_param("ssssssssissiiss", $firstName, $lastName, $email, $gender, $dob, $nic, $phone, $address, $packageID, $membershipNumber, $enPassword, $createdBy, $updatedBy, $lmd, $status);
-    //     $stmt->execute();
-    //     $last_id = $con->insert_id;
-    //     if(isset($last_id) && !empty($last_id)){
-    //         return $last_id;
-    //     }else {
-    //         return false;
-    //     }
-            
-    // }
-
     function addMember($firstName,$lastName,$email,$gender,$dob,$nic,$phone,$address,$packageID, $membershipNumber, $enPassword, $createdBy,$updatedBy, $lmd, $status){
         
         /* activate reporting */
@@ -271,6 +256,7 @@ class Member{
         $driver->report_mode = MYSQLI_REPORT_ALL;
 
         $status = self::INACTIVE;
+        $subStatus = Subscription::INACTIVE;
 
         $con=$GLOBALS['con']; 
         try{
@@ -281,6 +267,11 @@ class Member{
                 $sql = "UPDATE member SET  member.status = ? WHERE member_id = ?";
                 $stmt = $con->prepare($sql);
                 $stmt->bind_param("si", $status, $member_id);
+                $stmt->execute();
+
+                $sql = "UPDATE membership SET  membership.status = ? WHERE member_id = ?";
+                $stmt = $con->prepare($sql);
+                $stmt->bind_param("si", $subStatus, $member_id);
                 $stmt->execute();
             }  
             $con->commit();

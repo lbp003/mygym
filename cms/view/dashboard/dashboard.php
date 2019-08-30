@@ -176,7 +176,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="far fa-save fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="#"><h5 class="card-title">BACKUP</h5></a>
+                            <a href="../../../controller/backupController.php"><h5 class="card-title">BACKUP</h5></a>
                         </div>
                         </div>
                     </div>          

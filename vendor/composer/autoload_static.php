@@ -29,6 +29,10 @@ class ComposerStaticInit68c69f56485fd965783e2ed809da18c4
         array (
             'Monolog\\' => 8,
         ),
+        'I' => 
+        array (
+            'Ifsnop\\' => 7,
+        ),
         'G' => 
         array (
             'GuzzleHttp\\Psr7\\' => 16,
@@ -66,6 +70,10 @@ class ComposerStaticInit68c69f56485fd965783e2ed809da18c4
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+        ),
+        'Ifsnop\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/ifsnop/mysqldump-php/src/Ifsnop',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (

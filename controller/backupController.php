@@ -1,78 +1,74 @@
 <?php
-include '../common/dbconnection.php';
-include '../model/backupModel.php';
-include '../common/Session.php';
+include_once '../config/dbconnection.php';
+include_once '../config/session.php';
+include_once '../config/global.php';
+include_once '../model/role.php';
 
-//define("BACKUP_PATH","../backup/");
+require_once '../vendor/autoload.php';
+use Ifsnop\Mysqldump as IMysqldump;
+
+$user=$_SESSION['user'];
+$auth = new Role(); 
 
 $status=$_REQUEST['status'];
-
-$objbp= new backup();
-
 
 switch ($status){
     
     case "Backup":
 
-    //https://www.webslesson.info/2018/02/backup-mysql-database-using-php.html
-        
-        $connect = new PDO("mysql:host=localhost;dbname=zgym", "root", "");
-        $get_all_table_query = "SHOW TABLES";
-        $statement = $connect->prepare($get_all_table_query);
-        $results = $statement->execute();
-        $result = $statement->fetchAll();
-
-        if(isset($_POST['table']))
+    
+        if(!$user)
         {
-         $output = '';
-         foreach($_POST["table"] as $table)
-         {
-          $show_table_query = "SHOW CREATE TABLE " . $table . "";
-          $statement = $connect->prepare($show_table_query);
-          $statement->execute();
-          $show_table_result = $statement->fetchAll();
-
-          foreach($show_table_result as $show_table_row)
-          {
-           $output .= "\n\n" . $show_table_row["Create Table"] . ";\n\n";
-          }
-          $select_query = "SELECT * FROM " . $table . "";
-          $statement = $connect->prepare($select_query);
-          $statement->execute();
-          $total_row = $statement->rowCount();
-
-          for($count=0; $count<$total_row; $count++)
-          {
-           $single_result = $statement->fetch(PDO::FETCH_ASSOC);
-           $table_column_array = array_keys($single_result);
-           $table_value_array = array_values($single_result);
-           $output .= "\nINSERT INTO $table (";
-           $output .= "" . implode(", ", $table_column_array) . ") VALUES (";
-           $output .= "'" . implode("','", $table_value_array) . "');\n";
-          }
-         }
-         $file_name = 'zgym_' . date('y_m_d_H_i_s') . '.sql';
-         $file_handle = fopen($file_name, 'w+');
-         fwrite($file_handle, $output);
-         fclose($file_handle);
-         header('Content-Description: File Transfer');
-         header('Content-Type: application/octet-stream');
-         header('Content-Disposition: attachment; filename=' . basename($file_name));
-         header('Content-Transfer-Encoding: binary');
-         header('Expires: 0');
-         header('Cache-Control: must-revalidate');
-            header('Pragma: public');
-            header('Content-Length: ' . filesize($file_name));
-            ob_clean();
-            flush();
-            readfile($file_name);
-            unlink($file_name);
+            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
         }
-            $msg=base64_encode("Successfully Backed Up");
-            header("Location:../view/backup.php?msg=$msg");
 
-                
+        if(!$auth->checkPermissions(array(Role::MANAGE_BACKUP)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/class/index.php?msg=$msg");
+            exit;
+        }
+
+        try {
+            $dump = new IMysqldump\Mysqldump('mysql:host=localhost;dbname=mygym', 'root', '');
+            $dump->start('../public/db/dump.sql');
+
+            $msg = json_encode(array('title'=>'Success','message'=>'Database backup successful','type'=>'success'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/backup/index.php?msg=$msg");
+            exit;
+
+        } catch (\Exception $e) {
+            echo 'mysqldump-php error: ' . $e->getMessage();
+        }     
 break;
-}
 
+    /**
+     * Index actiton
+     */
+
+    default:
+
+        if(!$user)
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
+
+        if(!$auth->checkPermissions(array(Role::MANAGE_CLASS, Role::VIEW_CLASS)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/dashboard/dashboard.php?msg=$msg");
+            exit;
+        }
+
+        header("Location:../cms/view/backup/");
+}
 ?>

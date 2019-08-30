@@ -14,30 +14,35 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 
         <style>
-            body{
-                background-color: #F8F9FA;
+            body, html {
+                height: 100%;
             }
+
+            .bg { 
+                /* The image used */
+                background-image: url("../../../public/image/login-bg.jpg");
+
+                /* Full height */
+                height: 100%; 
+
+                /* Center and scale the image nicely */
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+
             .btn{
                 background-color: #2cabe2;
             }
         </style>
     </head>
     <body>
-        <div class="container-fluid">
+        <div class="container-fluid bg">
             <div class="row justify-content-center" style="height: 100%;">
                 <div class="col-4 pt-5">
-                    <h2 class="text-center">WELCOME</h2>
+                    <h1 class="text-center text-light">WELCOME</h1><hr />
                     <form method="post" name="slogin" action="../../../controller/loginController.php">
-                        <?php $_SESSION['user_type']="staff"; ?>
-                        <div id="msg" class="alert-danger">
-                            <p style="font-size: 16px">
-                            <?php
-                                if(isset($_REQUEST['msg'])){
-                                    echo base64_decode($_REQUEST['msg']);
-                                }
-                            ?>
-                            </p>
-                        </div>  
+                        <?php $_SESSION['user_type']="staff"; ?> 
                         <div class="form-group">
                             <label for="uname" class="sr-only">Email :</label>
                             <div class="input-group">
@@ -56,6 +61,15 @@
                                 <input type="password" name="password" class="form-control" id="password" placeholder="Password" />
                             </div>
                         </div>
+                        <div>
+                            <p class="font-weight-normal text-danger">
+                            <?php
+                                if(isset($_REQUEST['msg'])){
+                                    echo base64_decode($_REQUEST['msg']);
+                                }
+                            ?>
+                            </p>
+                        </div> 
                         <div class="float-right">
                             <input type="submit" class="btn" value="Login" />
                         </div>    

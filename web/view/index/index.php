@@ -1,5 +1,5 @@
-<?php include_once '../layout/header.php';?><!---including header--->
-<?php include_once '../layout/navBar.php';?><!----- including navbar------>
+<?php include_once '../../layout/header.php';?><!---including header--->
+<?php include_once '../../layout/navBar.php';?><!----- including navbar------>
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
@@ -14,13 +14,13 @@
                     <!-- The slideshow -->
                     <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img src="../../public/image/xyz.jpg" alt="image1" width="1100" height="auto">
+                        <img src="../../../public/image/xyz.jpg" alt="image1" width="1100" height="auto">
                     </div>
                     <div class="carousel-item">
-                        <img src="../../public/images/web/efg.jpg" alt="image2" width="1100" height="auto">
+                        <img src="../../../public/images/web/efg.jpg" alt="image2" width="1100" height="auto">
                     </div>
                     <div class="carousel-item">
-                        <img src="../../public/images/web/abc.jpg" alt="image3" width="1100" height="auto">
+                        <img src="../../../public/images/web/abc.jpg" alt="image3" width="1100" height="auto">
                     </div>
                     </div>
 
@@ -35,4 +35,4 @@
             </div>            
         </div>
     </div>
-<?php include_once '../layout/footer.php';?><!-----including footer---->
+<?php include_once '../../layout/footer.php';?><!-----including footer---->

@@ -14,6 +14,7 @@ $email=trim($_POST['email']);  // get login email
 $password=trim($_POST['password']); // get login password
 
 $user_type=$_SESSION['user_type']; //get the user type
+// var_dump($user_type); exit;
 $password=sha1($password); //To encrypt using secure hash algorithm
 
 //Server side validation
@@ -23,7 +24,7 @@ if($email=="" or $password==""){
     
     //Redirecting and passing data though URL
     if($user_type=="member"){
-        header("Location:../web/view/login.php?msg=$msg");
+        header("Location:../web/view/index/login.php?msg=$msg");
     }else{
         header("Location:../cms/view/index/index.php?msg=$msg");
         }
@@ -43,7 +44,7 @@ if($email=="" or $password==""){
         $msg="User Name or Password Invalid";
         $msg=base64_encode($msg);
         if($user_type=='member'){
-            header("Location:../web/view/login.php?msg=$msg");
+            header("Location:../web/view/index/login.php?msg=$msg");
         }else{
             header("Location:../cms/view/index/index.php?msg=$msg");
         }
@@ -51,8 +52,10 @@ if($email=="" or $password==""){
     }else {//Valid user name and password  
                
          if($user_type=='member'){
+
              $user=$result->fetch_assoc(); 
-            //create session to password validateLogin function query details 
+
+            // insert user details to a session  
             $_SESSION['user']=$user;
             
         //To get remote ip address - http://stackoverflow.com/questions/15699101/get-the-client-ip-address-using-php
@@ -73,15 +76,16 @@ if($email=="" or $password==""){
             $log_ip=get_ip_address();
             
             $objlogme=new Log();
-            $log_id=$objlogme->insertLogMember($log_ip, $user['member_id']); //Maintaining Member logs
+            $log_id=$objlogme->insertMemberLog($log_ip, $user['member_id']); //Maintaining Member logs
     
             //$user['log_id']=$log_id;
             $_SESSION['log_id']=$log_id;
             
-             header("Location:../web/view/myPlan.php");
+            header("Location:../web/view/dashboard/");
         }else{
+            
             $user=$result->fetch_assoc();
-            //create session to password validateLogin function query details 
+            // create a session to insert staff details
             $_SESSION['user']=$user;
 
             $staff_id = $user['staff_id']; 

@@ -1,7 +1,6 @@
 <?php include_once '../../../config/dbconnection.php'; ?>
 <?php include_once '../../../config/session.php'; ?>
 <?php include_once '../../../config/global.php'; ?>
-<?php include_once '../../../model/role.php'; ?>
 <?php
     // Get User Details from session
     $user=$_SESSION['user']; 
@@ -14,7 +13,7 @@
 ?>
 <html>
     <head>
-        <title>CMS</title>
+        <title>Member Account</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
         <!-- Including Google font -->

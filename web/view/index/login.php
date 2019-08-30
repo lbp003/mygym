@@ -42,7 +42,7 @@
                 <div class="col-4 pt-5">
                     <h1 class="text-center text-light">WELCOME</h1><hr />
                     <form method="post" name="slogin" action="../../../controller/loginController.php">
-                        <?php $_SESSION['user_type']="staff"; ?> 
+                        <?php $_SESSION['user_type']="member"; ?> 
                         <div class="form-group">
                             <label for="uname" class="sr-only">Email :</label>
                             <div class="input-group">
@@ -73,7 +73,10 @@
                         <div class="float-right">
                             <input type="submit" class="btn" value="Login" />
                         </div>    
-                    </form>
+                    </form><br /><br />
+                    <div class="col-12 text-center">
+                        <a href="../../../"><i class="fas fa-home fa-2x" style="color: white"></i></a>
+                    </div>
                 </div>
             </div>
         </div>

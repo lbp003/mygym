@@ -1,0 +1,31 @@
+body{
+    background-color: #ffffff;
+    font-family: 'Roboto', sans-serif;
+}
+
+a{
+    text-decoration: none !important;
+}
+a:hover{
+    text-decoration: none !important;
+}
+
+.top-bar {
+    background-color: darkgray;
+}
+.top-bar a {
+    color: #222222;
+}
+.top-bar a:hover {
+    color: #cccccc;
+}
+
+.footer{
+    background-color: #222222;
+    color: #83D0F2;
+}
+
+.footer a {
+    background-color: #222222;
+    color: #83D0F2;
+}

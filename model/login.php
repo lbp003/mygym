@@ -47,115 +47,22 @@ class Login{
                     member.telephone,
                     member.package_id,
                     member.image,
-                    member.status
-                FROM member 
+                    member.status,
+                    package.package_id,
+                    package.package_name,
+                    membership.membership_id,
+                    membership.start_date,
+                    membership.end_date,
+                    membership.last_paid_date,
+                    membership.status,
+                    membership.payment_status
+                FROM member
+                LEFT JOIN package ON member.package_id = package.package_id
+                INNER JOIN membership ON member.member_id = membership.member_id 
                 WHERE member.email='$email' 
                 AND member.password='$password'
                 AND member.status = 'A'";
         $result=$con->query($sql);
         return $result;
     }
-
-    public static function addStaffLogin($staff_email,$staff_id){
-        $con=$GLOBALS['con'];//To get connection string
-        $password=sha1("123");//Default password
-        $sql="INSERT INTO login_staff VALUES('$staff_email','$password','$staff_id','Active')";//To execute the query
-        $result=$con->query($sql);
-        $staff_id=$con->insert_id;
-        return $staff_id;
-        
-    }
-        function addMemberLogin($member_email,$password,$member_id){
-        $con=$GLOBALS['con'];//To get connection string
-        //$password=sha1("123");//Default password
-        $sql="INSERT INTO login_member VALUES('$member_email','$password','$member_id','Active')";//To execute the query
-        $result=$con->query($sql);
-        $member_id=$con->insert_id;
-        return $member_id;
-        
-    }
-    
-    function addOnlineMemberLogin($email,$pass,$member_id){
-        $con=$GLOBALS['con'];//To get connection string
-        $sql="INSERT INTO login_member VALUES('$email','$pass','$member_id','Active')";//To execute the query
-        $result=$con->query($sql);
-        $member_id=$con->insert_id;
-        return $member_id;
-        
-    }
-    //Activate and deactivate member login
-    function activateMemberLogin($member_id){
-      $con=$GLOBALS['con'];//To get connection string
-      $sql="UPDATE login_member SET login_status='Active' WHERE member_id='$member_id'";
-      $result=$con->query($sql);
-      return $result;
-    }
-    
-    function deactivateMemberLogin($member_id){
-       $con=$GLOBALS['con'];//To get connection string
-       $sql="UPDATE login_member SET login_status='Deactive' WHERE member_id='$member_id'";
-       $result=$con->query($sql);
-       return $result;
-    }
-    
-     //Activate and deactivate staff login
-     function activateStaffLogin($staff_id){
-        $con=$GLOBALS['con'];
-        $sql="UPDATE login_staff SET login_status='Active' WHERE staff_id='$staff_id'";
-        $result=$con->query($sql);
-        return $result;
-     }
-     
-     function deactivateStaffLogin($staff_id){
-         $con=$GLOBALS['con'];
-         $sql="UPDATE login_staff SET login_status='Deactive' WHERE staff_id='$staff_id'";
-         $result=$con->query($sql);
-         return $result;
-     }
-     
-     // check current password
-     function checkStaffPW($staff_id,$currentE_check){
-         $con=$GLOBALS['con'];
-         $sql="SELECT staff_id FROM login_staff WHERE staff_id='$staff_id' && password='$currentE_check'";
-         $result=$con->query($sql);
-         return $result;
-     }
-     
-     function updateStaffPW($staff_id,$newE_pw){
-         $con=$GLOBALS['con'];
-         $sql="UPDATE login_staff SET password='$newE_pw' WHERE staff_id='$staff_id'";
-         $result=$con->query($sql);
-         return $result;
-     }
-
-     function checkMemberPW($member_id,$currentE_check){
-         $con=$GLOBALS['con'];
-         $sql="SELECT member_id FROM login_member WHERE member_id='$member_id' && password='$currentE_check'";
-         $result=$con->query($sql);
-         return $result;
-     }
-
-     function updateMemberPW($member_id,$newE_pw){
-         $con=$GLOBALS['con'];
-         $sql="UPDATE login_member SET password='$newE_pw' WHERE member_id='$member_id'";
-         $result=$con->query($sql);
-         return $result;
-     }
 }
-
-//class module{
-//    
-//    function getModule($role_id){
-//        $con=$GLOBALS['con']; //To get connection string
-//        $sql="SELECT * FROM module_role WHERE role_id='$role_id'";
-//        $result=$con->query($sql); //To excute the query
-//        $arr=array();
-//        while($row=$result->fetch_assoc()){
-//            array_push($arr, $row['module_id']);
-//            
-//        }
-//        
-//        return $arr;
-//    }
-//    
-//}

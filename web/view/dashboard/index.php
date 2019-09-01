@@ -6,6 +6,12 @@
     }else{ 
         $path = "../../../".PATH_IMAGE.PATH_MEMBER_IMAGE.$user['image'];                    
     } 
+
+    if($user['payment_status']==Subscription::PAID){
+        $status="Paid";
+    }elseif($user['payment_status']==Subscription::LATE){
+        $status="Late";
+    }
 ?>
 <!--- header end ----> 
 <body>
@@ -21,74 +27,28 @@
     <!-- module container -->
     <div class="container">
         <div class="row">
-        <div class="col-12">
-            <div class="d-flex justify-content-end">
-            <div class="col-4">
-                    <div class="mb-3">
-                        <div class="card align-items-center border-dark" style="width: 15rem;">
-                        <i class="far fa-calendar-alt fa-5x dash-icon-color"></i>
-                        <div class="card-body">
-                            <a href="../../../controller/classSessionController.php"><h5 class="card-title">CLASS SESSION</h5></a>
-                        </div>
-                        </div>
+            <div class="col-12 d-flex justify-content-between border border-secondary rounded" style="background-color:silver;">
+                <div class="col-3">
+                   <img src="<?php echo $path; ?>" width="auto" height="auto" class="img-responsive img-thumbnail float-left rounded-circle" alt="User Image"/>
+                </div>
+                <div class="col-9 d-flex flex-row">
+                    <div class="col-6">
+                        <h3 class="text-uppercase">Member</h3>
+                        <p><b>Name :</b> <?php echo ucfirst($user['first_name'])." ".ucfirst($user['last_name']); ?></p>
+                        <p><b>Email :</b> <?php echo $user['email']; ?></p>
+                        <p><b>Phone :</b> <?php echo $user['telephone']; ?></p>
                     </div>
-            </div>
-            <div class="col-4">
-                    <div class="mb-3">
-                        <div class="card align-items-center border-dark" style="width: 15rem;">
-                        <i class="far fa-calendar-alt fa-5x dash-icon-color"></i>
-                        <div class="card-body">
-                            <a href="../../../controller/classSessionController.php"><h5 class="card-title">CLASS SESSION</h5></a>
-                        </div>
-                        </div>
+                    <div class="col-6">
+                        <h3 class="text-uppercase">Membership</h3>
+                        <p><b>Package :</b> <?php echo $user['package_name'] ?></p>
+                        <p><b>Payment Status :</b> <span style="font-size: 16px;" class="badge <?php if($user['payment_status']==Subscription::PAID){echo "badge-success";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></p>
+                        <p><b>Next Payment Date :</b> <?php echo date('Y-m-d',strtotime($user['end_date'])); ?></p>
                     </div>
-            </div>
-            <div class="col-4">
-                    <div class="mb-3">
-                        <div class="card align-items-center border-dark" style="width: 15rem;">
-                        <i class="far fa-calendar-alt fa-5x dash-icon-color"></i>
-                        <div class="card-body">
-                            <a href="../../../controller/classSessionController.php"><h5 class="card-title">CLASS SESSION</h5></a>
-                        </div>
-                        </div>
-                    </div>
-            </div>
-            </div><hr />
+                </div>
+            </div>         
         </div>
-            <div class="col-4">
-                    <div class="mb-3">
-                        <div class="card align-items-center border-dark" style="width: 15rem;">
-                        <i class="far fa-calendar-alt fa-5x dash-icon-color"></i>
-                        <div class="card-body">
-                            <a href="../../../controller/classSessionController.php"><h5 class="card-title">CLASS SESSION</h5></a>
-                        </div>
-                        </div>
-                    </div>
-            </div>
-            <div class="col-4">
-
-                    <div class="mb-3">
-                        <div class="card align-items-center border-dark" style="width: 100%;">
-                <i class="fas fa-dumbbell fa-5x dash-icon-color"></i>
-                        <div class="card-body">
-                            <a href="../../../controller/equipmentController.php"><h5 class="card-title">EQUIPMENT</h5></a>
-                        </div>
-                        </div>
-                    </div>
-   
-            </div>
-            <div class="col-4">
-     
-                    <div class="mb-3">
-                        <div class="card align-items-center border-dark" style="width: 100%;">
-                        <i class="fas fa-running fa-5x dash-icon-color"></i>
-                        <div class="card-body">
-                            <a href="../../../controller/exerciseController.php"><h5 class="card-title">EXERCISE</h5></a>
-                        </div>
-                        </div>
-                    </div>
-      
-            </div>
+        <div class="row">
+            
         </div>
     </div>
     <?php include_once '../../layout/default_footer.php';?>

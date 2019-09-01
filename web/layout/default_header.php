@@ -1,6 +1,7 @@
 <?php include_once '../../../config/dbconnection.php'; ?>
 <?php include_once '../../../config/session.php'; ?>
 <?php include_once '../../../config/global.php'; ?>
+<?php include_once '../../../model/subscription.php'; ?>
 <?php
     // Get User Details from session
     $user=$_SESSION['user']; 

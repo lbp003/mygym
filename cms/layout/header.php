@@ -11,6 +11,8 @@
         header("Location:../../index.php?msg=$msg");
         exit;
     }
+
+    $auth = new Role();
 ?>
 <html>
     <head>

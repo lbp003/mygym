@@ -284,4 +284,22 @@ class Member{
             echo $e->__toString();
         }        
     }
+
+    /** 
+	* Get all members
+	* @return object $result
+	*/
+    public static function getAllMembers(){
+        
+        $con=$GLOBALS['con'];
+        $sql="  SELECT
+                    member.member_id,
+                    member.email,
+                    CONCAT_WS(' ',member.first_name,member.last_name) AS member_name
+                FROM member 
+                WHERE 1=1
+                AND member.status = 'A'";
+        $result=$con->query($sql);
+        return $result;
+    }
 }

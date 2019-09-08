@@ -35,8 +35,8 @@ include '../../layout/header.php'; ?>
                         <input type="text" class="form-control" id="subject" name="subject" aria-describedby="subject" placeholder="Subject" required>
                     </div>
                     <div class="form-group col-6">
-                        <label for="msg">Message</label>
-                        <textarea class="form-control" id="msg" name="msg" rows="3"></textarea>
+                        <label for="message">Message</label>
+                        <textarea class="form-control" id="message" name="message" rows="3"></textarea>
                     </div>
                     <div class="col-12">
                         <button type="submit" class="btn btn-primary mb-2 float-right">Send</button>
@@ -62,7 +62,7 @@ include '../../layout/header.php'; ?>
                     required: true
                 },
                 subject: "required", 
-                msg: "required"
+                message: "required"
             },
             messages: {
                 email: {
@@ -71,7 +71,7 @@ include '../../layout/header.php'; ?>
                 subject: {
                     required: "Please enter subject"
                 },
-                msg: {
+                message: {
                     required: "Please enter message"
                 }
             }

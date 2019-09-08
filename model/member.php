@@ -302,4 +302,21 @@ class Member{
         $result=$con->query($sql);
         return $result;
     }
+
+    /** 
+	* Get all member name
+	* @return object $result
+	*/
+    public static function getMemberNameByEmail($email){
+        
+        $con=$GLOBALS['con'];
+        $sql="  SELECT
+                    CONCAT_WS(' ',member.first_name,member.last_name) AS member_name
+                FROM member 
+                WHERE 1=1
+                AND member.email = '$email'
+                AND member.status = 'A'";
+        $result=$con->query($sql);
+        return $result;
+    }
 }

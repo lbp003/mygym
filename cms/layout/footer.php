@@ -49,7 +49,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.1/themes/fas/theme.min.js"></script>
     <!-- color picker -->
     <script src="../../../public/plugin/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.js"></script>
+    <!-- select2 plugin -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
+    <!-- Hightchart plugin -->
+    <script src="../../../public/plugin/Highcharts/code/highcharts.js"></script>
     <script type="text/javascript">
         $( document ).ready(function() {
             $(function () {

@@ -15,6 +15,8 @@
 ?>
 <!--- header end ----> 
 <body>
+    <!-- Paypal -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AWtofFLj0LNtrFn7SXU6_ym_t8aNNjZ7WIh_hfjCMxssOElmeWS7gl8QTsVYYvnnKB0vSdnAiS9x21ik"></script>
     <!---navbar starting ---------->
     <?php include '../../layout/default_navBar.php';?> 
     <!---navbar ending ---------->
@@ -29,7 +31,7 @@
         <div class="row">
             <div class="col-12 d-flex justify-content-between border border-secondary rounded" style="background-color:silver;">
                 <div class="col-3">
-                   <img src="<?php echo $path; ?>" width="auto" height="auto" class="img-responsive img-thumbnail float-left rounded-circle" alt="User Image"/>
+                   <img src="<?php echo $path; ?>" width="auto" height="auto" class="img-responsive img-thumbnail float-left" alt="User Image"/>
                 </div>
                 <div class="col-9 d-flex flex-row">
                     <div class="col-6">
@@ -43,7 +45,11 @@
                         <p><b>Package :</b> <?php echo $user['package_name'] ?></p>
                         <p><b>Payment Status :</b> <span style="font-size: 16px;" class="badge <?php if($user['payment_status']==Subscription::PAID){echo "badge-success";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></p>
                         <p><b>Next Payment Date :</b> <?php echo date('Y-m-d',strtotime($user['end_date'])); ?></p>
+                        <p>
+                            <script>paypal.Buttons().render('body');</script>
+                        </p>
                     </div>
+
                 </div>
             </div>         
         </div>

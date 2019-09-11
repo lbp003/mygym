@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <?php include_once '../../../config/dbconnection.php'; ?>
 <?php include_once '../../../config/session.php'; ?>
 <?php include_once '../../../config/global.php'; ?>
@@ -16,7 +17,8 @@
     <head>
         <title>Member Account</title>
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
         <!-- Including Google font -->
         <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="../../../public/css/layout.css"/>

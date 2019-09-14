@@ -18,11 +18,16 @@ class ComposerStaticInit68c69f56485fd965783e2ed809da18c4
         array (
             'phpseclib\\' => 10,
         ),
+        'S' => 
+        array (
+            'Sample\\' => 7,
+        ),
         'P' => 
         array (
             'Psr\\Log\\' => 8,
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Cache\\' => 10,
+            'PayPalCheckoutSdk\\' => 18,
             'PHPMailer\\PHPMailer\\' => 20,
         ),
         'M' => 
@@ -44,12 +49,20 @@ class ComposerStaticInit68c69f56485fd965783e2ed809da18c4
         array (
             'Firebase\\JWT\\' => 13,
         ),
+        'B' => 
+        array (
+            'BraintreeHttp\\' => 14,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
         'phpseclib\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib',
+        ),
+        'Sample\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/paypal/paypal-checkout-sdk/samples',
         ),
         'Psr\\Log\\' => 
         array (
@@ -62,6 +75,10 @@ class ComposerStaticInit68c69f56485fd965783e2ed809da18c4
         'Psr\\Cache\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/cache/src',
+        ),
+        'PayPalCheckoutSdk\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/paypal/paypal-checkout-sdk/lib/PayPalCheckoutSdk',
         ),
         'PHPMailer\\PHPMailer\\' => 
         array (
@@ -95,14 +112,27 @@ class ComposerStaticInit68c69f56485fd965783e2ed809da18c4
         array (
             0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
+        'BraintreeHttp\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/braintree/braintreehttp/lib/BraintreeHttp',
+        ),
     );
 
     public static $prefixesPsr0 = array (
         'P' => 
         array (
+            'PayPal\\Types' => 
+            array (
+                0 => __DIR__ . '/..' . '/paypal/invoice-sdk-php/lib',
+            ),
+            'PayPal\\Service' => 
+            array (
+                0 => __DIR__ . '/..' . '/paypal/invoice-sdk-php/lib',
+            ),
             'PayPal' => 
             array (
                 0 => __DIR__ . '/..' . '/paypal/rest-api-sdk-php/lib',
+                1 => __DIR__ . '/..' . '/paypal/sdk-core-php/lib',
             ),
         ),
         'G' => 

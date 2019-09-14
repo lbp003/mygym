@@ -88,11 +88,11 @@
         });
 
         // Remove query strings from the url
-        var uri = window.location.href.toString();
-        if (uri.indexOf("?") > 0) {
-            var clean_uri = uri.substring(0, uri.indexOf("?"));
-            window.history.replaceState({}, document.title, clean_uri);
-        }
+        // var uri = window.location.href.toString();
+        // if (uri.indexOf("?") > 0) {
+        //     var clean_uri = uri.substring(0, uri.indexOf("?"));
+        //     window.history.replaceState({}, document.title, clean_uri);
+        // }
     </script>       
     </body>
 </html>

@@ -57,4 +57,24 @@ define("APP_KEY", 'lbp@hotmail');
 
 //Unknown error
 define("UNKNOWN_ERROR", "Unknown Error");
-?>
+
+// PayPal Environment 
+define("PAYPAL_ENVIRONMENT", "sandbox");
+
+// PayPal REST API endpoints
+define("PAYPAL_ENDPOINTS", array(
+	"sandbox" => "https://api.sandbox.paypal.com",
+	"production" => "https://api.paypal.com"
+));
+
+// PayPal REST App credentials
+define("PAYPAL_CREDENTIALS", array(
+	"sandbox" => [
+		"client_id" => "AYlQfl6viyLGGvrWWMy-Eh-EuCL7zif-5QNg_qFoaUwgMagmPqtTFaOc4gD7C9riW6kQWKyrgQ5IPHol",
+		"client_secret" => "EPh-y5JHipYO9IBwFnSuLFZ3cXReZnJAjjCg0e2ikH_DOkXXHlCbj7g4DPNfrspeBvRnYUSrM5EWQjLV"
+	],
+	"production" => [
+		"client_id" => "",
+		"client_secret" => ""
+	]
+));

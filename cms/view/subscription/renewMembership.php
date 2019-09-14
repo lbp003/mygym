@@ -6,9 +6,12 @@ include '../../layout/header.php'; ?>
     // echo json_encode($pacData); exit;
     $subID = $_REQUEST['subID'];
     $memID = $_REQUEST['memID'];
+    $pacID = $_REQUEST['pacID'];
 
     $subscriptionID = base64_decode($subID);
     $memberID = base64_decode($memID);
+    $packageID = base64_decode($pacID);
+
 ?>
 <body>
     <!---navbar starting ---------->
@@ -25,15 +28,23 @@ include '../../layout/header.php'; ?>
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <form method="post" id="updatePackage" name="updatePackage" action="../../../controller/subscriptionController.php?status=Renew" enctype="multipart/form-data">
+                <form method="post" id="renew" name="renew" action="../../../controller/subscriptionController.php?status=Renew" enctype="multipart/form-data">
                 <div class="d-flex flex-wrap">
                     <div class="form-group col-6">
                         <label for="package">Package</label>
                         <select id="package" name="package" class="form-control">
                             <option selected>Choose...</option>
                             <?php foreach($pacData as $key => $val){?>
-                            <option value="<?php echo $key;?>"><?php echo $val;?></option>
+                            <option value="<?php echo $key;?>" <?php if($packageID == $key) echo "selected"; ?>><?php echo $val;?></option>
                             <?php } ?>
+                        </select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="payment">Payment Method</label>
+                        <select id="payment" name="payment" class="form-control">
+                            <option selected>Choose...</option>
+                            <option value="C">Cash</option>                            
+                            <option value="O">Online</option>
                         </select>
                     </div>
                     <div class="col-12">
@@ -51,13 +62,17 @@ include '../../layout/header.php'; ?>
 
 <script type="text/javascript">
     $(document).ready(function(){
-        $('#updatePackage').validate({
+        $('#renew').validate({
             rules: {
-                package: "required"
+                package: "required",
+                payment: "required"
             },
             messages: {             
                 package: {
                     required: "Please select a package"
+                },
+                payment: {
+                    required: "Please select a payment method"
                 }
             }
         });

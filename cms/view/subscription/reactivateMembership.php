@@ -6,9 +6,11 @@ include '../../layout/header.php'; ?>
     // echo json_encode($pacData); exit;
     $subID = $_REQUEST['subID'];
     $memID = $_REQUEST['memID'];
+    $pacID = $_REQUEST['pacID'];
 
     $subscriptionID = base64_decode($subID);
     $memberID = base64_decode($memID);
+    $packageID = base64_decode($pacID);
     // var_dump($memberID); exit;
 ?>
 <body>
@@ -33,7 +35,7 @@ include '../../layout/header.php'; ?>
                         <select id="package" name="package" class="form-control">
                             <option selected>Choose...</option>
                             <?php foreach($pacData as $key => $val){?>
-                            <option value="<?php echo $key;?>"><?php echo $val;?></option>
+                            <option value="<?php echo $key;?>" <?php if($packageID == $key) echo "selected"; ?>><?php echo $val;?></option>
                             <?php } ?>
                         </select>
                     </div>

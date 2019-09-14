@@ -6,7 +6,9 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'PayPal' => array($vendorDir . '/paypal/rest-api-sdk-php/lib'),
+    'PayPal\\Types' => array($vendorDir . '/paypal/invoice-sdk-php/lib'),
+    'PayPal\\Service' => array($vendorDir . '/paypal/invoice-sdk-php/lib'),
+    'PayPal' => array($vendorDir . '/paypal/rest-api-sdk-php/lib', $vendorDir . '/paypal/sdk-core-php/lib'),
     'Google_Service_' => array($vendorDir . '/google/apiclient-services/src'),
     'Google_' => array($vendorDir . '/google/apiclient/src'),
 );

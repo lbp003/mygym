@@ -1,7 +1,6 @@
 {
     "require": {
         "phpmailer/phpmailer": "^6.0",
-        "paypal/rest-api-sdk-php": "*",
         "google/apiclient": "2.0",
         "ext-json": "*",
         "ifsnop/mysqldump-php": "^2.7"

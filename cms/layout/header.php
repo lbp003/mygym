@@ -31,6 +31,9 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.0/css/select.dataTables.min.css">
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.6/css/buttons.bootstrap4.min.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.1/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
-        <link href="../../../public/plugin/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../../../public/plugin/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="../../../public/plugin/jquery-ui/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     </head>

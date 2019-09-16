@@ -42,63 +42,70 @@ switch ($status){
         if (empty($firstName)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'First Name can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+            header("Location:../cms/view/staff/add-staff.php?msg=$msg");
             exit;
         }
         $lastName=$_POST['last_name'];
         if (empty($lastName)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Last Name can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+            header("Location:../cms/view/staff/add-staff.php?msg=$msg");
             exit;
         }
         $email=$_POST['email'];
         if (empty($email)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Email can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+            header("Location:../cms/view/staff/add-staff.php?msg=$msg");
             exit;
         }
         $gender=$_POST['gender'];
         if (empty($gender)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Gender can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+            header("Location:../cms/view/staff/add-staff.php?msg=$msg");
             exit;
         }
         $dob=$_POST['dob'];
         if (empty($dob)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Date of Birth can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+            header("Location:../cms/view/staff/add-staff.php?msg=$msg");
+            exit;
+        }
+        $joinedDate=$_POST['joined_date'];
+        if (empty($joinedDate)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Joined date can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/staff/add-staff.php?msg=$msg");
             exit;
         }
         $nic=$_POST['nic'];
         if (empty($nic)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'NIC can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+            header("Location:../cms/view/staff/add-staff.php?msg=$msg");
             exit;
         }
         $phone=$_POST['phone'];
         if (empty($phone)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Phone number can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+            header("Location:../cms/view/staff/add-staff.php?msg=$msg");
             exit;
         }
         $address=$_POST['address'];
         if (empty($address)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Address can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+            header("Location:../cms/view/staff/add-staff.php?msg=$msg");
             exit;
         }
         $user_type=$_POST['user_type'];
         if (empty($user_type)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Staff Type can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+            header("Location:../cms/view/staff/add-staff.php?msg=$msg");
             exit;
         }
 
@@ -113,7 +120,7 @@ switch ($status){
     if(Staff::checkEmail($email)){    
 
     //add new staff
-    $staffID=$objst->addStaff($firstName,$lastName,$email,$gender,$dob,$nic,$phone,$address,$user_type, $enPassword, $lmd, $status);
+    $staffID=$objst->addStaff($firstName,$lastName,$email,$gender,$dob, $joinedDate ,$nic,$phone,$address,$user_type, $enPassword, $lmd, $status);
 
     if($staffID){
 
@@ -190,19 +197,19 @@ switch ($status){
    
                $msg = json_encode(array('title'=>'Danger','message'=> 'Employee registration failed','type'=>'danger'));
                $msg = base64_encode($msg);
-               header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+               header("Location:../cms/view/staff/add-staff.php?msg=$msg");
                exit;            
         }
     }else {
         $msg = json_encode(array('title'=>'Danger','message'=> 'Employee registration failed','type'=>'danger'));
         $msg = base64_encode($msg);
-        header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+        header("Location:../cms/view/staff/add-staff.php?msg=$msg");
         exit;
     }
 }else{
     $msg = json_encode(array('title'=>'Warning','message'=> 'Email address already exists','type'=>'warning'));
     $msg = base64_encode($msg);
-        header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+        header("Location:../cms/view/staff/add-staff.php?msg=$msg");
         exit;
 }
 
@@ -237,7 +244,7 @@ break;
 
         $_SESSION['empData'] = $employeeData;
     
-        header("Location:../cms/view/staff/updateStaff.php");
+        header("Location:../cms/view/staff/update-staff.php");
         exit;
     }else {
         $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
@@ -274,63 +281,70 @@ break;
     if (empty($firstName)) {
         $msg = json_encode(array('title'=>'Warning','message'=> 'First Name can not be empty','type'=>'warning'));
         $msg = base64_encode($msg);
-        header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+        header("Location:../cms/view/staff/update-staff.php?msg=$msg");
         exit;
     }
     $lastName=$_POST['last_name'];
     if (empty($lastName)) {
         $msg = json_encode(array('title'=>'Warning','message'=> 'Last Name can not be empty','type'=>'warning'));
         $msg = base64_encode($msg);
-        header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+        header("Location:../cms/view/staff/update-staff.php?msg=$msg");
         exit;
     }
     $email=$_POST['email'];
     if (empty($email)) {
         $msg = json_encode(array('title'=>'Warning','message'=> 'Email can not be empty','type'=>'warning'));
         $msg = base64_encode($msg);
-        header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+        header("Location:../cms/view/staff/update-staff.php?msg=$msg");
         exit;
     }
     $gender=$_POST['gender'];
     if (empty($gender)) {
         $msg = json_encode(array('title'=>'Warning','message'=> 'Gender can not be empty','type'=>'warning'));
         $msg = base64_encode($msg);
-        header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+        header("Location:../cms/view/staff/update-staff.php?msg=$msg");
         exit;
     }
     $dob=$_POST['dob'];
     if (empty($dob)) {
         $msg = json_encode(array('title'=>'Warning','message'=> 'Date of Birth can not be empty','type'=>'warning'));
         $msg = base64_encode($msg);
-        header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+        header("Location:../cms/view/staff/update-staff.php?msg=$msg");
+        exit;
+    }
+    $joinedDate=$_POST['joined_date'];
+    if (empty($joinedDate)) {
+        $msg = json_encode(array('title'=>'Warning','message'=> 'Joined date can not be empty','type'=>'warning'));
+        $msg = base64_encode($msg);
+        header("Location:../cms/view/staff/update-staff.php?msg=$msg");
         exit;
     }
     $nic=$_POST['nic'];
     if (empty($nic)) {
         $msg = json_encode(array('title'=>'Warning','message'=> 'NIC can not be empty','type'=>'warning'));
         $msg = base64_encode($msg);
-        header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+        header("Location:../cms/view/staff/update-staff.php?msg=$msg");
         exit;
     }
     $phone=$_POST['phone'];
     if (empty($phone)) {
         $msg = json_encode(array('title'=>'Warning','message'=> 'Phone number can not be empty','type'=>'warning'));
         $msg = base64_encode($msg);
-        header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+        header("Location:../cms/view/staff/update-staff.php?msg=$msg");
         exit;
     }
     $address=$_POST['address'];
     if (empty($address)) {
         $msg = json_encode(array('title'=>'Warning','message'=> 'Address can not be empty','type'=>'warning'));
         $msg = base64_encode($msg);
-        header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+        header("Location:../cms/view/staff/update-staff.php?msg=$msg");
         exit;
     }
     $user_type=$_POST['user_type'];
     if (empty($user_type)) {
         $msg = json_encode(array('title'=>'Warning','message'=> 'Staff Type can not be empty','type'=>'warning'));
         $msg = base64_encode($msg);
-        header("Location:../cms/view/staff/addStaff.php?msg=$msg");
+        header("Location:../cms/view/staff/update-staff.php?msg=$msg");
         exit;
     }
     $tmp = $_FILES['avatar'];
@@ -364,6 +378,7 @@ break;
             'email' => $email,
             'gender' => $gender,
             'dob' => $dob,
+            'joined_date' => $joinedDate,
             'nic' => $nic,
             'phone' => $phone,
             'address' => $address,
@@ -377,12 +392,12 @@ break;
         if($result == true){
             $msg = json_encode(array('title'=>'Success :','message'=> 'Employee has been updated','type'=>'success'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/staff/updateStaff.php?msg=$msg");
+            header("Location:../cms/view/staff/update-staff.php?msg=$msg");
             exit;
         }else {
             $msg = json_encode(array('title'=>'Warning :','message'=> 'Update failed','type'=>'danger'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/staff/updateStaff.php?msg=$msg");
+            header("Location:../cms/view/staff/update-staff.php?msg=$msg");
             exit;
         }
 
@@ -390,7 +405,7 @@ break;
     }else {
         $msg = json_encode(array('title'=>'Warning','message'=> 'Email address already exists','type'=>'warning'));
         $msg = base64_encode($msg);
-        header("Location:../cms/view/staff/updateStaff.php?msg=$msg");
+        header("Location:../cms/view/staff/update-staff.php?msg=$msg");
         exit;
     }
 
@@ -534,7 +549,7 @@ break;
 
             $_SESSION['empData'] = $employeeData;
         
-            header("Location:../cms/view/staff/viewStaff.php");
+            header("Location:../cms/view/staff/view-staff.php");
             exit;
         }else {
             $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
@@ -597,5 +612,3 @@ break;
 
         header("Location:../cms/view/staff/");
 }
-
-?>

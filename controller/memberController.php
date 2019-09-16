@@ -726,5 +726,3 @@ break;
         header("Location:../cms/view/member/");
     
 }
-
-?>

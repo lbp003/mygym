@@ -169,5 +169,3 @@ break;
 
             header("Location:../cms/view/contact/");
 }
-
-?>

@@ -128,7 +128,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-chart-line fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="#"><h5 class="card-title">REPORT</h5></a>
+                            <a href="../../../controller/reportController.php"><h5 class="card-title">REPORT</h5></a>
                         </div>
                         </div>
                     </div>

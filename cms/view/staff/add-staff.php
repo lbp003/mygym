@@ -39,7 +39,11 @@
                     </div>
                     <div class="form-group col-6">
                         <label for="dob">Date of Birth</label>
-                        <input type="date" class="form-control" id="dob" name="dob" aria-describedby="dob">
+                        <input type="text" class="form-control" id="dob" name="dob" aria-describedby="dob">
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="joined_date">Joined Date</label>
+                        <input type="text" class="form-control" id="joined_date" name="joined_date" aria-describedby="joined_date">
                     </div>
                     <div class="form-group col-6">
                         <label for="nic">NIC</label>
@@ -74,17 +78,22 @@
 <?php include '../../layout/footer.php';?>
 
 <script type="text/javascript">
+
     $(document).ready(function(){
         $('#addStaff').validate({
             rules: {
                 first_name: "required",
                 last_name: "required", 
-                // email: {
-				// 	required: true,
-				// 	email: true,
-                //     remote: "../../../controller/staffController.php?status=checkEmail"
-				// },
+                email: {
+					required: true,
+					email: true,
+                    remote: "../../../controller/staffController.php?status=checkEmail"
+				},
                 dob: {
+                    required: true,
+                    date: true
+                },
+                joined_date: {
                     required: true,
                     date: true
                 },
@@ -113,10 +122,13 @@
                 },
                 email: {
                     required: "Please enter email address",
-                    // remote: function() { return $.validator.format("{0} is already taken", $("#email").val()) }
+                    remote: function() { return $.validator.format("{0} is already taken", $("#email").val()) }
                 },
                 dob: {
                     required: "Please enter birth date"
+                },
+                joined_date: {
+                    required: "Please enter joined date"
                 },
                 gender: {
                     required: "Please enter gender"
@@ -135,6 +147,22 @@
                     required: "Please enter address"
                 },
             }
+        });
+
+        $( "#dob" ).datepicker({
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true
+        });
+
+        $( "#joined_date" ).datepicker({
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true
         });
     });
 </script>

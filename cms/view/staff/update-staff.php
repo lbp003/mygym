@@ -54,7 +54,11 @@
                     </div>
                     <div class="form-group col-6">
                         <label for="dob">Date of Birth</label>
-                        <input type="date" class="form-control" id="dob" name="dob" aria-describedby="dob" placeholder="Date of Birth" value="<?php echo $empData['dob']?>">
+                        <input type="text" class="form-control" id="dob" name="dob" aria-describedby="dob" value="<?php echo $empData['dob']?>">
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="joined_date">Joined Date</label>
+                        <input type="text" class="form-control" id="joined_date" name="joined_date" aria-describedby="joined_date" value="<?php echo $empData['joined_date']?>">
                     </div>
                     <div class="form-group col-6">
                         <label for="nic">NIC</label>
@@ -112,6 +116,10 @@
                     required: true,
                     date: true
                 },
+                joined_date: {
+                    required: true,
+                    date: true
+                },
                 gender: "required",
                 nic: "required",
                 phone: {
@@ -141,6 +149,9 @@
                 },
                 dob: {
                     required: "Please enter birth date"
+                },
+                joined_date: {
+                    required: "Please enter joined date"
                 },
                 gender: {
                     required: "Please enter gender"
@@ -187,6 +198,22 @@
             showUpload: true,
             previewFileType: 'any',
             initialPreviewFileType: 'image',
+        });
+
+        $( "#dob" ).datepicker({
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true
+        });
+
+        $( "#joined_date" ).datepicker({
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true
         });
     });
 </script>

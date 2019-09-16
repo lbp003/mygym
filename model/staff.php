@@ -28,6 +28,7 @@ class Staff{
                     staff.address,
                     staff.gender,
                     staff.dob,
+                    staff.joined_date,
                     staff.nic,
                     staff.telephone,
                     staff.staff_type,
@@ -35,6 +36,7 @@ class Staff{
                     staff.status
                 FROM staff 
                 WHERE staff.status != 'D'
+                AND staff.staff_type != 'S'
                 ORDER BY staff.staff_id DESC";
         $result=$con->query($sql);
         return $result;
@@ -44,11 +46,11 @@ class Staff{
 	* Insert a new Staff member
 	* @return object $last_id
 	*/
-    function addStaff($firstName,$lastName,$email,$gender,$dob,$nic,$phone,$address,$user_type, $enPassword, $lmd, $status){
+    function addStaff($firstName,$lastName,$email,$gender,$dob, $joinedDate,$nic,$phone,$address,$user_type, $enPassword, $lmd, $status){
         
         $con=$GLOBALS['con']; 
-        $stmt = $con->prepare("INSERT INTO staff (first_name, last_name, email, gender, dob, nic, telephone, address, staff_type, password, lmd, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssssssssss", $firstName, $lastName, $email, $gender, $dob, $nic, $phone, $address, $user_type, $enPassword, $lmd, $status);
+        $stmt = $con->prepare("INSERT INTO staff (first_name, last_name, email, gender, dob, joined_date, nic, telephone, address, staff_type, password, lmd, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssssssssss", $firstName, $lastName, $email, $gender, $dob, $joinedDate, $nic, $phone, $address, $user_type, $enPassword, $lmd, $status);
         $stmt->execute();
         $last_id = $con->insert_id;
         if(isset($last_id) && !empty($last_id)){
@@ -66,9 +68,9 @@ class Staff{
     public static function updateStaff($dataAr){
         // var_dump($dataAr); exit;
         $con=$GLOBALS['con']; 
-        $sql = "UPDATE staff SET first_name=?, last_name=?, email=?, gender=?, dob=?, nic=?, telephone=?, address=?, staff_type=?, image=?, lmd=? WHERE staff_id=?";
+        $sql = "UPDATE staff SET first_name=?, last_name=?, email=?, gender=?, dob=?, joined_date=?, nic=?, telephone=?, address=?, staff_type=?, image=?, lmd=? WHERE staff_id=?";
         $stmt = $con->prepare($sql);
-        $stmt->bind_param("sssssssssssi", $dataAr['fname'], $dataAr['lname'], $dataAr['email'], $dataAr['gender'], $dataAr['dob'], $dataAr['nic'], $dataAr['phone'], $dataAr['address'], $dataAr['type'], $dataAr['img'], $dataAr['lmd'], $dataAr['id']);
+        $stmt->bind_param("ssssssssssssi", $dataAr['fname'], $dataAr['lname'], $dataAr['email'], $dataAr['gender'], $dataAr['dob'], $dataAr['joined_date'], $dataAr['nic'], $dataAr['phone'], $dataAr['address'], $dataAr['type'], $dataAr['img'], $dataAr['lmd'], $dataAr['id']);
         $stmt->execute();
         if ($stmt->error) {
             return false;
@@ -176,6 +178,7 @@ class Staff{
                     staff.address,
                     staff.gender,
                     staff.dob,
+                    staff.joined_date,
                     staff.nic,
                     staff.telephone,
                     staff.staff_type,

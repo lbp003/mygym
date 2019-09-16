@@ -129,7 +129,7 @@ $allStaff = Staff::displayAllStaff();
                     text: '+ ADD STAFF',
                     className: 'btn-success',
                     action: function ( e, dt, node, config ) {
-                        window.location.href = "addStaff.php";
+                        window.location.href = "add-staff.php";
                     }
                 },
             <?php } ?>

@@ -208,5 +208,22 @@ class Staff{
         $result=$con->query($sql);
         return $result;
     }
+
+    /** 
+	* Get staff count
+	* @return object $result
+	*/
+    public static function getEmployeeCount($type){
+        
+        $con=$GLOBALS['con'];
+        $sql="  SELECT
+                    COUNT(staff.staff_id) AS staff
+                FROM staff 
+                WHERE 1=1
+                AND staff.status = 'A' 
+                AND staff.staff_type = '$type'";
+        $result=$con->query($sql);
+        return $result;
+    }
    
 }

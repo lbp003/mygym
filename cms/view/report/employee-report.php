@@ -20,6 +20,25 @@ $allStaff = Staff::displayAllStaff();
     </ol>
     </nav>
     <div class="container">
+        <div class="row">
+            <div class="col-12 d-flex justify-content-around">
+                <div class="col-3 card align-items-center border-success bg-secondary">
+                    <h3 class="text-light">ADMINS : <span class="text-warning" id="admin_count"></span></h3>
+                </div><br />
+                <div class="col-3 card align-items-center border-success bg-secondary">
+                    <h3 class="text-light">MANAGERS : <span class="text-warning" id="manager_count"></span></h3>          
+                </div><br />
+                <div class="col-3 card align-items-center border-success bg-secondary">
+                    <h3 class="text-light">TRAINERS : <span class="text-warning" id="trainer_count"></span></h3>
+                </div>
+            </div>
+        </div><hr />
+        <div class="row">
+            <div class="col-12 d-flex">
+                <div id="container" style="min-width: 610px; height: 400px; max-width: 900px; margin: 0 auto"></div>
+            </div>
+        </div>
+        </div><hr />
         <table cellpadding="0" cellspacing="0" border="0" style="width: 50%; margin: 0 auto 2em auto; border-spacing: 5px; border-collapse: separate;">
             <tbody>
                 <tr>
@@ -77,7 +96,7 @@ $allStaff = Staff::displayAllStaff();
                     <td><?php echo $row['telephone']; ?></td>
                     <td><?php echo $staffType; ?></td>
                     <td><?php echo $row['joined_date']; ?></td>
-                    <td><span class="badge <?php if($row['status']==Staff::ACTIVE){echo "badge-success";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></td>
+                    <td><?php echo $status; ?></td>
                 </tr>
                     <?php } ?>
             </tbody>
@@ -97,7 +116,7 @@ $allStaff = Staff::displayAllStaff();
     </div>
 <?php include '../../layout/footer.php';?>
 <script type="text/javascript">
-    
+    // https://jsfiddle.net/bindrid/2bkbx2y3/6/
     $.fn.dataTable.ext.search.push(
         function (settings, data, dataIndex) {
             var min = $('#min').datepicker("getDate");
@@ -158,7 +177,7 @@ $allStaff = Staff::displayAllStaff();
             },   
 
             initComplete: function () {
-            this.api().columns([5]).every( function () {
+            this.api().columns([5,7]).every( function () {
                 var column = this;
                 var select = $('<select><option value=""></option></select>')
                     .appendTo( $(column.header()).empty() )
@@ -184,7 +203,148 @@ $allStaff = Staff::displayAllStaff();
 
         $('#min, #max').change(function () {
                 table.draw();
-            });
+        });
+
+        //getting admin count
+        getAdminCount();
+        //getting manager count
+        getManagerCount();
+        //getting trainer count
+        getTrainerCount();
+
+        // Radialize the colors
+        Highcharts.setOptions({
+        colors: Highcharts.map(Highcharts.getOptions().colors, function (color) {
+            return {
+            radialGradient: {
+                cx: 0.5,
+                cy: 0.3,
+                r: 0.7
+            },
+            stops: [
+                [0, color],
+                [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+            ]
+            };
+        })
+        });
+
+        // Build the chart
+        Highcharts.chart('container', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: 'Browser market shares in January, 2018'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                connectorColor: 'silver'
+            }
+            }
+        },
+        series: [{
+            name: 'Share',
+            data: [
+            { name: 'Chrome', y: 61.41 },
+            { name: 'Internet Explorer', y: 11.84 },
+            { name: 'Firefox', y: 10.85 },
+            { name: 'Edge', y: 4.67 },
+            { name: 'Safari', y: 4.18 },
+            { name: 'Other', y: 7.05 }
+            ]
+        }]
+        });
+      
     } );
+
+    // admin count
+    function getAdminCount(){
+        $.ajax({
+            type: "POST",
+            url: '../../../controller/reportController.php?status=adminCount',
+            data: {'type': 'A'},
+            success: function (returnJSON) {
+                try {
+                    var JSON = jQuery.parseJSON(returnJSON);
+                    if (JSON.Result) {
+                        $('#admin_count').html(JSON.Data.staff);
+                        
+                    } else {
+                        // console.log("lbp");
+                        showStatusMessage('Danger','Unknown error occured.','danger');
+                    }
+                } catch (e) {
+                    showStatusMessage('Danger','Unknown error occured.','danger');
+                }
+            },
+            error: function () {
+                showStatusMessage('Danger','Unknown error occured.','danger');
+            }
+        });
+    } 
+
+     // manager count
+     function getManagerCount(){
+        $.ajax({
+            type: "POST",
+            url: '../../../controller/reportController.php?status=managerCount',
+            data: {'type': 'M'},
+            success: function (returnJSON) {
+                try {
+                    var JSON = jQuery.parseJSON(returnJSON);
+                    if (JSON.Result) {
+                        $('#manager_count').html(JSON.Data.staff);
+                        
+                    } else {
+                        // console.log("lbp");
+                        showStatusMessage('Danger','Unknown error occured.','danger');
+                    }
+                } catch (e) {
+                    showStatusMessage('Danger','Unknown error occured.','danger');
+                }
+            },
+            error: function () {
+                showStatusMessage('Danger','Unknown error occured.','danger');
+            }
+        });
+    } 
+
+     // trainer count
+     function getTrainerCount(){
+        $.ajax({
+            type: "POST",
+            url: '../../../controller/reportController.php?status=trainerCount',
+            data: {'type': 'T'},
+            success: function (returnJSON) {
+                try {
+                    var JSON = jQuery.parseJSON(returnJSON);
+                    if (JSON.Result) {
+                        $('#trainer_count').html(JSON.Data.staff);
+                        
+                    } else {
+                        // console.log("lbp");
+                        showStatusMessage('Danger','Unknown error occured.','danger');
+                    }
+                } catch (e) {
+                    showStatusMessage('Danger','Unknown error occured.','danger');
+                }
+            },
+            error: function () {
+                showStatusMessage('Danger','Unknown error occured.','danger');
+            }
+        });
+    } 
 
 </script>

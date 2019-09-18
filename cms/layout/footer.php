@@ -54,37 +54,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
     <!-- Hightchart plugin -->
     <script src="../../../public/plugin/Highcharts/code/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script type="text/javascript">
         $( document ).ready(function() {
             $(function () {
             $('[data-toggle="tooltip"]').tooltip()
             })
 
-            //notify messages
             <?php 
             if(isset($_REQUEST['msg'])){
-
                 $msg = base64_decode($_REQUEST['msg']);
                 $msgAr = json_decode($msg, true); ?>
                 var title = '<?php echo $msgAr["title"];?>';
                 var message = '<?php echo $msgAr["message"];?>';
-                var type = '<?php echo $msgAr["type"];?>';
-            
-                $.notify({
-                    title: title,
-                    message: message
-                },{
-                    type: type,
-                    delay: 5000,
-                    placement: {
-                        from: "bottom",
-                        align: "right"
-                    },
-                    animate:{
-                        enter: "animated fadeInUp",
-                        exit: "animated fadeOutDown"
-                    }
-                });
+                var type = '<?php echo $msgAr["type"];?>'; 
+
+            //notify messages
+            showStatusMessage(title,message,type);
+
             <?php } ?>
         });
 
@@ -94,6 +82,25 @@
         //     var clean_uri = uri.substring(0, uri.indexOf("?"));
         //     window.history.replaceState({}, document.title, clean_uri);
         // }
+
+    function showStatusMessage(title,message,type){
+
+        $.notify({
+            title: title,
+            message: message
+        },{
+            type: type,
+            delay: 5000,
+            placement: {
+                from: "bottom",
+                align: "right"
+            },
+            animate:{
+                enter: "animated fadeInUp",
+                exit: "animated fadeOutDown"
+            }
+        });
+        }
     </script>       
     </body>
 </html>

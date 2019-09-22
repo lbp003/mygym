@@ -100,7 +100,10 @@ class Subscription{
         $con=$GLOBALS['con'];//To get connection string
         $sql="  SELECT  membership.membership_id,
                         CONCAT_WS(' ',member.first_name,member.last_name) AS member_name,
+                        member.first_name,
+                        member.last_name,
                         package.package_name,
+                        package.fee,
                         membership.package_id,
                         membership.start_date,                                                           
                         membership.end_date,

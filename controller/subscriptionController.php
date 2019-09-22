@@ -210,6 +210,11 @@ break;
                     $dataSet = Subscription::getSubscriptionDetailsByID($subscriptionID);
                     $row = $dataSet->fetch_assoc();
                     
+                    $dueDate = date("Y-m-d",strtotime($row['end_date']));
+                    $firstName = $row['first_name'];
+                    $lastName = $row['last_name'];
+                    $package = $row['package_name'];
+                    // var_dump($dueDate); exit;
                     // echo $newReferenceCode; exit;
 
                     $curl = curl_init();
@@ -227,117 +232,100 @@ break;
                         "invoice_number": "#'.$invoiceNum.'",
                         "reference": "deal-ref",
                         "invoice_date": "'.$today.'",
-                        "currency_code": "LKR",
+                        "currency_code": "USD",
                         "note": "Thank you for your business.",
                         "term": "No refunds after 30 days.",
                         "memo": "This is a long contract",
                         "payment_term": {
-                        "term_type": "NET_10",
-                        "due_date": "'.$row['end_date'].'"
+                        "term_type": "DUE_ON_DATE_SPECIFIED",
+                        "due_date": "'.$dueDate.'"
                         }
                     },
                     "invoicer": {
                         "name": {
-                        "given_name": "'.SYSTEM_BUSINESS_NAME.'"
+                          "given_name": "'.SYSTEM_BUSINESS_NAME.'",
+                          "surname": ""
                         },
                         "address": {
-                        "address_line_1": "1234 First Street",
-                        "address_line_2": "337673 Hillside Court",
-                        "admin_area_2": "Anytown",
-                        "admin_area_1": "CA",
-                        "postal_code": "98765",
-                        "country_code": "LK"
+                          "address_line_1": "1234 First Street",
+                          "address_line_2": "337673 Hillside Court",
+                          "admin_area_2": "Anytown",
+                          "admin_area_1": "CA",
+                          "postal_code": "98765",
+                          "country_code": "US"
                         },
                         "email_address": "pglbuddhika-facilitator@gmail.com",
                         "phones": [
-                        {
+                          {
                             "country_code": "001",
                             "national_number": "4085551234",
                             "phone_type": "MOBILE"
-                        }
+                          }
                         ],
                         "website": "www.test.com",
                         "tax_id": "ABcNkWSfb5ICTt73nD3QON1fnnpgNKBy- Jb5SeuGj185MNNw6g",
                         "logo_url": "https://example.com/logo.PNG",
                         "additional_notes": "2-4"
-                    },
-                    "primary_recipients": [
+                      },
+                      "primary_recipients": [
                         {
                           "billing_info": {
                             "name": {
-                              "given_name": "Stephanie",
-                              "surname": "Meyers"
+                              "given_name": "'.$firstName.'",
+                              "surname": "'.$lastName.'"
                             },
                             "address": {
-                              "address_line_1": "1234 Main Street",
-                              "admin_area_2": "Anytown",
-                              "admin_area_1": "CA",
-                              "postal_code": "98765",
-                              "country_code": "US"
+                              "address_line_1": "",
+                              "admin_area_2": "",
+                              "admin_area_1": "",
+                              "postal_code": "",
+                              "country_code": "LK"
                             },
-                            "email_address": "pglbuddhika@gmail.com",
+                            "email_address": "pglbuddhika-buyer@gmail.com",
                             "phones": [
                               {
-                                "country_code": "001",
-                                "national_number": "4884551234",
-                                "phone_type": "HOME"
+                                "country_code": "094",
+                                "national_number": "771888110",
+                                "phone_type": "MOBILE"
                               }
                             ],
                             "additional_info_value": "add-info"
                           },
                           "shipping_info": {
                             "name": {
-                              "given_name": "Stephanie",
-                              "surname": "Meyers"
+                              "given_name": "",
+                              "surname": ""
                             },
                             "address": {
-                              "address_line_1": "1234 Main Street",
-                              "admin_area_2": "Anytown",
-                              "admin_area_1": "CA",
-                              "postal_code": "98765",
-                              "country_code": "US"
+                              "address_line_1": "",
+                              "admin_area_2": "",
+                              "admin_area_1": "",
+                              "postal_code": "",
+                              "country_code": "LK"
                             }
                           }
                         }
                       ],
-                    "items": [
+                      "items": [
                         {
-                        "name": "Yoga Mat",
-                        "description": "Elastic mat to practice yoga.",
-                        "quantity": "1",
-                        "unit_amount": {
+                          "name": "Yoga Mat",
+                          "description": "",
+                          "quantity": "1",
+                          "unit_amount": {
                             "currency_code": "USD",
                             "value": "50.00"
-                        },
-                        "tax": {
-                            "name": "Sales Tax",
-                            "percent": "7.25"
-                        },
-                        "discount": {
-                            "percent": "5"
-                        },
-                        "unit_of_measure": "QUANTITY"
-                        },
-                        {
-                        "name": "Yoga t-shirt",
-                        "quantity": "1",
-                        "unit_amount": {
-                            "currency_code": "USD",
-                            "value": "10.00"
-                        },
-                        "tax": {
-                            "name": "Sales Tax",
-                            "percent": "7.25"
-                        },
-                        "discount": {
-                            "amount": {
-                            "currency_code": "USD",
-                            "value": "5.00"
-                            }
-                        },
-                        "unit_of_measure": "QUANTITY"
+                          },
+                          "unit_of_measure": "AMOUNT"
                         }
-                    ],
+                      ],
+                      "configuration": {
+                        "partial_payment": {
+                          "allow_partial_payment": false
+                        },
+                        "allow_tip": false,
+                        "tax_calculated_after_discount": false,
+                        "tax_inclusive": false
+                      }
                     }',
                     CURLOPT_HTTPHEADER => array(
                         'authorization: Bearer '.$accessToken,

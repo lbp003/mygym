@@ -1,6 +1,7 @@
+<?php include '../../../config/global.php';?>
 <html>
     <head>
-        <title>my Gym</title>
+        <title><?php echo SYSTEM_BUSINESS_NAME;?></title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">

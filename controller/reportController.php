@@ -44,7 +44,7 @@ break;
  * get admin count
  */
     
-    case "adminCount":
+    case "empCount":
 
         if(!$user)
         {
@@ -65,75 +65,14 @@ break;
         $type=$_POST['type'];
         // var_dump($type); exit;
 
-        $response = Staff::getEmployeeCount($type);
-        $adminCount = $response->fetch_assoc();
-        echo Json_encode(['Result' => true, 'Data' => $adminCount],JSON_NUMERIC_CHECK);
+        $response = Staff::getEmployeeTypesCount();
+        $empCount = $response->fetch_assoc();
+        // var_dump($managerCount); exit;
+
+
+        echo Json_encode(['Result' => true, 'Data' => $empCount],JSON_NUMERIC_CHECK);
         exit;
               
-break;
-
-/**
- * get admin count
- */
-            
-    case "trainerCount":
-
-        if(!$user)
-        {
-            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-            $msg = base64_encode($msg);
-            header("Location:../cms/view/index/index.php?msg=$msg");
-            exit;
-        }
-
-        if(!$auth->checkPermissions(array(Role::MANAGE_STAFF)))
-        {
-            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
-            $msg = base64_encode($msg);
-            header("Location:../cms/view/report/index.php?msg=$msg");         
-            exit;
-        }
-
-        $type=$_POST['type'];
-        // var_dump($type); exit;
-
-        $response = Staff::getEmployeeCount($type);
-        $trainerCount = $response->fetch_assoc();
-        echo Json_encode(['Result' => true, 'Data' => $trainerCount],JSON_NUMERIC_CHECK);
-        exit;
-    
-break;
-
-/**
- * get admin count
-*/
-    
-    case "managerCount":
-
-        if(!$user)
-        {
-            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-            $msg = base64_encode($msg);
-            header("Location:../cms/view/index/index.php?msg=$msg");
-            exit;
-        }
-
-        if(!$auth->checkPermissions(array(Role::MANAGE_STAFF)))
-        {
-            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
-            $msg = base64_encode($msg);
-            header("Location:../cms/view/report/index.php?msg=$msg");         
-            exit;
-        }
-
-        $type=$_POST['type'];
-        // var_dump($type); exit;
-
-        $response = Staff::getEmployeeCount($type);
-        $managerCount = $response->fetch_assoc();
-        echo Json_encode(['Result' => true, 'Data' => $managerCount],JSON_NUMERIC_CHECK);
-        exit;
-    
 break;
 
 /**

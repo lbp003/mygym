@@ -1,8 +1,10 @@
 <?php include '../../../config/session.php';?>
+<?php include '../../../config/global.php';?>
+
 <!------Header starting ------>
 <html>
     <head>
-        <title>CMS</title>
+        <title><?php echo SYSTEM_BUSINESS_NAME;?></title>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
         <link type="text/css" rel="stylesheet" href="../../../public/css/style.css" />
         <link type="text/css" rel="stylesheet" href="../../../public/css/layout.css" />

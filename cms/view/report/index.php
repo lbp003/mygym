@@ -21,7 +21,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-users fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                        <a href="../../../controller/reportController.php?status=Employee"><h5 class="card-title">EMPLOYEE</h5></a>
+                        <a href="../../../controller/reportController.php?status=Employee"><h5 class="card-title">STAFF</h5></a>
                         </div>
                         </div>
                     </div>

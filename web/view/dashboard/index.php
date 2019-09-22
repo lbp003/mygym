@@ -15,21 +15,6 @@
 ?>
 <!--- header end ----> 
 <body>
-    <!-- Paypal -->
-    <script>
-        paypal.Buttons({
-            createOrder: function(data, actions) {
-            // Set up the transaction
-            return actions.order.create({
-                purchase_units: [{
-                amount: {
-                    value: '0.01'
-                }
-                }]
-            });
-            }
-        }).render('#paypal-button-container');
-    </script>
     <!---navbar starting ---------->
     <?php include '../../layout/default_navBar.php';?> 
     <!---navbar ending ---------->
@@ -40,32 +25,25 @@
     </ol>
     </nav>
     <!-- module container -->
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-12 d-flex justify-content-between border border-secondary rounded" style="background-color:silver;">
-                <div class="col-2">
+            <div class="col-12 d-flex justify-content-between border rounded" style="border-color: coral; background-color:#F2F2F2;">
+                <div class="col-3 pl-5">
                     <br />
-                   <img src="<?php echo $path; ?>" width="auto" height="auto" class="img-responsive img-thumbnail float-left" alt="User Image"/>
+                   <img src="<?php echo $path; ?>" width="200px;" height="auto" class="img-responsive img-thumbnail float-left" alt="User Image"/>
                 </div>
-                <div class="col-10 d-flex flex-row">
-                    <div class="col-4">
+                <div class="col-9 d-flex flex-row" style="padding-top:20px;">
+                    <div class="pl-5">
                         <h3 class="text-uppercase">Member</h3>
                         <p><b>Name :</b> <?php echo ucfirst($user['first_name'])." ".ucfirst($user['last_name']); ?></p>
                         <p><b>Email :</b> <?php echo $user['email']; ?></p>
                         <p><b>Phone :</b> <?php echo $user['telephone']; ?></p>
                     </div>
-                    <div class="col-4">
+                    <div class="col-6 pl-5">
                         <h3 class="text-uppercase">Membership</h3>
                         <p><b>Package :</b> <?php echo $user['package_name'] ?></p>
                         <p><b>Payment Status :</b> <span style="font-size: 16px;" class="badge <?php if($user['payment_status']==Subscription::PAID){echo "badge-success";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></p>
                         <p><b>Next Payment Date :</b> <?php echo date('Y-m-d',strtotime($user['end_date'])); ?></p>
-                    </div>
-                    <div class="col-2">
-                        <br />
-                        <?php 
-                            if($user['payment_status']==Subscription::LATE){ ?>
-                                <div id="paypal-button-container"></div>
-                        <?php } ?>              
                     </div>
                 </div>
             </div>         

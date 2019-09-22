@@ -226,4 +226,22 @@ class Staff{
         return $result;
     }
    
+    /** 
+	* Get staff types count
+	* @return object $result
+	*/
+    public static function getEmployeeTypesCount(){
+        
+        $con=$GLOBALS['con'];
+        $sql="  SELECT
+                    COUNT(CASE WHEN staff.staff_type = 'A' THEN 1 END) admin_count,
+                    COUNT(CASE WHEN staff.staff_type = 'M' THEN 1 END) manager_count,
+                    COUNT(CASE WHEN staff.staff_type = 'T' THEN 1 END) trainer_count
+                FROM staff 
+                WHERE 1=1
+                AND staff.status = 'A'";
+        $result=$con->query($sql);
+        return $result;
+    }
+   
 }

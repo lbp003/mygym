@@ -7,6 +7,7 @@ include_once '../config/session.php';
 include_once '../model/login.php';
 include_once '../model/role.php';
 include_once '../model/log.php';
+include_once '../model/subscription.php';
 
 $objRole = new Role();
 
@@ -118,11 +119,12 @@ if($email=="" or $password==""){
                 {
                     $permissionAr[] = $row['role_id'];
                 }
-
+            //user permission to session
             $_SESSION['permission'] = $permissionAr; 
-
-            $_SESSION['log_id']=$log_id;         
-           header("Location:../cms/view/dashboard/dashboard.php");
+            //log id to session
+            $_SESSION['log_id']=$log_id;
+            
+            header("Location:../cms/view/dashboard/dashboard.php");
         } 
         
      }

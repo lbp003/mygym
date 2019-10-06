@@ -11,6 +11,7 @@ class Subscription{
 
      //payment status
      CONST PAID = "P";
+     CONST PENDING = "U";
      CONST LATE = "L";
 
      //payment method
@@ -48,11 +49,15 @@ class Subscription{
         $con=$GLOBALS['con'];//To get connection string
         $sql="  SELECT  membership.membership_id,
                         membership.end_date,
-                        membership.member_id
+                        membership.member_id,
+                        invoice.invoice_number,
+                        member.package_id
                 FROM membership
                 INNER JOIN member ON membership.member_id = member.member_id
+                LEFT JOIN invoice ON invoice.member_id = membership.member_id
                 WHERE member.status != 'D'   
                 AND membership.end_date < '$today'
+                OR invoice.payment_status = 'U'
                 ORDER BY membership.membership_id DESC";
                 // echo $sql; exit;
         $result=$con->query($sql);
@@ -100,8 +105,11 @@ class Subscription{
         $con=$GLOBALS['con'];//To get connection string
         $sql="  SELECT  membership.membership_id,
                         CONCAT_WS(' ',member.first_name,member.last_name) AS member_name,
+                        member.member_id,
                         member.first_name,
                         member.last_name,
+                        member.email,
+                        member.telephone,
                         package.package_name,
                         package.fee,
                         membership.package_id,
@@ -124,7 +132,7 @@ class Subscription{
 	* Reactivate a membership
 	* @return object $result 
 	*/
-    function reactivateMemberSubscription($memberID, $membershipID, $packageID, $updatedBy){
+    function reactivateMemberSubscription($memberID, $membershipID, $packageID, $updatedBy, $method){
         
         /* activate reporting */
         $driver = new mysqli_driver();
@@ -163,7 +171,6 @@ class Subscription{
             $stmt->execute();
 
             //Insert record to payment history table
-            $method = Subscription::CASH;
 
             $stmt = $con->prepare("INSERT INTO payment_history (membership_id, member_id, start_date, end_date, paid_date, payment_method) VALUES (?, ?, ?, ?, ?, ?)");
             $stmt->bind_param("iissss", $membershipID, $memberID, $date, $endDate, $lastPidDate, $method);
@@ -188,7 +195,7 @@ class Subscription{
 	* Renew a membership
 	* @return bool
 	*/
-    function renewMemberSubscription($memberID, $membershipID, $packageID, $updatedBy){
+    function renewMemberSubscription($memberID, $membershipID, $packageID, $updatedBy,$method){
         
         /* activate reporting */
         $driver = new mysqli_driver();
@@ -228,7 +235,6 @@ class Subscription{
             $stmt->execute();
 
             //Insert record to payment history table
-            $method = Subscription::CASH;
 
             $stmt = $con->prepare("INSERT INTO payment_history (membership_id, member_id, start_date, end_date, paid_date, payment_method) VALUES (?, ?, ?, ?, ?, ?)");
             $stmt->bind_param("iissss", $membershipID, $memberID, $startDate, $endDate, $lastPidDate, $method);
@@ -265,4 +271,46 @@ class Subscription{
         $result=$con->query($sql);
         return $result;
     }
+
+
+    public static function addInvoice($invoiceNum,$id,$memberID,$today,$updatedBy,$membershipID){
+        /* activate reporting */
+        $driver = new mysqli_driver();
+        $driver->report_mode = MYSQLI_REPORT_ALL;
+
+        $paymentStatus = self::PENDING;
+        $status = self::ACTIVE;
+
+        $con=$GLOBALS['con']; 
+        try{
+            // First of all, let's begin a transaction
+            $con->begin_transaction();
+
+            /** 
+            * ADD sent invoices 
+            */
+            $stmt = $con->prepare("INSERT INTO invoice (invoice_number, invoice_id_number, member_id, sent_date, created_by, payment_status, status) VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE member_id = VALUES(member_id)");
+            $stmt->bind_param("ssisiss", $invoiceNum,$id, $memberID, $today, $updatedBy,$paymentStatus, $status);
+            $stmt->execute();
+            $invoiceID = $con->insert_id;
+
+            /** 
+            * Change Payement Status
+            **/
+            $sql = "UPDATE membership SET payment_status = ?  WHERE membership_id = ?";
+            $stmt = $con->prepare($sql);
+            $stmt->bind_param("si", $paymentStatus, $membershipID);
+            $stmt->execute();
+           
+            $con->commit();
+            return true;             
+        } catch (mysqli_sql_exception $e) {
+            // An exception has been thrown
+            // We must rollback the transaction
+            $con->rollback();
+            return false;
+            echo $e->__toString();
+        }        
+    }
+    
 }

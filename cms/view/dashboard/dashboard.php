@@ -86,7 +86,7 @@
                     </div>
                 <?php } ?>
             </div>
-            <div class="col-3">
+            <!-- <div class="col-3">
                 <?php if($auth->checkPermissions([Role::MANAGE_PAYMENT, Role::VIEW_PAYMENT])){ ?>
                     <div class="mb-3">
                         <div class="card align-items-center border-dark" style="width: 100%;">
@@ -97,7 +97,7 @@
                         </div>
                     </div>
                 <?php } ?>
-            </div>
+            </div> -->
             <div class="col-3">
                 <?php if($auth->checkPermissions([Role::MANAGE_PACKAGE, Role::VIEW_PACKAGE])){ ?>
                     <div class="mb-3">

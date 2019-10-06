@@ -45,6 +45,8 @@ $allSubscription = Subscription::displayAllSubscription();
                             $status="Paid";
                         }elseif($row['payment_status']==Subscription::LATE){
                             $status="Late";
+                        }else {
+                            $status="Pending";
                         }
                 ?>
                 <tr>
@@ -53,13 +55,15 @@ $allSubscription = Subscription::displayAllSubscription();
                     <td><?php echo date("Y-m-d", strtotime($row['start_date'])); ?></td>
                     <td><?php echo date("Y-m-d", strtotime($row['end_date'])); ?></td>
                     <td><?php echo date("Y-m-d", strtotime($row['last_paid_date'])); ?></td>
-                    <td><span class="badge <?php if($row['payment_status']==Subscription::PAID){echo "badge-success";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></td>
+                    <td><span class="badge <?php if($row['payment_status']==Subscription::PAID){echo "badge-success";}elseif($row['payment_status']==Subscription::PENDING){echo "badge-warning";}else{echo "badge-danger";}?>"><?php echo $status; ?></span></td>
                     <td>
                         <a data-toggle="tooltip" data-placement="top" title="View" href="../../../controller/subscriptionController.php?membership_id=<?php echo $row['membership_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
                     <?php
                     $today = date("Y-m-d");
 
-                    if($row['end_date'] <= $today){ ?>
+                    if($row['payment_status']==Subscription::PENDING && $row['end_date'] <= $today){ ?>
+                        <a data-toggle="tooltip" data-placement="top" title="Pending"><i class="fas fa-hourglass-half"></i></a>
+                    <?php }elseif($row['end_date'] <= $today){ ?>
                         <a data-toggle="tooltip" data-placement="top" title="Mark as Paid" href="../../../controller/subscriptionController.php?membership_id=<?php echo $row['membership_id']?>&status=Payment"><i class="fas fa-hand-holding-usd text-warning"></i></a>
                     <?php }else{ ?>
                         <a data-toggle="tooltip" data-placement="top" title="Paid"><i class="far fa-check-circle text-success"></i></a>

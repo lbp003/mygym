@@ -108,8 +108,8 @@ break;
             header("Location:../cms/view/subscription/reactivateMembership.php?msg=$msg");
             exit;
         }
-
-        $res = Subscription::reactivateMemberSubscription($memberID, $subscriptionID, $packageID, $updatedBy);
+        $method = Subscription::CASH;
+        $res = Subscription::reactivateMemberSubscription($memberID, $subscriptionID, $packageID, $updatedBy, $method);
 
         if($res){
             $msg = json_encode(array('title'=>'Success: ','message'=> 'Member has been reactivated','type'=>'success'));
@@ -146,7 +146,6 @@ break;
             exit;
         }
 
-        $memberID = $_POST['member_id'];
         $subscriptionID = $_POST['subscription_id'];
         $updatedBy = $user['staff_id'];
 
@@ -166,9 +165,55 @@ break;
             exit;
         }
 
-        if($payMethod == "O"){
+        if($payMethod == Subscription::WEB){
 
-            //To get the access token
+            $today = date("Y-m-d");
+            $dataSet = Subscription::getSubscriptionDetailsByID($subscriptionID);
+            $row = $dataSet->fetch_assoc();
+            
+            $dueDate = date("Y-m-d",strtotime($row['end_date']));
+            $memberID = $row['member_id'];
+            $firstName = $row['first_name'];
+            $lastName = $row['last_name'];
+            $package = $row['package_name'];
+            $email = $row['email'];
+            $phone = $row['telephone'];
+            $fee = $row['fee'];
+            // var_dump($dueDate); exit;
+            // echo $newReferenceCode; exit;
+
+            // https://docs.openexchangerates.org/docs/latest-json
+
+            $app_id = '35c38025e1ef434786933b036608a6e4';
+            $base = 'USD';
+            $symbols = 'LKR';
+            $oxr_url = "https://openexchangerates.org/api/latest.json?app_id=".$app_id."&base=".$base."&symbols=".$symbols."&prettyprint=false";
+            
+            // Open CURL session:
+            $ch = curl_init($oxr_url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            
+            // Get the data:
+            $json = curl_exec($ch);
+            $err = curl_error($ch);
+            curl_close($ch);
+
+            if ($err) {
+                echo "cURL Error #:" . $err;
+            } else {
+            
+            // Decode JSON response:
+            $latest = json_decode($json);
+            
+            // You can now access the rates inside the parsed object, like so:
+
+            $lkrRate = $latest->rates->LKR;
+            $feeInUSD = round($fee/$lkrRate, 2);
+
+            /**
+             * To get the access token
+             ***/
+
             $curl = curl_init();
 
             curl_setopt($curl, CURLOPT_URL, 'https://api.sandbox.paypal.com/v1/oauth2/token');
@@ -204,18 +249,6 @@ break;
                         rand(11,99) . time() . rand(111,999)
                     ];
                     $invoiceNum = $numRan[rand(0,4)];
-                    
-                    $today = date("Y-m-d");
-
-                    $dataSet = Subscription::getSubscriptionDetailsByID($subscriptionID);
-                    $row = $dataSet->fetch_assoc();
-                    
-                    $dueDate = date("Y-m-d",strtotime($row['end_date']));
-                    $firstName = $row['first_name'];
-                    $lastName = $row['last_name'];
-                    $package = $row['package_name'];
-                    // var_dump($dueDate); exit;
-                    // echo $newReferenceCode; exit;
 
                     $curl = curl_init();
 
@@ -233,7 +266,7 @@ break;
                         "reference": "deal-ref",
                         "invoice_date": "'.$today.'",
                         "currency_code": "USD",
-                        "note": "Thank you for your business.",
+                        "note": "Thank you.",
                         "term": "No refunds after 30 days.",
                         "memo": "This is a long contract",
                         "payment_term": {
@@ -257,12 +290,12 @@ break;
                         "email_address": "pglbuddhika-facilitator@gmail.com",
                         "phones": [
                           {
-                            "country_code": "001",
+                            "country_code": "094",
                             "national_number": "4085551234",
                             "phone_type": "MOBILE"
                           }
                         ],
-                        "website": "www.test.com",
+                        "website": "www.hirufitness.com",
                         "tax_id": "ABcNkWSfb5ICTt73nD3QON1fnnpgNKBy- Jb5SeuGj185MNNw6g",
                         "logo_url": "https://example.com/logo.PNG",
                         "additional_notes": "2-4"
@@ -274,58 +307,22 @@ break;
                               "given_name": "'.$firstName.'",
                               "surname": "'.$lastName.'"
                             },
-                            "address": {
-                              "address_line_1": "",
-                              "admin_area_2": "",
-                              "admin_area_1": "",
-                              "postal_code": "",
-                              "country_code": "LK"
-                            },
-                            "email_address": "pglbuddhika-buyer@gmail.com",
-                            "phones": [
-                              {
-                                "country_code": "094",
-                                "national_number": "771888110",
-                                "phone_type": "MOBILE"
-                              }
-                            ],
-                            "additional_info_value": "add-info"
-                          },
-                          "shipping_info": {
-                            "name": {
-                              "given_name": "",
-                              "surname": ""
-                            },
-                            "address": {
-                              "address_line_1": "",
-                              "admin_area_2": "",
-                              "admin_area_1": "",
-                              "postal_code": "",
-                              "country_code": "LK"
-                            }
+                            "email_address": "'.$email.'"
                           }
                         }
                       ],
                       "items": [
                         {
-                          "name": "Yoga Mat",
+                          "name": "'.$package.'",
                           "description": "",
                           "quantity": "1",
                           "unit_amount": {
                             "currency_code": "USD",
-                            "value": "50.00"
+                            "value": "'.$feeInUSD.'"
                           },
                           "unit_of_measure": "AMOUNT"
                         }
-                      ],
-                      "configuration": {
-                        "partial_payment": {
-                          "allow_partial_payment": false
-                        },
-                        "allow_tip": false,
-                        "tax_calculated_after_discount": false,
-                        "tax_inclusive": false
-                      }
+                      ]
                     }',
                     CURLOPT_HTTPHEADER => array(
                         'authorization: Bearer '.$accessToken,
@@ -343,7 +340,7 @@ break;
                     echo "cURL Error #:" . $err;
                     } else {
 
-                        echo $response; exit; 
+                        // echo $response; exit; 
 
                         $data = json_decode($response);
                         $id = $data->id;
@@ -362,7 +359,7 @@ break;
                         "send_to_invoicer": true
                         }',
                         CURLOPT_HTTPHEADER => array(
-                            'authorization: Bearer A21AAGNcqCVsX1MVlZ6mZ_lb-iTTQo1euoZP09mVlsOE36F-anIUgWGhrbe56QEQE_f7iFzjxO9-QmGkDG8ExsoG75snBtQcA',
+                            'authorization: Bearer '.$accessToken,
                             'content-type: application/json'
                         ),
                         ));
@@ -375,12 +372,30 @@ break;
                         if ($err) {
                         echo "cURL Error #:" . $err;
                         } else {
-                        echo $response;
+                        // echo $response; exit;
+                            //record invoice details
+                            $res = Subscription::addInvoice($invoiceNum,$id,$memberID,$today,$updatedBy,$subscriptionID);
+                            // var_dump($res); exit;
+                            if($res){    
+                                $msg = json_encode(array('title'=>'Success','message'=> 'Member invoice has been sent','type'=>'success'));
+                                $msg = base64_encode($msg);
+                                header("Location:../cms/view/subscription/index.php?msg=$msg");
+                                exit;
+                               
+                            }else{
+                                $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'danger'));
+                                $msg = base64_encode($msg);
+                                header("Location:../cms/view/subscription/index.php?msg=$msg");
+                                exit;
+                            }
                         }
                     }
                 }
+            }
         }else{
-            $res = Subscription::renewMemberSubscription($memberID, $subscriptionID, $packageID, $updatedBy);
+            $method = Subscription::CASH;
+
+            $res = Subscription::renewMemberSubscription($memberID, $subscriptionID, $packageID, $updatedBy,$method);
 
             if($res){
                 $msg = json_encode(array('title'=>'Success: ','message'=> 'Member subscription has been renewed','type'=>'success'));
@@ -455,7 +470,7 @@ break;
         $today = date("Y-m-d");
         //Get late payment members
         $lateSubData = Subscription::getAllLateSubscription($today);
-
+        // var_dump($lateSubData); exit;
         $lateSubaAr = [];
         $outMemberAr = [];
         while($row = $lateSubData->fetch_assoc())
@@ -468,6 +483,128 @@ break;
             if($graceDate < $today){
 
                 $outMemberAr[] = $row['member_id'];
+            }
+
+            $paypalInvoiceNum = $row['invoice_number'];
+            if(!empty($paypalInvoiceNum)){
+                // var_dump($invoiceNum); exit;
+
+            /**
+             * To get the access token
+             ***/
+
+            $curl = curl_init();
+
+            curl_setopt($curl, CURLOPT_URL, 'https://api.sandbox.paypal.com/v1/oauth2/token');
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_USERPWD, PAYPAL_CREDENTIALS['sandbox']['client_id'] . ':' . PAYPAL_CREDENTIALS['sandbox']['client_secret']);
+            
+            $headers = array();
+            $headers[] = 'Accept: application/json';
+            $headers[] = 'Accept-Language: en_US';
+            $headers[] = 'Content-Type: application/x-www-form-urlencoded';
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+            
+            $response = curl_exec($curl);
+                $err = curl_error($curl);
+
+                curl_close($curl);
+
+                if ($err) {
+                    echo "cURL Error #:" . $err;
+                } else {
+                    $data = json_decode($response);
+                    $accessToken = $data->access_token;
+                    // echo $accessToken; exit;
+
+
+                    //Search invoice details
+                    $curl = curl_init();
+
+                    curl_setopt_array($curl, array(
+                    CURLOPT_URL => "https://api.sandbox.paypal.com/v2/invoicing/search-invoices?total_required=true&page_size=1&page=1",
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => "",
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 30,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => "POST",
+                    CURLOPT_POSTFIELDS => '{
+                    "invoice_number": "'.$paypalInvoiceNum.'"
+                    }',
+                    CURLOPT_HTTPHEADER => array(
+                        'authorization: Bearer '.$accessToken,
+                        'content-type: application/json'
+                    ),
+                    ));
+
+                    $response = curl_exec($curl);
+                    $err = curl_error($curl);
+
+                    curl_close($curl);
+
+                    if ($err) {
+                    echo "cURL Error #:" . $err;
+                    } else {
+                    // echo $response; exit;
+                    $data = json_decode($response,true);
+                    $invoicePaymentStatus =  $data['items'][0]['status']; 
+                    // var_dump($invoicePaymentStatus); exit; 
+                        // echo json_encode($data,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES); exit;
+
+                        $memberID = $row['member_id'];
+                        $membershipID = $row['membership_id'];
+                        $packageID = $row['package_id'];
+                        $updatedBy = $user['staff_id'];
+                        $method = Subscription::WEB;
+
+                        if($invoicePaymentStatus == Subscription::PAID && $graceDate > $today){
+
+                            $res = Subscription::renewMemberSubscription($memberID, $subscriptionID, $packageID, $updatedBy, $method);
+
+                            if($res){
+                                unset($lateSubaAr[$row['member_id']]);
+                            }
+                        }elseif($invoicePaymentStatus == Subscription::PAID && $graceDate < $today){
+
+                            $res = Subscription::reactivateMemberSubscription($memberID, $subscriptionID, $packageID, $updatedBy, $method);
+
+                            if($res){
+                                unset($lateSubaAr[$row['member_id']]);
+                            }
+                        }elseif($invoicePaymentStatus == !Subscription::PAID && $graceDate < $today){
+                            $curl = curl_init();
+
+                            curl_setopt_array($curl, array(
+                            CURLOPT_URL => "https://api.sandbox.paypal.com/v2/invoicing/invoices/INV2-Z56S-5LLA-Q52L-CPZ5",
+                            CURLOPT_RETURNTRANSFER => true,
+                            CURLOPT_ENCODING => "",
+                            CURLOPT_MAXREDIRS => 10,
+                            CURLOPT_TIMEOUT => 30,
+                            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                            CURLOPT_CUSTOMREQUEST => "DELETE",
+                            CURLOPT_HTTPHEADER => array(
+                                'authorization: Bearer A21AAFnNagckuSeTmuxh76PObGZDBf2Pu3zG9AzZzakdXrIL8KyGmx7eOr_mV0pKpmoiLn8_dxQdaB1miYyrGIxArfofTUxoA',
+                                'content-type: application/json'
+                            ),
+                            ));
+
+                            $response = curl_exec($curl);
+                            $err = curl_error($curl);
+
+                            curl_close($curl);
+
+                            if ($err) {
+                            echo "cURL Error #:" . $err;
+                            } else {
+                            echo $response;
+                            }
+                        }
+                    }
+
+                }
             }
         }
 
@@ -492,4 +629,3 @@ break;
         header("Location:../cms/view/subscription/");           
 }
 
-?>

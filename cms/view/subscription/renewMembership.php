@@ -44,7 +44,7 @@ include '../../layout/header.php'; ?>
                         <select id="payment" name="payment" class="form-control">
                             <option selected>Choose...</option>
                             <option value="C">Cash</option>                            
-                            <option value="O">Online</option>
+                            <option value="W">Online</option>
                         </select>
                     </div>
                     <div class="col-12">

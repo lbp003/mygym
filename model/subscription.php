@@ -51,13 +51,15 @@ class Subscription{
                         membership.end_date,
                         membership.member_id,
                         invoice.invoice_number,
+                        invoice.invoice_id_number,
+                        invoice.status as invoice_status,
+                        membership.payment_status,
                         member.package_id
                 FROM membership
                 INNER JOIN member ON membership.member_id = member.member_id
                 LEFT JOIN invoice ON invoice.member_id = membership.member_id
                 WHERE member.status != 'D'   
                 AND membership.end_date < '$today'
-                OR invoice.payment_status = 'U'
                 ORDER BY membership.membership_id DESC";
                 // echo $sql; exit;
         $result=$con->query($sql);
@@ -175,6 +177,14 @@ class Subscription{
             $stmt = $con->prepare("INSERT INTO payment_history (membership_id, member_id, start_date, end_date, paid_date, payment_method) VALUES (?, ?, ?, ?, ?, ?)");
             $stmt->bind_param("iissss", $membershipID, $memberID, $date, $endDate, $lastPidDate, $method);
             $stmt->execute();
+
+            if($method == self::WEB){
+                mysqli_report(MYSQLI_REPORT_ALL ^ MYSQLI_REPORT_INDEX);
+                $sql = "UPDATE invoice SET payment_status = ? WHERE member_id = ?";
+                $stmt = $con->prepare($sql);
+                $stmt->bind_param("si", $paymentStatus, $memberID);
+                $stmt->execute();
+            }
             // If we arrive here, it means that no exception was thrown
             // i.e. no query has failed, and we can commit the transaction
             $con->commit();
@@ -239,6 +249,14 @@ class Subscription{
             $stmt = $con->prepare("INSERT INTO payment_history (membership_id, member_id, start_date, end_date, paid_date, payment_method) VALUES (?, ?, ?, ?, ?, ?)");
             $stmt->bind_param("iissss", $membershipID, $memberID, $startDate, $endDate, $lastPidDate, $method);
             $stmt->execute();
+
+            if($method == self::WEB){
+                mysqli_report(MYSQLI_REPORT_ALL ^ MYSQLI_REPORT_INDEX);
+                $sql = "UPDATE invoice SET payment_status = ? WHERE member_id = ?";
+                $stmt = $con->prepare($sql);
+                $stmt->bind_param("si", $paymentStatus, $memberID);
+                $stmt->execute();
+            }
             // If we arrive here, it means that no exception was thrown
             // i.e. no query has failed, and we can commit the transaction
             $con->commit();
@@ -289,8 +307,8 @@ class Subscription{
             /** 
             * ADD sent invoices 
             */
-            $stmt = $con->prepare("INSERT INTO invoice (invoice_number, invoice_id_number, member_id, sent_date, created_by, payment_status, status) VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE member_id = VALUES(member_id)");
-            $stmt->bind_param("ssisiss", $invoiceNum,$id, $memberID, $today, $updatedBy,$paymentStatus, $status);
+            $stmt = $con->prepare("INSERT INTO invoice (invoice_number, invoice_id_number, member_id, sent_date, created_by, status) VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE member_id = VALUES(member_id)");
+            $stmt->bind_param("ssisis", $invoiceNum,$id, $memberID, $today, $updatedBy, $status);
             $stmt->execute();
             $invoiceID = $con->insert_id;
 
@@ -313,4 +331,37 @@ class Subscription{
         }        
     }
     
+    /** 
+	* Delete a sent invoice
+	* @return object $result
+	*/
+    public static function deleteInvoice($member_id){
+        $con=$GLOBALS['con']; 
+        $sql = "UPDATE invoice SET status=? WHERE member_id=?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("si", $status = Subscription::DELETED, $member_id);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;
+    }
+
+    /** 
+	* Delete a sent invoice
+	* @return object $result
+	*/
+    // public static function updateInvoice($member_id){
+    //     $paymentStatus = Subscription::PAID;
+
+    //     $con=$GLOBALS['con']; 
+    //     $sql = "UPDATE invoice SET payment_status = ? WHERE member_id = ?";
+    //     $stmt = $con->prepare($sql);
+    //     $stmt->bind_param("si", "P", $member_id);
+    //     $stmt->execute();
+    //     if ($stmt->error) {
+    //         return false;
+    //       }
+    //      return true;      
+    // }
 }

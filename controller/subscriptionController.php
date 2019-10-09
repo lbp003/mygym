@@ -485,10 +485,13 @@ break;
                 $outMemberAr[] = $row['member_id'];
             }
 
+            $invoiceIdNum = $row['invoice_id_number'];
             $paypalInvoiceNum = $row['invoice_number'];
-            if(!empty($paypalInvoiceNum)){
+            $payStatus = $row['payment_status'];
+            $status = $row['invoice_status'];
+            if(!empty($paypalInvoiceNum) && $status != "D"){
                 // var_dump($invoiceNum); exit;
-
+// echo "lbp"; exit;
             /**
              * To get the access token
              ***/
@@ -551,34 +554,43 @@ break;
                     // echo $response; exit;
                     $data = json_decode($response,true);
                     $invoicePaymentStatus =  $data['items'][0]['status']; 
+                    $invoicePaymentStatus = Subscription::PAID;
                     // var_dump($invoicePaymentStatus); exit; 
                         // echo json_encode($data,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES); exit;
 
                         $memberID = $row['member_id'];
-                        $membershipID = $row['membership_id'];
+                        $subscriptionID = $row['membership_id'];
                         $packageID = $row['package_id'];
                         $updatedBy = $user['staff_id'];
                         $method = Subscription::WEB;
-
-                        if($invoicePaymentStatus == Subscription::PAID && $graceDate > $today){
-
+                        // echo "lbp2"; exit;
+                        if($invoicePaymentStatus == Subscription::PAID && $graceDate >= $today){
+// echo "lbp1"; exit;
                             $res = Subscription::renewMemberSubscription($memberID, $subscriptionID, $packageID, $updatedBy, $method);
+                            // var_dump($res); exit;
+
+                            // Subscription::updateInvoice($memberID);
 
                             if($res){
-                                unset($lateSubaAr[$row['member_id']]);
+                                // echo $row['member_id']; exit;
+                                $paidMembershipAr[] = $subscriptionID;
+                                $paidMemberAr[] = $memberID;
+
                             }
-                        }elseif($invoicePaymentStatus == Subscription::PAID && $graceDate < $today){
-
+                        }elseif($invoicePaymentStatus == Subscription::PAID && $graceDate < $today){   
                             $res = Subscription::reactivateMemberSubscription($memberID, $subscriptionID, $packageID, $updatedBy, $method);
+                            // var_dump($res); exit;
+                            // Subscription::updateInvoice($memberID);
 
                             if($res){
-                                unset($lateSubaAr[$row['member_id']]);
+                                $paidMembershipAr[] = $subscriptionID;
+                                $paidMemberAr[] = $memberID;;
                             }
                         }elseif($invoicePaymentStatus == !Subscription::PAID && $graceDate < $today){
                             $curl = curl_init();
 
                             curl_setopt_array($curl, array(
-                            CURLOPT_URL => "https://api.sandbox.paypal.com/v2/invoicing/invoices/INV2-Z56S-5LLA-Q52L-CPZ5",
+                            CURLOPT_URL => "https://api.sandbox.paypal.com/v2/invoicing/invoices/".$invoiceIdNum,
                             CURLOPT_RETURNTRANSFER => true,
                             CURLOPT_ENCODING => "",
                             CURLOPT_MAXREDIRS => 10,
@@ -586,7 +598,7 @@ break;
                             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                             CURLOPT_CUSTOMREQUEST => "DELETE",
                             CURLOPT_HTTPHEADER => array(
-                                'authorization: Bearer A21AAFnNagckuSeTmuxh76PObGZDBf2Pu3zG9AzZzakdXrIL8KyGmx7eOr_mV0pKpmoiLn8_dxQdaB1miYyrGIxArfofTUxoA',
+                                'authorization: Bearer '.$accessToken,
                                 'content-type: application/json'
                             ),
                             ));
@@ -599,8 +611,11 @@ break;
                             if ($err) {
                             echo "cURL Error #:" . $err;
                             } else {
-                            echo $response;
+                                $res = Subscription::deleteInvoice($memberID);
                             }
+                        }elseif($invoicePaymentStatus == !Subscription::PAID && $graceDate >= $today){
+                            $paidMembershipAr[] = $subscriptionID;
+                            $paidMemberAr[] = $memberID;;
                         }
                     }
 
@@ -608,7 +623,16 @@ break;
             }
         }
 
-        // var_dump($outMemberAr); exit;
+        
+        // var_dump($lateSubaAr); exit;
+        if(!empty($paidMembershipAr)){
+            $lateSubaAr = array_diff($lateSubaAr, $paidMembershipAr);
+        }
+        if(!empty($paidMemberAr)){
+            $outMemberAr = array_diff($outMemberAr, $paidMemberAr);
+        }
+       
+        // var_dump($paidMemberAr); exit;
         //Update payment status of subscription
         if(!empty($lateSubaAr) || !empty($outMemberAr)){
 

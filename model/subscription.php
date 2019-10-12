@@ -18,6 +18,11 @@ class Subscription{
      CONST CASH = "C";
      CONST WEB = "W";
 
+    //Paypal payment status
+    CONST PAYPAL_PAID = "PAID";
+    CONST PAYPAL_SENT = "SENT";
+
+
      /** 
 	* Get All Subscription Details
 	* @return object $result 
@@ -34,7 +39,7 @@ class Subscription{
                         membership.payment_status
                 FROM membership
                 INNER JOIN member ON membership.member_id = member.member_id
-                INNER JOIN package ON membership.package_id = package.package_id
+                INNER JOIN package ON member.package_id = package.package_id
                 WHERE member.status != 'D'   
                 ORDER BY membership.membership_id DESC";
         $result=$con->query($sql);
@@ -114,7 +119,7 @@ class Subscription{
                         member.telephone,
                         package.package_name,
                         package.fee,
-                        membership.package_id,
+                        member.package_id,
                         membership.start_date,                                                           
                         membership.end_date,
                         membership.last_paid_date,
@@ -122,7 +127,7 @@ class Subscription{
                         membership.payment_status
                 FROM membership
                 INNER JOIN member ON membership.member_id = member.member_id
-                INNER JOIN package ON membership.package_id = package.package_id
+                INNER JOIN package ON member.package_id = package.package_id
                 WHERE membership.status != 'D'   
                 AND membership.membership_id = '$membershipID'
                 LIMIT 1";
@@ -177,13 +182,29 @@ class Subscription{
             $stmt = $con->prepare("INSERT INTO payment_history (membership_id, member_id, start_date, end_date, paid_date, payment_method) VALUES (?, ?, ?, ?, ?, ?)");
             $stmt->bind_param("iissss", $membershipID, $memberID, $date, $endDate, $lastPidDate, $method);
             $stmt->execute();
+            $payHistoryID = $con->insert_id;
 
             if($method == self::WEB){
+
+                $status = Subscription::DELETED;
+
                 mysqli_report(MYSQLI_REPORT_ALL ^ MYSQLI_REPORT_INDEX);
-                $sql = "UPDATE invoice SET payment_status = ? WHERE member_id = ?";
+                $sql = "UPDATE invoice SET status = ? WHERE member_id = ?";
                 $stmt = $con->prepare($sql);
-                $stmt->bind_param("si", $paymentStatus, $memberID);
+                $stmt->bind_param("si", $status, $memberID);
                 $stmt->execute();
+
+                $result = Subscription::getInvoiceDetails($memberID);
+                $row = $result->fetch_assoc();
+                $invoiceNumber = $row['invoice_number'];
+                $invoiceIDNumber = $row['invoice_id_number'];
+                // var_dump($invoiceIDNumber); exit;
+
+                $sql = "UPDATE payment_history SET invoice_number = ?, invoice_id_number = ? WHERE payment_id = ?";
+                $stmt = $con->prepare($sql);
+                $stmt->bind_param("ssi", $invoiceNumber, $invoiceIDNumber, $payHistoryID);
+                $stmt->execute();
+                
             }
             // If we arrive here, it means that no exception was thrown
             // i.e. no query has failed, and we can commit the transaction
@@ -249,13 +270,30 @@ class Subscription{
             $stmt = $con->prepare("INSERT INTO payment_history (membership_id, member_id, start_date, end_date, paid_date, payment_method) VALUES (?, ?, ?, ?, ?, ?)");
             $stmt->bind_param("iissss", $membershipID, $memberID, $startDate, $endDate, $lastPidDate, $method);
             $stmt->execute();
+            $payHistoryID = $con->insert_id;
+            // var_dump($payHistoryID); exit;
 
             if($method == self::WEB){
+
+                $status = Subscription::DELETED;
+
                 mysqli_report(MYSQLI_REPORT_ALL ^ MYSQLI_REPORT_INDEX);
-                $sql = "UPDATE invoice SET payment_status = ? WHERE member_id = ?";
+                $sql = "UPDATE invoice SET status = ? WHERE member_id = ?";
                 $stmt = $con->prepare($sql);
-                $stmt->bind_param("si", $paymentStatus, $memberID);
+                $stmt->bind_param("si", $status, $memberID);
+                $stmt->execute();      
+
+                $result = Subscription::getInvoiceDetails($memberID);
+                $row = $result->fetch_assoc();
+                $invoiceNumber = $row['invoice_number'];
+                $invoiceIDNumber = $row['invoice_id_number'];
+                // var_dump($invoiceIDNumber); exit;
+
+                $sql = "UPDATE payment_history SET invoice_number = ?, invoice_id_number = ? WHERE payment_id = ?";
+                $stmt = $con->prepare($sql);
+                $stmt->bind_param("ssi", $invoiceNumber, $invoiceIDNumber, $payHistoryID);
                 $stmt->execute();
+                // echo "pass"; exit;
             }
             // If we arrive here, it means that no exception was thrown
             // i.e. no query has failed, and we can commit the transaction
@@ -348,20 +386,22 @@ class Subscription{
     }
 
     /** 
-	* Delete a sent invoice
+	* Get invoice details
 	* @return object $result
 	*/
-    // public static function updateInvoice($member_id){
-    //     $paymentStatus = Subscription::PAID;
+    public static function getInvoiceDetails($member_id){
 
-    //     $con=$GLOBALS['con']; 
-    //     $sql = "UPDATE invoice SET payment_status = ? WHERE member_id = ?";
-    //     $stmt = $con->prepare($sql);
-    //     $stmt->bind_param("si", "P", $member_id);
-    //     $stmt->execute();
-    //     if ($stmt->error) {
-    //         return false;
-    //       }
-    //      return true;      
-    // }
+        mysqli_report(MYSQLI_REPORT_ALL ^ MYSQLI_REPORT_INDEX);
+
+        $con=$GLOBALS['con']; 
+        $sql = "SELECT invoice_number, invoice_id_number FROM invoice WHERE member_id = ? ORDER BY lmd DESC";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("i", $member_id);
+        $stmt->execute();
+        $result = mysqli_stmt_get_result($stmt);
+        if ($stmt->error) {
+            return false;
+          }
+        return $result;  
+    }
 }

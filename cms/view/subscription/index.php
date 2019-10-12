@@ -45,7 +45,7 @@ $allSubscription = Subscription::displayAllSubscription();
                             $status="Paid";
                         }elseif($row['payment_status']==Subscription::LATE){
                             $status="Late";
-                        }else {
+                        }elseif($row['payment_status']==Subscription::PENDING) {
                             $status="Pending";
                         }
                 ?>

@@ -79,8 +79,8 @@ class Member{
             $status = Subscription::ACTIVE;
 
             // $con->query("INSERT INTO membership (member_id, package_id, start_date, end_date, last_paid_date, payment_status, status, created_by, updated_by, lmd) VALUES ($memberID, $packageID, $date, $endDate, $lastPidDate, $paymentStatus, $status, $createdBy, $updatedBy, $lmd)");
-            $stmt = $con->prepare("INSERT INTO membership (member_id, package_id, start_date, end_date, last_paid_date, payment_status, status, created_by, updated_by, lmd) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("iisssssiis", $memberID,$packageID,$date,$endDate,$lastPidDate,$paymentStatus,$status,$createdBy,$updatedBy,$lmd);
+            $stmt = $con->prepare("INSERT INTO membership (member_id, start_date, end_date, last_paid_date, payment_status, status, created_by, updated_by, lmd) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("isssssiis", $memberID,$date,$endDate,$lastPidDate,$paymentStatus,$status,$createdBy,$updatedBy,$lmd);
             $stmt->execute();
             $membershipID = $con->insert_id;
 
@@ -318,5 +318,21 @@ class Member{
                 AND member.status = 'A'";
         $result=$con->query($sql);
         return $result;
+    }
+
+    /** 
+	* Update package
+	* @return object $result
+	*/
+    public static function updatePackage($packageID,$updatedBy,$subscriptionID){
+        $con=$GLOBALS['con']; 
+        $sql = "UPDATE member INNER JOIN membership ON membership.member_id = member.member_id SET member.package_id = ?, member.updated_by = ? WHERE membership.membership_id = ?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("iii",$packageID,$updatedBy,$subscriptionID);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;
     }
 }

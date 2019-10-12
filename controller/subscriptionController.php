@@ -167,6 +167,10 @@ break;
 
         if($payMethod == Subscription::WEB){
 
+            //Update package
+            Member::updatePackage($packageID,$updatedBy,$subscriptionID);
+            // var_dump($res); exit;
+
             $today = date("Y-m-d");
             $dataSet = Subscription::getSubscriptionDetailsByID($subscriptionID);
             $row = $dataSet->fetch_assoc();
@@ -490,7 +494,7 @@ break;
             $payStatus = $row['payment_status'];
             $status = $row['invoice_status'];
             if(!empty($paypalInvoiceNum) && $status != "D"){
-                // var_dump($invoiceNum); exit;
+                // var_dump($paypalInvoiceNum); exit;
 // echo "lbp"; exit;
             /**
              * To get the access token
@@ -554,7 +558,6 @@ break;
                     // echo $response; exit;
                     $data = json_decode($response,true);
                     $invoicePaymentStatus =  $data['items'][0]['status']; 
-                    $invoicePaymentStatus = Subscription::PAID;
                     // var_dump($invoicePaymentStatus); exit; 
                         // echo json_encode($data,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES); exit;
 
@@ -563,13 +566,11 @@ break;
                         $packageID = $row['package_id'];
                         $updatedBy = $user['staff_id'];
                         $method = Subscription::WEB;
-                        // echo "lbp2"; exit;
-                        if($invoicePaymentStatus == Subscription::PAID && $graceDate >= $today){
-// echo "lbp1"; exit;
+
+                        if($invoicePaymentStatus == Subscription::PAYPAL_PAID && $graceDate >= $today){
+
                             $res = Subscription::renewMemberSubscription($memberID, $subscriptionID, $packageID, $updatedBy, $method);
                             // var_dump($res); exit;
-
-                            // Subscription::updateInvoice($memberID);
 
                             if($res){
                                 // echo $row['member_id']; exit;
@@ -577,7 +578,7 @@ break;
                                 $paidMemberAr[] = $memberID;
 
                             }
-                        }elseif($invoicePaymentStatus == Subscription::PAID && $graceDate < $today){   
+                        }elseif($invoicePaymentStatus == Subscription::PAYPAL_PAID && $graceDate < $today){   
                             $res = Subscription::reactivateMemberSubscription($memberID, $subscriptionID, $packageID, $updatedBy, $method);
                             // var_dump($res); exit;
                             // Subscription::updateInvoice($memberID);
@@ -586,7 +587,7 @@ break;
                                 $paidMembershipAr[] = $subscriptionID;
                                 $paidMemberAr[] = $memberID;;
                             }
-                        }elseif($invoicePaymentStatus == !Subscription::PAID && $graceDate < $today){
+                        }elseif($invoicePaymentStatus == !Subscription::PAYPAL_PAID && $graceDate < $today){
                             $curl = curl_init();
 
                             curl_setopt_array($curl, array(
@@ -613,7 +614,8 @@ break;
                             } else {
                                 $res = Subscription::deleteInvoice($memberID);
                             }
-                        }elseif($invoicePaymentStatus == !Subscription::PAID && $graceDate >= $today){
+                        }elseif($invoicePaymentStatus == Subscription::PAYPAL_SENT && $graceDate >= $today){
+                            // echo "lbp"; exit;
                             $paidMembershipAr[] = $subscriptionID;
                             $paidMemberAr[] = $memberID;;
                         }
@@ -623,7 +625,7 @@ break;
             }
         }
 
-        
+        // echo "lol"; exit;
         // var_dump($lateSubaAr); exit;
         if(!empty($paidMembershipAr)){
             $lateSubaAr = array_diff($lateSubaAr, $paidMembershipAr);

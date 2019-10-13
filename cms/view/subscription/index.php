@@ -90,21 +90,7 @@ $allSubscription = Subscription::displayAllSubscription();
     $(document).ready(function() {
       var table = $('#example').DataTable( {
             dom: 'Bfrtip',
-            buttons: [
-                'copy',
-                'csv',
-                'excel',
-                'pdf',
-                {
-                    extend: 'print',
-                    text: 'Print all',
-                    exportOptions: {
-                        modifier: {
-                            selected: null
-                        }
-                    }
-                }
-            ],
+            buttons: [],
             select: true
         } );
     } );

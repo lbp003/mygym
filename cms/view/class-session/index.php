@@ -97,19 +97,6 @@ $allClassSession = Session::displayAllClassSession();
       var table = $('#example').DataTable( {
             dom: 'Bfrtip',
             buttons: [
-                'copy',
-                'csv',
-                'excel',
-                'pdf',
-                {
-                    extend: 'print',
-                    text: 'Print all',
-                    exportOptions: {
-                        modifier: {
-                            selected: null
-                        }
-                    }
-                },
                 {
                 text: '+ ADD CLASS SESSION',
                 className: 'btn-success',

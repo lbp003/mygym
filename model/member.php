@@ -30,6 +30,7 @@ class Member{
                         member.nic,
                         member.image,
                         member.status,
+                        member.joined_date,
                         package.package_name
                 FROM member
                 LEFT JOIN package ON member.package_id = package.package_id

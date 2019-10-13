@@ -52,7 +52,7 @@ switch ($status){
     
     $_SESSION['pacData'] = $packagAr;
 
-    header("Location:../cms/view/member/addMember.php");
+    header("Location:../cms/view/member/add-member.php");
 
 
 break;
@@ -79,72 +79,79 @@ break;
         if (empty($firstName)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'First Name can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            header("Location:../cms/view/member/add-member.php?msg=$msg");
             exit;
         }
         $lastName=$_POST['last_name'];
         if (empty($lastName)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Last Name can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            header("Location:../cms/view/member/add-member.php?msg=$msg");
             exit;
         }
         $email=$_POST['email'];
         if (empty($email)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Email can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            header("Location:../cms/view/member/add-member.php?msg=$msg");
             exit;
         }
         $gender=$_POST['gender'];
         if (empty($gender)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Gender can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            header("Location:../cms/view/member/add-member.php?msg=$msg");
             exit;
         }
         $dob=$_POST['dob'];
         if (empty($dob)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Date of Birth can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            header("Location:../cms/view/member/add-member.php?msg=$msg");
             exit;
         }
         $nic=$_POST['nic'];
         if (empty($nic)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'NIC can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            header("Location:../cms/view/member/add-member.php?msg=$msg");
             exit;
         }
         $phone=$_POST['phone'];
         if (empty($phone)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Phone number can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            header("Location:../cms/view/member/add-member.php?msg=$msg");
             exit;
         }
         $address=$_POST['address'];
         if (empty($address)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Address can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            header("Location:../cms/view/member/add-member.php?msg=$msg");
             exit;
         }
         $packageID=$_POST['package'];
         if (empty($packageID)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Package can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            header("Location:../cms/view/member/add-member.php?msg=$msg");
             exit;
         }
         $membershipNumber=$_POST['membership_number'];
         if (empty($membershipNumber)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Membership number can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            header("Location:../cms/view/member/add-member.php?msg=$msg");
             exit;
         }  
+        $joinedDate=$_POST['joined_date'];
+        if (empty($joinedDate)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Joined date can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/member/add-member.php?msg=$msg");
+            exit;
+        }
         
         $password = mt_rand(1000000, 10000000);
         $enPassword = sha1($password);
@@ -234,20 +241,20 @@ break;
                 
                             $msg = json_encode(array('title'=>'Danger','message'=> 'Member registration failed','type'=>'danger'));
                             $msg = base64_encode($msg);
-                            header("Location:../cms/view/member/addMember.php?msg=$msg");
+                            header("Location:../cms/view/member/add-member.php?msg=$msg");
                             exit;            
                     }
             }else{
                 $msg = json_encode(array('title'=>'Warning','message'=> 'Member registration failed','type'=>'danger'));
                 $msg = base64_encode($msg);
-                header("Location:../cms/view/member/addMember.php?msg=$msg");
+                header("Location:../cms/view/member/add-member.php?msg=$msg");
                 exit;
             }
 
         }else{
             $msg = json_encode(array('title'=>'Warning','message'=> 'Email address already exists','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/addMember.php?msg=$msg");
+            header("Location:../cms/view/member/add-member.php?msg=$msg");
             exit;
         }    
                 
@@ -387,7 +394,7 @@ break;
         // if (empty($packageID)) {
         //     $msg = json_encode(array('title'=>'Warning','message'=> 'Package can not be empty','type'=>'warning'));
         //     $msg = base64_encode($msg);
-        //     header("Location:../cms/view/member/addMember.php?msg=$msg");
+        //     header("Location:../cms/view/member/add-member.php?msg=$msg");
         //     exit;
         // }
         $membershipNumber=$_POST['membership_number'];

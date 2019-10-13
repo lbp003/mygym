@@ -19,7 +19,7 @@
                 <?php if($auth->checkPermissions([Role::MANAGE_STAFF])){ ?>
                     <div class="mb-3">
                         <div class="card align-items-center border-dark" style="width: 100%;">
-                        <i class="fas fa-users fa-5x dash-icon-color"></i>
+                        <i class="fas fa-briefcase fa-5x dash-icon-color"></i>
                         <div class="card-body">
                         <a href="../../../controller/reportController.php?status=Employee"><h5 class="card-title">STAFF REPORT</h5></a>
                         </div>
@@ -34,18 +34,6 @@
                         <i class="fas fa-skating fa-5x dash-icon-color"></i>
                         <div class="card-body">
                             <a href="../../../controller/reportController.php?status=Class"><h5 class="card-title">CLASS REPORT</h5></a>
-                        </div>
-                        </div>
-                    </div>
-                <?php } ?>
-            </div>
-            <div class="col-3">
-                <?php if($auth->checkPermissions([Role::MANAGE_CLASS_SESSION, Role::VIEW_CLASS_SESSION])){ ?>
-                    <div class="mb-3 mr-4">
-                        <div class="card align-items-center border-dark" style="width: 15rem;">
-                        <i class="far fa-calendar-alt fa-5x dash-icon-color"></i>
-                        <div class="card-body">
-                            <a href="../../../controller/classSessionController.php"><h5 class="card-title">CLASS SESSION</h5></a>
                         </div>
                         </div>
                     </div>
@@ -100,29 +88,41 @@
                 <?php } ?>
             </div>
             <div class="col-3">
+                <?php if($auth->checkPermissions([Role::MANAGE_STAFF, Role::VIEW_STAFF])){ ?>
+                    <div class="mb-3">
+                        <div class="card align-items-center border-dark" style="width: 100%;">
+                        <i class="fas fa-users fa-5x dash-icon-color"></i>
+                        <div class="card-body">
+                            <a href="../../../controller/reportController.php?status=Member"><h5 class="card-title">MEMBER REPORT</h5></a>
+                        </div>
+                        </div>
+                    </div> 
+                <?php } ?>
+            </div>  
+            <div class="col-3">
                 <?php if($auth->checkPermissions([Role::MANAGE_SUBSCRIPTION, Role::VIEW_SUBSCRIPTION])){ ?>
                     <div class="mb-3">
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-money-check-alt fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../../../controller/subscriptionController.php"><h5 class="card-title">SUBSCRIPTION</h5></a>
+                            <a href="../../../controller/reportController.php?status=Subscription"><h5 class="card-title">SUBSCRIPTION REPORT</h5></a>
                         </div>
                         </div>
                     </div>
                 <?php } ?>
-            </div>
+            </div>  
             <div class="col-3">
-                <?php if($auth->checkPermissions([Role::MANAGE_STAFF, Role::VIEW_STAFF])){ ?>
-                    <div class="mb-3">
-                        <div class="card align-items-center border-dark" style="width: 100%;">
-                        <i class="fas fa-briefcase fa-5x dash-icon-color"></i>
+                <?php if($auth->checkPermissions([Role::MANAGE_CLASS_SESSION, Role::VIEW_CLASS_SESSION])){ ?>
+                    <div class="mb-3 mr-4">
+                        <div class="card align-items-center border-dark" style="width: 15rem;">
+                        <i class="far fa-calendar-alt fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../../../controller/staffController.php"><h5 class="card-title">STAFF</h5></a>
+                            <a href="../../../controller/reportController.php?status=classSession"><h5 class="card-title">CLASS SESSION REPORT</h5></a>
                         </div>
                         </div>
-                    </div> 
+                    </div>
                 <?php } ?>
-            </div>         
+            </div>     
         </div>
     </div>
     <?php include_once '../../layout/footer.php';?>

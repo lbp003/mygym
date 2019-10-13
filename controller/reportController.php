@@ -212,6 +212,87 @@ break;
 break;
 
 /**
+ * Redirect to Subscription reports
+ */ 
+
+    case "Subscription":
+
+        if(!$user)
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
+
+        if(!$auth->checkPermissions(array(Role::MANAGE_SUBSCRIPTION)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/report/index.php?msg=$msg");
+            exit;
+        }
+
+        header("Location:../cms/view/report/subscription-report.php");
+
+
+break;
+
+/**
+ * Redirect to Member reports
+ */ 
+
+    case "Member":
+
+        if(!$user)
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
+
+        if(!$auth->checkPermissions(array(Role::MANAGE_MEMBER)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/report/index.php?msg=$msg");
+            exit;
+        }
+
+        header("Location:../cms/view/report/member-report.php");
+
+
+break;
+
+/**
+ * Redirect to Class Session reports
+ */ 
+
+    case "classSession":
+
+        if(!$user)
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
+
+        if(!$auth->checkPermissions(array(Role::MANAGE_CLASS_SESSION)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/report/index.php?msg=$msg");
+            exit;
+        }
+
+        header("Location:../cms/view/report/class-session-report.php");
+
+
+break;
+
+/**
  * Index actiton
  */
 

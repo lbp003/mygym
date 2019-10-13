@@ -72,6 +72,10 @@ include '../../layout/header.php'; ?>
                         <label for="membership_number">Membership Number</label>
                         <input type="text" class="form-control" id="membership_number" name="membership_number" aria-describedby="membership_number" placeholder="Membership Number">
                     </div>
+                    <div class="form-group col-6">
+                        <label for="joined_date">Joined Date</label>
+                        <input type="text" class="form-control" id="joined_date" name="joined_date" aria-describedby="joined_date">
+                    </div>
                     <div class="col-12">
                         <button type="submit" class="btn btn-primary mb-2 float-right">Submit</button>
                     </div>
@@ -107,6 +111,10 @@ include '../../layout/header.php'; ?>
                     required: true,
                     date: true
                 },
+                joined_date: {
+                    required: true,
+                    date: true
+                },
                 gender: "required",
                 nic: "required",
                 phone: {
@@ -132,6 +140,9 @@ include '../../layout/header.php'; ?>
                 dob: {
                     required: "Please enter birth date"
                 },
+                joined_date: {
+                    required: "Please enter joined date"
+                },
                 gender: {
                     required: "Please enter gender"
                 },
@@ -152,6 +163,22 @@ include '../../layout/header.php'; ?>
                     required: "Please enter membership number"
                 }
             }
+        });
+
+        $( "#joined_date" ).datepicker({
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true
+        });
+
+        $( "#dob" ).datepicker({
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true
         });
     });
 </script>

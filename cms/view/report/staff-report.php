@@ -16,7 +16,7 @@ $allStaff = Staff::displayAllStaff();
     <ol class="breadcrumb">
         <li class="breadcrumb-item" aria-current="pjoined_date"><a href="../dashboard/dashboard.php">Home</a></li>
         <li class="breadcrumb-item active" aria-current="pjoined_date"><a href="index.php">Report</a></li>
-        <li class="breadcrumb-item active" aria-current="pjoined_date"><a href="#">Employee Report</a></li>
+        <li class="breadcrumb-item active" aria-current="pjoined_date"><a href="#">Staff Report</a></li>
     </ol>
     </nav>
     <div class="container">

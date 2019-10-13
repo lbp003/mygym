@@ -86,18 +86,6 @@
                     </div>
                 <?php } ?>
             </div>
-            <!-- <div class="col-3">
-                <?php if($auth->checkPermissions([Role::MANAGE_PAYMENT, Role::VIEW_PAYMENT])){ ?>
-                    <div class="mb-3">
-                        <div class="card align-items-center border-dark" style="width: 100%;">
-                        <i class="fab fa-cc-paypal fa-5x dash-icon-color"></i>
-                        <div class="card-body">
-                            <a href="#"><h5 class="card-title">ONLINE PAYMENT</h5></a>
-                        </div>
-                        </div>
-                    </div>
-                <?php } ?>
-            </div> -->
             <div class="col-3">
                 <?php if($auth->checkPermissions([Role::MANAGE_PACKAGE, Role::VIEW_PACKAGE])){ ?>
                     <div class="mb-3">

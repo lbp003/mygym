@@ -20,6 +20,7 @@ class Login{
                     staff.telephone,
                     staff.staff_type,
                     staff.image,
+                    staff.joined_date,
                     staff.status
                 FROM staff 
                 WHERE staff.email='$email' 
@@ -48,6 +49,7 @@ class Login{
                     member.package_id,
                     member.image,
                     member.status,
+                    member.membership_number,
                     package.package_id,
                     package.package_name,
                     membership.membership_id,

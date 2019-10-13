@@ -21,7 +21,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-users fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                        <a href="../../../controller/reportController.php?status=Employee"><h5 class="card-title">STAFF</h5></a>
+                        <a href="../../../controller/reportController.php?status=Employee"><h5 class="card-title">STAFF REPORT</h5></a>
                         </div>
                         </div>
                     </div>
@@ -33,7 +33,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-skating fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../../../controller/classController.php"><h5 class="card-title">CLASS</h5></a>
+                            <a href="../../../controller/reportController.php?status=Class"><h5 class="card-title">CLASS REPORT</h5></a>
                         </div>
                         </div>
                     </div>
@@ -55,9 +55,9 @@
                 <?php if($auth->checkPermissions([Role::MANAGE_EQUIPMENT, Role::VIEW_EQUIPMENT])){ ?>
                     <div class="mb-3">
                         <div class="card align-items-center border-dark" style="width: 100%;">
-                <i class="fas fa-dumbbell fa-5x dash-icon-color"></i>
+                        <i class="fas fa-dumbbell fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../../../controller/equipmentController.php"><h5 class="card-title">EQUIPMENT</h5></a>
+                            <a href="../../../controller/reportController.php?status=Equipment"><h5 class="card-title">EQUIPMENT REPORT</h5></a>
                         </div>
                         </div>
                     </div>
@@ -69,7 +69,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-running fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../../../controller/exerciseController.php"><h5 class="card-title">EXERCISE</h5></a>
+                            <a href="../../../controller/reportController.php?status=Exercise"><h5 class="card-title">EXERCISE REPORT</h5></a>
                         </div>
                         </div>
                     </div>
@@ -81,19 +81,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-futbol fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../../../controller/eventController.php"><h5 class="card-title">EVENT</h5></a>
-                        </div>
-                        </div>
-                    </div>
-                <?php } ?>
-            </div>
-            <div class="col-3">
-                <?php if($auth->checkPermissions([Role::MANAGE_PAYMENT, Role::VIEW_PAYMENT])){ ?>
-                    <div class="mb-3">
-                        <div class="card align-items-center border-dark" style="width: 100%;">
-                        <i class="fab fa-cc-paypal fa-5x dash-icon-color"></i>
-                        <div class="card-body">
-                            <a href="#"><h5 class="card-title">ONLINE PAYMENT</h5></a>
+                            <a href="../../../controller/reportController.php?status=Event"><h5 class="card-title">EVENT REPORT</h5></a>
                         </div>
                         </div>
                     </div>
@@ -105,7 +93,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-gift fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../../../controller/packageController.php"><h5 class="card-title">PACKAGE</h5></a>
+                            <a href="../../../controller/reportController.php?status=Package"><h5 class="card-title">PACKAGE REPORT</h5></a>
                         </div>
                         </div>
                     </div>
@@ -124,30 +112,6 @@
                 <?php } ?>
             </div>
             <div class="col-3">
-                <?php if($auth->checkPermissions([Role::MANAGE_REPORT, Role::VIEW_REPORT])){ ?>
-                    <div class="mb-3">
-                        <div class="card align-items-center border-dark" style="width: 100%;">
-                        <i class="fas fa-chart-line fa-5x dash-icon-color"></i>
-                        <div class="card-body">
-                            <a href="#"><h5 class="card-title">REPORT</h5></a>
-                        </div>
-                        </div>
-                    </div>
-                <?php } ?>
-            </div>
-            <div class="col-3">
-                <?php if($auth->checkPermissions([Role::MANAGE_MESSAGE, Role::VIEW_MESSAGE])){ ?>
-                    <div class="mb-3">
-                        <div class="card align-items-center border-dark" style="width: 100%;">
-                        <i class="fas fa-comment-alt fa-5x dash-icon-color"></i>
-                        <div class="card-body">
-                            <a href="../../../controller/contactController.php"><h5 class="card-title">MESSAGE</h5></a>
-                        </div>
-                        </div>
-                    </div>
-                <?php } ?>
-            </div>
-            <div class="col-3">
                 <?php if($auth->checkPermissions([Role::MANAGE_STAFF, Role::VIEW_STAFF])){ ?>
                     <div class="mb-3">
                         <div class="card align-items-center border-dark" style="width: 100%;">
@@ -158,31 +122,7 @@
                         </div>
                     </div> 
                 <?php } ?>
-            </div>
-            <div class="col-3">
-                <?php if($auth->checkPermissions([Role::VIEW_MEMBER_LOGIN_LOG, Role::VIEW_STAFF_LOGIN_LOG])){ ?>
-                    <div class="mb-3">
-                        <div class="card align-items-center border-dark" style="width: 100%;">
-                        <i class="fas fa-map-marker fa-5x dash-icon-color"></i>
-                        <div class="card-body">
-                            <a href="../../../controller/logController.php"><h5 class="card-title">LOG</h5></a>
-                        </div>
-                        </div>
-                    </div>          
-                <?php } ?>
-            </div>
-            <div class="col-3">
-                <?php if($auth->checkPermissions([Role::MANAGE_BACKUP])){ ?>
-                    <div class="mb-3">
-                        <div class="card align-items-center border-dark" style="width: 100%;">
-                        <i class="far fa-save fa-5x dash-icon-color"></i>
-                        <div class="card-body">
-                            <a href="../../../controller/backupController.php"><h5 class="card-title">BACKUP</h5></a>
-                        </div>
-                        </div>
-                    </div>          
-                <?php } ?>
-            </div>
+            </div>         
         </div>
     </div>
     <?php include_once '../../layout/footer.php';?>

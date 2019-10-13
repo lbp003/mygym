@@ -103,19 +103,6 @@ $allMember = Member::displayAllMember();
       var table = $('#example').DataTable( {
             dom: 'Bfrtip',
             buttons: [
-                'copy',
-                'csv',
-                'excel',
-                'pdf',
-                {
-                    extend: 'print',
-                    text: 'Print all',
-                    exportOptions: {
-                        modifier: {
-                            selected: null
-                        }
-                    }
-                },
             <?php if($auth->checkPermissions([Role::MANAGE_MEMBER])){?>
                 {
                 text: '+ ADD MEMBER',

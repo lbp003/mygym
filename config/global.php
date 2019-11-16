@@ -78,3 +78,9 @@ define("PAYPAL_CREDENTIALS", array(
 		"client_secret" => ""
 	]
 ));
+
+// Business email
+define('BUSINESS_EMAIL','pglbuddhika@gmail.com');
+
+// Business phone
+define('BUSINESS_PHONE','+94771888110');

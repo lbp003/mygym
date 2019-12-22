@@ -2,7 +2,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <small>LBP Creations &COPY; <?php echo date("Y"); ?> | All Rights Reserved </small>
+                    <small>LBP &COPY; <?php echo date("Y"); ?> | All Rights Reserved </small>
                 </div>
             </div>
         </div>
@@ -46,6 +46,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <!-- the main fileinput plugin file -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.1/js/fileinput.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/piexifjs@1.0.6/piexif.min.js"></script>
     <!-- following theme script is needed to use the Font Awesome 5.x theme (`fas`) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.1/themes/fas/theme.min.js"></script>
     <!-- color picker -->
@@ -54,8 +55,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
     <!-- Hightchart plugin -->
     <script src="../../../public/plugin/Highcharts/code/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="../../../public/plugin/Highcharts/code/modules/exporting.js"></script>
+    <script src="../../../public/plugin/Highcharts/code/modules/export-data.js"></script>
     <script type="text/javascript">
         $( document ).ready(function() {
             $(function () {
@@ -75,13 +76,6 @@
 
             <?php } ?>
         });
-
-        // Remove query strings from the url
-        // var uri = window.location.href.toString();
-        // if (uri.indexOf("?") > 0) {
-        //     var clean_uri = uri.substring(0, uri.indexOf("?"));
-        //     window.history.replaceState({}, document.title, clean_uri);
-        // }
 
     function showStatusMessage(title,message,type){
 

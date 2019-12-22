@@ -185,4 +185,25 @@ class Event{
         $result=$con->query($sql);
         return $result;
     }
+
+    /**
+	* get all active event details
+	* @return object $result
+	*/
+    public static function displayAllActiveEvent(){
+        $con=$GLOBALS['con'];//To get connection string
+        $sql="  SELECT  event.event_id,
+                        event.event_title,
+                        event.event_date,
+                        event.event_venue,
+                        event.event_description,
+                        event.image,
+                        event.status
+                FROM event
+                WHERE event.status = 'A' AND event.event_date >= CURDATE()
+                ORDER BY event.event_id DESC";
+        $result=$con->query($sql);
+        return $result;
+    }
+
 }

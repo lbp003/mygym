@@ -1,4 +1,7 @@
 /* Base */
+html {
+  scroll-behavior: smooth;
+}
 body {
   line-height: 1.7;
   color: #4d4d4d;
@@ -1227,3 +1230,8 @@ a {
   .block-trainer:hover:before {
     visibility: visible;
     opacity: 1; }
+
+    .event-test {
+      height:100px !important;
+      overflow-y: auto !important;
+    }

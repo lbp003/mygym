@@ -1,4 +1,7 @@
 /* Dashboard icons color */
+html {
+  scroll-behavior: smooth;
+}
 .dash-icon-color{
   color: #98C93C;
 }

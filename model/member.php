@@ -336,4 +336,20 @@ class Member{
           }
          return true;
     }
+
+      /** 
+	* Insert a new bmi record
+	* @return bool
+	*/
+    public static function addBMI($memberID, $weight, $height, $bmiValue, $date, $status){
+        $con=$GLOBALS['con']; 
+        $stmt = $con->prepare("INSERT INTO bmi (member_id, height, weight, bmi_value, date, status) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("isssss", $memberID,$height,$weight,$bmiValue,$date,$status);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;      
+    }
+    
 }

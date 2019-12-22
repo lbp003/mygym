@@ -9,7 +9,7 @@
     if(!$user)
     {
         $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-        header("Location:../../index.php?msg=$msg");
+        header("Location:../index/login.php?msg=$msg");
         exit;
     }
 ?>
@@ -32,4 +32,7 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.6/css/buttons.bootstrap4.min.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.1/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
         <link href="../../../public/plugin/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../../../public/plugin/jquery-ui/jquery-ui.css">
+        <script src="../../../public/plugin/jquery/jquery-3.4.1.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     </head>

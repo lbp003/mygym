@@ -190,7 +190,10 @@ class Programs{
         $con=$GLOBALS['con'];//To get connection string
         $sql="  SELECT 
                     class.class_id,
-                    class.class_name
+                    class.class_name,
+                    class.class_description,
+                    class.color,
+                    class.image
                 FROM class 
                 WHERE class.status = 'A'
                 ORDER BY class.class_id DESC";

@@ -26,8 +26,11 @@
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/select/1.3.0/js/dataTables.select.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.colVis.min.js"></script>  
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script src="../../../public/plugin/jquery/jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script type="text/javascript" src="../../../public/plugin/bootbox/bootbox.min.js"></script>
     <script type="text/javascript" src="../../../public/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+    
     <!-- JqueryValidation -->
     <script type="text/javascript" src="../../../public/plugin/jquery-validation/jquery.validate.min.js"></script>
     <script type="text/javascript" src="../../../public/plugin/jquery-validation/additional-methods.min.js"></script>
@@ -55,40 +58,38 @@
             $('[data-toggle="tooltip"]').tooltip()
             })
 
-            //notify messages
             <?php 
             if(isset($_REQUEST['msg'])){
-
                 $msg = base64_decode($_REQUEST['msg']);
                 $msgAr = json_decode($msg, true); ?>
                 var title = '<?php echo $msgAr["title"];?>';
                 var message = '<?php echo $msgAr["message"];?>';
-                var type = '<?php echo $msgAr["type"];?>';
-            
-                $.notify({
-                    title: title,
-                    message: message
-                },{
-                    type: type,
-                    delay: 5000,
-                    placement: {
-                        from: "bottom",
-                        align: "right"
-                    },
-                    animate:{
-                        enter: "animated fadeInUp",
-                        exit: "animated fadeOutDown"
-                    }
-                });
+                var type = '<?php echo $msgAr["type"];?>'; 
+
+            //notify messages
+            showStatusMessage(title,message,type);
+
             <?php } ?>
         });
 
-        // Remove query strings from the url
-        var uri = window.location.href.toString();
-        if (uri.indexOf("?") > 0) {
-            var clean_uri = uri.substring(0, uri.indexOf("?"));
-            window.history.replaceState({}, document.title, clean_uri);
-        }
+        function showStatusMessage(title,message,type){
+            $.notify({
+                title: title,
+                message: message
+            },{
+                type: type,
+                delay: 5000,
+                placement: {
+                    from: "bottom",
+                    align: "right"
+                },
+                animate:{
+                    enter: "animated fadeInUp",
+                    exit: "animated fadeOutDown"
+                }
+            });
+            }
+
     </script>       
     </body>
 </html>

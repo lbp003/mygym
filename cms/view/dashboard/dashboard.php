@@ -20,7 +20,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-users fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                        <a href="../../../controller/memberController.php"><h5 class="card-title">MEMBER</h5></a>
+                        <a href="../../../controller/memberController.php?index=index"><h5 class="card-title">MEMBER</h5></a>
                         </div>
                         </div>
                     </div>

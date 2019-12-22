@@ -42,7 +42,7 @@ if($email=="" or $password==""){
     $nor=$result->num_rows;
      
     if($nor==0){
-        $msg="User Name or Password Invalid";
+        $msg="Invalid Email or Password";
         $msg=base64_encode($msg);
         if($user_type=='member'){
             header("Location:../web/view/index/login.php?msg=$msg");

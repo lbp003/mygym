@@ -6,7 +6,7 @@ class dbconnection{
         //dbconnection
         $host="localhost";
         $un="root";
-        $pw="";
+        $pw="root";
         $db="mygym";
         //connection
         $con= new mysqli($host,$un,$pw,$db);

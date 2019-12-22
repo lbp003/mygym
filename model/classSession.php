@@ -23,9 +23,9 @@ class Session{
                         class.class_name,
                         CONCAT_WS(' ',staff.first_name,staff.last_name) AS trainer_name
                 FROM class_session
-                LEFT JOIN class ON class_session.class_id = class.class_id
+                INNER JOIN class ON class_session.class_id = class.class_id
                 LEFT JOIN staff ON class_session.instructor_id = staff.staff_id 
-                WHERE class_session.status != 'D'
+                WHERE class_session.status != 'D' AND class.status != 'D'
                 ORDER BY class_session_id DESC";
         $result=$con->query($sql);
         return $result;
@@ -171,6 +171,163 @@ class Session{
                 WHERE class_session.class_session_id = '$class_session_id'
                 AND class_session.status != 'D'";
         $result=$con->query($sql);
+        return $result;
+    }
+
+    /* Get all active class seassion info
+	* @return object $result
+	// */
+    // public static function getActiveClassSession(){
+    //     $con=$GLOBALS['con'];//To get connection string
+    //     $sql="  SELECT  class_session.class_session_id,
+    //                     class_session.class_session_name,
+    //                     class_session.day,
+    //                     class_session.start_time,
+    //                     class_session.end_time,
+    //                     class_session.status,
+    //                     class.class_name,
+    //                     CONCAT_WS(' ',staff.first_name,staff.last_name) AS trainer_name,
+    //                     CASE 
+    //                         WHEN class_session.day = 'Mon' THEN 'Mon'
+    //                         WHEN class_session.day = 'Tue' THEN 'Tue'
+    //                         WHEN class_session.day = 'Wed' THEN 'Wed'
+    //                         WHEN class_session.day = 'Thu' THEN 'Thu'
+    //                         WHEN class_session.day = 'Fri' THEN 'Fri'
+    //                         WHEN class_session.day = 'Sat' THEN 'Sat'
+    //                         WHEN class_session.day = 'Sun' THEN 'Sun'
+    //                         ELSE '' 
+    //                     END AS week_day
+    //             FROM class_session
+    //             INNER JOIN class ON class_session.class_id = class.class_id
+    //             LEFT JOIN staff ON class_session.instructor_id = staff.staff_id 
+    //             WHERE class_session.status = 'A' AND class.status = 'A'";
+    //     $result = $con->query($sql);
+    //     return $result;
+    // }
+
+    public static function getActiveClassSessionMon(){
+        $con=$GLOBALS['con'];//To get connection string
+        $sql="  SELECT  class_session.class_session_id,
+                        class_session.class_session_name,
+                        class_session.day,
+                        class_session.start_time,
+                        class_session.end_time,
+                        class_session.status,
+                        class.class_name,
+                        CONCAT_WS(' ',staff.first_name,staff.last_name) AS trainer_name
+                FROM class_session
+                INNER JOIN class ON class_session.class_id = class.class_id
+                LEFT JOIN staff ON class_session.instructor_id = staff.staff_id 
+                WHERE class_session.status = 'A' AND class.status = 'A' AND class_session.day = 'Mon'";
+        $result = $con->query($sql);
+        return $result;
+    }
+
+    public static function getActiveClassSessionTue(){
+        $con=$GLOBALS['con'];//To get connection string
+        $sql="  SELECT  class_session.class_session_id,
+                        class_session.class_session_name,
+                        class_session.day,
+                        class_session.start_time,
+                        class_session.end_time,
+                        class_session.status,
+                        class.class_name,
+                        CONCAT_WS(' ',staff.first_name,staff.last_name) AS trainer_name
+                FROM class_session
+                INNER JOIN class ON class_session.class_id = class.class_id
+                LEFT JOIN staff ON class_session.instructor_id = staff.staff_id 
+                WHERE class_session.status = 'A' AND class.status = 'A' AND class_session.day = 'Tue'";
+        $result = $con->query($sql);
+        return $result;
+    }
+
+    public static function getActiveClassSessionWed(){
+        $con=$GLOBALS['con'];//To get connection string
+        $sql="  SELECT  class_session.class_session_id,
+                        class_session.class_session_name,
+                        class_session.day,
+                        class_session.start_time,
+                        class_session.end_time,
+                        class_session.status,
+                        class.class_name,
+                        CONCAT_WS(' ',staff.first_name,staff.last_name) AS trainer_name
+                FROM class_session
+                INNER JOIN class ON class_session.class_id = class.class_id
+                LEFT JOIN staff ON class_session.instructor_id = staff.staff_id 
+                WHERE class_session.status = 'A' AND class.status = 'A' AND class_session.day = 'Wed'";
+        $result = $con->query($sql);
+        return $result;
+    }
+
+    public static function getActiveClassSessionThu(){
+        $con=$GLOBALS['con'];//To get connection string
+        $sql="  SELECT  class_session.class_session_id,
+                        class_session.class_session_name,
+                        class_session.day,
+                        class_session.start_time,
+                        class_session.end_time,
+                        class_session.status,
+                        class.class_name,
+                        CONCAT_WS(' ',staff.first_name,staff.last_name) AS trainer_name
+                FROM class_session
+                INNER JOIN class ON class_session.class_id = class.class_id
+                LEFT JOIN staff ON class_session.instructor_id = staff.staff_id 
+                WHERE class_session.status = 'A' AND class.status = 'A' AND class_session.day = 'Thu'";
+        $result = $con->query($sql);
+        return $result;
+    }
+
+    public static function getActiveClassSessionFri(){
+        $con=$GLOBALS['con'];//To get connection string
+        $sql="  SELECT  class_session.class_session_id,
+                        class_session.class_session_name,
+                        class_session.day,
+                        class_session.start_time,
+                        class_session.end_time,
+                        class_session.status,
+                        class.class_name,
+                        CONCAT_WS(' ',staff.first_name,staff.last_name) AS trainer_name
+                FROM class_session
+                INNER JOIN class ON class_session.class_id = class.class_id
+                LEFT JOIN staff ON class_session.instructor_id = staff.staff_id 
+                WHERE class_session.status = 'A' AND class.status = 'A' AND class_session.day = 'Fri'";
+        $result = $con->query($sql);
+        return $result;
+    }
+
+    public static function getActiveClassSessionSat(){
+        $con=$GLOBALS['con'];//To get connection string
+        $sql="  SELECT  class_session.class_session_id,
+                        class_session.class_session_name,
+                        class_session.day,
+                        class_session.start_time,
+                        class_session.end_time,
+                        class_session.status,
+                        class.class_name,
+                        CONCAT_WS(' ',staff.first_name,staff.last_name) AS trainer_name
+                FROM class_session
+                INNER JOIN class ON class_session.class_id = class.class_id
+                LEFT JOIN staff ON class_session.instructor_id = staff.staff_id 
+                WHERE class_session.status = 'A' AND class.status = 'A' AND class_session.day = 'Sat'";
+        $result = $con->query($sql);
+        return $result;
+    }
+
+    public static function getActiveClassSessionSun(){
+        $con=$GLOBALS['con'];//To get connection string
+        $sql="  SELECT  class_session.class_session_id,
+                        class_session.class_session_name,
+                        class_session.day,
+                        class_session.start_time,
+                        class_session.end_time,
+                        class_session.status,
+                        class.class_name,
+                        CONCAT_WS(' ',staff.first_name,staff.last_name) AS trainer_name
+                FROM class_session
+                INNER JOIN class ON class_session.class_id = class.class_id
+                LEFT JOIN staff ON class_session.instructor_id = staff.staff_id 
+                WHERE class_session.status = 'A' AND class.status = 'A' AND class_session.day = 'Sun'";
+        $result = $con->query($sql);
         return $result;
     }
    

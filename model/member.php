@@ -337,7 +337,7 @@ class Member{
          return true;
     }
 
-      /** 
+    /** 
 	* Insert a new bmi record
 	* @return bool
 	*/
@@ -350,6 +350,47 @@ class Member{
             return false;
           }
          return true;      
+    }
+
+    /** 
+	* Insert a new body fat record
+	* @return bool
+	*/
+    public static function addBF($memberID, $chest, $axila, $tricep, $subscapular, $abdominal, $suprailiac, $thigh, $age, $bfValue, $date){
+        $con=$GLOBALS['con']; 
+        $stmt = $con->prepare("INSERT INTO bodyfat (axilla, suprailiac, chest, tricep, abdominal, thigh, subscapular, age, bodyfat, member_id, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssssisis", $axila,$suprailiac,$chest,$tricep,$abdominal,$thigh,$subscapular,$age,$bfValue,$memberID,$date);
+        $stmt->execute();
+        if ($stmt->error) {
+            return false;
+          }
+         return true;      
+    }
+
+
+    
+    /** 
+	* Get member bmi data 
+	* @return object $result
+	*/
+    public static function getBMIDataById($member_id){
+        
+        $con=$GLOBALS['con'];
+        $sql="  SELECT
+                    bmi_id,
+                    member_id,
+                    height,
+                    weight,
+                    bmi_value,
+                    date,
+                    DATE_FORMAT(date, '%Y') as year,
+                    DATE_FORMAT(date, '%m') as month,
+                    DATE_FORMAT(date, '%d') as day,
+                    status
+                FROM bmi 
+                WHERE bmi.member_id = '$member_id'";
+        $result=$con->query($sql);
+        return $result;
     }
     
 }

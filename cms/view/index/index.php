@@ -83,7 +83,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <hr />
-                        <small>Developed by LBP Creations &COPY; <?php echo date("Y"); ?> | All Rights Reserved</small>
+                        <small>Developed by LBP &COPY; <?php echo date("Y"); ?> | All Rights Reserved</small>
                     </div>
                 </div>
             </div>        

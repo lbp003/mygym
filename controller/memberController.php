@@ -728,7 +728,148 @@ break;
 
         
 
- break;
+break;
+
+    //check insert member bodyfat 
+
+    case "BF":
+        
+        if(!$user)
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../web/view/index/index.php?msg=$msg");
+            exit;
+        }
+
+        $chest = $_POST['chest'];
+        if (empty($chest)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'chest can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../web/view/dashboard/index.php?msg=$msg");
+            exit;
+        }
+
+        $axila = $_POST['axila'];
+        if (empty($axila)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'axila can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../web/view/dashboard/index.php?msg=$msg");
+            exit;
+        }
+
+        $tricep = $_POST['tricep'];
+        if (empty($tricep)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'tricep can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../web/view/dashboard/index.php?msg=$msg");
+            exit;
+        }
+
+        $subscapular = $_POST['subscapular'];
+        if (empty($subscapular)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'subscapular can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../web/view/dashboard/index.php?msg=$msg");
+            exit;
+        }
+
+        $abdominal = $_POST['abdominal'];
+        if (empty($abdominal)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'abdominal can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../web/view/dashboard/index.php?msg=$msg");
+            exit;
+        }
+
+        $suprailiac = $_POST['suprailiac'];
+        if (empty($suprailiac)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'suprailiac can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../web/view/dashboard/index.php?msg=$msg");
+            exit;
+        }
+
+        $thigh = $_POST['thigh'];
+        if (empty($thigh)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'thigh can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../web/view/dashboard/index.php?msg=$msg");
+            exit;
+        }
+
+        $age = $_POST['age'];
+        if (empty($age)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'age can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../web/view/dashboard/index.php?msg=$msg");
+            exit;
+        }
+
+        $bfValue = $_POST['bfValue'];
+        if (empty($bfValue)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Body Fat value can not be empty, Please calculate the value before save','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../web/view/dashboard/index.php?msg=$msg");
+            exit;
+        }
+
+        $memberID = $_POST['member_id'];
+        if (empty($memberID)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Failed to recognize the member','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../web/view/dashboard/index.php?msg=$msg");
+            exit;
+        }
+
+        $date = date("Y-m-d");
+
+        $result = Member::addBF($memberID, $chest, $axila, $tricep, $subscapular, $abdominal, $suprailiac, $thigh, $age, $bfValue, $date);
+
+        if($result){
+            $msg = json_encode(array('title'=>'Success','message'=> 'Data saved','type'=>'success'));
+            $msg = base64_encode($msg);
+            header("Location:../web/view/dashboard/index.php?msg=$msg");
+            exit;
+        }else{
+            $msg = json_encode(array('title'=>'Danger','message'=> 'Failed to save','type'=>'danger'));
+            $msg = base64_encode($msg);
+            header("Location:../web/view/dashboard/index.php?msg=$msg");
+            exit;
+        }
+
+        
+
+    break;
+
+        //check insert member BMI 
+
+        case "getBmiData":
+
+            $memberID = $_POST['member_id'];
+            if (empty($memberID)) {
+                echo Json_encode(['Result' => false]);
+                exit;
+            }    
+    
+            $result = Member::getBMIDataById($memberID);
+            
+            $bmiData = [];
+            while($row = $result->fetch_assoc()){
+                $bmiData[] = $row;
+            }
+
+            if($result){
+                echo Json_encode(['Result' => true, 'Data' => $bmiData]);
+                exit;
+            }else{
+                echo Json_encode(['Result' => false]);
+                exit;
+            }
+    
+            
+    
+     break;
 
 /**
  * Index actiton

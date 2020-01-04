@@ -366,8 +366,6 @@ class Member{
           }
          return true;      
     }
-
-
     
     /** 
 	* Get member bmi data 
@@ -389,6 +387,36 @@ class Member{
                     status
                 FROM bmi 
                 WHERE bmi.member_id = '$member_id'";
+        $result=$con->query($sql);
+        return $result;
+    }
+
+    /** 
+	* Get member bodyfat data 
+	* @return object $result
+	*/
+    public static function getBFDataById($member_id){
+        
+        $con=$GLOBALS['con'];
+        $sql="  SELECT
+                    data_id,
+                    member_id,
+                    axilla,
+                    suprailiac,
+                    chest,
+                    tricep,
+                    abdominal,
+                    thigh,
+                    subscapular,
+                    age,
+                    bodyfat,
+                    date,
+                    DATE_FORMAT(date, '%Y') as year,
+                    DATE_FORMAT(date, '%m') as month,
+                    DATE_FORMAT(date, '%d') as day,
+                    status
+                FROM bodyfat 
+                WHERE bodyfat.member_id = '$member_id'";
         $result=$con->query($sql);
         return $result;
     }

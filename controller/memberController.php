@@ -825,20 +825,14 @@ break;
         $date = date("Y-m-d");
 
         $result = Member::addBF($memberID, $chest, $axila, $tricep, $subscapular, $abdominal, $suprailiac, $thigh, $age, $bfValue, $date);
-
+        
         if($result){
-            $msg = json_encode(array('title'=>'Success','message'=> 'Data saved','type'=>'success'));
-            $msg = base64_encode($msg);
-            header("Location:../web/view/dashboard/index.php?msg=$msg");
+            echo Json_encode(['Result' => true]);
             exit;
         }else{
-            $msg = json_encode(array('title'=>'Danger','message'=> 'Failed to save','type'=>'danger'));
-            $msg = base64_encode($msg);
-            header("Location:../web/view/dashboard/index.php?msg=$msg");
+            echo Json_encode(['Result' => false]);
             exit;
         }
-
-        
 
     break;
 

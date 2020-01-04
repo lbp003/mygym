@@ -14,6 +14,14 @@
         $date *= 1000; // convert from Unix timestamp to JavaScript time
         $data[] = "[$date, $bmi_value]";
     }
+
+    $resultb = Member::getBFDataById($memberID);
+    while ($row = $resultb->fetch_assoc()) {
+        extract($row);
+        $date = strtotime($date);
+        $date *= 1000; // convert from Unix timestamp to JavaScript time
+        $datab[] = "[$date, $bodyfat]";
+    }
 ?>
 <body>
     <!---navbar starting ---------->
@@ -82,7 +90,7 @@
                 <div class="col-6">
                     <h3 class="text-uppercase">Check Your Body Fat</h3>
                     <small>Measure the following skinfolds (in millimeters) with body fat calipers:</small>
-                    <form method="post" id="bf" name="bf" action="../../../controller/memberController.php?status=BF"  enctype="multipart/form-data">
+                    <form method="post" id="bfrm" action="#"  enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="chest">Chest</label>
                             <input type="text" name="chest" class="form-control" id="chest">
@@ -115,10 +123,10 @@
                             <label for="age">Age</label>
                             <input type="text" class="form-control" id="age" name="age">
                         </div>
-                        <button id="cte" class="btn btn-primary">Calculate</button>     
                         <input type="hidden" name="bfValue" value="">            
-                        <input type="hidden" name="member_id" value="<?php echo $memberID;?>">      
-                        <button type="submit" id="bfSave" class="btn btn-success">Save</button>                    
+                        <input type="hidden" name="member_id" value="<?php echo $memberID;?>"> 
+                        <button id="cte" class="btn btn-primary">Calculate</button>          
+                        <button type="submit" id="bfSave" class="btn btn-success" onclick="saveBodyFat()">Save</button>                    
                     </form>
                 </div>
                 <div class="col-6">
@@ -127,6 +135,19 @@
                     <div class="text-center" id="resultbf"></div>
                     <div class="text-center" id="bf_status"></div>
                 </div>
+            </div>
+        </div>
+        <hr />
+    </div>
+    <div class="container-flud">
+        <div class="row">
+            <div class="col-12" style="background-color: #F8F9FA">
+                <figure class="highcharts-figure">
+                    <div id="container1"></div>
+                    <p class="highcharts-description">
+                        Above line chart showing trends of your BMI.
+                    </p>
+                </figure>
             </div>
         </div>
     </div>
@@ -141,10 +162,11 @@
         var day = "";
         var bmiValue = "";
 
-         //bmi chart start
-         Highcharts.chart('container', {
+        //bmi chart start
+        Highcharts.chart('container', {
             chart: {
-                type: 'spline'
+                type: 'spline',
+                backgroundColor: '#F8F9FA'
             },
             title: {
                 text: 'BMI Chart'
@@ -174,6 +196,61 @@
             series: [{
                 name: "BMI CHART",
                 data: [<?php echo join($data, ',') ?>]
+            }],
+
+            responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 700
+                    },
+                    chartOptions: {
+                        plotOptions: {
+                            series: {
+                                marker: {
+                                    radius: 2.5
+                                }
+                            }
+                        }
+                    }
+                }]
+            }
+        }); 
+        //bmi chart end
+
+        //body fat chart start
+        Highcharts.chart('container1', {
+            chart: {
+                type: 'spline',
+                backgroundColor: '#F8F9FA'
+            },
+            title: {
+                text: 'BMI Chart'
+            },
+            subtitle: {
+                text: 'Check your progress'
+            },
+            xAxis: {
+                type: 'datetime'
+            },
+            yAxis: {
+                title: {
+                    text: 'BMI Value'
+                },
+                min: 0
+            },
+            plotOptions: {
+                series: {
+                    marker: {
+                        enabled: true
+                    }
+                }
+            },
+
+            colors: ['#6CF'],
+
+            series: [{
+                name: "Body Fat CHART",
+                data: [<?php echo join($datab, ',') ?>]
             }],
 
             responsive: {
@@ -236,34 +313,6 @@
                 $("#obese").addClass("active");
             }
 
-        });
-
-        $('#bmi').validate({
-            rules: {
-                weight: {
-                    required: true,
-                    number: true
-                },
-                height: {
-                    required: true,
-                    number: true
-                },
-                bmiValue: {
-                    required: true,
-                    number: true
-                }
-            },
-            messages: {
-                weight: {
-                    required: "Please enter weight"
-                },
-                height: {
-                    required: "Please enter height"
-                },
-                bmiValue: {
-                    required: "Please calculate BMI before save"
-                }
-            }
         });
 
         $('#bf').validate({
@@ -422,61 +471,160 @@
      // save bmi
      function saveBMI(){
 
-        $('#bmi').one('submit', function (e) {
-            e.preventDefault();
- 
-            $.ajax({
-                type: "POST",
-                url: '../../../controller/memberController.php?status=BMI',
-                data: $('form').serialize(),
-                cache: false,
-                success: function (returnJSON) {
-                    try {
-                        var JSON = jQuery.parseJSON(returnJSON);
-                        if (JSON.Result) {
-                            showStatusMessage('Success','Successfully saved.','success');
-                        } else {
+        $('#bmi').validate({
+            rules: {
+                weight: {
+                    required: true,
+                    number: true
+                },
+                height: {
+                    required: true,
+                    number: true
+                },
+                bmiValue: {
+                    required: true,
+                    number: true
+                }
+            },
+            messages: {
+                weight: {
+                    required: "Please enter weight"
+                },
+                height: {
+                    required: "Please enter height"
+                },
+                bmiValue: {
+                    required: "Please calculate BMI before save"
+                }
+            },
+            submitHandler: function(form) {
+                $.ajax({
+                    type: "POST",
+                    url: '../../../controller/memberController.php?status=BMI',
+                    data: $('form').serialize(),
+                    cache: false,
+                    success: function (returnJSON) {
+                        try {
+                            var JSON = jQuery.parseJSON(returnJSON);
+                            if (JSON.Result) {
+                                showStatusMessage('Success','Successfully saved.','success');
+                            } else {
+                                showStatusMessage('Warning','Calculate BMI before saving.','warning');
+                            }
+                        } catch (e) {
                             showStatusMessage('Danger','Unknown error occured.','danger');
                         }
-                    } catch (e) {
+                    },
+                    error: function () {
                         showStatusMessage('Danger','Unknown error occured.','danger');
                     }
-                },
-                error: function () {
-                    showStatusMessage('Danger','Unknown error occured.','danger');
-                }
-            });
-
-        });
+                });
+                return false;
+            },
+    });
     } 
 
-    // function saveBodyFat(){
+    function saveBodyFat(){
 
-    //     $('#bf').on('submit', function (e) {
-    //         e.preventDefault();
-
-    //         $.ajax({
-    //             type: "POST",
-    //             url: '../../../controller/memberController.php?status=BF',
-    //             data: $('form').serialize(),
-    //             cache: false,
-    //             success: function (returnJSON) {
-    //                 try {
-    //                     var JSON = jQuery.parseJSON(returnJSON);
-    //                     if (JSON.Result) {
-    //                         showStatusMessage('Success','Successfully saved.','success');
-    //                     } else {
-    //                         showStatusMessage('Danger','Unknown error occured.','danger');
-    //                     }
-    //                 } catch (e) {
-    //                     showStatusMessage('Danger','Unknown error occured.','danger');
-    //                 }
-    //             },
-    //             error: function () {
-    //                 showStatusMessage('Danger','Unknown error occured.','danger');
-    //             }
-    //         });
-
-    //     });
-    // } 
+        $('#bfrm').validate({
+            rules: {
+                chest: {
+                    required: true,
+                    number: true
+                },
+                axila: {
+                    required: true,
+                    number: true
+                },
+                tricep: {
+                    required: true,
+                    number: true
+                },
+                subscapular: {
+                    required: true,
+                    number: true
+                },
+                abdominal: {
+                    required: true,
+                    number: true
+                },
+                suprailiac: {
+                    required: true,
+                    number: true
+                },
+                suprailiac: {
+                    required: true,
+                    number: true
+                },
+                thigh: {
+                    required: true,
+                    number: true
+                },
+                age: {
+                    required: true,
+                    number: true
+                },
+                bfValue: {
+                    required: true,
+                    number: true
+                }
+            },
+            messages: {
+                chest: {
+                    required: "Please enter chest"
+                },
+                axila: {
+                    required: "Please enter axila"
+                },
+                axila: {
+                    required: "Please enter axila"
+                },
+                tricep: {
+                    required: "Please enter tricep"
+                },
+                subscapular: {
+                    required: "Please enter subscapular"
+                },
+                abdominal: {
+                    required: "Please enter abdominal"
+                },
+                suprailiac: {
+                    required: "Please enter suprailiac"
+                },
+                thigh: {
+                    required: "Please enter thigh"
+                },
+                age: {
+                    required: "Please enter age"
+                },
+                bmiValue: {
+                    required: "Please calculate body fat before save"
+                }
+            },
+            submitHandler: function(form) {
+                $.ajax({
+                    type: "POST",
+                    url: '../../../controller/memberController.php?status=BF',
+                    data: $('form').serialize(),
+                    cache: false,
+                    success: function (returnJSON) {
+                        try {
+                            var JSON = jQuery.parseJSON(returnJSON);
+                            if (JSON.Result) {
+                                showStatusMessage('Success','Successfully saved.','success');
+                            } else {
+                                showStatusMessage('Warning','Calculate Body Fat before saving.','warning');
+                            }
+                        } catch (e) {
+                            showStatusMessage('Danger','Unknown error occured.','danger');
+                        }
+                    },
+                    error: function () {
+                        showStatusMessage('Danger','Unknown error occured.','danger');
+                    }
+                });
+                return false;
+            }
+        });
+    } 
     </script>

@@ -243,5 +243,40 @@ class Staff{
         $result=$con->query($sql);
         return $result;
     }
+
+    /** 
+	* Check email for update email address
+	* @return object $result
+	*/
+    public static function forgetPasswordEmailCheck($email){
+        $con=$GLOBALS['con'];
+        $sql="  SELECT  staff.staff_id,
+                        staff.email 
+                FROM staff 
+                WHERE staff.email='$email' 
+                AND staff.status != 'D'
+                LIMIT 1";
+        $result=$con->query($sql);
+        if($result){
+            return $result;
+        }
+        return false;      
+    }
+
+    /** 
+	* Update password
+	* @return object $result
+	*/
+    public static function updateStaffPassword($staff_id, $encPassword){
+        $con=$GLOBALS['con'];
+        $sql="  UPDATE  staff
+                SET staff.password = '$encPassword' 
+                WHERE staff.staff_id='$staff_id'";
+        $result=$con->query($sql);
+        if($result){
+            return true;
+        }
+        return false;      
+    }
    
 }

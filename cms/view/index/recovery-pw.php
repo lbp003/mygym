@@ -44,7 +44,7 @@
                                 <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-lock"></i></span>
                                 </div>
-                                <input type="password" name="pwd" class="form-control" id="pwd" placeholder="password"/>
+                                <input type="password" name="pwd" class="form-control" id="pwd" pattern=".{6,}" placeholder="password" required />
                             </div>
                         </div>
                         <div class="form-group">
@@ -53,7 +53,7 @@
                                 <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-lock"></i></span>
                                 </div>
-                                <input type="password" name="conPwd" class="form-control" id="conPwd" placeholder="Confirm Password"/>
+                                <input type="password" name="conPwd" class="form-control" id="conPwd" pattern=".{6,}" placeholder="Confirm Password" required />
                             </div>
                         </div>
                         <div>

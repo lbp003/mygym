@@ -41,7 +41,7 @@
             <div class="row justify-content-center" style="height: 100%;">
                 <div class="col-4 pt-5">
                     <h1 class="text-center text-light">WELCOME</h1><hr />
-                    <form method="post" name="slogin" action="../../../controller/loginController.php">
+                    <form method="post" name="slogin" action="../../../controller/loginController.php" enctype="multipart/form-data">
                         <?php $_SESSION['user_type']="staff"; ?> 
                         <div class="form-group">
                             <label for="uname" class="sr-only">Email :</label>
@@ -49,7 +49,7 @@
                                 <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="far fa-user"></i></span>
                                 </div>
-                                <input type="text" name="email" class="form-control" id="email" placeholder="Email" />
+                                <input type="email" name="email" class="form-control" id="email" placeholder="Email" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         <div>
-                            <p class="font-weight-normal text-danger bg-dark">
+                            <p class="font-weight-normal text-danger bg-light">
                             <?php
                                 if(isset($_REQUEST['msg'])){
                                     echo base64_decode($_REQUEST['msg']);
@@ -74,6 +74,9 @@
                             <input type="submit" class="btn" value="Login" />
                         </div>    
                     </form>
+                    <div>
+                        <a class="error" href="forget-pw.php">Forget password?</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -87,40 +90,7 @@
                     </div>
                 </div>
             </div>        
-        </footer>
-        <script type="text/javascript">
-        $( document ).ready(function() {
-            $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-            })
-
-            //notify messages
-            <?php 
-            if(isset($_REQUEST['msg'])){
-                $msg = $_REQUEST['msg'];
-                $msgAr = json_decode($msg, true); ?>
-                var title = '<?php echo $msgAr["title"];?>';
-                var message = '<?php echo $msgAr["message"];?>';
-                var type = '<?php echo $msgAr["type"];?>';
-            
-                $.notify({
-                    title: title,
-                    message: message
-                },{
-                    type: type,
-                    delay: 3000,
-                    placement: {
-                        from: "bottom",
-                        align: "right"
-                    },
-                    animate:{
-                        enter: "animated fadeInUp",
-                        exit: "animated fadeOutDown"
-                    }
-                });
-            <?php } ?>
-        });
-    </script>  
+        </footer> 
     </body>
 </html>
 <!--------footer ending --------->

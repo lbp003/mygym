@@ -24,9 +24,7 @@ switch ($status){
 
     if(!$user)
     {
-        $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
+        header("Location:../cms/view/index/index.php");
         exit;
     }
     
@@ -167,15 +165,7 @@ switch ($status){
 
             //Recipients
             $mail->setFrom(SYSTEM_EMAIL, 'Mailer');
-            $mail->addAddress($email, $fullName);     // Add a recipient
-            // $mail->addAddress('ellen@example.com');               // Name is optional
-            // $mail->addReplyTo('info@example.com', 'Information');
-            // $mail->addCC('cc@example.com');
-            // $mail->addBCC('bcc@example.com');
-
-            // Attachments
-            // $mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
-            // $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
+            $mail->addAddress($email,$fullName);     // Add a recipient
 
             // Content
             $mail->isHTML(true);                                  // Set email format to HTML
@@ -209,8 +199,8 @@ switch ($status){
 }else{
     $msg = json_encode(array('title'=>'Warning','message'=> 'Email address already exists','type'=>'warning'));
     $msg = base64_encode($msg);
-        header("Location:../cms/view/staff/add-staff.php?msg=$msg");
-        exit;
+    header("Location:../cms/view/staff/add-staff.php?msg=$msg");
+    exit;
 }
 
 
@@ -222,9 +212,8 @@ break;
 
     if(!$user)
     {
-        $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
+        
+        header("Location:../cms/view/index/index.php");
         exit;
     }
     
@@ -261,9 +250,8 @@ break;
 
     if(!$user)
     {
-        $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
+        
+        header("Location:../cms/view/index/index.php");
         exit;
     }
     
@@ -417,9 +405,8 @@ break;
 
     if(!$user)
     {
-        $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
+        
+        header("Location:../cms/view/index/index.php");
         exit;
     }
     
@@ -454,9 +441,7 @@ break;
 
         if(!$user)
         {
-            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-            $msg = base64_encode($msg);
-            header("Location:../cms/view/index/index.php?msg=$msg");
+            header("Location:../cms/view/index/index.php");
             exit;
         }
         
@@ -491,9 +476,7 @@ break;
 
         if(!$user)
         {
-            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-            $msg = base64_encode($msg);
-            header("Location:../cms/view/index/index.php?msg=$msg");
+            header("Location:../cms/view/index/index.php");
             exit;
         }
 
@@ -527,9 +510,7 @@ break;
         
         if(!$user)
         {
-            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-            $msg = base64_encode($msg);
-            header("Location:../cms/view/index/index.php?msg=$msg");
+            header("Location:../cms/view/index/index.php");
             exit;
         }
         
@@ -575,7 +556,7 @@ break;
 
         //check update email exists
 
-        case "checkUpdateEmail":
+    case "checkUpdateEmail":
 
         $email=$_REQUEST['email'];
         $staffID=$_REQUEST['staff_id'];
@@ -588,6 +569,80 @@ break;
         }
 break; 
 
+    //change password
+
+    case "changePw":
+        
+        if(!$user)
+        {
+            header("Location:../cms/view/index/index.php");
+            exit;
+        }
+
+        $staffID = $user['staff_id'];
+
+        $password = trim($_POST['pwd']); 
+        if (empty($password)) {
+            $msg= "Password empty";
+            $msg= base64_encode($msg);
+            header("Location:../cms/view/index/change-pw.php?msg_pw=$msg");
+            exit;
+        }
+
+        $encCurrentPassword = sha1($password);
+
+        if(Staff::checkPasswordByID($staffID,$encCurrentPassword) == false){
+            $msg= "Current password does not match";
+            $msg= base64_encode($msg);
+            header("Location:../cms/view/index/change-pw.php?msg_pw=$msg");
+            exit;
+        }
+
+        $newPassword = trim($_POST['newPwd']);
+        if (empty($newPassword)) {
+            $msg= "Password empty";
+            $msg= base64_encode($msg);
+            header("Location:../cms/view/index/change-pw.php?msg_pw=$msg");
+            exit;
+        }
+
+        $conNewPassword = trim($_POST['conNewPwd']);
+        if (empty($conNewPassword)) {
+            $msg= "Password empty";
+            $msg= base64_encode($msg);
+            header("Location:../cms/view/index/change-pw.php?msg_pw=$msg");
+            exit;
+        }
+
+        if($newPassword !== $conNewPassword){
+            $msg= "Passwords not matching";
+            $msg= base64_encode($msg);
+            header("Location:../cms/view/index/change-pw.php?msg_pw=$msg");
+            exit;
+        }
+
+        if(strlen($newPassword) < 6 || strlen($newPassword) > 32){
+            $msg= "Your password must be between 6 to 32 characters.";
+            $msg= base64_encode($msg);
+            header("Location:../cms/view/index/change-pw.php?msg_pw=$msg");
+            exit;
+        }
+
+        $encPassword = sha1($newPassword);
+
+        if(Staff::updateStaffPassword($staffID,$encPassword)){
+            $msg= "Password successfully updated.";
+            $msg= base64_encode($msg);
+            header("Location:../cms/view/index/change-pw.php?msg_pw=$msg");
+            exit;
+        }else{
+            $msg= "Password update failed";
+            $msg= base64_encode($msg);
+            header("Location:../cms/view/index/change-pw.php?msg_pw=$msg");
+            exit;
+        }
+break; 
+
 /**
  * Index actiton
  */
@@ -596,9 +651,7 @@ break;
 
         if(!$user)
         {
-            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-            $msg = base64_encode($msg);
-            header("Location:../cms/view/index/index.php?msg=$msg");
+            header("Location:../cms/view/index/index.php");
             exit;
         }
 

@@ -14,7 +14,7 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="../index/profile.php">My Profile</a>
-          <a class="dropdown-item" href="#">Change Password</a>
+          <a class="dropdown-item" href="../index/change-pw.php">Change Password</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="../index/logout.php">Log Out</a>
         </div>

@@ -6,8 +6,8 @@
     // Get User Details from session
     $user=$_SESSION['user']; 
     if(!$user)
-    {
-        $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+    {   
+        $msg = "Session timed out.";
         header("Location:../../index.php?msg=$msg");
         exit;
     }

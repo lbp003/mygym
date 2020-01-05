@@ -145,7 +145,7 @@
                 <figure class="highcharts-figure">
                     <div id="container1"></div>
                     <p class="highcharts-description">
-                        Above line chart showing trends of your BMI.
+                        Above line chart showing trends of your Body Fat percentage.
                     </p>
                 </figure>
             </div>

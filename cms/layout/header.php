@@ -7,8 +7,7 @@
     $user=$_SESSION['user']; 
     if(!$user)
     {   
-        $msg = "Session timed out.";
-        header("Location:../../index.php?msg=$msg");
+        header("Location:../../index.php");
         exit;
     }
 

@@ -1072,6 +1072,80 @@ break;
 
 break;
 
+    //change password
+
+    case "changePw":
+        
+        if(!$user)
+        {
+            header("Location:../web/view/index/login.php");
+            exit;
+        }
+
+        $memberID = $user['member_id'];
+
+        $password = trim($_POST['pwd']); 
+        if (empty($password)) {
+            $msg= "Password empty";
+            $msg= base64_encode($msg);
+            header("Location:../web/view/index/change-pw.php?msg_pw=$msg");
+            exit;
+        }
+
+        $encCurrentPassword = sha1($password);
+
+        if(Member::checkPasswordByID($memberID,$encCurrentPassword) == false){
+            $msg= "Current password does not match";
+            $msg= base64_encode($msg);
+            header("Location:../web/view/index/change-pw.php?msg_pw=$msg");
+            exit;
+        }
+
+        $newPassword = trim($_POST['newPwd']);
+        if (empty($newPassword)) {
+            $msg= "Password empty";
+            $msg= base64_encode($msg);
+            header("Location:../web/view/index/change-pw.php?msg_pw=$msg");
+            exit;
+        }
+
+        $conNewPassword = trim($_POST['conNewPwd']);
+        if (empty($conNewPassword)) {
+            $msg= "Password empty";
+            $msg= base64_encode($msg);
+            header("Location:../web/view/index/change-pw.php?msg_pw=$msg");
+            exit;
+        }
+
+        if($newPassword !== $conNewPassword){
+            $msg= "Passwords not matching";
+            $msg= base64_encode($msg);
+            header("Location:../web/view/index/change-pw.php?msg_pw=$msg");
+            exit;
+        }
+
+        if(strlen($newPassword) < 6 || strlen($newPassword) > 32){
+            $msg= "Your password must be between 6 to 32 characters.";
+            $msg= base64_encode($msg);
+            header("Location:../web/view/index/change-pw.php?msg_pw=$msg");
+            exit;
+        }
+
+        $encPassword = sha1($newPassword);
+
+        if(Member::updateMemberPassword($memberID,$encPassword)){
+            $msg= "Password successfully updated.";
+            $msg= base64_encode($msg);
+            header("Location:../web/view/index/change-pw.php?msg_pw=$msg");
+            exit;
+        }else{
+            $msg= "Password update failed";
+            $msg= base64_encode($msg);
+            header("Location:../web/view/index/change-pw.php?msg_pw=$msg");
+            exit;
+        }
+break; 
+
         default:
 
         if(!$user)

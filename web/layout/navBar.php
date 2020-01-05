@@ -1,24 +1,31 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <img src="../../../public/image/logo.png" width="100" height="auto" class="d-inline-block align-top" alt="">
-  <a class="navbar-brand mb-0 h1 ml-3" href="#">HIRU FITNESS CENTER</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+<div class="site-navbar-wrap bg-white">
+      
+      <div class="container">
+        <div class="site-navbar bg-light">
+          <div class="py-1">
+            <div class="row align-items-center">
+              <div class="col-4">
+                <h2 class="mb-0 site-logo"><a href="#"><strong>HIRU</strong> FITNESS CENTER</a></h2>
+              </div>
+              <div class="col-8">
+                <nav class="site-navigation text-right" role="navigation">
+                  <div class="container">
+                    <div class="d-inline-block d-lg-none ml-md-0 mr-auto py-3"><a href="#" class="site-menu-toggle js-menu-toggle text-black"><span class="icon-menu h3"></span></a></div>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">HOME <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">GALLERY</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">SCHEDULE</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">EVENTS</a>
-      </li>
-    </ul>
-  </div>
-</nav>
+                    <ul class="site-menu js-clone-nav d-none d-lg-block">
+                      <li class="active">
+                        <a href="#">HOME</a>
+                      </li>
+                      <li><a href="#schedule">SCHEDULE</a></li> 
+                      <li><a href="#events">EVENTS</a></li>
+                      <li><a href="#contact">CONTACT</a></li>
+                      <li><a href="#about">ABOUT US</a></li>
+                    </ul>
+                  </div>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

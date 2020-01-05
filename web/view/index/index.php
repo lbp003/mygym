@@ -1,47 +1,5 @@
-<?php include_once '../../../config/dbconnection.php'; ?>
-<?php include_once '../../../config/session.php'; ?>
-<?php include_once '../../../config/global.php'; ?>
-<?php include_once '../../../model/role.php'; ?>
-<?php include_once '../../../model/class.php'; ?>
-<?php include_once '../../../model/classSession.php'; ?>
-<?php include_once '../../../model/event.php'; ?>
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title><?php echo SYSTEM_BUSINESS_NAME;?> &mdash; Home</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,700,900|Roboto+Mono:300,400,500"> 
-    <link rel="stylesheet" href="../../../public/theme/fonts/icomoon/style.css">
-
-    <link rel="stylesheet" href="../../../public/theme/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../../public/theme/css/magnific-popup.css">
-    <link rel="stylesheet" href="../../../public/theme/css/jquery-ui.css">
-    <link rel="stylesheet" href="../../../public/theme/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="../../../public/theme/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="../../../public/theme/css/bootstrap-datepicker.css">
-    <link rel="stylesheet" href="../../../public/theme/css/animate.css">
-    
-    
-    <link rel="stylesheet" href="../../../public/theme/fonts/flaticon/font/flaticon.css">
-  
-    <link rel="stylesheet" href="../../../public/theme/css/aos.css">
-
-    <link rel="stylesheet" href="../../../public/theme/css/style.css">
-    <?php
-      $allClass = Programs::getAllActiveClass();
-      $allSessionMon = Session::getActiveClassSessionMon();
-      $allSessionTue = Session::getActiveClassSessionTue();
-      $allSessionWed = Session::getActiveClassSessionWed();
-      $allSessionThu = Session::getActiveClassSessionThu();
-      $allSessionFri = Session::getActiveClassSessionFri();
-      $allSessionSat = Session::getActiveClassSessionSat();
-      $allSessionSun = Session::getActiveClassSessionSun();
-      $allEvents = Event::displayAllActiveEvent();
-    ?>
-    
-  </head>
+<!-- including header -->
+<?php include_once '../../layout/header.php'; ?>
   <body>
   <div class="site-wrap">
 
@@ -60,8 +18,7 @@
           <div class="row align-items-center">
             <div class="col-6">
               <a href="#" class="p-2 pl-0"><span class="icon-twitter"></span></a>
-              <a href="#" class="p-2 pl-0"><span class="icon-facebook"></span></a>
-              <a href="#" class="p-2 pl-0"><span class="icon-linkedin"></span></a>
+              <a href="https://www.facebook.com/Hiru-fitness-centre-774379499563801" target="_blank" class="p-2 pl-0"><span class="icon-facebook"></span></a>
               <a href="#" class="p-2 pl-0"><span class="icon-instagram"></span></a>
             </div>
             <div class="col-6">
@@ -84,39 +41,9 @@
         </div>
       </div>
     </div>
-    <div class="site-navbar-wrap bg-white">
-      
-      <div class="container">
-        <div class="site-navbar bg-light">
-          <div class="py-1">
-            <div class="row align-items-center">
-              <div class="col-4">
-                <h2 class="mb-0 site-logo"><a href="#"><strong>HIRU</strong> FITNESS CENTER</a></h2>
-              </div>
-              <div class="col-8">
-                <nav class="site-navigation text-right" role="navigation">
-                  <div class="container">
-                    <div class="d-inline-block d-lg-none ml-md-0 mr-auto py-3"><a href="#" class="site-menu-toggle js-menu-toggle text-black"><span class="icon-menu h3"></span></a></div>
-
-                    <ul class="site-menu js-clone-nav d-none d-lg-block">
-                      <li class="active">
-                        <a href="#">HOME</a>
-                      </li>
-                      <li><a href="#schedule">SCHEDULE</a></li> 
-                      <li><a href="#events">EVENTS</a></li>
-                      <li><a href="#contact">CONTACT</a></li>
-                      <li><a href="#about">ABOUT US</a></li>
-                    </ul>
-                  </div>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- include navigation bar -->
+    <?php include_once '../../layout/navBar.php'; ?>
   
-
     <!-- <div class="slide-one-item home-slider owl-carousel"> -->
     <div>   
       <div class="site-blocks-cover" style="background-image: url(../../../public/theme/images/hero_bg_2.jpg);" data-aos="fade" data-stellar-background-ratio="0.5">
@@ -506,34 +433,5 @@
         </div>
       </div>
     </div>
-    <footer style="background-color: #212529">
-      <div class="container">
-        <div class="row pt-5 mt-5 text-center text-white">
-          <div class="col-md-12">
-            <p>
-              <!-- <small>LBP Creations &COPY; <?php echo date("Y"); ?> | All Rights Reserved </small> -->
-              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-            Copyright &copy; <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>document.write(new Date().getFullYear());</script> All Rights Reserved | This template is made with <i class="icon-heart text-primary" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >Colorlib</a>
-            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-            </p>
-          </div>
-          
-        </div>
-      </div>
-    </footer>
-  </div>
-
-  <script src="../../../public/theme/js/jquery-3.3.1.min.js"></script>
-  <script src="../../../public/theme/js/jquery-migrate-3.0.1.min.js"></script>
-  <script src="../../../public/theme/js/jquery-ui.js"></script>
-  <script src="../../../public/theme/js/popper.min.js"></script>
-  <script src="../../../public/theme/js/bootstrap.min.js"></script>
-  <script src="../../../public/theme/js/owl.carousel.min.js"></script>
-  <script src="../../../public/theme/js/jquery.stellar.min.js"></script>
-  <script src="../../../public/theme/js/jquery.countdown.min.js"></script>
-  <script src="../../../public/theme/js/jquery.magnific-popup.min.js"></script>
-  <script src="../../../public/theme/js/bootstrap-datepicker.min.js"></script>
-  <script src="../../../public/theme/js/aos.js"></script>
-  <script src="../../../public/theme/js/main.js"></script>
-  </body>
-</html>
+    <!-- including footer -->
+    <?php include_once '../../layout/footer.php'; ?>

@@ -420,5 +420,62 @@ class Member{
         $result=$con->query($sql);
         return $result;
     }
+
+    /** 
+	* Check email for update email address
+	* @return object $result
+	*/
+    public static function forgetPasswordEmailCheck($email){
+        $con=$GLOBALS['con'];
+        $sql="  SELECT  member.member_id,
+                        member.email 
+                FROM member 
+                WHERE member.email='$email' 
+                AND member.status != 'D'
+                LIMIT 1";
+        $result=$con->query($sql);
+        if($result){
+            return $result;
+        }
+        return false;      
+    }
+
+    /** 
+	* Update password
+	* @return object $result
+	*/
+    public static function updateMemberPassword($member_id, $encPassword){
+        $con=$GLOBALS['con'];
+        $sql="  UPDATE  member
+                SET member.password = '$encPassword' 
+                WHERE member.member_id='$member_id'";
+        $result=$con->query($sql);
+        if($result){
+            return true;
+        }
+        return false;      
+    }
+
+    /** 
+	* check current password
+	* @return object $result
+	*/
+    public static function checkPasswordByID($member_id,$password){
+        
+        $con=$GLOBALS['con'];
+        $sql="  SELECT member.member_id 
+                FROM member 
+                WHERE member.password='$password' 
+                AND member.status != 'D'
+                AND member.member_id ='$member_id'
+                LIMIT 1";
+        $result=$con->query($sql);
+       
+        if($result->num_rows > 0){
+            return true;
+        }
+        return false;
+    }
+
     
 }

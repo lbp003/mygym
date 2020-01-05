@@ -1,6 +1,5 @@
 <?php include '../../../config/session.php';?>
 <?php include '../../../config/global.php';?>
-
 <!------Header starting ------>
 <html>
     <head>
@@ -20,68 +19,60 @@
                 height: 100%;
             }
 
-            .bg { 
-                /* The image used */
-                background-image: url("../../../public/image/login-bg.jpg");
-
-                /* Full height */
-                height: 100%; 
-
-                /* Center and scale the image nicely */
-                background-position: center;
-                background-repeat: no-repeat;
-                background-size: cover;
-            }
-
             .btn{
                 background-color: #2cabe2;
             }
         </style>
+         <?php
+
+            if(!empty($_REQUEST['id'])){
+                $id = $_REQUEST['id'];
+            }else{
+                header("Location:index.php");
+                exit;  
+            }
+        ?>
     </head>
     <body>
-        <div class="container-fluid bg">
+        <div class="container-fluid">
             <div class="row justify-content-center" style="height: 100%;">
                 <div class="col-4 pt-5">
-                    <h1 class="text-center text-light">WELCOME</h1><hr />
-                    <form method="post" name="slogin" action="../../../controller/loginController.php">
-                        <?php $_SESSION['user_type']="member"; ?> 
+                    <p class="text-center text-light text-dark">Please enter your new password.</p><hr />
+                    <form method="post" name="forgetPw" action="../../../controller/userController.php?status=recverPwMem&member_id=<?php echo $id?>" enctype="multipart/form-data">
                         <div class="form-group">
-                            <label for="uname" class="sr-only">Email :</label>
+                        <label for="pwd" class="sr-only">Password:</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="far fa-user"></i></span>
+                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
                                 </div>
-                                <input type="email" name="email" class="form-control" id="email" placeholder="Email" required />
+                                <input type="password" name="pwd" class="form-control" id="pwd" pattern=".{6,}" placeholder="password" required />
                             </div>
                         </div>
                         <div class="form-group">
-                        <label for="password" class="sr-only">Password :</label>
+                        <label for="conPwd" class="sr-only">Confirm Password:</label>
                             <div class="input-group">
-                            <div class="input-group-prepend">
+                                <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-lock"></i></span>
                                 </div>
-                                <input type="password" name="password" class="form-control" id="password" placeholder="Password" required />
+                                <input type="password" name="conPwd" class="form-control" id="conPwd" pattern=".{6,}" placeholder="Confirm Password" required />
                             </div>
                         </div>
                         <div>
-                            <p class="font-weight-normal text-danger bg-light">
+                            <p class="font-weight-normal text-danger">
                             <?php
-                                if(isset($_REQUEST['msg'])){
+                                if(!empty($_REQUEST['msg'])){
                                     echo base64_decode($_REQUEST['msg']);
                                 }
                             ?>
                             </p>
                         </div> 
                         <div class="float-right">
-                            <input type="submit" class="btn" value="Login" />
+                            <input type="submit" class="btn" value="Submit" />
                         </div>    
                     </form>
-                    <div>
-                        <a class="error" href="forget-pw.php">Forget password?</a>
-                    </div>
-                    <br /><br />
-                    <div class="col-12 text-center">
-                        <a href="../../../"><i class="fas fa-home fa-2x" style="color: white"></i></a>
+                    <div class="text-center">
+                        <br />
+                        <a href="index.php">Home</a>
                     </div>
                 </div>
             </div>
@@ -92,44 +83,11 @@
                 <div class="row">
                     <div class="col-md-12">
                         <hr />
-                        <small>Developed by LBP Creations &COPY; <?php echo date("Y"); ?> | All Rights Reserved</small>
+                        <small>Developed by LBP &COPY; <?php echo date("Y"); ?> | All Rights Reserved</small>
                     </div>
                 </div>
             </div>        
-        </footer>
-        <script type="text/javascript">
-        $( document ).ready(function() {
-            $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-            })
-
-            //notify messages
-            <?php 
-            if(isset($_REQUEST['msg'])){
-                $msg = $_REQUEST['msg'];
-                $msgAr = json_decode($msg, true); ?>
-                var title = '<?php echo $msgAr["title"];?>';
-                var message = '<?php echo $msgAr["message"];?>';
-                var type = '<?php echo $msgAr["type"];?>';
-            
-                $.notify({
-                    title: title,
-                    message: message
-                },{
-                    type: type,
-                    delay: 3000,
-                    placement: {
-                        from: "bottom",
-                        align: "right"
-                    },
-                    animate:{
-                        enter: "animated fadeInUp",
-                        exit: "animated fadeOutDown"
-                    }
-                });
-            <?php } ?>
-        });
-    </script>  
+        </footer> 
     </body>
 </html>
 <!--------footer ending --------->

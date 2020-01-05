@@ -278,5 +278,26 @@ class Staff{
         }
         return false;      
     }
+
+    /** 
+	* check current password
+	* @return object $result
+	*/
+    public static function checkPasswordByID($staff_id,$password){
+        
+        $con=$GLOBALS['con'];
+        $sql="  SELECT staff.staff_id 
+                FROM staff 
+                WHERE staff.password='$password' 
+                AND staff.status != 'D'
+                AND staff.staff_id ='$staff_id'
+                LIMIT 1";
+        $result=$con->query($sql);
+       
+        if($result->num_rows > 0){
+            return true;
+        }
+        return false;
+    }
    
 }

@@ -315,6 +315,94 @@ break;
         }
     
 break;
+
+    /**
+    * contact us
+    */
+
+    case "Contact":
+
+        $fullName = $_POST['fullName'];
+        if (empty($fullName)) {
+            header("Location:../web/view/index/failed.php");
+            exit;
+        }
+
+        $email = $_POST['email'];
+        if (empty($email)) {
+            header("Location:../web/view/index/failed.php");
+            exit;
+        }
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            header("Location:../web/view/index/failed.php");
+            exit;
+        }
+
+        $phone = $_POST['phone'];
+        if (empty($phone)) {
+            header("Location:../web/view/index/failed.php");
+            exit;
+        }
+
+        $message = $_POST['message'];
+        if (empty($message)) {
+            header("Location:../web/view/index/failed.php");
+            exit;
+        }
+
+        $mailBody="<div style='font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#444; background:#ffffff; line-height:20px; padding-bottom:20px;'>"
+        . "<h2> Hi ,</h2>"
+        . "<p>".$fullName."</p>"
+        . "<p>".$email."</p>"
+        ."<p>".$phone."</p>"
+        ."<p>".$message."</p>"
+        . "<p>Thank you.</p><br />"
+        . "<p align='center'>".EMAIL_FOOTER."</p>"
+        . "</div>";
+                
+    //Send email
+
+        // Load Composer's autoloader
+        require_once '../vendor/autoload.php';
+
+        // Instantiation and passing `true` enables exceptions
+        $mail = new PHPMailer(true);
+
+        try {
+            //Server settings
+            $mail->SMTPDebug = 2;                                       // Enable verbose debug output
+            $mail->isSMTP();                                            // Set mailer to use SMTP
+            $mail->Host       = EMAIL_HOST;  // Specify main and backup SMTP servers
+            $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
+            $mail->Username   = SYSTEM_EMAIL;                     // SMTP username
+            $mail->Password   = APP_KEY;                               // SMTP password
+            $mail->SMTPSecure = 'tls';                                  // Enable TLS encryption, `ssl` also accepted
+            $mail->Port       = 25;                                    // TCP port to connect to
+
+            //Recipients
+            $mail->setFrom(SYSTEM_EMAIL, 'Mailer');
+            $mail->addAddress(SYSTEM_EMAIL,"Contact");     // Add a recipient
+
+            // Content
+            $mail->isHTML(true);                                  // Set email format to HTML
+            $mail->Subject = 'Contact Us';
+            $mail->Body    = $mailBody;
+
+            if($mail->send()){
+                header("Location:../web/view/index/success.php");
+                exit;  
+            }
+            
+        } catch (Exception $e) {
+                //write email errors to  a text file 
+                $logFile = ERROR_LOG.'email_error_'.date('YmdH').'.txt';
+                @file_put_contents($logFile, "Mailer Error: " . $mail->ErrorInfo, FILE_APPEND | LOCK_EX);
+
+                header("Location:../web/view/index/failed.php");
+                exit;            
+                }
+break; 
 /**
  * Index actiton
  */

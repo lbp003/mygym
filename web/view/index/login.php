@@ -43,7 +43,7 @@
             <div class="row justify-content-center" style="height: 100%;">
                 <div class="col-4 pt-5">
                     <h1 class="text-center text-light">WELCOME</h1><hr />
-                    <form method="post" name="slogin" action="../../../controller/loginController.php">
+                    <form method="post" name="login" action="../../../controller/loginController.php" enctype="multipart/form-data">
                         <?php $_SESSION['user_type']="member"; ?> 
                         <div class="form-group">
                             <label for="uname" class="sr-only">Email :</label>

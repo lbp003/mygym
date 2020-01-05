@@ -385,29 +385,29 @@
       <h2 class="text-black display-4">Contact Us</h2>  
         <div class="row">   
           <div class="col-md-12 col-lg-8 mb-5">  
-            <form action="#" class="p-5">
+            <form method="post" action="../../../controller/userController.php?status=Contact" class="p-5" enctype="multipart/form-data">
               <div class="row form-group">
                 <div class="col-md-12 mb-3 mb-md-0">
                   <label class="font-weight-bold" for="fullname">Full Name</label>
-                  <input type="text" id="fullname" class="form-control" placeholder="Full Name">
+                  <input type="text" name="fullName" id="fullname" class="form-control" placeholder="Full Name" required>
                 </div>
               </div>
               <div class="row form-group">
                 <div class="col-md-12">
                   <label class="font-weight-bold" for="email">Email</label>
-                  <input type="email" id="email" class="form-control" placeholder="Email Address">
+                  <input type="email" name="email" id="email" class="form-control" placeholder="Email Address" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required >
                 </div>
               </div>
               <div class="row form-group">
                 <div class="col-md-12 mb-3 mb-md-0">
                   <label class="font-weight-bold" for="phone">Phone</label>
-                  <input type="text" id="phone" class="form-control" placeholder="Phone #">
+                  <input type="text" name="phone" id="phone" class="form-control" placeholder="Phone #" required>
                 </div>
               </div>
               <div class="row form-group">
                 <div class="col-md-12">
                   <label class="font-weight-bold" for="message">Message</label> 
-                  <textarea name="message" id="message" cols="30" rows="5" class="form-control" placeholder="Say hello to us"></textarea>
+                  <textarea name="message" id="message" cols="30" rows="5" class="form-control" placeholder="Say hello to us" required></textarea>
                 </div>
               </div>
               <div class="row form-group">

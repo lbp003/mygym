@@ -20,7 +20,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-users fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                        <a href="../../../controller/memberController.php?index=index"><h5 class="card-title">MEMBER</h5></a>
+                        <a href="../../../controller/memberController.php?status=index"><h5 class="card-title">MEMBER</h5></a>
                         </div>
                         </div>
                     </div>
@@ -32,7 +32,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-skating fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../../../controller/classController.php"><h5 class="card-title">CLASS</h5></a>
+                            <a href="../../../controller/classController.php?status=index"><h5 class="card-title">CLASS</h5></a>
                         </div>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                         <div class="card align-items-center border-dark" style="width: 15rem;">
                         <i class="far fa-calendar-alt fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../../../controller/classSessionController.php"><h5 class="card-title">CLASS SESSION</h5></a>
+                            <a href="../../../controller/classSessionController.php?status=index"><h5 class="card-title">CLASS SESSION</h5></a>
                         </div>
                         </div>
                     </div>
@@ -56,7 +56,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                 <i class="fas fa-dumbbell fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../../../controller/equipmentController.php"><h5 class="card-title">EQUIPMENT</h5></a>
+                            <a href="../../../controller/equipmentController.php?status=index"><h5 class="card-title">EQUIPMENT</h5></a>
                         </div>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-running fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../../../controller/exerciseController.php"><h5 class="card-title">EXERCISE</h5></a>
+                            <a href="../../../controller/exerciseController.php?status=index"><h5 class="card-title">EXERCISE</h5></a>
                         </div>
                         </div>
                     </div>
@@ -80,7 +80,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-futbol fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../../../controller/eventController.php"><h5 class="card-title">EVENT</h5></a>
+                            <a href="../../../controller/eventController.php?status=index"><h5 class="card-title">EVENT</h5></a>
                         </div>
                         </div>
                     </div>
@@ -92,7 +92,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-gift fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../../../controller/packageController.php"><h5 class="card-title">PACKAGE</h5></a>
+                            <a href="../../../controller/packageController.php?status=index"><h5 class="card-title">PACKAGE</h5></a>
                         </div>
                         </div>
                     </div>
@@ -104,7 +104,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-money-check-alt fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../../../controller/subscriptionController.php"><h5 class="card-title">SUBSCRIPTION</h5></a>
+                            <a href="../../../controller/subscriptionController.php?status=index"><h5 class="card-title">SUBSCRIPTION</h5></a>
                         </div>
                         </div>
                     </div>
@@ -116,7 +116,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-chart-line fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../../../controller/reportController.php"><h5 class="card-title">REPORT</h5></a>
+                            <a href="../../../controller/reportController.php?status=index"><h5 class="card-title">REPORT</h5></a>
                         </div>
                         </div>
                     </div>
@@ -128,7 +128,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-comment-alt fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../../../controller/contactController.php"><h5 class="card-title">MESSAGE</h5></a>
+                            <a href="../../../controller/contactController.php?status=index"><h5 class="card-title">MESSAGE</h5></a>
                         </div>
                         </div>
                     </div>
@@ -140,7 +140,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-briefcase fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../../../controller/staffController.php"><h5 class="card-title">STAFF</h5></a>
+                            <a href="../../../controller/staffController.php?status=index"><h5 class="card-title">STAFF</h5></a>
                         </div>
                         </div>
                     </div> 
@@ -152,7 +152,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="fas fa-map-marker fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../../../controller/logController.php"><h5 class="card-title">LOG</h5></a>
+                            <a href="../../../controller/logController.php?status=index"><h5 class="card-title">LOG</h5></a>
                         </div>
                         </div>
                     </div>          
@@ -164,7 +164,7 @@
                         <div class="card align-items-center border-dark" style="width: 100%;">
                         <i class="far fa-save fa-5x dash-icon-color"></i>
                         <div class="card-body">
-                            <a href="../../../controller/backupController.php"><h5 class="card-title">BACKUP</h5></a>
+                            <a href="../../../controller/backupController.php?status=index"><h5 class="card-title">BACKUP</h5></a>
                         </div>
                         </div>
                     </div>          

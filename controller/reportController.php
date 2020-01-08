@@ -296,7 +296,7 @@ break;
  * Index actiton
  */
 
-    default:
+    case "index":
 
         if(!$user)
         {

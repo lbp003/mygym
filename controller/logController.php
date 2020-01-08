@@ -15,7 +15,7 @@ switch ($status){
      * Index actiton
      */
 
-    default:
+    case "index":
 
         if(!$user)
         {

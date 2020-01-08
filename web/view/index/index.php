@@ -200,7 +200,7 @@
                   <div class="col-sm-3 col-md-3 col-lg-3"><h3 class="h5"><?php echo $row['class_name']?></h3></div>
                   <div class="col-sm-3 col-md-3 col-lg-3"><span class="icon-clock-o mr-3"></span><?php echo $row['start_time']?> &mdash; <?php echo $row['end_time']?></div>
                   <div class="col-sm-3 col-md-3 col-lg-3"><span class="icon-person mr-3"></span> <?php echo ucfirst($row['trainer_name'])?></div>
-                  <div class="col-sm-3 col-md-3 col-lg-3 text-md-right"><a href="#" class="btn btn-primary pill px-4 mt-3 mt-md-0">Join Now</a></div>     
+                  <div class="col-sm-3 col-md-3 col-lg-3 text-md-right"><a href="#contact" class="btn btn-primary pill px-4 mt-3 mt-md-0">Join Now</a></div>     
                 </div>
               </div>
             <?php }} ?> 
@@ -215,7 +215,7 @@
                   <div class="col-sm-3 col-md-3 col-lg-3"><h3 class="h5"><?php echo $row['class_name']?></h3></div>
                   <div class="col-sm-3 col-md-3 col-lg-3"><span class="icon-clock-o mr-3"></span><?php echo $row['start_time']?> &mdash; <?php echo $row['end_time']?></div>
                   <div class="col-sm-3 col-md-3 col-lg-3"><span class="icon-person mr-3"></span> <?php echo ucfirst($row['trainer_name'])?></div>
-                  <div class="col-sm-3 col-md-3 col-lg-3 text-md-right"><a href="#" class="btn btn-primary pill px-4 mt-3 mt-md-0">Join Now</a></div>     
+                  <div class="col-sm-3 col-md-3 col-lg-3 text-md-right"><a href="#contact" class="btn btn-primary pill px-4 mt-3 mt-md-0">Join Now</a></div>     
                 </div>
               </div> 
               <?php }} ?>
@@ -230,7 +230,7 @@
                   <div class="col-sm-3 col-md-3 col-lg-3"><h3 class="h5"><?php echo $row['class_name']?></h3></div>
                   <div class="col-sm-3 col-md-3 col-lg-3"><span class="icon-clock-o mr-3"></span><?php echo $row['start_time']?> &mdash; <?php echo $row['end_time']?></div>
                   <div class="col-sm-3 col-md-3 col-lg-3"><span class="icon-person mr-3"></span> <?php echo ucfirst($row['trainer_name'])?></div>
-                  <div class="col-sm-3 col-md-3 col-lg-3 text-md-right"><a href="#" class="btn btn-primary pill px-4 mt-3 mt-md-0">Join Now</a></div>     
+                  <div class="col-sm-3 col-md-3 col-lg-3 text-md-right"><a href="#contact" class="btn btn-primary pill px-4 mt-3 mt-md-0">Join Now</a></div>     
                 </div>
                 </div>
             <?php }} ?> 
@@ -244,7 +244,7 @@
                 <div class="col-sm-3 col-md-3 col-lg-3"><h3 class="h5"><?php echo $row['class_name']?></h3></div>
                 <div class="col-sm-3 col-md-3 col-lg-3"><span class="icon-clock-o mr-3"></span><?php echo $row['start_time']?> &mdash; <?php echo $row['end_time']?></div>
                 <div class="col-sm-3 col-md-3 col-lg-3"><span class="icon-person mr-3"></span> <?php echo ucfirst($row['trainer_name'])?></div>
-                <div class="col-sm-3 col-md-3 col-lg-3 text-md-right"><a href="#" class="btn btn-primary pill px-4 mt-3 mt-md-0">Join Now</a></div>     
+                <div class="col-sm-3 col-md-3 col-lg-3 text-md-right"><a href="#contact" class="btn btn-primary pill px-4 mt-3 mt-md-0">Join Now</a></div>     
               </div>
             </div>
             <?php }} ?>
@@ -258,7 +258,7 @@
                 <div class="col-sm-3 col-md-3 col-lg-3"><h3 class="h5"><?php echo $row['class_name']?></h3></div>
                 <div class="col-sm-3 col-md-3 col-lg-3"><span class="icon-clock-o mr-3"></span><?php echo $row['start_time']?> &mdash; <?php echo $row['end_time']?></div>
                 <div class="col-sm-3 col-md-3 col-lg-3"><span class="icon-person mr-3"></span> <?php echo ucfirst($row['trainer_name'])?></div>
-                <div class="col-sm-3 col-md-3 col-lg-3 text-md-right"><a href="#" class="btn btn-primary pill px-4 mt-3 mt-md-0">Join Now</a></div>     
+                <div class="col-sm-3 col-md-3 col-lg-3 text-md-right"><a href="#contact" class="btn btn-primary pill px-4 mt-3 mt-md-0">Join Now</a></div>     
               </div>
             </div>
             <?php }} ?>
@@ -273,7 +273,7 @@
                   <div class="col-sm-3 col-md-3 col-lg-3"><h3 class="h5"><?php echo $row['class_name']?></h3></div>
                   <div class="col-sm-3 col-md-3 col-lg-3"><span class="icon-clock-o mr-3"></span><?php echo $row['start_time']?> &mdash; <?php echo $row['end_time']?></div>
                   <div class="col-sm-3 col-md-3 col-lg-3"><span class="icon-person mr-3"></span> <?php echo ucfirst($row['trainer_name'])?></div>
-                  <div class="col-sm-3 col-md-3 col-lg-3 text-md-right"><a href="#" class="btn btn-primary pill px-4 mt-3 mt-md-0">Join Now</a></div>     
+                  <div class="col-sm-3 col-md-3 col-lg-3 text-md-right"><a href="#contact" class="btn btn-primary pill px-4 mt-3 mt-md-0">Join Now</a></div>     
                 </div>
               </div>
               <?php } }?>
@@ -288,7 +288,7 @@
                   <div class="col-sm-3 col-md-3 col-lg-3"><h3 class="h5"><?php echo $row['class_name']?></h3></div>
                   <div class="col-sm-3 col-md-3 col-lg-3"><span class="icon-clock-o mr-3"></span><?php echo $row['start_time']?> &mdash; <?php echo $row['end_time']?></div>
                   <div class="col-sm-3 col-md-3 col-lg-3"><span class="icon-person mr-3"></span> <?php echo ucfirst($row['trainer_name'])?></div>
-                  <div class="col-sm-3 col-md-3 col-lg-3 text-md-right"><a href="#" class="btn btn-primary pill px-4 mt-3 mt-md-0">Join Now</a></div>     
+                  <div class="col-sm-3 col-md-3 col-lg-3 text-md-right"><a href="#contact" class="btn btn-primary pill px-4 mt-3 mt-md-0">Join Now</a></div>     
                 </div>
               </div>
               <?php }} ?>

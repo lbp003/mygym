@@ -1146,7 +1146,7 @@ break;
         }
 break; 
 
-        default:
+    case "index":
 
         if(!$user)
         {

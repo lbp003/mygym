@@ -84,11 +84,11 @@
             rules: {
                 first_name: "required",
                 last_name: "required", 
-                email: {
-					required: true,
-					email: true,
-                    remote: "../../../controller/staffController.php?status=checkEmail"
-				},
+                // email: {
+				// 	required: true,
+				// 	email: true,
+                //     remote: "../../../controller/staffController.php?status=checkEmail"
+				// },
                 dob: {
                     required: true,
                     date: true

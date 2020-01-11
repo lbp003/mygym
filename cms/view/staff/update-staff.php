@@ -98,20 +98,20 @@
             rules: {
                 first_name: "required",
                 last_name: "required", 
-                email: {
-					required: true,
-					email: true,
-                    remote: {
-                        url: '../../../controller/staffController.php?status=checkEmail',
-                        type: 'post',
-                        dataType: 'json',
-                        data: {
-                            email: function(){
-                                return $("#email").val();
-                            }
-                        }
-                    }
-				},
+                // email: {
+				// 	required: true,
+				// 	email: true,
+                //     remote: {
+                //         url: '../../../controller/staffController.php?status=checkUpdateEmail&staff_id=<?php echo $empData['staff_id'] ?>',
+                //         type: 'post',
+                //         dataType: 'json',
+                //         data: {
+                //             email: function(){
+                //                 return $("#email").val();
+                //             }
+                //         }
+                //     }
+				// },
                 dob: {
                     required: true,
                     date: true
@@ -143,10 +143,10 @@
                 last_name: {
                     required: "Please enter last name"
                 },
-                email: {
-                    required: "Please enter email address",
-                    remote: function() { return $.validator.format("{0} is already taken", $("#email").val()) }
-                },
+                // email: {
+                //     required: "Please enter email address",
+                //     remote: function() { return $.validator.format("{0} is already taken", $("#email").val()) }
+                // },
                 dob: {
                     required: "Please enter birth date"
                 },

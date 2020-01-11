@@ -31,7 +31,7 @@ include '../../layout/header.php'; ?>
                     </div>
                     <div class="form-group col-6">
                         <label for="date">Date</label>
-                        <input type="date" class="form-control" id="date" name="date" aria-describedby="date">
+                        <input type="text" class="form-control" id="date" name="date" aria-describedby="date" autocomplete="off">
                     </div>           
                     <div class="form-group col-6">
                         <label for="start_time">Start Time</label>
@@ -112,6 +112,7 @@ include '../../layout/header.php'; ?>
             overwriteInitial: true,
             maxFileSize: 1500,
             showClose: false,
+            showPreview: true,
             showCaption: false,
             showBrowse: false,
             browseOnZoneClick: true,
@@ -128,6 +129,19 @@ include '../../layout/header.php'; ?>
             showUpload: true,
             previewFileType: 'any',
             initialPreviewFileType: 'image',
+            minImageWidth: 345,
+            minImageHeight: 230,
+            maxImageWidth: 800,
+            maxImageHeight: 530,
+            resizeImage: true
+        });
+
+        $( "#date" ).datepicker({
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true
         });
     });
 </script>

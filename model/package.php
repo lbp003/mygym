@@ -47,7 +47,8 @@ class Package{
     public static function getPackageDuration($package_id){
         
         $con = $GLOBALS['con'];
-        $sql = "SELECT package.duration 
+        $sql = "SELECT package.duration,
+                        package.fee 
                 FROM package 
                 WHERE package.package_id='$package_id'
                 AND package.status = 'A'

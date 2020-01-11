@@ -67,14 +67,14 @@ class Member{
 
             // Get package duration
             $packageDuration = Package::getPackageDuration($packageID);
-            $duration = $packageDuration->fetch_assoc();
+            $packData = $packageDuration->fetch_assoc();
 
             //subscription end date
             $date = date("Y-m-d");
             $lastPidDate = date("Y-m-d");
             $lmd = date('Y-m-d H:i:s', time());
 
-            $endDate = date('Y-m-d', strtotime("+".$duration['duration']." months", strtotime($date)));
+            $endDate = date('Y-m-d', strtotime("+".$packData['duration']." months", strtotime($date)));
 
             $paymentStatus = Subscription::PAID;
             $status = Subscription::ACTIVE;
@@ -86,9 +86,11 @@ class Member{
             $membershipID = $con->insert_id;
 
             $method = Subscription::CASH;
+            $fee = $packData['fee'];
+            $currency = Subscription::LKR;
 
-            $stmt = $con->prepare("INSERT INTO payment_history (membership_id, member_id, start_date, end_date, paid_date, payment_method, lmd) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("iisssss", $membershipID, $memberID, $date, $endDate, $lastPidDate, $method, $lmd);
+            $stmt = $con->prepare("INSERT INTO payment_history (membership_id, member_id, due_date, paid_date, payment_method, lmd, amount, currency_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("iissssss", $membershipID, $memberID, $endDate, $lastPidDate, $method, $lmd, $fee, $currency);
             $stmt->execute();
             // If we arrive here, it means that no exception was thrown
             // i.e. no query has failed, and we can commit the transaction

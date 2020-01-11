@@ -45,7 +45,7 @@ include '../../layout/header.php'; ?>
                     </div>
                     <div class="form-group col-6">
                         <label for="dob">Date of Birth</label>
-                        <input type="date" class="form-control" id="dob" name="dob" aria-describedby="dob" placeholder="Date of Birth">
+                        <input type="text" class="form-control" id="dob" name="dob" aria-describedby="dob" placeholder="Date of Birth" autocomplete="off">
                     </div>
                     <div class="form-group col-6">
                         <label for="nic">NIC</label>
@@ -74,7 +74,7 @@ include '../../layout/header.php'; ?>
                     </div>
                     <div class="form-group col-6">
                         <label for="joined_date">Joined Date</label>
-                        <input type="text" class="form-control" id="joined_date" name="joined_date" aria-describedby="joined_date">
+                        <input type="text" class="form-control" id="joined_date" name="joined_date" aria-describedby="joined_date" autocomplete="off">
                     </div>
                     <div class="col-12">
                         <button type="submit" class="btn btn-primary mb-2 float-right">Submit</button>

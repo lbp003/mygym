@@ -34,7 +34,7 @@ include '../../layout/header.php'; ?>
                     </div>
                     <div class="form-group col-6">
                         <label for="date">Date</label>
-                        <input type="date" class="form-control" id="date" name="date" aria-describedby="date" value="<?php echo $eventData['event_date'];?>">
+                        <input type="text" class="form-control" id="date" name="date" aria-describedby="date" value="<?php echo $eventData['event_date'];?>" autocomplete="off">
                     </div>           
                     <div class="form-group col-6">
                         <label for="start_time">Start Time</label>
@@ -77,7 +77,7 @@ include '../../layout/header.php'; ?>
                 date: {
                     required: true,
                     date: true,
-                    min: today
+                    // min: today
                     },  
                 // event_title: {
 				// 	required: true,
@@ -138,6 +138,19 @@ include '../../layout/header.php'; ?>
             showUpload: true,
             previewFileType: 'any',
             initialPreviewFileType: 'image',
+            minImageWidth: 345,
+            minImageHeight: 230,
+            maxImageWidth: 800,
+            maxImageHeight: 530,
+            resizeImage: true
+        });
+
+        $( "#date" ).datepicker({
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true
         });
     });
 </script>

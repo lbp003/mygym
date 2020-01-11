@@ -34,7 +34,7 @@ include '../../layout/header.php'; ?>
                         <input type="text" class="form-control" id="package_name" name="package_name" aria-describedby="package_name" value="<?php echo $packData['package_name'];?>" readonly>
                     </div>
                     <div class="form-group col-6">
-                        <label for="fee">Fee</label>
+                        <label for="fee">Fee (LKR)</label>
                         <input type="text" class="form-control" id="fee" name="fee" aria-describedby="fee" value="<?php echo $packData['fee'];?>" readonly>
                     </div>
                     <div class="form-group col-6">

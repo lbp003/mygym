@@ -56,12 +56,12 @@ $allEquipment = Equipment::displayAllEquipment();
                             $equipmentID = $row['equipment_id'];
 
                             if($row['status']==Equipment::ACTIVE){ ?>
-                                <a id="deactivate" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../../controller/equipmentController.php?equipment_id=<?php echo $equipmentID; ?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
+                                <a class="deactivate" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../../controller/equipmentController.php?equipment_id=<?php echo $equipmentID; ?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
                         <?php
                             }elseif($row['status']==Equipment::INACTIVE){ ?>
-                                <a id="activate" data-toggle="tooltip" data-placement="top" title="Activate" href="../../../controller/equipmentController.php?equipment_id=<?php echo $equipmentID; ?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
+                                <a class="activate" data-toggle="tooltip" data-placement="top" title="Activate" href="../../../controller/equipmentController.php?equipment_id=<?php echo $equipmentID; ?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
                         <?php } ?>
-                            <a id="delete" data-toggle="tooltip" data-placement="top" title="Delete" href="../../../controller/equipmentController.php?equipment_id=<?php echo $equipmentID; ?>&status=Delete"><i class="fas fa-trash text-danger"></i></a>
+                            <a class="delete" data-toggle="tooltip" data-placement="top" title="Delete" href="../../../controller/equipmentController.php?equipment_id=<?php echo $equipmentID; ?>&status=Delete"><i class="fas fa-trash text-danger"></i></a>
                     </td>
                 </tr>
                     <?php } ?>
@@ -91,80 +91,7 @@ $allEquipment = Equipment::displayAllEquipment();
                 }
             },
             ],
-            select: true
+            select: false
         } );
-
-        // deactivate confirmation
-        $('#deactivate').on('click', function(event){
-            event.preventDefault();
-                bootbox.confirm({
-                message: "Are you sure that you want to Deactivate ?",
-                buttons: {
-                    confirm: {
-                        label: 'Yes',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'No',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if(result){
-                    var href = $('#deactivate').attr('href');
-                    window.location.href = href;
-                    }
-                }
-            });
-        });
-
-    //    activate confirmation
-        $('#activate').on('click', function(event){
-            event.preventDefault();
-                bootbox.confirm({
-                message: "Are you sure that you want to Activate ?",
-                buttons: {
-                    confirm: {
-                        label: 'Yes',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'No',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if(result){
-                    var href = $('#activate').attr('href');
-                    window.location.href = href;
-                    }
-                }
-            });
-        });
-
-    // delete confirmation
-        $('#delete').on('click', function(event){
-            event.preventDefault();
-                bootbox.confirm({
-                message: "Are you sure that you want to Delete ?",
-                buttons: {
-                    confirm: {
-                        label: 'Yes',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'No',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if(result){
-                    var href = $('#delete').attr('href');
-                    window.location.href = href;
-                    }
-                }
-            });
-        });
-
     } );
 </script>

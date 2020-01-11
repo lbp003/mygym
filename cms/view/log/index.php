@@ -170,7 +170,7 @@ $allMemberLog = Log::displayAllMemberLogs();
                     }
                 }
             ],
-            select: true
+            select: false
         } );
     } );
 </script>

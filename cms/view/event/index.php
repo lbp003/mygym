@@ -58,12 +58,12 @@ $allEvent = Event::displayAllEvent();
                         $eventID = $row['event_id']; 
 
                         if($row['status']==Event::ACTIVE){ ?>
-                            <a id="Deactivate" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../../controller/eventController.php?event_id=<?php echo $eventID;?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
+                            <a class="deactivate" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../../controller/eventController.php?event_id=<?php echo $eventID;?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
                     <?php        
                         }elseif($row['status']==Event::INACTIVE){ ?>
-                            <a id="Activate" data-toggle="tooltip" data-placement="top" title="Activate" href="../../../controller/eventController.php?event_id=<?php echo $eventID;?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
+                            <a class="activate" data-toggle="tooltip" data-placement="top" title="Activate" href="../../../controller/eventController.php?event_id=<?php echo $eventID;?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
                     <?php } ?>
-                        <a id="Delete" data-toggle="tooltip" data-placement="top" title="Delete" href="../../../controller/eventController.php?event_id=<?php echo $eventID;?>&status=Delete"><i class="fas fa-trash text-danger"></i></a>
+                        <a class="delete" data-toggle="tooltip" data-placement="top" title="Delete" href="../../../controller/eventController.php?event_id=<?php echo $eventID;?>&status=Delete"><i class="fas fa-trash text-danger"></i></a>
                     </td>
                 </tr>
                     <?php } ?>
@@ -94,79 +94,7 @@ $allEvent = Event::displayAllEvent();
                 }
             },
             ],
-            select: true
+            select: false
         } );
-
-        // deactivate confirmation
-        $('#Deactivate').on('click', function(event){
-            event.preventDefault();
-                bootbox.confirm({
-                message: "Are you sure that you want to Deactivate ?",
-                buttons: {
-                    confirm: {
-                        label: 'Yes',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'No',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if(result){
-                    var href = $('#Deactivate').attr('href');
-                    window.location.href = href;
-                    }
-                }
-            });
-        });
-
-    // activate confirmation
-        $('#Activate').on('click', function(event){
-            event.preventDefault();
-                bootbox.confirm({
-                message: "Are you sure that you want to Activate ?",
-                buttons: {
-                    confirm: {
-                        label: 'Yes',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'No',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if(result){
-                    var href = $('#Activate').attr('href');
-                    window.location.href = href;
-                    }
-                }
-            });
-        });
-
-    // delete confirmation
-        $('#Delete').on('click', function(event){
-            event.preventDefault();
-                bootbox.confirm({
-                message: "Are you sure that you want to Delete ?",
-                buttons: {
-                    confirm: {
-                        label: 'Yes',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'No',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if(result){
-                    var href = $('#Delete').attr('href');
-                    window.location.href = href;
-                    }
-                }
-            });
-        });
     } );
 </script>

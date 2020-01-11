@@ -24,7 +24,7 @@ $allPackage = Package::displayAllPackage();
                 <tr>
                     <th>&nbsp;</th>
                     <th>Package Name</th>
-                    <th>Fee</th>
+                    <th>Fee (LKR)</th>
                     <th>Duration</th>
                     <th>Status</th>
                     <th>&nbsp;</th>
@@ -58,12 +58,12 @@ $allPackage = Package::displayAllPackage();
                         $packageID = $row['package_id'];
 
                     if($row['status']==Package::ACTIVE){ ?>
-                        <a id="Deactivate" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../../controller/packageController.php?package_id=<?php echo $packageID;?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
+                        <a class="Deactivate" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../../controller/packageController.php?package_id=<?php echo $packageID;?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
                     <?php                            
                     }elseif($row['status']==Package::INACTIVE){ ?>
-                        <a id="Activate" data-toggle="tooltip" data-placement="top" title="Activate" href="../../../controller/packageController.php?package_id=<?php echo $packageID;?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
+                        <a class="Activate" data-toggle="tooltip" data-placement="top" title="Activate" href="../../../controller/packageController.php?package_id=<?php echo $packageID;?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
                     <?php } ?>
-                        <a id="Delete" data-toggle="tooltip" data-placement="top" title="Delete" href="../../../controller/packageController.php?package_id=<?php echo $packageID;?>&status=Delete"><i class="fas fa-trash text-danger"></i></a>
+                        <a class="Delete" data-toggle="tooltip" data-placement="top" title="Delete" href="../../../controller/packageController.php?package_id=<?php echo $packageID;?>&status=Delete"><i class="fas fa-trash text-danger"></i></a>
                     </td>
                 </tr>
                     <?php } ?>
@@ -94,79 +94,7 @@ $allPackage = Package::displayAllPackage();
                 }
             },
             ],
-            select: true
+            select: false
         } );
-
-          // deactivate confirmation
-          $('#Deactivate').on('click', function(event){
-            event.preventDefault();
-                bootbox.confirm({
-                message: "Are you sure that you want to Deactivate ?",
-                buttons: {
-                    confirm: {
-                        label: 'Yes',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'No',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if(result){
-                    var href = $('#Deactivate').attr('href');
-                    window.location.href = href;
-                    }
-                }
-            });
-        });
-
-    // activate confirmation
-        $('#Activate').on('click', function(event){
-            event.preventDefault();
-                bootbox.confirm({
-                message: "Are you sure that you want to Activate ?",
-                buttons: {
-                    confirm: {
-                        label: 'Yes',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'No',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if(result){
-                    var href = $('#Activate').attr('href');
-                    window.location.href = href;
-                    }
-                }
-            });
-        });
-
-    // delete confirmation
-        $('#Delete').on('click', function(event){
-            event.preventDefault();
-                bootbox.confirm({
-                message: "Are you sure that you want to Delete ?",
-                buttons: {
-                    confirm: {
-                        label: 'Yes',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'No',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if(result){
-                    var href = $('#Delete').attr('href');
-                    window.location.href = href;
-                    }
-                }
-            });
-        });
     } );
 </script>

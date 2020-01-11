@@ -30,7 +30,7 @@ include '../../layout/header.php'; ?>
                         <input type="text" class="form-control" id="package_name" name="package_name" aria-describedby="package_name" placeholder="Package Name" required>
                     </div>
                     <div class="form-group col-6">
-                        <label for="fee">Fee</label>
+                        <label for="fee">Fee (LKR)</label>
                         <input type="text" class="form-control" id="fee" name="fee" aria-describedby="fee" placeholder="Fee">
                     </div>
                     <div class="form-group col-6">

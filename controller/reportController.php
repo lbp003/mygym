@@ -54,21 +54,16 @@ break;
             exit;
         }
 
-        if(!$auth->checkPermissions(array(Role::MANAGE_STAFF)))
+        if(!$auth->checkPermissions(array(Role::MANAGE_REPORT, Role::VIEW_REPORT)))
         {
             $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
             $msg = base64_encode($msg);
             header("Location:../cms/view/report/index.php?msg=$msg");         
             exit;
         }
-      
-        $type=$_POST['type'];
-        // var_dump($type); exit;
 
         $response = Staff::getEmployeeTypesCount();
         $empCount = $response->fetch_assoc();
-        // var_dump($managerCount); exit;
-
 
         echo Json_encode(['Result' => true, 'Data' => $empCount],JSON_NUMERIC_CHECK);
         exit;
@@ -239,6 +234,33 @@ break;
 break;
 
 /**
+ * Redirect to payment reports
+ */ 
+
+    case "Payment":
+
+        if(!$user)
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
+
+        if(!$auth->checkPermissions(array(Role::MANAGE_PAYMENT)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/report/index.php?msg=$msg");
+            exit;
+        }
+
+        header("Location:../cms/view/report/payment-report.php");
+
+
+break;
+
+/**
  * Redirect to Member reports
  */ 
 
@@ -290,6 +312,31 @@ break;
         header("Location:../cms/view/report/class-session-report.php");
 
 
+break;
+
+    case "PaymentData":
+
+        if(!$user)
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
+
+        if(!$auth->checkPermissions(array(Role::MANAGE_REPORT, Role::VIEW_REPORT)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/report/index.php?msg=$msg");         
+            exit;
+        }
+
+        $response = Subscription::getPaymentCountByMothod();
+
+        echo Json_encode(['Result' => true, 'Data' => $response]);
+        exit;
+            
 break;
 
 /**

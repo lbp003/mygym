@@ -39,7 +39,7 @@ $allSubscription = Subscription::displayAllSubscription();
                     <th>Member</th>
                     <th>Package</th>
                     <th>Start Date</th>
-                    <th>Next Payment</th>
+                    <th>Next Payment Date</th>
                     <th>Last Paid Date</th>
                     <th>Status</th>
                 </tr>

@@ -3,9 +3,7 @@
 <!--- header end ---->
 <?php include '../../../model/subscription.php'; ?>
 <?php 
-$allSubscription = Subscription::displayAllSubscription();
-// $row = $allSubscription->fetch_assoc();
-// print_r($row); exit;
+$allSubscription = Subscription::displayAllPaymentHistory();
 ?>
 <body>
     <!---navbar starting ---------->
@@ -16,19 +14,26 @@ $allSubscription = Subscription::displayAllSubscription();
     <ol class="breadcrumb">
         <li class="breadcrumb-item" aria-current="pjoined_date"><a href="../dashboard/dashboard.php">Home</a></li>
         <li class="breadcrumb-item active" aria-current="pjoined_date"><a href="index.php">Report</a></li>
-        <li class="breadcrumb-item active" aria-current="pjoined_date"><a href="#">Subscription Report</a></li>
+        <li class="breadcrumb-item active" aria-current="pjoined_date"><a href="#">Payment Report</a></li>
     </ol>
     </nav>
+    <div  class="container">
+        <div class="row">
+            <div class="col-12">
+                <div id="container"></div><hr />
+            </div>
+        </div>
+    </div>
     <div class="container">
     <table cellpadding="0" cellspacing="0" border="0" style="width: 50%; margin: 0 auto 2em auto; border-spacing: 5px; border-collapse: separate;">
             <tbody>
                 <tr>
-                    <td>Minimum Last Paid Date:</td>
-                    <td><input type="text" id="min" name="min"></td>
+                    <td>Minimum Due Date:</td>
+                    <td><input type="text" id="min" name="min" autocomplete="off"></td>
                 </tr>
                 <tr>
-                    <td>Maximum Last Paid Date:</td>
-                    <td><input type="text" id="max" name="max"></td>
+                    <td>Maximum Due Date:</td>
+                    <td><input type="text" id="max" name="max" autocomplete="off"></td>
                 </tr>
             </tbody>
         </table>
@@ -37,9 +42,10 @@ $allSubscription = Subscription::displayAllSubscription();
                 <tr>
                     <th>&nbsp;</th>
                     <th>Member</th>
-                    <th>Invoice Number</th>
-                    <th>Start Date</th>
-                    <th>Next Payment</th>
+                    <th>Payment Method</th>
+                    <th>Amount</th>
+                    <th>Currency Type</th>
+                    <th>Due Date</th>
                     <th>Paid Date</th>
                     <th>Status</th>
                 </tr>
@@ -54,21 +60,26 @@ $allSubscription = Subscription::displayAllSubscription();
                         $count++;
                         
                         
-                        if($row['payment_status']==Subscription::PAID){
-                            $status="Paid";
-                        }elseif($row['payment_status']==Subscription::LATE){
-                            $status="Late";
-                        }elseif($row['payment_status']==Subscription::PENDING) {
-                            $status="Pending";
+                        if($row['status']==Subscription::SUCCESS){
+                            $status="Success";
+                        }elseif($row['status']==Subscription::FAILED){
+                            $status="Failed";
+                        }
+
+                        if($row['payment_method']==Subscription::WEB){
+                            $method="Online";
+                        }elseif($row['payment_method']==Subscription::CASH){
+                            $method="Cash";
                         }
                 ?>
                 <tr>
                     <th>&nbsp;</th>
                     <td><?php echo ucwords($row['member_name']); ?></td>
-                    <td><?php echo ucwords($row['package_name']); ?></td>
-                    <td><?php echo date("Y-m-d", strtotime($row['start_date'])); ?></td>
-                    <td><?php echo date("Y-m-d", strtotime($row['end_date'])); ?></td>
-                    <td><?php echo date("Y-m-d", strtotime($row['last_paid_date'])); ?></td>
+                    <td><?php echo $method; ?></td>
+                    <td><?php echo $row['amount']; ?></td>
+                    <td><?php echo $row['currency_type']; ?></td>
+                    <td><?php echo date("Y-m-d", strtotime($row['due_date'])); ?></td>
+                    <td><?php echo date("Y-m-d", strtotime($row['paid_date'])); ?></td>
                     <td><?php echo $status; ?></td>
                 </tr>
                     <?php } ?>
@@ -77,10 +88,11 @@ $allSubscription = Subscription::displayAllSubscription();
                 <tr>
                     <th>&nbsp;</th>
                     <th>Member</th>
-                    <th>Package</th>
-                    <th>Start Date</th>
-                    <th>Next Payment</th>
-                    <th>Last Paid Date</th>
+                    <th>Payment Method</th>
+                    <th>Amount</th>
+                    <th>Currency Type</th>
+                    <th>Due Date</th>
+                    <th>Paid Date</th>
                     <th>Status</th>
                 </tr>
             </tfoot>
@@ -88,6 +100,99 @@ $allSubscription = Subscription::displayAllSubscription();
     </div>
 <?php include '../../layout/footer.php';?>
 <script type="text/javascript">
+
+var web = [];
+var cash = [];
+var momo = [];
+
+function getPaymentData(){
+    $.ajax({
+        type: "POST",
+        url: '../../../controller/reportController.php?status=PaymentData',
+        success: function (returnJSON) {
+            try {
+                var JSON = jQuery.parseJSON(returnJSON);
+                
+                if (JSON.Result) {
+                    momo = JSON.Data.xAxis;
+                    web = JSON.Data.web.map(Number);
+                    cash = JSON.Data.cash.map(Number);
+
+                    drawChart(momo,web,cash);
+
+                } else {
+                    showStatusMessage('Danger','Unknown error occured.','danger');
+                }
+            } catch (e) {
+                showStatusMessage('Danger','Unknown error occured.','danger');
+            }
+        },
+        error: function () {
+            showStatusMessage('Danger','Unknown error occured.','danger');
+        }
+    });
+} 
+
+function drawChart(momo,web,cash){
+    Highcharts.chart('container', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Completed Payments'
+            },
+            xAxis: {
+                categories: momo
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Total Amount of members'
+                },
+                stackLabels: {
+                    enabled: true,
+                    style: {
+                        fontWeight: 'bold',
+                        color: ( // theme
+                            Highcharts.defaultOptions.title.style &&
+                            Highcharts.defaultOptions.title.style.color
+                        ) || 'gray'
+                    }
+                }
+            },
+            legend: {
+                align: 'right',
+                x: -30,
+                verticalAlign: 'top',
+                y: 25,
+                floating: true,
+                backgroundColor:
+                    Highcharts.defaultOptions.legend.backgroundColor || 'white',
+                borderColor: '#CCC',
+                borderWidth: 1,
+                shadow: false
+            },
+            tooltip: {
+                headerFormat: '<b>{point.x}</b><br/>',
+                pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+            },
+            plotOptions: {
+                column: {
+                    stacking: 'normal',
+                    dataLabels: {
+                        enabled: true
+                    }
+                }
+            },
+            series: [{
+                name: 'Online',
+                data: web
+            }, {
+                name: 'Cash',
+                data: cash
+            }]
+        });
+}
 
  // https://jsfiddle.net/bindrid/2bkbx2y3/6/
     $.fn.dataTable.ext.search.push(
@@ -104,6 +209,9 @@ $allSubscription = Subscription::displayAllSubscription();
     );
 
     $(document).ready(function() {
+
+    getPaymentData();
+
       var table = $('#example').DataTable( {
             dom: 'Bfrtip',
             buttons: [
@@ -133,7 +241,7 @@ $allSubscription = Subscription::displayAllSubscription();
             },   
 
             initComplete: function () {
-            this.api().columns([2,6]).every( function () {
+            this.api().columns([2,7]).every( function () {
                 var column = this;
                 var select = $('<select><option value=""></option></select>')
                     .appendTo( $(column.header()).empty() )
@@ -161,4 +269,5 @@ $allSubscription = Subscription::displayAllSubscription();
                 table.draw();
         });
     } );
+
 </script>

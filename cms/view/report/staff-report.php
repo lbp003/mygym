@@ -267,7 +267,6 @@ $allStaff = Staff::displayAllStaff();
         $.ajax({
             type: "POST",
             url: '../../../controller/reportController.php?status=empCount',
-            data: {'type': 'A'},
             success: function (returnJSON) {
                 try {
                     var JSON = jQuery.parseJSON(returnJSON);

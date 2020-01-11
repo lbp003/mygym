@@ -22,6 +22,13 @@ class Subscription{
     CONST PAYPAL_PAID = "PAID";
     CONST PAYPAL_SENT = "SENT";
 
+    //Payment Status
+    CONST SUCCESS = "S";
+    CONST FAILED = "F";
+
+    //Currency
+    CONST LKR = "LKR";
+    CONST USD = "USD";
 
      /** 
 	* Get All Subscription Details
@@ -403,5 +410,175 @@ class Subscription{
             return false;
           }
         return $result;  
+    }
+
+    /** 
+	* Get All payment history Details
+	* @return object $result 
+	*/
+    public static function displayAllPaymentHistory(){
+        $con=$GLOBALS['con'];//To get connection string
+        $sql="  SELECT  payment_history.payment_id,
+                        CONCAT_WS(' ',member.first_name,member.last_name) AS member_name,
+                        payment_history.amount,
+                        payment_history.currency_type,
+                        payment_history.payment_method,
+                        payment_history.due_date,
+                        payment_history.paid_date,
+                        payment_history.status
+                FROM payment_history
+                INNER JOIN member ON payment_history.member_id = member.member_id
+                WHERE member.status != 'D'   
+                ORDER BY payment_history.payment_id DESC";
+        $result=$con->query($sql);
+        return $result;
+    }
+
+    /** 
+	* Get  paymjent count
+	* @return object $result
+	*/
+    public static function getPaymentCountByMothod(){
+
+        $xAxis = [];
+        $web = [];
+        $cash = [];
+        $dataSet = [];
+        
+        $thisMnth = date("Y-m");
+        $lastMnth = date("Y-m", strtotime("-1 months"));
+        $lastTwMnth = date("Y-m", strtotime("-2 months"));
+        $lastThrMnth = date("Y-m", strtotime("-3 months"));
+        $lastFurMnth = date("Y-m", strtotime("-4 months"));
+
+        $mnth1 = date("M");
+        $mnth2 = date("M", strtotime("-1 months"));
+        $mnth3 = date("M", strtotime("-2 months"));
+        $mnth4 = date("M", strtotime("-3 months"));
+        $mnth5 = date("M", strtotime("-4 months"));
+
+        $xAxis = [$mnth5, $mnth4, $mnth3, $mnth2, $mnth1]; 
+
+        // var_dump($xAxis); exit;
+
+        $con=$GLOBALS['con'];
+        $sql="  SELECT
+                    COUNT(CASE WHEN payment_history.payment_method = 'W' && DATE_FORMAT(paid_date, '%Y-%m') = '$thisMnth' THEN 1 END) thisMnth_Web_count,
+                    COUNT(CASE WHEN payment_history.payment_method = 'C' && DATE_FORMAT(paid_date, '%Y-%m') = '$thisMnth' THEN 1 END) thisMnth_cash_count,
+                    COUNT(CASE WHEN payment_history.payment_method = 'W' && DATE_FORMAT(paid_date, '%Y-%m') = '$lastMnth' THEN 1 END) lastMnth_Web_count,
+                    COUNT(CASE WHEN payment_history.payment_method = 'C' && DATE_FORMAT(paid_date, '%Y-%m') = '$lastMnth' THEN 1 END) lastMnth_cash_count,
+                    COUNT(CASE WHEN payment_history.payment_method = 'W' && DATE_FORMAT(paid_date, '%Y-%m') = '$lastTwMnth' THEN 1 END) lastTwMnth_Web_count,
+                    COUNT(CASE WHEN payment_history.payment_method = 'C' && DATE_FORMAT(paid_date, '%Y-%m') = '$lastTwMnth' THEN 1 END) lastTwMnth_cash_count,
+                    COUNT(CASE WHEN payment_history.payment_method = 'W' && DATE_FORMAT(paid_date, '%Y-%m') = '$lastThrMnth' THEN 1 END) lastThrMnth_Web_count,
+                    COUNT(CASE WHEN payment_history.payment_method = 'C' && DATE_FORMAT(paid_date, '%Y-%m') = '$lastThrMnth' THEN 1 END) lastThrMnth_cash_count,
+                    COUNT(CASE WHEN payment_history.payment_method = 'W' && DATE_FORMAT(paid_date, '%Y-%m') = '$lastFurMnth' THEN 1 END) lastFurMnth_Web_count,
+                    COUNT(CASE WHEN payment_history.payment_method = 'C' && DATE_FORMAT(paid_date, '%Y-%m') = '$lastFurMnth' THEN 1 END) lastFurMnth_cash_count
+                FROM payment_history 
+                INNER JOIN member ON payment_history.member_id = member.member_id
+                WHERE 1=1
+                AND member.status != 'D'";
+        $result=$con->query($sql);
+
+        $row = $result->fetch_assoc();
+
+        $web = [
+            $row['lastFurMnth_Web_count'],
+            $row['lastThrMnth_Web_count'],
+            $row['lastTwMnth_Web_count'],
+            $row['lastMnth_Web_count'],
+            $row['thisMnth_Web_count']
+
+        ];
+
+        $cash = [
+            $row['lastFurMnth_cash_count'],
+            $row['lastThrMnth_cash_count'],
+            $row['lastTwMnth_cash_count'],
+            $row['lastMnth_cash_count'],
+            $row['thisMnth_cash_count']
+
+        ];
+
+        $dataSet = [ 
+            'xAxis' => $xAxis ,
+            'web' => $web , 
+            'cash' => $cash
+        ];
+
+        return $dataSet;
+    }
+
+    /** 
+	* Get sum of paid amount
+	* @return object $result
+	*/
+    public static function getPaidAmountByCurrency(){
+
+        $xAxis = [];
+        $web = [];
+        $cash = [];
+        $dataSet = [];
+        
+        $thisMnth = date("Y-m");
+        $lastMnth = date("Y-m", strtotime("-1 months"));
+        $lastTwMnth = date("Y-m", strtotime("-2 months"));
+        $lastThrMnth = date("Y-m", strtotime("-3 months"));
+        $lastFurMnth = date("Y-m", strtotime("-4 months"));
+
+        $mnth1 = date("M");
+        $mnth2 = date("M", strtotime("-1 months"));
+        $mnth3 = date("M", strtotime("-2 months"));
+        $mnth4 = date("M", strtotime("-3 months"));
+        $mnth5 = date("M", strtotime("-4 months"));
+
+        $xAxis = [$mnth5, $mnth4, $mnth3, $mnth2, $mnth1]; 
+
+        // var_dump($xAxis); exit;
+
+        $con=$GLOBALS['con'];
+        $sql="  SELECT
+                    SUM(CASE WHEN payment_history.currency_type = 'USD' && DATE_FORMAT(paid_date, '%Y-%m') = '$thisMnth' THEN amount END) thisMnth_Web_sum,
+                    SUM(CASE WHEN payment_history.currency_type = 'LKR' && DATE_FORMAT(paid_date, '%Y-%m') = '$thisMnth' THEN amount END) thisMnth_cash_sum,
+                    SUM(CASE WHEN payment_history.currency_type = 'USD' && DATE_FORMAT(paid_date, '%Y-%m') = '$lastMnth' THEN amount END) lastMnth_Web_sum,
+                    SUM(CASE WHEN payment_history.currency_type = 'LKR' && DATE_FORMAT(paid_date, '%Y-%m') = '$lastMnth' THEN amount END) lastMnth_cash_sum,
+                    SUM(CASE WHEN payment_history.currency_type = 'USD' && DATE_FORMAT(paid_date, '%Y-%m') = '$lastTwMnth' THEN amount END) lastTwMnth_Web_sum,
+                    SUM(CASE WHEN payment_history.currency_type = 'LKR' && DATE_FORMAT(paid_date, '%Y-%m') = '$lastTwMnth' THEN amount END) lastTwMnth_cash_sum,
+                    SUM(CASE WHEN payment_history.currency_type = 'USD' && DATE_FORMAT(paid_date, '%Y-%m') = '$lastThrMnth' THEN amount END) lastThrMnth_Web_sum,
+                    SUM(CASE WHEN payment_history.currency_type = 'LKR' && DATE_FORMAT(paid_date, '%Y-%m') = '$lastThrMnth' THEN amount END) lastThrMnth_cash_sum,
+                    SUM(CASE WHEN payment_history.currency_type = 'USD' && DATE_FORMAT(paid_date, '%Y-%m') = '$lastFurMnth' THEN amount END) lastFurMnth_Web_sum,
+                    SUM(CASE WHEN payment_history.currency_type = 'LKR' && DATE_FORMAT(paid_date, '%Y-%m') = '$lastFurMnth' THEN amount END) lastFurMnth_cash_sum
+                FROM payment_history 
+                INNER JOIN member ON payment_history.member_id = member.member_id
+                WHERE 1=1
+                AND member.status != 'D'";
+        $result=$con->query($sql);
+
+        $row = $result->fetch_assoc();
+
+        $web = [
+            $row['lastFurMnth_Web_sum'],
+            $row['lastThrMnth_Web_sum'],
+            $row['lastTwMnth_Web_sum'],
+            $row['lastMnth_Web_sum'],
+            $row['thisMnth_Web_sum']
+
+        ];
+
+        $cash = [
+            $row['lastFurMnth_cash_sum'],
+            $row['lastThrMnth_cash_sum'],
+            $row['lastTwMnth_cash_sum'],
+            $row['lastMnth_cash_sum'],
+            $row['thisMnth_cash_sum']
+
+        ];
+
+        $dataSet = [ 
+            'xAxis' => $xAxis ,
+            'web' => $web , 
+            'cash' => $cash
+        ];
+
+        return $dataSet;
     }
 }

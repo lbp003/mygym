@@ -48,6 +48,7 @@
                     <div class="form-group col-6">
                         <label for="gender">Gender</label>
                         <select id="gender" name="gender" class="form-control">
+                            <option value="">Choose...</option>
                             <?php foreach($gender as $key => $val){ ?>
                                 <option value="<?php echo $key?>" <?php echo ($key == $memData['gender']) ? "selected" : NULL ?>><?php echo $val ?></option>
                             <?php } ?>
@@ -55,7 +56,7 @@
                     </div>
                     <div class="form-group col-6">
                         <label for="dob">Date of Birth</label>
-                        <input type="date" class="form-control" id="dob" name="dob" aria-describedby="dob" placeholder="Date of Birth" value="<?php echo $memData['dob']?>">
+                        <input type="text" class="form-control" id="dob" name="dob" aria-describedby="dob" placeholder="Date of Birth" value="<?php echo $memData['dob']?>" autocomplete="off">
                     </div>
                     <div class="form-group col-6">
                         <label for="nic">NIC</label>
@@ -66,23 +67,28 @@
                         <input type="text" class="form-control" id="phone" name="phone" aria-describedby="phone" placeholder="Phone" value="<?php echo $memData['telephone']?>">
                     </div>
                     <div class="form-group col-6">
-                        <label for="address">Address</label>
-                        <textarea class="form-control" id="address" name="address" rows="3"><?php echo $memData['address']?></textarea>
-                    </div>
-                    <!-- <div class="form-group col-6">
                         <label for="package">Package</label>
                         <select id="package" name="package" class="form-control">
-                            <option selected>Choose...</option>
+                            <option value="">Choose...</option>
                             <?php foreach($pacData as $key => $val){?>
                             <option value="<?php echo $key;?>" <?php echo ($key == $memData['package_id']) ? "selected" : NULL ?>><?php echo $val;?></option>
                             <?php } ?>
                         </select>
-                    </div> -->
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="joined_date">Joined Date</label>
+                        <input type="text" class="form-control" id="joined_date" name="joined_date" aria-describedby="joined_date" autocomplete="off" value="<?php echo $memData['joined_date']?>">
+                    </div>
                     <div class="form-group col-6">
                         <label for="membership_number">Membership Number</label>
                         <input type="text" class="form-control" id="membership_number" name="membership_number" aria-describedby="membership_number" placeholder="Membership Number"  value="<?php echo $memData['membership_number']?>">
                     </div>
+                    <div class="form-group col-6">
+                        <label for="address">Address</label>
+                        <textarea class="form-control" id="address" name="address" rows="3"><?php echo $memData['address']?></textarea>
+                    </div>
                     <div class="col-12">
+                        <input type="hidden" name="image" value="<?php echo $memData['image']?>"> 
                         <input type="hidden" name="member_id" value="<?php echo $memData['member_id']?>"> 
                         <button type="submit" class="btn btn-primary mb-2 float-right">Submit</button>
                     </div>
@@ -103,16 +109,7 @@
                 email: {
 					required: true,
 					email: true,
-                    // remote: {
-                    //     url: '../../../controller/memberController.php?status=checkUpdateEmail',
-                    //     type: 'post',
-                    //     dataType: 'json',
-                    //     data: {
-                    //         email: function(){
-                    //             return $("#email").val();
-                    //         }
-                    //     }
-                    // }
+                    remote: '../../../controller/memberController.php?status=checkUpdateEmail&member_id=<?php echo $memData['member_id']?>'
 				},
                 dob: {
                     required: true,
@@ -129,7 +126,7 @@
                 required: false,
                 extension: "JPEG|JPG"
                 },
-                // package: "required",
+                package: "required",
                 membership_number: "required"
 
 
@@ -143,7 +140,7 @@
                 },
                 email: {
                     required: "Please enter email address",
-                    remote: function() { return $.validator.format("{0} is already taken", $("#email").val()) }
+                    remote: "Email address is already taken"
                 },
                 dob: {
                     required: "Please enter birth date"
@@ -161,9 +158,9 @@
                 address: {
                     required: "Please enter address"
                 },
-                // package: {
-                //     required: "Please select a package"
-                // },
+                package: {
+                    required: "Please select a package"
+                },
                 membership_number:{
                     required: "Please enter membership number"
                 }
@@ -196,6 +193,22 @@
             showUpload: true,
             previewFileType: 'any',
             initialPreviewFileType: 'image',
+        });
+
+        $( "#joined_date" ).datepicker({
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true
+        });
+
+        $( "#dob" ).datepicker({
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true
         });
     });
 </script>

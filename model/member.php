@@ -46,7 +46,7 @@ class Member{
 	* Insert a new member
 	* @return bool
 	*/
-    function addMember($firstName,$lastName,$email,$gender,$dob,$nic,$phone,$address,$packageID, $membershipNumber, $enPassword, $createdBy,$updatedBy, $lmd, $status){
+    function addMember($firstName,$lastName,$email,$gender,$dob,$nic,$phone,$address,$packageID, $membershipNumber, $enPassword, $createdBy,$updatedBy, $lmd, $status, $joinedDate){
         
         /* activate reporting */
         $driver = new mysqli_driver();
@@ -60,8 +60,8 @@ class Member{
             // A set of queries; if one fails, an exception should be thrown
             // $con->query("INSERT INTO member (first_name, last_name, email, gender, dob, nic, telephone, address, package_id, membership_number, password, created_by, updated_by, lmd, status) VALUES ($firstName, $lastName, $email, $gender, $dob, $nic, $phone, $address, $packageID, $membershipNumber, $enPassword, $createdBy, $updatedBy, $lmd, $status)");
             // $memberID = $con->insert_id;
-            $stmt = $con->prepare("INSERT INTO member (first_name, last_name, email, gender, dob, nic, telephone, address, package_id, membership_number, password, created_by, updated_by, lmd, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("ssssssssissiiss", $firstName, $lastName, $email, $gender, $dob, $nic, $phone, $address, $packageID, $membershipNumber, $enPassword, $createdBy, $updatedBy, $lmd, $status);
+            $stmt = $con->prepare("INSERT INTO member (first_name, last_name, email, gender, dob, nic, telephone, address, package_id, membership_number, password, created_by, updated_by, lmd, status, joined_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("ssssssssissiisss", $firstName, $lastName, $email, $gender, $dob, $nic, $phone, $address, $packageID, $membershipNumber, $enPassword, $createdBy, $updatedBy, $lmd, $status, $joinedDate);
             $stmt->execute();
             $memberID = $con->insert_id;
 
@@ -80,7 +80,7 @@ class Member{
             $status = Subscription::ACTIVE;
 
             // $con->query("INSERT INTO membership (member_id, package_id, start_date, end_date, last_paid_date, payment_status, status, created_by, updated_by, lmd) VALUES ($memberID, $packageID, $date, $endDate, $lastPidDate, $paymentStatus, $status, $createdBy, $updatedBy, $lmd)");
-            $stmt = $con->prepare("INSERT INTO membership (member_id, start_date, end_date, last_paid_date, payment_status, status, created_by, updated_by, lmd) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt = $con->prepare("INSERT INTO membership (member_id, start_date, end_date, last_paid_date, payment_status, status, created_by, updated_by, lmd) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             $stmt->bind_param("isssssiis", $memberID,$date,$endDate,$lastPidDate,$paymentStatus,$status,$createdBy,$updatedBy,$lmd);
             $stmt->execute();
             $membershipID = $con->insert_id;
@@ -89,8 +89,8 @@ class Member{
             $fee = $packData['fee'];
             $currency = Subscription::LKR;
 
-            $stmt = $con->prepare("INSERT INTO payment_history (membership_id, member_id, due_date, paid_date, payment_method, lmd, amount, currency_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("iissssss", $membershipID, $memberID, $endDate, $lastPidDate, $method, $lmd, $fee, $currency);
+            $stmt = $con->prepare("INSERT INTO payment_history (member_id, due_date, paid_date, payment_method, lmd, amount, currency_type) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("issssss", $memberID, $endDate, $lastPidDate, $method, $lmd, $fee, $currency);
             $stmt->execute();
             // If we arrive here, it means that no exception was thrown
             // i.e. no query has failed, and we can commit the transaction
@@ -98,12 +98,12 @@ class Member{
 
             return true;
 
-        } catch (mysqli_sql_exception $e) {
+        } catch (mysqli_sql_exception $e) {      
             // An exception has been thrown
             // We must rollback the transaction
             $con->rollback();
             return false;
-            echo $e->__toString();
+            echo $e->__toString();      
         }
             
     }
@@ -115,9 +115,9 @@ class Member{
     public static function updateMember($dataAr){
         // var_dump($dataAr); exit;
         $con=$GLOBALS['con']; 
-        $sql = "UPDATE member SET first_name=?, last_name=?, email=?, gender=?, dob=?, nic=?, telephone=?, address=?, membership_number=?, updated_by=?, image=?, lmd=? WHERE member_id=?";
+        $sql = "UPDATE member SET first_name=?, last_name=?, email=?, gender=?, dob=?, nic=?, telephone=?, address=?, membership_number=?, updated_by=?, image=?, lmd=?, package_id=? WHERE member_id=?";
         $stmt = $con->prepare($sql);
-        $stmt->bind_param("sssssssssissi", $dataAr['fname'], $dataAr['lname'], $dataAr['email'], $dataAr['gender'], $dataAr['dob'], $dataAr['nic'], $dataAr['phone'], $dataAr['address'], $dataAr['membership_num'], $dataAr['updated_by'], $dataAr['img'], $dataAr['lmd'], $dataAr['id']);
+        $stmt->bind_param("sssssssssissii", $dataAr['fname'], $dataAr['lname'], $dataAr['email'], $dataAr['gender'], $dataAr['dob'], $dataAr['nic'], $dataAr['phone'], $dataAr['address'], $dataAr['membership_num'], $dataAr['updated_by'], $dataAr['img'], $dataAr['lmd'], $dataAr['package_id'], $dataAr['id']);
         $stmt->execute();
         if ($stmt->error) {
             return false;
@@ -241,7 +241,8 @@ class Member{
                     member.package_id,
                     member.membership_number,
                     member.image,
-                    member.status
+                    member.status,
+                    member.joined_date
                 FROM member 
                 WHERE member.member_id = '$member_id'
                 AND member.status != 'D'";

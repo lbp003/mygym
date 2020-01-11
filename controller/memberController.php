@@ -163,7 +163,7 @@ break;
     
         if(Member::checkEmail($email)){
               //add new member
-            $memberID=$objme->addMember($firstName,$lastName,$email,$gender,$dob,$nic,$phone,$address,$packageID, $membershipNumber, $enPassword, $createdBy, $updatedBy, $lmd, $status);
+            $memberID=$objme->addMember($firstName,$lastName,$email,$gender,$dob,$nic,$phone,$address,$packageID, $membershipNumber, $enPassword, $createdBy, $updatedBy, $lmd, $status, $joinedDate);
             
             if($memberID){
 
@@ -217,7 +217,6 @@ break;
                         $mail->isHTML(true);                                  // Set email format to HTML
                         $mail->Subject = 'Member Registration';
                         $mail->Body    = $mailBody;
-                        // $mail->AltBody = 'Employee Registration';
             
                         if($mail->send()){
                             $msg = json_encode(array('title'=>'Success','message'=>'Member registration successful','type'=>'success'));
@@ -253,7 +252,7 @@ break;
                 
 break;
 
-// Get the employee details for Update Employee
+// Get the emmber details for Update member
 
     case "Edit":
 
@@ -275,7 +274,7 @@ break;
 
     $memberID = $_REQUEST['member_id'];
     if(!empty($memberID)){
-        //get employee details
+        //get member details
         $dataSet = Member::getMemberByID($memberID);
         // print_r($dataSet); exit;
         $memberData = $dataSet->fetch_assoc();
@@ -310,13 +309,12 @@ break;
        
     
          if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::MANAGE_MEMBER)))
         {
@@ -332,73 +330,75 @@ break;
         if (empty($firstName)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'First Name can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/updateMember.php?msg=$msg");
+            header("Location:../cms/view/member/update-member.php?msg=$msg");
             exit;
         }
         $lastName=$_POST['last_name'];
         if (empty($lastName)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Last Name can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/updateMember.php?msg=$msg");
+            header("Location:../cms/view/member/update-member.php?msg=$msg");
             exit;
         }
         $email=$_POST['email'];
         if (empty($email)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Email can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/updateMember.php?msg=$msg");
+            header("Location:../cms/view/member/update-member.php?msg=$msg");
             exit;
         }
         $gender=$_POST['gender'];
         if (empty($gender)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Gender can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/updateMember.php?msg=$msg");
+            header("Location:../cms/view/member/update-member.php?msg=$msg");
             exit;
         }
         $dob=$_POST['dob'];
         if (empty($dob)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Date of Birth can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/updateMember.php?msg=$msg");
+            header("Location:../cms/view/member/update-member.php?msg=$msg");
             exit;
         }
         $nic=$_POST['nic'];
         if (empty($nic)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'NIC can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/updateMember.php?msg=$msg");
+            header("Location:../cms/view/member/update-member.php?msg=$msg");
             exit;
         }
         $phone=$_POST['phone'];
         if (empty($phone)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Phone number can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/updateMember.php?msg=$msg");
+            header("Location:../cms/view/member/update-member.php?msg=$msg");
             exit;
         }
         $address=$_POST['address'];
         if (empty($address)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Address can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/updateMember.php?msg=$msg");
+            header("Location:../cms/view/member/update-member.php?msg=$msg");
             exit;
         }
-        // $packageID=$_POST['package'];
-        // if (empty($packageID)) {
-        //     $msg = json_encode(array('title'=>'Warning','message'=> 'Package can not be empty','type'=>'warning'));
-        //     $msg = base64_encode($msg);
-        //     header("Location:../cms/view/member/add-member.php?msg=$msg");
-        //     exit;
-        // }
+        $packageID=$_POST['package'];
+        if (empty($packageID)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Package can not be empty','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/member/update-member.php?msg=$msg");
+            exit;
+        }
         $membershipNumber=$_POST['membership_number'];
         if (empty($membershipNumber)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Membership number can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/updateMember.php?msg=$msg");
+            header("Location:../cms/view/member/update-member.php?msg=$msg");
             exit;
-        } 
-        
+        }
+
+        $image=$_POST['image'];
+
         $tmp = $_FILES['avatar'];
         if(!empty($tmp['name'])){
             // print_r($tmp); exit;
@@ -438,9 +438,10 @@ break;
                 'address' => $address,
                 'membership_num' => $membershipNumber,
                 'updated_by' => $updatedBy,
-                'img' => (!empty($imgName)) ? $imgName : NULL,
+                'img' => (!empty($imgName)) ? $imgName : $image,
                 'lmd' => $lmd,
-                'id' => $memberID
+                'id' => $memberID,
+                'package_id' => $packageID
             ];
              //update member
             $result=Member::updateMember($dataAr);
@@ -452,7 +453,7 @@ break;
             }else {
                 $msg = json_encode(array('title'=>'Warning :','message'=> 'Update failed','type'=>'danger'));
                 $msg = base64_encode($msg);
-                header("Location:../cms/view/member/updateMember.php?msg=$msg");
+                header("Location:../cms/view/member/update-member.php?msg=$msg");
                 exit;
             }
     
@@ -460,7 +461,7 @@ break;
         }else {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Email address already exists','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/member/updateMember.php?msg=$msg");
+            header("Location:../cms/view/member/update-member.php?msg=$msg");
             exit;
         }
             
@@ -470,13 +471,12 @@ break;
     case "View":
             
          if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::VIEW_MEMBER)))
         {
@@ -488,7 +488,7 @@ break;
 
         $memberID = $_REQUEST['member_id'];
         if(!empty($memberID)){
-            //get employee details
+            //get member details
             $dataSet = Member::getMemberByID($memberID);
             $memberData = $dataSet->fetch_assoc();
 
@@ -504,7 +504,7 @@ break;
             
             $_SESSION['pacData'] = $packagAr;
 
-            header("Location:../cms/view/member/viewMember.php");
+            header("Location:../cms/view/member/view-member.php");
             exit;
         }else {
             $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
@@ -644,9 +644,9 @@ break;
        $email=$_REQUEST['email'];
        $result = Member::checkEmail($email);
        if($result == true){
-           echo(json_encode(['Result' => true]));
+           echo (json_encode(true));
        }else {
-           echo(json_encode(['Result' => false]));
+           echo (json_encode(false));
        }
 break;  
 
@@ -659,9 +659,9 @@ break;
 
        $result = Member::checkUpdateEmail($email,$memberID);
        if($result == true){
-           echo(json_encode(['Result' => true]));
+           echo (json_encode(true));
        }else {
-           echo(json_encode(['Result' => false]));
+           echo (json_encode(false));
        }
 break;
 
@@ -830,36 +830,34 @@ break;
             exit;
         }
 
-    break;
+break;
 
-        //check insert member BMI 
+    //check insert member BMI 
 
-        case "getBmiData":
+    case "getBmiData":
 
-            $memberID = $_POST['member_id'];
-            if (empty($memberID)) {
-                echo Json_encode(['Result' => false]);
-                exit;
-            }    
+        $memberID = $_POST['member_id'];
+        if (empty($memberID)) {
+            echo Json_encode(['Result' => false]);
+            exit;
+        }    
+
+        $result = Member::getBMIDataById($memberID);
+        
+        $bmiData = [];
+        while($row = $result->fetch_assoc()){
+            $bmiData[] = $row;
+        }
+
+        if($result){
+            echo Json_encode(['Result' => true, 'Data' => $bmiData]);
+            exit;
+        }else{
+            echo Json_encode(['Result' => false]);
+            exit;
+        }     
     
-            $result = Member::getBMIDataById($memberID);
-            
-            $bmiData = [];
-            while($row = $result->fetch_assoc()){
-                $bmiData[] = $row;
-            }
-
-            if($result){
-                echo Json_encode(['Result' => true, 'Data' => $bmiData]);
-                exit;
-            }else{
-                echo Json_encode(['Result' => false]);
-                exit;
-            }
-    
-            
-    
-     break;
+break;
 
 /**
  * Index actiton
@@ -868,13 +866,12 @@ break;
     case "index":
 
          if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::MANAGE_MEMBER, Role::VIEW_MEMBER)))
         {
@@ -884,193 +881,13 @@ break;
             exit;
         }
 
-        
-        $today = date("Y-m-d");
-        //Get late payment members
-        $lateSubData = Subscription::getAllLateSubscription($today);
-
-        $lateSubaAr = [];
-        $outMemberAr = [];
-        while($row = $lateSubData->fetch_assoc())
-        {
-            $lateSubaAr[] = $row['membership_id'];
-
-            $endDate = $row['end_date'];
-            $graceDate = date('Y-m-d', strtotime("+7 days", strtotime($endDate)));
-
-            if($graceDate < $today){
-
-                $outMemberAr[] = $row['member_id'];
-            }
-
-            $invoiceIdNum = $row['invoice_id_number'];
-            $paypalInvoiceNum = $row['invoice_number'];
-            $payStatus = $row['payment_status'];
-            $status = $row['invoice_status'];
-            if(!empty($paypalInvoiceNum) && $status != "D"){
-                // var_dump($paypalInvoiceNum); exit;
-
-            /**
-             * To get the access token
-             ***/
-
-            $curl = curl_init();
-
-            curl_setopt($curl, CURLOPT_URL, 'https://api.sandbox.paypal.com/v1/oauth2/token');
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
-            curl_setopt($curl, CURLOPT_POST, 1);
-            curl_setopt($curl, CURLOPT_USERPWD, PAYPAL_CREDENTIALS['sandbox']['client_id'] . ':' . PAYPAL_CREDENTIALS['sandbox']['client_secret']);
-            
-            $headers = array();
-            $headers[] = 'Accept: application/json';
-            $headers[] = 'Accept-Language: en_US';
-            $headers[] = 'Content-Type: application/x-www-form-urlencoded';
-            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-            
-            $response = curl_exec($curl);
-                $err = curl_error($curl);
-
-                curl_close($curl);
-
-                if ($err) {
-                    echo "cURL Error #:" . $err;
-                } else {
-                    $data = json_decode($response);
-                    $accessToken = $data->access_token;
-                    // echo $accessToken; exit;
-
-
-                    //Search invoice details
-                    $curl = curl_init();
-
-                    curl_setopt_array($curl, array(
-                    CURLOPT_URL => "https://api.sandbox.paypal.com/v2/invoicing/search-invoices?total_required=true&page_size=1&page=1",
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_ENCODING => "",
-                    CURLOPT_MAXREDIRS => 10,
-                    CURLOPT_TIMEOUT => 30,
-                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                    CURLOPT_CUSTOMREQUEST => "POST",
-                    CURLOPT_POSTFIELDS => '{
-                    "invoice_number": "'.$paypalInvoiceNum.'"
-                    }',
-                    CURLOPT_HTTPHEADER => array(
-                        'authorization: Bearer '.$accessToken,
-                        'content-type: application/json'
-                    ),
-                    ));
-
-                    $response = curl_exec($curl);
-                    $err = curl_error($curl);
-
-                    curl_close($curl);
-
-                    if ($err) {
-                    echo "cURL Error #:" . $err;
-                    } else {
-                    // echo $response; exit;
-                    $data = json_decode($response,true);
-                    $invoicePaymentStatus =  $data['items'][0]['status']; 
-                    // var_dump($invoicePaymentStatus); exit; 
-                        // echo json_encode($data,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES); exit;
-
-                        $memberID = $row['member_id'];
-                        $subscriptionID = $row['membership_id'];
-                        $packageID = $row['package_id'];
-                        $updatedBy = $user['staff_id'];
-                        $method = Subscription::WEB;
-
-                        if($invoicePaymentStatus == Subscription::PAYPAL_PAID && $graceDate >= $today){
-
-                            $res = Subscription::renewMemberSubscription($memberID, $subscriptionID, $packageID, $updatedBy, $method);
-                            // var_dump($res); exit;
-
-                            if($res){
-                                // echo $row['member_id']; exit;
-                                $paidMembershipAr[] = $subscriptionID;
-                                $paidMemberAr[] = $memberID;
-
-                            }
-                        }elseif($invoicePaymentStatus == Subscription::PAYPAL_PAID && $graceDate < $today){   
-                            $res = Subscription::reactivateMemberSubscription($memberID, $subscriptionID, $packageID, $updatedBy, $method);
-                            // var_dump($res); exit;
-                            // Subscription::updateInvoice($memberID);
-
-                            if($res){
-                                $paidMembershipAr[] = $subscriptionID;
-                                $paidMemberAr[] = $memberID;;
-                            }
-                        }elseif($invoicePaymentStatus == !Subscription::PAYPAL_PAID && $graceDate < $today){
-                            $curl = curl_init();
-
-                            curl_setopt_array($curl, array(
-                            CURLOPT_URL => "https://api.sandbox.paypal.com/v2/invoicing/invoices/".$invoiceIdNum,
-                            CURLOPT_RETURNTRANSFER => true,
-                            CURLOPT_ENCODING => "",
-                            CURLOPT_MAXREDIRS => 10,
-                            CURLOPT_TIMEOUT => 30,
-                            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                            CURLOPT_CUSTOMREQUEST => "DELETE",
-                            CURLOPT_HTTPHEADER => array(
-                                'authorization: Bearer '.$accessToken,
-                                'content-type: application/json'
-                            ),
-                            ));
-
-                            $response = curl_exec($curl);
-                            $err = curl_error($curl);
-
-                            curl_close($curl);
-
-                            if ($err) {
-                            echo "cURL Error #:" . $err;
-                            } else {
-                                $res = Subscription::deleteInvoice($memberID);
-                            }
-                        }elseif($invoicePaymentStatus == Subscription::PAYPAL_SENT && $graceDate >= $today){
-                            // echo "lbp"; exit;
-                            $paidMembershipAr[] = $subscriptionID;
-                            $paidMemberAr[] = $memberID;;
-                        }
-                    }
-
-                }
-            }
-        }
-
-        if(!empty($paidMembershipAr)){
-            $lateSubaAr = array_diff($lateSubaAr, $paidMembershipAr);
-        }
-        if(!empty($paidMemberAr)){
-            $outMemberAr = array_diff($outMemberAr, $paidMemberAr);
-        }
-
-        // var_dump($outMemberAr); exit;
-        //Update payment status of subscription
-        if(!empty($lateSubaAr) || !empty($outMemberAr)){
-
-            $result1 = Member::deactivateBulkMember($outMemberAr);
-            $result2 = Subscription::updateBulkPaymentStatus($lateSubaAr);
-
-            if($result1 && $result2){
-
-                header("Location:../cms/view/member/");
-
-            }else{
-                $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
-                $msg = base64_encode($msg);
-                header("Location:../cms/view/dashboard/dashboard.php?msg=$msg");
-                exit;
-            }
-        }
-
         header("Location:../cms/view/member/");
 
 break;
 
-    //change password
-
+    /**
+     * change password
+     */
     case "changePw":
         
         if(!$user)
@@ -1143,16 +960,15 @@ break;
         }
 break; 
 
-    case "index":
+    default:
 
          if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::MANAGE_MEMBER, Role::VIEW_MEMBER)))
         {
@@ -1162,187 +978,5 @@ break;
             exit;
         }
 
-        
-        // $today = date("Y-m-d");
-        // //Get late payment members
-        // $lateSubData = Subscription::getAllLateSubscription($today);
-
-        // $lateSubaAr = [];
-        // $outMemberAr = [];
-        // while($row = $lateSubData->fetch_assoc())
-        // {
-        //     $lateSubaAr[] = $row['membership_id'];
-
-        //     $endDate = $row['end_date'];
-        //     $graceDate = date('Y-m-d', strtotime("+7 days", strtotime($endDate)));
-
-        //     if($graceDate < $today){
-
-        //         $outMemberAr[] = $row['member_id'];
-        //     }
-
-        //     $invoiceIdNum = $row['invoice_id_number'];
-        //     $paypalInvoiceNum = $row['invoice_number'];
-        //     $payStatus = $row['payment_status'];
-        //     $status = $row['invoice_status'];
-        //     if(!empty($paypalInvoiceNum) && $status != "D"){
-        //         // var_dump($paypalInvoiceNum); exit;
-
-        //     /**
-        //      * To get the access token
-        //      ***/
-
-        //     $curl = curl_init();
-
-        //     curl_setopt($curl, CURLOPT_URL, 'https://api.sandbox.paypal.com/v1/oauth2/token');
-        //     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        //     curl_setopt($curl, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
-        //     curl_setopt($curl, CURLOPT_POST, 1);
-        //     curl_setopt($curl, CURLOPT_USERPWD, PAYPAL_CREDENTIALS['sandbox']['client_id'] . ':' . PAYPAL_CREDENTIALS['sandbox']['client_secret']);
-            
-        //     $headers = array();
-        //     $headers[] = 'Accept: application/json';
-        //     $headers[] = 'Accept-Language: en_US';
-        //     $headers[] = 'Content-Type: application/x-www-form-urlencoded';
-        //     curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-            
-        //     $response = curl_exec($curl);
-        //         $err = curl_error($curl);
-
-        //         curl_close($curl);
-
-        //         if ($err) {
-        //             echo "cURL Error #:" . $err;
-        //         } else {
-        //             $data = json_decode($response);
-        //             $accessToken = $data->access_token;
-        //             // echo $accessToken; exit;
-
-
-        //             //Search invoice details
-        //             $curl = curl_init();
-
-        //             curl_setopt_array($curl, array(
-        //             CURLOPT_URL => "https://api.sandbox.paypal.com/v2/invoicing/search-invoices?total_required=true&page_size=1&page=1",
-        //             CURLOPT_RETURNTRANSFER => true,
-        //             CURLOPT_ENCODING => "",
-        //             CURLOPT_MAXREDIRS => 10,
-        //             CURLOPT_TIMEOUT => 30,
-        //             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        //             CURLOPT_CUSTOMREQUEST => "POST",
-        //             CURLOPT_POSTFIELDS => '{
-        //             "invoice_number": "'.$paypalInvoiceNum.'"
-        //             }',
-        //             CURLOPT_HTTPHEADER => array(
-        //                 'authorization: Bearer '.$accessToken,
-        //                 'content-type: application/json'
-        //             ),
-        //             ));
-
-        //             $response = curl_exec($curl);
-        //             $err = curl_error($curl);
-
-        //             curl_close($curl);
-
-        //             if ($err) {
-        //             echo "cURL Error #:" . $err;
-        //             } else {
-        //             // echo $response; exit;
-        //             $data = json_decode($response,true);
-        //             $invoicePaymentStatus =  $data['items'][0]['status']; 
-        //             // var_dump($invoicePaymentStatus); exit; 
-        //                 // echo json_encode($data,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES); exit;
-
-        //                 $memberID = $row['member_id'];
-        //                 $subscriptionID = $row['membership_id'];
-        //                 $packageID = $row['package_id'];
-        //                 $updatedBy = $user['staff_id'];
-        //                 $method = Subscription::WEB;
-
-        //                 if($invoicePaymentStatus == Subscription::PAYPAL_PAID && $graceDate >= $today){
-
-        //                     $res = Subscription::renewMemberSubscription($memberID, $subscriptionID, $packageID, $updatedBy, $method);
-        //                     // var_dump($res); exit;
-
-        //                     if($res){
-        //                         // echo $row['member_id']; exit;
-        //                         $paidMembershipAr[] = $subscriptionID;
-        //                         $paidMemberAr[] = $memberID;
-
-        //                     }
-        //                 }elseif($invoicePaymentStatus == Subscription::PAYPAL_PAID && $graceDate < $today){   
-        //                     $res = Subscription::reactivateMemberSubscription($memberID, $subscriptionID, $packageID, $updatedBy, $method);
-        //                     // var_dump($res); exit;
-        //                     // Subscription::updateInvoice($memberID);
-
-        //                     if($res){
-        //                         $paidMembershipAr[] = $subscriptionID;
-        //                         $paidMemberAr[] = $memberID;;
-        //                     }
-        //                 }elseif($invoicePaymentStatus == !Subscription::PAYPAL_PAID && $graceDate < $today){
-        //                     $curl = curl_init();
-
-        //                     curl_setopt_array($curl, array(
-        //                     CURLOPT_URL => "https://api.sandbox.paypal.com/v2/invoicing/invoices/".$invoiceIdNum,
-        //                     CURLOPT_RETURNTRANSFER => true,
-        //                     CURLOPT_ENCODING => "",
-        //                     CURLOPT_MAXREDIRS => 10,
-        //                     CURLOPT_TIMEOUT => 30,
-        //                     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        //                     CURLOPT_CUSTOMREQUEST => "DELETE",
-        //                     CURLOPT_HTTPHEADER => array(
-        //                         'authorization: Bearer '.$accessToken,
-        //                         'content-type: application/json'
-        //                     ),
-        //                     ));
-
-        //                     $response = curl_exec($curl);
-        //                     $err = curl_error($curl);
-
-        //                     curl_close($curl);
-
-        //                     if ($err) {
-        //                     echo "cURL Error #:" . $err;
-        //                     } else {
-        //                         $res = Subscription::deleteInvoice($memberID);
-        //                     }
-        //                 }elseif($invoicePaymentStatus == Subscription::PAYPAL_SENT && $graceDate >= $today){
-        //                     // echo "lbp"; exit;
-        //                     $paidMembershipAr[] = $subscriptionID;
-        //                     $paidMemberAr[] = $memberID;;
-        //                 }
-        //             }
-
-        //         }
-        //     }
-        // }
-
-        // if(!empty($paidMembershipAr)){
-        //     $lateSubaAr = array_diff($lateSubaAr, $paidMembershipAr);
-        // }
-        // if(!empty($paidMemberAr)){
-        //     $outMemberAr = array_diff($outMemberAr, $paidMemberAr);
-        // }
-
-        // // var_dump($outMemberAr); exit;
-        // //Update payment status of subscription
-        // if(!empty($lateSubaAr) || !empty($outMemberAr)){
-
-        //     $result1 = Member::deactivateBulkMember($outMemberAr);
-        //     $result2 = Subscription::updateBulkPaymentStatus($lateSubaAr);
-
-        //     if($result1 && $result2){
-
-        //         header("Location:../cms/view/member/");
-
-        //     }else{
-        //         $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
-        //         $msg = base64_encode($msg);
-        //         header("Location:../cms/view/dashboard/dashboard.php?msg=$msg");
-        //         exit;
-        //     }
-        // }
-
         header("Location:../cms/view/member/");
-    
 }

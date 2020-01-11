@@ -84,6 +84,10 @@
                         <label for="membership_number">Membership Number</label>
                         <input type="text" class="form-control" id="membership_number" name="membership_number" aria-describedby="membership_number" placeholder="Membership Number"  value="<?php echo $memData['membership_number']?>" readonly>
                     </div>
+                    <div class="form-group col-6">
+                        <label for="joined_date">Joined Date</label>
+                        <input type="text" class="form-control" id="joined_date" name="joined_date" aria-describedby="joined_date" autocomplete="off" value="<?php echo $memData['joined_date']?>" readonly>
+                    </div>
                 </div>
                 </form>
             </div>

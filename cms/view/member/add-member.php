@@ -25,7 +25,7 @@ include '../../layout/header.php'; ?>
                 <div class="d-flex flex-wrap">
                     <div class="form-group col-6">
                         <label for="first_name">First Name</label>
-                        <input type="text" class="form-control is-valid" id="first_name" name="first_name" aria-describedby="first_name" placeholder="First Name" required>
+                        <input type="text" class="form-control" id="first_name" name="first_name" aria-describedby="first_name" placeholder="First Name" required>
                     </div>
                     <div class="form-group col-6">
                         <label for="last_name">Last Name</label>
@@ -38,7 +38,7 @@ include '../../layout/header.php'; ?>
                     <div class="form-group col-6">
                         <label for="gender">Gender</label>
                         <select id="gender" name="gender" class="form-control">
-                            <option selected>Choose...</option>
+                            <option value="" selected>Choose...</option>
                             <option value="M">Male</option>
                             <option value="F">Female</option>
                         </select>
@@ -58,7 +58,7 @@ include '../../layout/header.php'; ?>
                     <div class="form-group col-6">
                         <label for="package">Package</label>
                         <select id="package" name="package" class="form-control">
-                            <option selected>Choose...</option>
+                            <option value="" selected>Choose...</option>
                             <?php foreach($pacData as $key => $val){?>
                             <option value="<?php echo $key;?>"><?php echo $val;?></option>
                             <?php } ?>
@@ -96,16 +96,7 @@ include '../../layout/header.php'; ?>
                 email: {
 					required: true,
 					email: true,
-                    // remote: {
-                    //     url: '../../../controller/memberController.php?status=checkEmail',
-                    //     type: 'post',
-                    //     dataType: 'json',
-                    //     data: {
-                    //         email: function(){
-                    //             return $("#email").val();
-                    //         }
-                    //     }
-                    // }
+                    remote: '../../../controller/memberController.php?status=checkEmail'
 				},
                 dob: {
                     required: true,
@@ -135,7 +126,7 @@ include '../../layout/header.php'; ?>
                 },
                 email: {
                     required: "Please enter email address",
-                    remote: function() { return $.validator.format("{0} is already taken", $("#email").val()) }
+                    remote: "Email address is already taken"
                 },
                 dob: {
                     required: "Please enter birth date"
@@ -144,7 +135,7 @@ include '../../layout/header.php'; ?>
                     required: "Please enter joined date"
                 },
                 gender: {
-                    required: "Please enter gender"
+                    required: "Please select gender"
                 },
                 nic: {
                     required: "Please enter NIC"

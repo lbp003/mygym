@@ -17,13 +17,14 @@ switch ($status){
     case "Backup":
 
     
-        if(!$user)
-        {
-            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-            $msg = base64_encode($msg);
-            header("Location:../cms/view/index/index.php?msg=$msg");
-            exit;
-        }
+         if(!$user)
+    {
+        $msg = SESSION_TIMED_OUT;
+        $msg = base64_encode($msg);
+        header("Location:../cms/view/index/index.php?msg=$msg");
+        exit;
+    }
+
 
         if(!$auth->checkPermissions(array(Role::MANAGE_BACKUP)))
         {
@@ -53,13 +54,14 @@ break;
 
     case "index":
 
-        if(!$user)
-        {
-            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-            $msg = base64_encode($msg);
-            header("Location:../cms/view/index/index.php?msg=$msg");
-            exit;
-        }
+         if(!$user)
+    {
+        $msg = SESSION_TIMED_OUT;
+        $msg = base64_encode($msg);
+        header("Location:../cms/view/index/index.php?msg=$msg");
+        exit;
+    }
+
 
         if(!$auth->checkPermissions(array(Role::MANAGE_CLASS, Role::VIEW_CLASS)))
         {

@@ -47,13 +47,14 @@ break;
     
     case "Insert":
 
-        if(!$user)
-        {
-            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-            $msg = base64_encode($msg);
-            header("Location:../cms/view/index/index.php?msg=$msg");
-            exit;
-        }
+         if(!$user)
+    {
+        $msg = SESSION_TIMED_OUT;
+        $msg = base64_encode($msg);
+        header("Location:../cms/view/index/index.php?msg=$msg");
+        exit;
+    }
+
 
         if(!$auth->checkPermissions(array(Role::MANAGE_CLASS)))
         {
@@ -208,13 +209,14 @@ break;
 
     case "Update":
     
-        if(!$user)
-        {
-            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-            $msg = base64_encode($msg);
-            header("Location:../cms/view/index/index.php?msg=$msg");
-            exit;
-        }
+         if(!$user)
+    {
+        $msg = SESSION_TIMED_OUT;
+        $msg = base64_encode($msg);
+        header("Location:../cms/view/index/index.php?msg=$msg");
+        exit;
+    }
+
 
         if(!$auth->checkPermissions(array(Role::MANAGE_CLASS)))
         {
@@ -318,13 +320,14 @@ break;
  */ 
     case "View":
             
-        if(!$user)
-        {
-            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-            $msg = base64_encode($msg);
-            header("Location:../cms/view/index/index.php?msg=$msg");
-            exit;
-        }
+         if(!$user)
+    {
+        $msg = SESSION_TIMED_OUT;
+        $msg = base64_encode($msg);
+        header("Location:../cms/view/index/index.php?msg=$msg");
+        exit;
+    }
+
 
         if(!$auth->checkPermissions(array(Role::VIEW_CLASS)))
         {
@@ -436,13 +439,14 @@ break;
 
     case "Delete":
 
-        if(!$user)
-        {
-            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-            $msg = base64_encode($msg);
-            header("Location:../cms/view/index/index.php?msg=$msg");
-            exit;
-        }
+         if(!$user)
+    {
+        $msg = SESSION_TIMED_OUT;
+        $msg = base64_encode($msg);
+        header("Location:../cms/view/index/index.php?msg=$msg");
+        exit;
+    }
+
 
         if(!$auth->checkPermissions(array(Role::MANAGE_CLASS)))
         {
@@ -475,13 +479,14 @@ break;
 
     case "index":
 
-        if(!$user)
-        {
-            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-            $msg = base64_encode($msg);
-            header("Location:../cms/view/index/index.php?msg=$msg");
-            exit;
-        }
+         if(!$user)
+    {
+        $msg = SESSION_TIMED_OUT;
+        $msg = base64_encode($msg);
+        header("Location:../cms/view/index/index.php?msg=$msg");
+        exit;
+    }
+
 
         if(!$auth->checkPermissions(array(Role::MANAGE_CLASS, Role::VIEW_CLASS)))
         {

@@ -20,13 +20,14 @@ switch ($status){
      */
     case "Payment":
        
-        if(!$user)
-        {
-            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-            $msg = base64_encode($msg);
-            header("Location:../cms/view/index/index.php?msg=$msg");
-            exit;
-        }
+         if(!$user)
+    {
+        $msg = SESSION_TIMED_OUT;
+        $msg = base64_encode($msg);
+        header("Location:../cms/view/index/index.php?msg=$msg");
+        exit;
+    }
+
 
         if(!$auth->checkPermissions(array(Role::MANAGE_SUBSCRIPTION)))
         {
@@ -81,13 +82,14 @@ break;
     */  
     case "Reactivate":
 
-        if(!$user)
-        {
-            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-            $msg = base64_encode($msg);
-            header("Location:../cms/view/index/index.php?msg=$msg");
-            exit;
-        }
+         if(!$user)
+    {
+        $msg = SESSION_TIMED_OUT;
+        $msg = base64_encode($msg);
+        header("Location:../cms/view/index/index.php?msg=$msg");
+        exit;
+    }
+
 
         if(!$auth->checkPermissions(array(Role::MANAGE_SUBSCRIPTION)))
         {
@@ -130,13 +132,14 @@ break;
     */
     case "Renew":
 
-        if(!$user)
-        {
-            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-            $msg = base64_encode($msg);
-            header("Location:../cms/view/index/index.php?msg=$msg");
-            exit;
-        }
+         if(!$user)
+    {
+        $msg = SESSION_TIMED_OUT;
+        $msg = base64_encode($msg);
+        header("Location:../cms/view/index/index.php?msg=$msg");
+        exit;
+    }
+
 
         if(!$auth->checkPermissions(array(Role::MANAGE_SUBSCRIPTION)))
         {
@@ -421,13 +424,14 @@ break;
      * Index actiton
      */
     case "View":
-        if(!$user)
-        {
-            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-            $msg = base64_encode($msg);
-            header("Location:../cms/view/index/index.php?msg=$msg");
-            exit;
-        }
+         if(!$user)
+    {
+        $msg = SESSION_TIMED_OUT;
+        $msg = base64_encode($msg);
+        header("Location:../cms/view/index/index.php?msg=$msg");
+        exit;
+    }
+
 
         if(!$auth->checkPermissions(array(Role::VIEW_SUBSCRIPTION)))
         {
@@ -455,13 +459,14 @@ break;
 
     case "index":
 
-        if(!$user)
-        {
-            $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-            $msg = base64_encode($msg);
-            header("Location:../cms/view/index/index.php?msg=$msg");
-            exit;
-        }
+         if(!$user)
+    {
+        $msg = SESSION_TIMED_OUT;
+        $msg = base64_encode($msg);
+        header("Location:../cms/view/index/index.php?msg=$msg");
+        exit;
+    }
+
 
         if(!$auth->checkPermissions(array(Role::MANAGE_SUBSCRIPTION, Role::VIEW_SUBSCRIPTION)))
         {

@@ -31,7 +31,7 @@ include '../../layout/header.php'; ?>
                     <div class="form-group col-6">
                         <label for="class">Class</label>
                         <select id="class" name="class" class="form-control">
-                            <option selected>Choose...</option>
+                            <option value="" selected>Choose...</option>
                             <?php foreach($classData as $key => $val){?>
                                 <option value="<?php echo $key?>"><?php echo $val?></option>
                             <?php } ?>
@@ -40,7 +40,7 @@ include '../../layout/header.php'; ?>
                     <div class="form-group col-6">
                         <label for="day">Day</label>
                         <select id="day" name="day" class="form-control">
-                            <option selected>Choose...</option>
+                            <option value="" selected>Choose...</option>
                             <option value="Mon">Monday</option>
                             <option value="Tue">Tuesday</option>
                             <option value="Wed">Wednesday</option>
@@ -61,7 +61,7 @@ include '../../layout/header.php'; ?>
                     <div class="form-group col-6">
                         <label for="Instructor">Instructor</label>
                         <select id="instructor" name="instructor" class="form-control">
-                            <option selected>Choose...</option>
+                            <option value="" selected>Choose...</option>
                             <?php foreach($trainersData as $key => $val){?>
                             <option value="<?php echo $key;?>"><?php echo $val;?></option>
                             <?php } ?>

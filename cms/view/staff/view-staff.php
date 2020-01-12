@@ -79,6 +79,10 @@
                         <label for="address">Address</label>
                         <textarea class="form-control" id="address" name="address" rows="3" readonly><?php echo $empData['address']?></textarea>
                     </div>
+                    <div class="form-group col-6">
+                        <label for="joined_date">Joined Date</label>
+                        <input type="text" class="form-control" id="joined_date" name="joined_date" aria-describedby="joined_date" value="<?php echo $empData['joined_date']?>" readonly>
+                    </div>
                 </div>
                 </form>
             </div>

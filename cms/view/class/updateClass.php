@@ -42,6 +42,7 @@
                         <textarea class="form-control" id="description" name="description" rows="3"><?php echo $clsData['class_description']?></textarea>
                     </div>
                     <div class="col-12">
+                        <input type="hidden" name="image" value="<?php echo $clsData['image']?>"> 
                         <input type="hidden" name="class_id" value="<?php echo $clsData['class_id']?>"> 
                         <button type="submit" class="btn btn-primary mb-2 float-right">Submit</button>
                     </div>

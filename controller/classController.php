@@ -250,6 +250,8 @@ break;
             exit;
         }
 
+        $image=$_POST['image'];
+
         $tmp = $_FILES['avatar'];
         if(!empty($tmp['name'])){
             // print_r($tmp); exit;
@@ -288,7 +290,7 @@ break;
                 'name' => $className,
                 'description' => $description,
                 'color' => $color,
-                'img' => (!empty($imgName)) ? $imgName : NULL,
+                'img' => (!empty($imgName)) ? $imgName : $image,
                 'id' => $classID
             ];
              //update class

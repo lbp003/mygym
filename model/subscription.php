@@ -343,10 +343,13 @@ class Subscription{
 	* @return object $result
 	*/
     public static function deleteInvoice($invoiceID){
+
+        $status = Subscription::DELETED;
+        
         $con=$GLOBALS['con']; 
         $sql = "UPDATE invoice SET status=? WHERE invoice_id=?";
         $stmt = $con->prepare($sql);
-        $stmt->bind_param("si", $status = Subscription::DELETED, $invoiceID);
+        $stmt->bind_param("si", $status, $invoiceID);
         $stmt->execute();
         if ($stmt->error) {
             return false;

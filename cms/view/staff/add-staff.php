@@ -32,7 +32,7 @@
                     <div class="form-group col-6">
                         <label for="gender">Gender</label>
                         <select id="gender" name="gender" class="form-control">
-                            <option selected>Choose...</option>
+                            <option value="" selected>Choose...</option>
                             <option value="M">Male</option>
                             <option value="F">Female</option>
                         </select>
@@ -56,7 +56,7 @@
                     <div class="form-group col-6">
                         <label for="user_type">Type</label>
                         <select id="user_type" name="user_type" class="form-control">
-                            <option selected>Choose...</option>
+                            <option value="" selected>Choose...</option>
                             <option value="A">Admin</option>
                             <option value="M">Manager</option>
                             <option value="T">Trainer</option>
@@ -84,11 +84,11 @@
             rules: {
                 first_name: "required",
                 last_name: "required", 
-                // email: {
-				// 	required: true,
-				// 	email: true,
-                //     remote: "../../../controller/staffController.php?status=checkEmail"
-				// },
+                email: {
+					required: true,
+					email: true,
+                    remote: "../../../controller/staffController.php?status=checkEmail"
+				},
                 dob: {
                     required: true,
                     date: true
@@ -122,7 +122,7 @@
                 },
                 email: {
                     required: "Please enter email address",
-                    remote: function() { return $.validator.format("{0} is already taken", $("#email").val()) }
+                    remote: "Email address is already taken"
                 },
                 dob: {
                     required: "Please enter birth date"

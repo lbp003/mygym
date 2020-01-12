@@ -335,6 +335,9 @@ break;
         header("Location:../cms/view/staff/update-staff.php?msg=$msg");
         exit;
     }
+
+    $image=$_POST['image'];
+
     $tmp = $_FILES['avatar'];
     if(!empty($tmp['name'])){
     $file = $tmp['name'];
@@ -371,7 +374,7 @@ break;
             'phone' => $phone,
             'address' => $address,
             'type' => $user_type,
-            'img' => (!empty($imgName)) ? $imgName : NULL,
+            'img' => (!empty($imgName)) ? $imgName : $image,
             'lmd' => $lmd,
             'id' => $staffID
         ];
@@ -548,9 +551,9 @@ break;
         $email=$_REQUEST['email'];
         $result = Staff::checkEmail($email);
         if($result == true){
-            echo(json_encode(['Result' => true]));
+            echo(json_encode(true));
         }else {
-            echo(json_encode(['Result' => false]));
+            echo(json_encode(false));
         }
 break;  
 
@@ -563,9 +566,9 @@ break;
 
         $result = Staff::checkUpdateEmail($email,$staffID);
         if($result == true){
-            echo(json_encode(['Result' => true]));
+            echo(json_encode(true));
         }else {
-            echo(json_encode(['Result' => false]));
+            echo(json_encode(false));
         }
 break; 
 

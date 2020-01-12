@@ -8,6 +8,8 @@
         $status="Paid";
     }elseif($subsData['payment_status']==Subscription::LATE){
         $status="Late";
+    }else{
+        $status="Pending";
     }
 ?>
 <body>

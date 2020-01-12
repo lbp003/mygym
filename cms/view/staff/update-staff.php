@@ -81,6 +81,7 @@
                         <textarea class="form-control" id="address" name="address" rows="3"><?php echo $empData['address']?></textarea>
                     </div>
                     <div class="col-12">
+                        <input type="hidden" name="image" value="<?php echo $empData['image']?>"> 
                         <input type="hidden" name="staff_id" value="<?php echo $empData['staff_id']?>"> 
                         <button type="submit" class="btn btn-primary mb-2 float-right">Submit</button>
                     </div>
@@ -98,20 +99,11 @@
             rules: {
                 first_name: "required",
                 last_name: "required", 
-                // email: {
-				// 	required: true,
-				// 	email: true,
-                //     remote: {
-                //         url: '../../../controller/staffController.php?status=checkUpdateEmail&staff_id=<?php echo $empData['staff_id'] ?>',
-                //         type: 'post',
-                //         dataType: 'json',
-                //         data: {
-                //             email: function(){
-                //                 return $("#email").val();
-                //             }
-                //         }
-                //     }
-				// },
+                email: {
+					required: true,
+					email: true,
+                    remote: '../../../controller/staffController.php?status=checkUpdateEmail&staff_id=<?php echo $empData['staff_id']?>'
+				},
                 dob: {
                     required: true,
                     date: true
@@ -143,10 +135,10 @@
                 last_name: {
                     required: "Please enter last name"
                 },
-                // email: {
-                //     required: "Please enter email address",
-                //     remote: function() { return $.validator.format("{0} is already taken", $("#email").val()) }
-                // },
+                email: {
+                    required: "Please enter email address",
+                    remote: "Email address is already taken"
+                },
                 dob: {
                     required: "Please enter birth date"
                 },

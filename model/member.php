@@ -260,7 +260,6 @@ class Member{
         $driver->report_mode = MYSQLI_REPORT_ALL;
 
         $status = self::INACTIVE;
-        $subStatus = Subscription::INACTIVE;
 
         $con=$GLOBALS['con']; 
         try{
@@ -271,11 +270,6 @@ class Member{
                 $sql = "UPDATE member SET  member.status = ? WHERE member_id = ?";
                 $stmt = $con->prepare($sql);
                 $stmt->bind_param("si", $status, $member_id);
-                $stmt->execute();
-
-                $sql = "UPDATE membership SET  membership.status = ? WHERE member_id = ?";
-                $stmt = $con->prepare($sql);
-                $stmt->bind_param("si", $subStatus, $member_id);
                 $stmt->execute();
             }  
             $con->commit();

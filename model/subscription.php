@@ -27,8 +27,8 @@ class Subscription{
     CONST FAILED = "F";
 
     //Currency
-    CONST LKR = "LKR";
-    CONST USD = "USD";
+    CONST LKR = 'LKR';
+    CONST USD = 'USD';
 
      /** 
 	* Get All Subscription Details
@@ -136,6 +136,7 @@ class Subscription{
                 INNER JOIN member ON membership.member_id = member.member_id
                 INNER JOIN package ON member.package_id = package.package_id
                 WHERE membership.status != 'D'   
+                AND member.status != 'D'  
                 AND membership.membership_id = '$membershipID'
                 LIMIT 1";
                 // echo $sql; exit;
@@ -146,7 +147,7 @@ class Subscription{
 	* Reactivate a membership
 	* @return object $result 
 	*/
-    function reactivateMemberSubscription($memberID, $membershipID, $packageID, $updatedBy, $method){
+    public static function reactivateMemberSubscription($memberID, $membershipID, $packageID, $updatedBy, $method){
         
         /* activate reporting */
         $driver = new mysqli_driver();
@@ -167,27 +168,29 @@ class Subscription{
 
             // Get package duration
             $packageDuration = Package::getPackageDuration($packageID);
-            $duration = $packageDuration->fetch_assoc();
+            $packageData = $packageDuration->fetch_assoc();
 
             //subscription end date
             $date = date("Y-m-d");
             $lastPidDate = date("Y-m-d");
 
-            $endDate = date('Y-m-d', strtotime("+".$duration['duration']." months", strtotime($date)));
+            $endDate = date('Y-m-d', strtotime("+".$packageData['duration']." months", strtotime($date)));
 
             $paymentStatus = Subscription::PAID;
             $subStatus = Subscription::ACTIVE;
     
             //update membership table
-            $sql = "UPDATE membership SET package_id = ?, start_date = ?, end_date = ?, last_paid_date = ?, payment_status = ?, status = ?, updated_by = ?  WHERE membership_id = ?";
+            $sql = "UPDATE membership SET start_date = ?, end_date = ?, last_paid_date = ?, payment_status = ?, status = ?, updated_by = ?  WHERE membership_id = ?";
             $stmt = $con->prepare($sql);
-            $stmt->bind_param("isssssii",$packageID, $date, $endDate, $lastPidDate, $paymentStatus, $subStatus, $updatedBy, $membershipID);
+            $stmt->bind_param("sssssii", $date, $endDate, $lastPidDate, $paymentStatus, $subStatus, $updatedBy, $membershipID);
             $stmt->execute();
 
             //Insert record to payment history table
+            $fee = $packageData['fee'];
+            $currency = Subscription::LKR;
 
-            $stmt = $con->prepare("INSERT INTO payment_history (membership_id, member_id, start_date, end_date, paid_date, payment_method) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("iissss", $membershipID, $memberID, $date, $endDate, $lastPidDate, $method);
+            $stmt = $con->prepare("INSERT INTO payment_history (member_id, due_date, paid_date, payment_method, amount, currency_type) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("isssss", $memberID, $endDate, $lastPidDate, $method, $fee, $currency);
             $stmt->execute();
             $payHistoryID = $con->insert_id;
 
@@ -233,7 +236,7 @@ class Subscription{
 	* Renew a membership
 	* @return bool
 	*/
-    function renewMemberSubscription($memberID, $membershipID, $packageID, $updatedBy,$method){
+    public static function renewMemberSubscription($memberID, $membershipID, $packageID, $updatedBy,$method){
         
         /* activate reporting */
         $driver = new mysqli_driver();
@@ -253,7 +256,7 @@ class Subscription{
 
             // Get package duration
             $packageDuration = Package::getPackageDuration($packageID);
-            $duration = $packageDuration->fetch_assoc();
+            $packageData = $packageDuration->fetch_assoc();
 
             //get subscription details by id
             $subsData = Subscription::getSubscriptionDetailsByID($membershipID);
@@ -262,20 +265,22 @@ class Subscription{
             $startDate = $row['end_date'];
             $lastPidDate = date("Y-m-d");
 
-            $endDate = date('Y-m-d', strtotime("+".$duration['duration']." months", strtotime($startDate)));
+            $endDate = date('Y-m-d', strtotime("+".$packageData['duration']." months", strtotime($startDate)));
 
             $paymentStatus = Subscription::PAID;
     
             //update membership table
-            $sql = "UPDATE membership SET package_id = ?, start_date = ?, end_date = ?, last_paid_date = ?, payment_status = ?, updated_by = ?  WHERE membership_id = ?";
+            $sql = "UPDATE membership SET start_date = ?, end_date = ?, last_paid_date = ?, payment_status = ?, updated_by = ?  WHERE membership_id = ?";
             $stmt = $con->prepare($sql);
-            $stmt->bind_param("issssii",$packageID, $startDate, $endDate, $lastPidDate, $paymentStatus, $updatedBy, $membershipID);
+            $stmt->bind_param("ssssii", $startDate, $endDate, $lastPidDate, $paymentStatus, $updatedBy, $membershipID);
             $stmt->execute();
 
             //Insert record to payment history table
+            $fee = $packageData['fee'];
+            $currency = Subscription::LKR;
 
-            $stmt = $con->prepare("INSERT INTO payment_history (membership_id, member_id, start_date, end_date, paid_date, payment_method) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("iissss", $membershipID, $memberID, $startDate, $endDate, $lastPidDate, $method);
+            $stmt = $con->prepare("INSERT INTO payment_history (member_id, due_date, paid_date, payment_method, amount, currency_type) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("isssss", $memberID, $endDate, $lastPidDate, $method, $fee, $currency);
             $stmt->execute();
             $payHistoryID = $con->insert_id;
             // var_dump($payHistoryID); exit;

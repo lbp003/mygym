@@ -84,3 +84,38 @@ define('BUSINESS_EMAIL','pglbuddhika@gmail.com');
 
 // Business phone
 define('BUSINESS_PHONE','+94771888110');
+
+//openexchangerates app id
+define('OPENEXCHANGERATES_APP_ID', '35c38025e1ef434786933b036608a6e4');
+
+//address line 1
+define('ADDRESS_LINE_1', '149');
+
+//address line 2
+define('ADDRESS_LINE_2', 'Bollatha');
+
+//admin area 2
+define('ADMIN_AREA_2', 'Ganemulla');
+
+//admin area 1
+define('ADMIN_AREA_1', 'Gampaha');
+
+//postal code 
+define('POSTAL_CODE', '11020');
+
+//country
+define('COUNTRY', 'LK');
+
+//country
+define('COUNTRY_CODE', '094');
+
+//country
+define('NATIONAL_NUMBER', '771888110');
+
+//paypal account email
+define('PAYPAL_EMAIL', 'pglbuddhika-facilitator@gmail.com');
+
+//website 
+define('WEB_SITE', 'www.hirufitness.com');
+
+

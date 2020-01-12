@@ -328,13 +328,14 @@ class Member{
 	* Update package
 	* @return object $result
 	*/
-    public static function updatePackage($packageID,$updatedBy,$subscriptionID){
+    public static function updatePackage($packageID,$updatedBy,$memberID){
         $con=$GLOBALS['con']; 
-        $sql = "UPDATE member INNER JOIN membership ON membership.member_id = member.member_id SET member.package_id = ?, member.updated_by = ? WHERE membership.membership_id = ?";
+        $sql = "UPDATE member SET member.package_id = ?, member.updated_by = ? WHERE member.member_id = ?";
         $stmt = $con->prepare($sql);
-        $stmt->bind_param("iii",$packageID,$updatedBy,$subscriptionID);
+        $stmt->bind_param("iii",$packageID,$updatedBy,$memberID);
         $stmt->execute();
         if ($stmt->error) {
+            // echo $stmt->error; exit;
             return false;
           }
          return true;

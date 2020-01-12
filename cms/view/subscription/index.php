@@ -60,11 +60,12 @@ $allSubscription = Subscription::displayAllSubscription();
                         <a data-toggle="tooltip" data-placement="top" title="View" href="../../../controller/subscriptionController.php?membership_id=<?php echo $row['membership_id']?>&status=View"><i class="far fa-eye text-primary"></i></a>
                     <?php
                     $today = date("Y-m-d");
+                    $preDueDate = date('Y-m-d', strtotime("-7 days", strtotime($row['end_date'])));
 
-                    if($row['payment_status']==Subscription::PENDING && $row['end_date'] <= $today){ ?>
+                    if($row['payment_status']==Subscription::PENDING){ ?>
                         <a data-toggle="tooltip" data-placement="top" title="Pending"><i class="fas fa-hourglass-half"></i></a>
-                    <?php }elseif($row['end_date'] <= $today){ ?>
-                        <a data-toggle="tooltip" data-placement="top" title="Mark as Paid" href="../../../controller/subscriptionController.php?membership_id=<?php echo $row['membership_id']?>&status=Payment"><i class="fas fa-hand-holding-usd text-warning"></i></a>
+                    <?php }elseif(($preDueDate <= $row['end_date']) && ($row['end_date'] <= $today)){ ?>
+                        <a data-toggle="tooltip" data-placement="top" title="Do Payment" href="../../../controller/subscriptionController.php?membership_id=<?php echo $row['membership_id']?>&status=Payment"><i class="fas fa-hand-holding-usd text-warning"></i></a>
                     <?php }else{ ?>
                         <a data-toggle="tooltip" data-placement="top" title="Paid"><i class="far fa-check-circle text-success"></i></a>
                     <?php } ?>

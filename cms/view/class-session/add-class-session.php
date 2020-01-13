@@ -51,11 +51,11 @@ include '../../layout/header.php'; ?>
                         </select>
                     </div>
                     <div class="form-group col-6">
-                        <label for="start_time">Start Time</label>
+                        <label for="start_time">Start Time (in 24H)</label>
                         <input type="time" class="form-control" id="start_time" name="start_time" aria-describedby="start_time">
                     </div>
                     <div class="form-group col-6">
-                        <label for="end_time">End Time</label>
+                        <label for="end_time">End Time (in 24H)</label>
                         <input type="time" class="form-control" id="end_time" name="end_time" aria-describedby="end_time" placeholder="end_time">
                     </div>
                     <div class="form-group col-6">
@@ -84,41 +84,34 @@ include '../../layout/header.php'; ?>
         // Form validation
         $('#addClassSession').validate({
             rules: {
-                class_name: "required",
+                class: "required",
                 day: "required", 
-                // session_name: {
-				// 	required: true,
-				// 	session_name: true,
-                //     remote: {
-                //         url: '../../../controller/classSessionController.php?status=checkSessionName',
-                //         type: 'post',
-                //         data: {
-                //             session_name: function(){
-                //                 return $("#session_name").val();
-                //             }
-                //         }
-                //     }
-				// },
+                session_name: {
+					required: true
+				},
                 start_time: {
                     required: true
                 },
                 end_time: {
-                    required: function(element) {
-                        return $("#start_time").val() < $("#end_time").val();
-                    }
+                    required: true
                 },
                 instructor: "required"
             },
             messages: {
-                class_name: {
+                class: {
                     required: "Please enter class name"
                 },
                 day: {
                     required: "Please enter day"
                 },
                 session_name: {
-                    required: "Please enter session name",
-                    remote: function() { return $.validator.format("{0} is already taken", $("#session_name").val()) }
+                    required: "Please enter session name"
+                },
+                start_time: {
+                    required: "Please enter start time"
+                },
+                end_time: {
+                    required: "Please enter end time"
                 },
                 instructor: {
                     required: "Please select a instructor"

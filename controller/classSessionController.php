@@ -58,7 +58,7 @@ switch ($status){
     $_SESSION['classData'] = $classAr;
     $_SESSION['trainersData'] = $trainersAr;
 
-    header("Location:../cms/view/class-session/addClassSession.php");
+    header("Location:../cms/view/class-session/add-class-session.php");
 
 
 break;
@@ -91,7 +91,7 @@ break;
         if (empty($sessionName)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Session Name can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class-session/addClassSession.php?msg=$msg");
+            header("Location:../cms/view/class-session/add-class-session.php?msg=$msg");
             exit;
         }
 
@@ -100,14 +100,14 @@ break;
         if (empty($class)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Class name can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class-session/addClassSession.php?msg=$msg");
+            header("Location:../cms/view/class-session/add-class-session.php?msg=$msg");
             exit;
         }
         $day=$_POST['day'];
         if (empty($day)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Day can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class-session/addClassSession.php?msg=$msg");
+            header("Location:../cms/view/class-session/add-class-session.php?msg=$msg");
             exit;
         }
 
@@ -116,13 +116,13 @@ break;
         if (empty($startTime)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Start time can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class-session/addClassSession.php?msg=$msg");
+            header("Location:../cms/view/class-session/add-class-session.php?msg=$msg");
             exit;
         }
         if (!preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $startTime)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Start time incorrect format','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class-session/addClassSession.php?msg=$msg");
+            header("Location:../cms/view/class-session/add-class-session.php?msg=$msg");
             exit;
         }
 
@@ -131,20 +131,20 @@ break;
         if (empty($endTime)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'End time can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class-session/addClassSession.php?msg=$msg");
+            header("Location:../cms/view/class-session/add-class-session.php?msg=$msg");
             exit;
         }
         if (!preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $endTime)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'End time incorrect format','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class-session/addClassSession.php?msg=$msg");
+            header("Location:../cms/view/class-session/add-class-session.php?msg=$msg");
             exit;
         }
 
         if($startTime > $endTime){
             $msg = json_encode(array('title'=>'Warning','message'=> 'Wrong start time and end time','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class-session/addClassSession.php?msg=$msg");
+            header("Location:../cms/view/class-session/add-class-session.php?msg=$msg");
             exit;
         }
 
@@ -153,7 +153,7 @@ break;
         if (empty($instructor)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Instructor can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class-session/addClassSession.php?msg=$msg");
+            header("Location:../cms/view/class-session/add-class-session.php?msg=$msg");
             exit;
         }
        
@@ -173,13 +173,13 @@ break;
             }else{
                 $msg = json_encode(array('title'=>'Danger','message'=> 'Failed to add the class session','type'=>'danger'));
                 $msg = base64_encode($msg);
-                header("Location:../cms/view/class-session/addClassSession.php?msg=$msg");
+                header("Location:../cms/view/class-session/add-class-session.php?msg=$msg");
                 exit;  
             }                  
         }else{
             $msg = json_encode(array('title'=>'Warning','message'=> 'Session name already exists','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class-session/addClassSession.php?msg=$msg");
+            header("Location:../cms/view/class-session/add-class-session.php?msg=$msg");
             exit;
         }    
                 
@@ -236,7 +236,7 @@ break;
         $_SESSION['trainersData'] = $trainersAr;
         $_SESSION['sessionData'] = $sessionData;
 
-        header("Location:../cms/view/class-session/updateClassSession.php");
+        header("Location:../cms/view/class-session/update-class-session.php");
         exit;
     }else {
         $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
@@ -277,7 +277,7 @@ break;
         if (empty($sessionName)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Session Name can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
+            header("Location:../cms/view/class-session/update-class-session.php?msg=$msg");
             exit;
         }
 
@@ -286,14 +286,14 @@ break;
         if (empty($class)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Class name can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
+            header("Location:../cms/view/class-session/update-class-session.php?msg=$msg");
             exit;
         }
         $day=$_POST['day'];
         if (empty($day)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Day can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
+            header("Location:../cms/view/class-session/update-class-session.php?msg=$msg");
             exit;
         }
 
@@ -302,13 +302,13 @@ break;
         if (empty($startTime)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Start time can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
+            header("Location:../cms/view/class-session/update-class-session.php?msg=$msg");
             exit;
         }
         if (!preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $startTime)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Start time incorrect format','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
+            header("Location:../cms/view/class-session/update-class-session.php?msg=$msg");
             exit;
         }
 
@@ -317,20 +317,20 @@ break;
         if (empty($endTime)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'End time can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
+            header("Location:../cms/view/class-session/update-class-session.php?msg=$msg");
             exit;
         }
         if (!preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $endTime)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'End time incorrect format','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
+            header("Location:../cms/view/class-session/update-class-session.php?msg=$msg");
             exit;
         }
 
         if($startTime > $endTime){
             $msg = json_encode(array('title'=>'Warning','message'=> 'Wrong start time and end time','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
+            header("Location:../cms/view/class-session/update-class-session.php?msg=$msg");
             exit;
         }
 
@@ -339,7 +339,7 @@ break;
         if (empty($instructor)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Instructor can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
+            header("Location:../cms/view/class-session/update-class-session.php?msg=$msg");
             exit;
         }
        
@@ -365,7 +365,7 @@ break;
             }else {
                 $msg = json_encode(array('title'=>'Warning :','message'=> 'Update failed','type'=>'danger'));
                 $msg = base64_encode($msg);
-                header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
+                header("Location:../cms/view/class-session/update-class-session.php?msg=$msg");
                 exit;
             }
     
@@ -373,7 +373,7 @@ break;
         }else {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Class session name already exists','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class-session/updateClassSession.php?msg=$msg");
+            header("Location:../cms/view/class-session/update-class-session.php?msg=$msg");
             exit;
         }
             
@@ -430,7 +430,7 @@ break;
             $_SESSION['trainersData'] = $trainersAr;
             $_SESSION['sessionData'] = $sessionData;
 
-            header("Location:../cms/view/class-session/viewClassSession.php");
+            header("Location:../cms/view/class-session/view-class-session.php");
             exit;
         }else {
             $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));

@@ -36,12 +36,12 @@ include '../../layout/header.php'; ?>
                 <div class="d-flex flex-wrap">
                     <div class="form-group col-6">
                         <label for="session_name">Session Name</label>
-                        <input type="text" class="form-control is-valid" id="session_name" name="session_name" aria-describedby="session_name" placeholder="Session Name" required value="<?php echo $sessionData['class_session_name']?>">
+                        <input type="text" class="form-control" id="session_name" name="session_name" aria-describedby="session_name" placeholder="Session Name" required value="<?php echo $sessionData['class_session_name']?>">
                     </div>
                     <div class="form-group col-6">
                         <label for="class">Class</label>
                         <select id="class" name="class" class="form-control">
-                            <option selected>Choose...</option>
+                            <option value="" selected>Choose...</option>
                             <?php foreach($classData as $key => $val){?>
                                 <option value="<?php echo $key?>" <?php echo ($key == $sessionData['class_id']) ? "selected" : NULL ?>><?php echo $val?></option>
                             <?php } ?>
@@ -50,23 +50,24 @@ include '../../layout/header.php'; ?>
                     <div class="form-group col-6">
                         <label for="day">Day</label>
                         <select id="day" name="day" class="form-control">
+                            <option value="" selected>Choose...</option>
                             <?php foreach($daysAr as $key => $val){ ?>
                             <option value="<?php echo $key;?>" <?php echo ($key == $sessionData['day']) ? "selected" : NULL ?>><?php echo $val;?></option>
                             <?php } ?>
                         </select>
                     </div>
                     <div class="form-group col-6">
-                        <label for="start_time">Start Time</label>
+                        <label for="start_time">Start Time (in 24H)</label>
                         <input type="time" class="form-control" id="start_time" name="start_time" aria-describedby="start_time" value="<?php echo date('H:i', strtotime($sessionData['start_time']));?>">
                     </div>
                     <div class="form-group col-6">
-                        <label for="end_time">End Time</label>
+                        <label for="end_time">End Time (in 24H)</label>
                         <input type="time" class="form-control" id="end_time" name="end_time" aria-describedby="end_time" value="<?php echo  date('H:i', strtotime($sessionData['end_time']));?>"> 
                     </div>
                     <div class="form-group col-6">
                         <label for="Instructor">Instructor</label>
                         <select id="instructor" name="instructor" class="form-control">
-                            <option>Choose...</option>
+                            <option value="">Choose...</option>
                             <?php foreach($trainersData as $key => $val){?>
                             <option value="<?php echo $key;?>" <?php echo ($key == $sessionData['instructor_id']) ? "selected" : NULL ?>><?php echo $val;?></option>
                             <?php } ?>
@@ -90,41 +91,34 @@ include '../../layout/header.php'; ?>
         // Form validation
         $('#addClassSession').validate({
             rules: {
-                class_name: "required",
+                class: "required",
                 day: "required", 
-                // session_name: {
-				// 	required: true,
-				// 	session_name: true,
-                //     remote: {
-                //         url: '../../../controller/classSessionController.php?status=checkUpdateSessionName',
-                //         type: 'post',
-                //         data: {
-                //             session_name: function(){
-                //                 return $("#session_name").val();
-                //             }
-                //         }
-                //     }
-				// },
+                session_name: {
+					required: true
+				},
                 start_time: {
                     required: true
                 },
                 end_time: {
-                    required: function(element) {
-                        return $("#start_time").val() < $("#end_time").val();
-                    }
+                    required: true
                 },
                 instructor: "required"
             },
             messages: {
-                class_name: {
+                class: {
                     required: "Please enter class name"
                 },
-                last_name: {
-                    required: "Please enter last name"
+                day: {
+                    required: "Please select day"
                 },
                 session_name: {
-                    required: "Please enter session name",
-                    remote: function() { return $.validator.format("{0} is already taken", $("#session_name").val()) }
+                    required: "Please enter session name"
+                },
+                start_time: {
+                    required: "Please enter start time"
+                },
+                end_time: {
+                    required: "Please enter end time"
                 },
                 instructor: {
                     required: "Please select a instructor"

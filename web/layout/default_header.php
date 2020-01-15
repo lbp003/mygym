@@ -6,12 +6,15 @@
 <?php
     // Get User Details from session
     $user=$_SESSION['user']; 
+ 
     if(!$user)
     {
-        $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+        $msg = SESSION_TIMED_OUT;
+        $msg = base64_encode($msg);
         header("Location:../index/login.php?msg=$msg");
         exit;
     }
+
 ?>
 <html>
     <head>

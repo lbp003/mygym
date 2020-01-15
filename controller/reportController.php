@@ -21,7 +21,7 @@ switch ($status){
 
     if(!$user)
     {
-        $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+        $msg = SESSION_TIMED_OUT;
         $msg = base64_encode($msg);
         header("Location:../cms/view/index/index.php?msg=$msg");
         exit;
@@ -46,13 +46,13 @@ break;
     
     case "empCount":
 
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
 
         if(!$auth->checkPermissions(array(Role::MANAGE_REPORT, Role::VIEW_REPORT)))
@@ -77,13 +77,13 @@ break;
 
     case "Class":
 
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
 
         if(!$auth->checkPermissions(array(Role::MANAGE_CLASS)))
@@ -105,13 +105,13 @@ break;
 
     case "Equipment":
 
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
 
         if(!$auth->checkPermissions(array(Role::MANAGE_EQUIPMENT)))
@@ -134,13 +134,13 @@ break;
 
     case "Event":
 
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
 
         if(!$auth->checkPermissions(array(Role::MANAGE_EVENT)))
@@ -162,13 +162,13 @@ break;
 
     case "Exercise":
 
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
 
         if(!$auth->checkPermissions(array(Role::MANAGE_WORKOUT)))
@@ -190,14 +190,13 @@ break;
 
     case "Package":
 
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::MANAGE_PACKAGE)))
         {
@@ -218,14 +217,13 @@ break;
 
     case "Subscription":
 
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::MANAGE_SUBSCRIPTION)))
         {
@@ -246,14 +244,13 @@ break;
 
     case "Payment":
 
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::MANAGE_PAYMENT)))
         {
@@ -274,14 +271,13 @@ break;
 
     case "Member":
 
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::MANAGE_MEMBER)))
         {
@@ -302,14 +298,13 @@ break;
 
     case "classSession":
 
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::MANAGE_CLASS_SESSION)))
         {
@@ -326,14 +321,13 @@ break;
 
     case "PaymentData":
 
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::MANAGE_REPORT, Role::VIEW_REPORT)))
         {
@@ -356,14 +350,13 @@ break;
 
     case "index":
 
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::MANAGE_REPORT, Role::VIEW_REPORT)))
         {

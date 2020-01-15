@@ -20,40 +20,39 @@ switch ($status){
 
     case "Add":
 
-    if(!$user)
-    {
-        $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
-    if(!$auth->checkPermissions(array(Role::MANAGE_EVENT)))
-    {
-        $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/event/index.php?msg=$msg");
-        exit;
-    }
+        if(!$auth->checkPermissions(array(Role::MANAGE_EVENT)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/event/index.php?msg=$msg");
+            exit;
+        }
 
-    header("Location:../cms/view/event/addEvent.php");
+        header("Location:../cms/view/event/add-event.php");
 
 break;
 
 /**
- * Insert a new gym class
+ * Insert a new gym event
  */
 
     case "Insert":
 
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::MANAGE_EVENT)))
         {
@@ -68,7 +67,7 @@ break;
         if (empty($eventTitle)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Event Title can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/event/addEvent.php?msg=$msg");
+            header("Location:../cms/view/event/add-event.php?msg=$msg");
             exit;
         }
 
@@ -77,7 +76,7 @@ break;
         if (empty($date)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Date can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/event/addEvent.php?msg=$msg");
+            header("Location:../cms/view/event/add-event.php?msg=$msg");
             exit;
         }
 
@@ -86,7 +85,7 @@ break;
         if ($date < $today) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Date can not be a past date','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/event/addEvent.php?msg=$msg");
+            header("Location:../cms/view/event/add-event.php?msg=$msg");
             exit;
         }
 
@@ -94,7 +93,7 @@ break;
         if (empty($venue)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Venue can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/event/addEvent.php?msg=$msg");
+            header("Location:../cms/view/event/add-event.php?msg=$msg");
             exit;
         }
 
@@ -104,7 +103,7 @@ break;
             if (!preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $startTime)) {
                 $msg = json_encode(array('title'=>'Warning','message'=> 'Start time incorrect format','type'=>'warning'));
                 $msg = base64_encode($msg);
-                header("Location:../cms/view/event/addEvent.php?msg=$msg");
+                header("Location:../cms/view/event/add-event.php?msg=$msg");
                 exit;
             }
         }
@@ -115,7 +114,7 @@ break;
             if (!preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $endTime)) {
                 $msg = json_encode(array('title'=>'Warning','message'=> 'End time incorrect format','type'=>'warning'));
                 $msg = base64_encode($msg);
-                header("Location:../cms/view/event/addEvent.php?msg=$msg");
+                header("Location:../cms/view/event/add-event.php?msg=$msg");
                 exit;
             }
         }
@@ -124,7 +123,7 @@ break;
             if($startTime > $endTime){
                 $msg = json_encode(array('title'=>'Warning','message'=> 'Wrong start time and end time','type'=>'warning'));
                 $msg = base64_encode($msg);
-                header("Location:../cms/view/event/addEvent.php?msg=$msg");
+                header("Location:../cms/view/event/add-event.php?msg=$msg");
                 exit;
             }
         }
@@ -134,7 +133,7 @@ break;
         if (empty($description)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Description can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/event/addEvent.php?msg=$msg");
+            header("Location:../cms/view/event/add-event.php?msg=$msg");
             exit;
         }
 
@@ -172,7 +171,7 @@ break;
                     $ext = pathinfo($file, PATHINFO_EXTENSION);
                     $imgName = "IMG_".$eventID.".".$ext;
 
-                    // Add class image
+                    // Add event image
                     if(Event::addEventImage($eventID, $imgName)){
 
                         rename("../".PATH_PUBLIC.SYSTEM_TEMP_DIRECTORY.$file, "../".PATH_IMAGE.PATH_EVENT_IMAGE.$imgName);
@@ -197,58 +196,58 @@ break;
             }else{
                 $msg = json_encode(array('title'=>'Danger','message'=> 'Failed to add the Event','type'=>'danger'));
                 $msg = base64_encode($msg);
-                header("Location:../cms/view/event/addEvent.php?msg=$msg");
+                header("Location:../cms/view/event/add-event.php?msg=$msg");
                 exit;
             }
         }else{
             $msg = json_encode(array('title'=>'Warning','message'=> 'Event name already exists','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/event/addEvent.php?msg=$msg");
+            header("Location:../cms/view/event/add-event.php?msg=$msg");
             exit;
         }
 
 break;
 
 /**
- *  Get the Event details for Update class
+ *  Get the Event details for Update event
  **/
 
     case "Edit":
 
-    if(!$user)
-    {
-        $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
-    if(!$auth->checkPermissions(array(Role::MANAGE_EVENT)))
-    {
-        $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/event/index.php?msg=$msg");
-        exit;
-    }
+        if(!$auth->checkPermissions(array(Role::MANAGE_EVENT)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/event/index.php?msg=$msg");
+            exit;
+        }
 
-    $eventID = $_REQUEST['event_id'];
+        $eventID = $_REQUEST['event_id'];
 
-    if(!empty($eventID)){
-        //get class details
-        $dataSet = Event::getEventByID($eventID);
-        $eventData = $dataSet->fetch_assoc();
-        // var_dump($classData); exit;
+        if(!empty($eventID)){
+            //get event details
+            $dataSet = Event::getEventByID($eventID);
+            $eventData = $dataSet->fetch_assoc();
+            // var_dump($eventData); exit;
 
-        $_SESSION['eventData'] = $eventData;
+            $_SESSION['eventData'] = $eventData;
 
-        header("Location:../cms/view/event/updateEvent.php");
-        exit;
-    }else {
-        $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/event/index.php?msg=$msg");
-        exit;
-    }
+            header("Location:../cms/view/event/update-event.php");
+            exit;
+        }else {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/event/index.php?msg=$msg");
+            exit;
+        }
 
 break;
 
@@ -258,14 +257,13 @@ break;
 
     case "Update":
 
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::MANAGE_EVENT)))
         {
@@ -353,6 +351,8 @@ break;
             exit;
         }
 
+        $image=$_POST['image'];
+
         $tmp = $_FILES['avatar'];
         if(!empty($tmp['name'])){
             // print_r($tmp); exit;
@@ -395,10 +395,10 @@ break;
                 'venue' => $venue,
                 'start_time' => $startTime,
                 'end_time' => $endTime,
-                'img' => (!empty($imgName)) ? $imgName : NULL,
+                'img' => (!empty($imgName)) ? $imgName : $image,
                 'id' => $eventID
             ];
-             //update class
+             //update event
             $result=Event::updateEvent($dataAr);
             if($result == true){
                 $msg = json_encode(array('title'=>'Success :','message'=> 'Event has been updated','type'=>'success'));
@@ -427,14 +427,13 @@ break;
  */
     case "View":
 
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::VIEW_EVENT)))
         {
@@ -448,14 +447,14 @@ break;
 
         if(!empty($eventID)){
 
-            //get class details
+            //get event details
             $dataSet = Event::getEventByID($eventID);
             $eventData = $dataSet->fetch_assoc();
-            // var_dump($classData); exit;
+            // var_dump($eventData); exit;
 
             $_SESSION['eventData'] = $eventData;
 
-            header("Location:../cms/view/event/viewEvent.php");
+            header("Location:../cms/view/event/view-event.php");
             exit;
         }else {
             $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
@@ -472,92 +471,13 @@ break;
 
     case "Activate":
 
-    if(!$user)
-    {
-        $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
-    if(!$auth->checkPermissions(array(Role::MANAGE_EVENT)))
-    {
-        $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/event/index.php?msg=$msg");
-        exit;
-    }
-
-    $eventID=$_REQUEST['event_id'];
-
-    $response = Event::activateEvent($eventID);
-    if($response == true){
-        $msg = json_encode(array('title'=>'Success :','message'=> 'Event has been activated','type'=>'success'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/event/index.php?msg=$msg");
-        exit;
-    }else{
-        $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/event/index.php?msg=$msg");
-        exit;
-    }
-
-break;
-
-/**
- * Dectivate event
- */
-
-    case "Deactivate":
-
-    if(!$user)
-    {
-        $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
-    if(!$auth->checkPermissions(array(Role::MANAGE_EVENT)))
-    {
-        $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/event/index.php?msg=$msg");
-        exit;
-    }
-
-    $eventID=$_REQUEST['event_id'];
-
-    $response = Event::deactivateEvent($eventID);
-    if($response == true){
-        $msg = json_encode(array('title'=>'Success :','message'=> 'Event has been deactivated','type'=>'success'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/event/index.php?msg=$msg");
-        exit;
-    }else{
-        $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/event/index.php?msg=$msg");
-        exit;
-    }
-
-break;
-
-/**
- * Delete event
- */
-
-    case "Delete":
-
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::MANAGE_EVENT)))
         {
@@ -569,9 +489,9 @@ break;
 
         $eventID=$_REQUEST['event_id'];
 
-        $response = Event::deleteEvent($eventID);
+        $response = Event::activateEvent($eventID);
         if($response == true){
-            $msg = json_encode(array('title'=>'Success :','message'=> 'Class has been deleted','type'=>'success'));
+            $msg = json_encode(array('title'=>'Success :','message'=> 'Event has been activated','type'=>'success'));
             $msg = base64_encode($msg);
             header("Location:../cms/view/event/index.php?msg=$msg");
             exit;
@@ -585,28 +505,140 @@ break;
 break;
 
 /**
+ * Dectivate event
+ */
+
+    case "Deactivate":
+
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
+
+        if(!$auth->checkPermissions(array(Role::MANAGE_EVENT)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/event/index.php?msg=$msg");
+            exit;
+        }
+
+        $eventID=$_REQUEST['event_id'];
+
+        $response = Event::deactivateEvent($eventID);
+        if($response == true){
+            $msg = json_encode(array('title'=>'Success :','message'=> 'Event has been deactivated','type'=>'success'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/event/index.php?msg=$msg");
+            exit;
+        }else{
+            $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/event/index.php?msg=$msg");
+            exit;
+        }
+
+break;
+
+/**
+ * Delete event
+ */
+
+    case "Delete":
+
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
+
+        if(!$auth->checkPermissions(array(Role::MANAGE_EVENT)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/event/index.php?msg=$msg");
+            exit;
+        }
+
+        $eventID=$_REQUEST['event_id'];
+
+        $response = Event::deleteEvent($eventID);
+        if($response == true){
+            $msg = json_encode(array('title'=>'Success :','message'=> 'Event has been deleted','type'=>'success'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/event/index.php?msg=$msg");
+            exit;
+        }else{
+            $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/event/index.php?msg=$msg");
+            exit;
+        }
+
+break;
+
+      //check event name exists
+
+    case "checkEventName":
+
+        $eventName=$_REQUEST['event_title'];
+
+        $result = Event::checkEventName($eventName);
+
+        if($result == true){
+            echo(json_encode(true));
+        }else {
+            echo(json_encode(false));
+        }
+break;  
+
+        //check event name exists
+
+    case "checkUpdateEventName":
+
+        $eventID=$_REQUEST['event_id'];
+        $eventName=$_REQUEST['event_title'];
+
+        $result = Event::checkUpdateEventName($eventName,$eventID);
+
+        if($result == true){
+            echo(json_encode(true));
+        }else {
+            echo(json_encode(false));
+        }
+break;
+
+/**
  * Index actiton
  */
 
-        case "index":
+    case "index":
 
-            if(!$user)
-            {
-                $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-                $msg = base64_encode($msg);
-                header("Location:../cms/view/index/index.php?msg=$msg");
-                exit;
-            }
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
-            if(!$auth->checkPermissions(array(Role::MANAGE_EVENT, Role::VIEW_EVENT)))
-            {
-                $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
-                $msg = base64_encode($msg);
-                header("Location:../cms/view/dashboard/dashboard.php?msg=$msg");
-                exit;
-            }
+        if(!$auth->checkPermissions(array(Role::MANAGE_EVENT, Role::VIEW_EVENT)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/dashboard/dashboard.php?msg=$msg");
+            exit;
+        }
 
-            header("Location:../cms/view/event/");
+        header("Location:../cms/view/event/");
+
+break;
+
 }
 
 ?>

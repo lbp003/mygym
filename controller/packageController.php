@@ -20,23 +20,23 @@ switch ($status){
 
     case "Add":
 
-    if(!$user)
-    {
-        $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
-    if(!$auth->checkPermissions(array(Role::MANAGE_PACKAGE)))
-    {
-        $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/package/index.php?msg=$msg");
-        exit;
-    }
+        if(!$auth->checkPermissions(array(Role::MANAGE_PACKAGE)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/package/index.php?msg=$msg");
+            exit;
+        }
 
-    header("Location:../cms/view/package/addPackage.php");
+        header("Location:../cms/view/package/addPackage.php");
 
 break;
 
@@ -46,14 +46,13 @@ break;
 
     case "Insert":
 
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::MANAGE_PACKAGE)))
         {
@@ -190,40 +189,40 @@ break;
 
     case "Edit":
 
-    if(!$user)
-    {
-        $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
-    if(!$auth->checkPermissions(array(Role::MANAGE_PACKAGE)))
-    {
-        $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/package/index.php?msg=$msg");
-        exit;
-    }
+        if(!$auth->checkPermissions(array(Role::MANAGE_PACKAGE)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/package/index.php?msg=$msg");
+            exit;
+        }
 
-    $packageID = $_REQUEST['package_id'];
+        $packageID = $_REQUEST['package_id'];
 
-    if(!empty($packageID)){
-        //get class details
-        $dataSet = Package::getPackageByID($packageID);
-        $packData = $dataSet->fetch_assoc();
-        // var_dump($classData); exit;
+        if(!empty($packageID)){
+            //get class details
+            $dataSet = Package::getPackageByID($packageID);
+            $packData = $dataSet->fetch_assoc();
+            // var_dump($classData); exit;
 
-        $_SESSION['packData'] = $packData;
+            $_SESSION['packData'] = $packData;
 
-        header("Location:../cms/view/package/updatePackage.php");
-        exit;
-    }else {
-        $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/package/index.php?msg=$msg");
-        exit;
-    }
+            header("Location:../cms/view/package/updatePackage.php");
+            exit;
+        }else {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/package/index.php?msg=$msg");
+            exit;
+        }
 
 break;
 
@@ -372,14 +371,13 @@ break;
  */
     case "View":
 
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::VIEW_PACKAGE)))
         {
@@ -416,36 +414,36 @@ break;
 
     case "Activate":
 
-    if(!$user)
-    {
-        $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
-    if(!$auth->checkPermissions(array(Role::MANAGE_PACKAGE)))
-    {
-        $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/package/index.php?msg=$msg");
-        exit;
-    }
+        if(!$auth->checkPermissions(array(Role::MANAGE_PACKAGE)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/package/index.php?msg=$msg");
+            exit;
+        }
 
-    $packageID=$_REQUEST['package_id'];
+        $packageID=$_REQUEST['package_id'];
 
-    $response = Package::activatePackage($packageID);
-    if($response == true){
-        $msg = json_encode(array('title'=>'Success :','message'=> 'Package has been activated','type'=>'success'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/package/index.php?msg=$msg");
-        exit;
-    }else{
-        $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/package/index.php?msg=$msg");
-        exit;
-    }
+        $response = Package::activatePackage($packageID);
+        if($response == true){
+            $msg = json_encode(array('title'=>'Success :','message'=> 'Package has been activated','type'=>'success'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/package/index.php?msg=$msg");
+            exit;
+        }else{
+            $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/package/index.php?msg=$msg");
+            exit;
+        }
 
 break;
 
@@ -455,36 +453,36 @@ break;
 
     case "Deactivate":
 
-    if(!$user)
-    {
-        $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
-    if(!$auth->checkPermissions(array(Role::MANAGE_PACKAGE)))
-    {
-        $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/package/index.php?msg=$msg");
-        exit;
-    }
+        if(!$auth->checkPermissions(array(Role::MANAGE_PACKAGE)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/package/index.php?msg=$msg");
+            exit;
+        }
 
-    $packageID=$_REQUEST['package_id'];
+        $packageID=$_REQUEST['package_id'];
 
-    $response = Package::deactivatePackage($packageID);
-    if($response == true){
-        $msg = json_encode(array('title'=>'Success :','message'=> 'Package has been deactivated','type'=>'success'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/package/index.php?msg=$msg");
-        exit;
-    }else{
-        $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/package/index.php?msg=$msg");
-        exit;
-    }
+        $response = Package::deactivatePackage($packageID);
+        if($response == true){
+            $msg = json_encode(array('title'=>'Success :','message'=> 'Package has been deactivated','type'=>'success'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/package/index.php?msg=$msg");
+            exit;
+        }else{
+            $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/package/index.php?msg=$msg");
+            exit;
+        }
 
 break;
 
@@ -494,13 +492,13 @@ break;
 
     case "Delete":
 
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
 
         if(!$auth->checkPermissions(array(Role::MANAGE_PACKAGE)))
@@ -532,25 +530,27 @@ break;
  * Index actiton
  */
 
-        case "index":
+    case "index":
 
-            if(!$user)
-            {
-                $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-                $msg = base64_encode($msg);
-                header("Location:../cms/view/index/index.php?msg=$msg");
-                exit;
-            }
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
-            if(!$auth->checkPermissions(array(Role::MANAGE_PACKAGE, Role::VIEW_PACKAGE)))
-            {
-                $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
-                $msg = base64_encode($msg);
-                header("Location:../cms/view/dashboard/dashboard.php?msg=$msg");
-                exit;
-            }
+        if(!$auth->checkPermissions(array(Role::MANAGE_PACKAGE, Role::VIEW_PACKAGE)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/dashboard/dashboard.php?msg=$msg");
+            exit;
+        }
 
-            header("Location:../cms/view/package/");
+        header("Location:../cms/view/package/");
+
+break;
 }
 
 ?>

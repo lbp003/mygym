@@ -1,9 +1,6 @@
 <!--- header  ---->
 <?php
 include '../../layout/header.php'; ?>
-<?php 
-    $eventData = $_SESSION['eventData'];
-?>
 <body>
     <!---navbar starting ---------->
     <?php include '../../layout/navBar.php';?> 
@@ -13,13 +10,13 @@ include '../../layout/header.php'; ?>
     <ol class="breadcrumb">
         <li class="breadcrumb-item" aria-current="page"><a href="../dashboard/dashboard.php">Home</a></li>
         <li class="breadcrumb-item" aria-current="page"><a href="index.php">Event</a></li>
-        <li class="breadcrumb-item active" aria-current="page"><a href="#">Update Event</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="#">Add Event</a></li>
     </ol>
     </nav>
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <form method="post" id="updateEvent" name="updateEvent" action="../../../controller/eventController.php?status=Update" enctype="multipart/form-data">
+                <form method="post" id="addEvent" name="addEvent" action="../../../controller/eventController.php?status=Insert" enctype="multipart/form-data">
                 <div class="d-flex flex-wrap">
                     <div class="form-group col-6" style="text-align:center">
                         <div class="kv-avatar">
@@ -30,30 +27,29 @@ include '../../layout/header.php'; ?>
                     </div>
                     <div class="form-group col-6">
                         <label for="event_title">Event Title</label>
-                        <input type="text" class="form-control" id="event_title" name="event_title" aria-describedby="event_title" value="<?php echo $eventData['event_title'];?>">
+                        <input type="text" class="form-control" id="event_title" name="event_title" aria-describedby="event_title" placeholder="Event Title" required>
                     </div>
                     <div class="form-group col-6">
                         <label for="date">Date</label>
-                        <input type="text" class="form-control" id="date" name="date" aria-describedby="date" value="<?php echo $eventData['event_date'];?>" autocomplete="off">
+                        <input type="text" class="form-control" id="date" name="date" aria-describedby="date" autocomplete="off">
                     </div>           
                     <div class="form-group col-6">
                         <label for="start_time">Start Time</label>
-                        <input type="time" class="form-control" id="start_time" name="start_time" aria-describedby="start_time" value="<?php echo date('H:i', strtotime($eventData['start_time']));?>">
+                        <input type="time" class="form-control" id="start_time" name="start_time" aria-describedby="start_time">
                     </div>
                     <div class="form-group col-6">
                         <label for="end_time">End Time</label>
-                        <input type="time" class="form-control" id="end_time" name="end_time" aria-describedby="end_time" value="<?php echo date('H:i', strtotime($eventData['end_time']));?>">
+                        <input type="time" class="form-control" id="end_time" name="end_time" aria-describedby="end_time">
                     </div>
                     <div class="form-group col-6">
                         <label for="venue">Venue</label>
-                        <input type="text" class="form-control" id="venue" name="venue" aria-describedby="venue" value="<?php echo $eventData['event_venue'];?>">
+                        <input type="text" class="form-control" id="venue" name="venue" aria-describedby="venue" placeholder="Venue">
                     </div>
                     <div class="form-group col-6">
                         <label for="description">Description</label>
-                        <textarea class="form-control" id="description" name="description" rows="3"><?php echo $eventData['event_description'];?></textarea>
+                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
                     </div>
                     <div class="col-12">
-                        <input type="hidden" id="event_id" name="event_id" value="<?php echo $eventData['event_id'];?>">   
                         <button type="submit" class="btn btn-primary mb-2 float-right">Submit</button>
                     </div>
                 </div>
@@ -71,27 +67,18 @@ include '../../layout/header.php'; ?>
         var today = new Date().toISOString().split('T')[0];
 
         // Form validation
-        $('#updateEvent').validate({
+        $('#addEvent').validate({
             rules: {
                 venue: "required",
                 date: {
                     required: true,
                     date: true,
-                    // min: today
-                    },  
-                // event_title: {
-				// 	required: true,
-				// 	event_title: true,
-                //     remote: {
-                //         url: '../../../controller/classSessionController.php?status=checkSessionName',
-                //         type: 'post',
-                //         data: {
-                //             event_title: function(){
-                //                 return $("#event_title").val();
-                //             }
-                //         }
-                //     }
-				// },
+                    min: today
+                    }, 
+                event_title: {
+					required: true,
+                    remote: "../../../controller/eventController.php?status=checkEventName"
+				},
                 description: "required"
             },
             messages: {
@@ -103,7 +90,7 @@ include '../../layout/header.php'; ?>
                 },
                 event_title: {
                     required: "Please enter Event Title",
-                    remote: function() { return $.validator.format("{0} is already taken", $("#event_title").val()) }
+                    remote: "Event title is already exists"
                 },
                 description: {
                     required: "Please enter description"
@@ -111,17 +98,12 @@ include '../../layout/header.php'; ?>
             }
         });
 
-        <?php 
-            if(!empty($eventData['image'])){ ?>
-                var path = "<?php echo "../../../".PATH_IMAGE.PATH_EVENT_IMAGE.$eventData['image']; ?>";   
-                // console.log(path);
-        <?php } ?>
-
         // file input plugin
         $("#avatar").fileinput({
             overwriteInitial: true,
             maxFileSize: 1500,
             showClose: false,
+            showPreview: true,
             showCaption: false,
             showBrowse: false,
             browseOnZoneClick: true,
@@ -130,7 +112,7 @@ include '../../layout/header.php'; ?>
             removeTitle: 'Cancel or reset changes',
             elErrorContainer: '#kv-avatar-errors-2',
             msgErrorClass: 'alert alert-block alert-danger',
-            defaultPreviewContent: '<?php if(!empty($eventData['image'])){ ?><img src="'+ path +'" width="100" height="auto" class="img-responsive img-thumbnail" /> <?php }else{ ?> <i class="fas fa-calendar-check fa-7x"></i> <?php } ?>',
+            defaultPreviewContent: '<i class="far fa-image fa-5x"></i>',
             layoutTemplates: {main2: '{preview} {remove} {browse}'},
             allowedFileExtensions: ["jpg", "png", "gif", "jpeg"],
             minFileCount : 0,
@@ -138,11 +120,10 @@ include '../../layout/header.php'; ?>
             showUpload: true,
             previewFileType: 'any',
             initialPreviewFileType: 'image',
-            minImageWidth: 345,
-            minImageHeight: 230,
             maxImageWidth: 800,
             maxImageHeight: 530,
-            resizeImage: true
+            minImageWidth: 350,
+            minImageHeight: 263
         });
 
         $( "#date" ).datepicker({

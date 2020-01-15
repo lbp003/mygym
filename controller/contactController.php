@@ -136,7 +136,7 @@ break;
 
             if(!$user)
             {
-                $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
+                $msg = SESSION_TIMED_OUT;
                 $msg = base64_encode($msg);
                 header("Location:../cms/view/index/index.php?msg=$msg");
                 exit;

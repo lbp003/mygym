@@ -161,4 +161,7 @@ break;
             $_SESSION['memberList'] = $memberListAr;
 
             header("Location:../cms/view/contact/");
+
+break;
+
 }

@@ -20,33 +20,33 @@ switch ($status){
 
     case "Add":
 
-    if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
-    if(!$auth->checkPermissions(array(Role::MANAGE_WORKOUT)))
-    {
-        $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/exercise/index.php?msg=$msg");
-        exit;
-    }
+        if(!$auth->checkPermissions(array(Role::MANAGE_WORKOUT)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/exercise/index.php?msg=$msg");
+            exit;
+        }
 
-    //get anatomy list
-    $dataSet = Exercise::getAllAnatomy();
-    $anatomyAr = [];
-    while($row = $dataSet->fetch_assoc())
-    {
-        $anatomyAr[$row['anatomy_id']] = $row['anatomy_name'];
-    }
+        //get anatomy list
+        $dataSet = Exercise::getAllAnatomy();
+        $anatomyAr = [];
+        while($row = $dataSet->fetch_assoc())
+        {
+            $anatomyAr[$row['anatomy_id']] = $row['anatomy_name'];
+        }
 
-    $_SESSION['anatomyData'] = $anatomyAr;
+        $_SESSION['anatomyData'] = $anatomyAr;
 
-    header("Location:../cms/view/exercise/addExercise.php");
+        header("Location:../cms/view/exercise/add-exercise.php");
 
 
 break;
@@ -57,14 +57,13 @@ break;
     
     case "Insert":
 
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::MANAGE_WORKOUT)))
         {
@@ -79,7 +78,7 @@ break;
         if (empty($exerciseName)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Exercise Name can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/exercise/addExercise.php?msg=$msg");
+            header("Location:../cms/view/exercise/add-exercise.php?msg=$msg");
             exit;
         }
         $anatomy=$_POST['anatomy'];
@@ -87,7 +86,7 @@ break;
         if (empty($anatomy)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Anatomy can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/exercise/addExercise.php?msg=$msg");
+            header("Location:../cms/view/exercise/add-exercise.php?msg=$msg");
             exit;
         }
        
@@ -107,13 +106,13 @@ break;
             }else{
                 $msg = json_encode(array('title'=>'Danger','message'=> 'Failed to add the exercise','type'=>'danger'));
                 $msg = base64_encode($msg);
-                header("Location:../cms/view/exercise/addExercise.php?msg=$msg");
+                header("Location:../cms/view/exercise/add-exercise.php?msg=$msg");
                 exit;  
             }                  
         }else{
             $msg = json_encode(array('title'=>'Warning','message'=> 'Exercise name already exists','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/exercise/addExercise.php?msg=$msg");
+            header("Location:../cms/view/exercise/add-exercise.php?msg=$msg");
             exit;
         }    
                 
@@ -125,48 +124,48 @@ break;
 
     case "Edit":
 
-    if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
-    if(!$auth->checkPermissions(array(Role::MANAGE_WORKOUT)))
-    {
-        $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/exercise/index.php?msg=$msg");
-        exit;
-    }
-
-    $exerciseID = $_REQUEST['exercise_id'];
-
-    if(!empty($exerciseID)){
-        //get exercise details
-        $dataSet = Exercise::getExerciseByID($exerciseID);       
-        $excData = $dataSet->fetch_assoc();
-
-         //get anatomy list
-        $dataSet = Exercise::getAllAnatomy();
-        $anatomyAr = [];
-        while($row = $dataSet->fetch_assoc())
+        if(!$user)
         {
-            $anatomyAr[$row['anatomy_id']] = $row['anatomy_name'];
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
         }
 
-        $_SESSION['anatomyData'] = $anatomyAr;
-        $_SESSION['excData'] = $excData;
+        if(!$auth->checkPermissions(array(Role::MANAGE_WORKOUT)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/exercise/index.php?msg=$msg");
+            exit;
+        }
 
-        header("Location:../cms/view/exercise/updateExercise.php");
-        exit;
-    }else {
-        $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/exercise/index.php?msg=$msg");
-        exit;
-    }
+        $exerciseID = $_REQUEST['exercise_id'];
+
+        if(!empty($exerciseID)){
+            //get exercise details
+            $dataSet = Exercise::getExerciseByID($exerciseID);       
+            $excData = $dataSet->fetch_assoc();
+
+            //get anatomy list
+            $dataSet = Exercise::getAllAnatomy();
+            $anatomyAr = [];
+            while($row = $dataSet->fetch_assoc())
+            {
+                $anatomyAr[$row['anatomy_id']] = $row['anatomy_name'];
+            }
+
+            $_SESSION['anatomyData'] = $anatomyAr;
+            $_SESSION['excData'] = $excData;
+
+            header("Location:../cms/view/exercise/update-exercise.php");
+            exit;
+        }else {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/exercise/index.php?msg=$msg");
+            exit;
+        }
 
 break;
 
@@ -176,14 +175,13 @@ break;
 
     case "Update":
     
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::MANAGE_WORKOUT)))
         {
@@ -200,7 +198,7 @@ break;
         if (empty($exerciseName)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Exercise Name can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/exercise/updateExercise.php?msg=$msg");
+            header("Location:../cms/view/exercise/update-exercise.php?msg=$msg");
             exit;
         }
         $anatomy=$_POST['anatomy'];
@@ -208,7 +206,7 @@ break;
         if (empty($anatomy)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Anatomy can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/exercise/updateExercise.php?msg=$msg");
+            header("Location:../cms/view/exercise/update-exercise.php?msg=$msg");
             exit;
         }
        
@@ -230,7 +228,7 @@ break;
             }else {
                 $msg = json_encode(array('title'=>'Warning :','message'=> 'Update failed','type'=>'danger'));
                 $msg = base64_encode($msg);
-                header("Location:../cms/view/exercise/updateExercise.php?msg=$msg");
+                header("Location:../cms/view/exercise/update-exercise.php?msg=$msg");
                 exit;
             }
     
@@ -238,7 +236,7 @@ break;
         }else {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Exercise name already exists','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/exercise/updateExercise.php?msg=$msg");
+            header("Location:../cms/view/exercise/update-exercise.php?msg=$msg");
             exit;
         }
             
@@ -249,14 +247,13 @@ break;
  */ 
     case "View":
             
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::VIEW_WORKOUT)))
         {
@@ -275,7 +272,7 @@ break;
 
             $_SESSION['excData'] = $excData;
 
-            header("Location:../cms/view/exercise/viewExercise.php");
+            header("Location:../cms/view/exercise/view-exercise.php");
             exit;
         }else {
             $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
@@ -292,36 +289,36 @@ break;
 
     case "Activate":
         
-    if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-    
-    if(!$auth->checkPermissions(array(Role::MANAGE_WORKOUT)))
-    {
-        $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/exercise/index.php?msg=$msg");
-        exit;
-    }
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
+        
+        if(!$auth->checkPermissions(array(Role::MANAGE_WORKOUT)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/exercise/index.php?msg=$msg");
+            exit;
+        }
 
-    $exerciseID=$_REQUEST['exercise_id'];
+        $exerciseID=$_REQUEST['exercise_id'];
 
-    $response = Exercise::activateExercise($exerciseID);
-    if($response == true){
-        $msg = json_encode(array('title'=>'Success :','message'=> 'Exercise has been activated','type'=>'success'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/exercise/index.php?msg=$msg");
-        exit;
-    }else{
-        $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/exercise/index.php?msg=$msg");
-        exit;
-    }  
+        $response = Exercise::activateExercise($exerciseID);
+        if($response == true){
+            $msg = json_encode(array('title'=>'Success :','message'=> 'Exercise has been activated','type'=>'success'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/exercise/index.php?msg=$msg");
+            exit;
+        }else{
+            $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/exercise/index.php?msg=$msg");
+            exit;
+        }  
 
 break;
 
@@ -331,36 +328,36 @@ break;
 
     case "Deactivate":
         
-    if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-    
-    if(!$auth->checkPermissions(array(Role::MANAGE_WORKOUT)))
-    {
-        $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/exercise/index.php?msg=$msg");
-        exit;
-    }
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
+        
+        if(!$auth->checkPermissions(array(Role::MANAGE_WORKOUT)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/exercise/index.php?msg=$msg");
+            exit;
+        }
 
-    $exerciseID=$_REQUEST['exercise_id'];
+        $exerciseID=$_REQUEST['exercise_id'];
 
-    $response = Exercise::deactivateExercise($exerciseID);
-    if($response == true){
-        $msg = json_encode(array('title'=>'Success :','message'=> 'Exercise has been deactivated','type'=>'success'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/exercise/index.php?msg=$msg");
-        exit;
-    }else{
-        $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/exercise/index.php?msg=$msg");
-        exit;
-    }
+        $response = Exercise::deactivateExercise($exerciseID);
+        if($response == true){
+            $msg = json_encode(array('title'=>'Success :','message'=> 'Exercise has been deactivated','type'=>'success'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/exercise/index.php?msg=$msg");
+            exit;
+        }else{
+            $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/exercise/index.php?msg=$msg");
+            exit;
+        }
         
 break;
 
@@ -370,14 +367,13 @@ break;
 
     case "Delete":
 
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::MANAGE_WORKOUT)))
         {
@@ -410,14 +406,13 @@ break;
 
     case "index":
 
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::MANAGE_WORKOUT, Role::VIEW_WORKOUT)))
         {
@@ -428,6 +423,9 @@ break;
         }
 
         header("Location:../cms/view/exercise/");
+
+break;
+
 }
 
 ?>

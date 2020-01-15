@@ -518,6 +518,9 @@ break;
         }
 
         header("Location:../cms/view/equipment/");
+
+break;
+
 }
 
 ?>

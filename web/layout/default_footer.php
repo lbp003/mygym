@@ -7,6 +7,14 @@
             </div>
         </div>
     </footer>
+     <!--CSS Spinner-->
+    <!-- https://tobiasahlin.com/spinkit/ -->
+    <div class="spinner-wrapper">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div> 
     <!-- jquery -->
     <script src="../../../public/plugin/jquery/jquery-3.4.1.min.js"></script>
     <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
@@ -62,6 +70,15 @@
 
     <script type="text/javascript">
         $( document ).ready(function() {
+
+            //Preloader
+            preloaderFadeOutTime = 1000;
+            function hidePreloader() {
+            var preloader = $('.spinner-wrapper');
+            preloader.fadeOut(preloaderFadeOutTime);
+            }
+            hidePreloader();
+
             $(function () {
             $('[data-toggle="tooltip"]').tooltip()
             })

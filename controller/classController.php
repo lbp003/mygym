@@ -528,6 +528,9 @@ break;
         }
 
         header("Location:../cms/view/class/");
+
+break;
+
 }
 
 ?>

@@ -30,7 +30,7 @@ include '../../layout/header.php'; ?>
                     <div class="form-group col-6">
                         <label for="anatomy">Anatomy</label>
                         <select id="anatomy" name="anatomy" class="form-control">
-                            <option selected>Choose...</option>
+                            <option value="" selected>Choose...</option>
                             <?php foreach($anatomyData as $key => $val){?>
                                 <option value="<?php echo $key?>"><?php echo $val?></option>
                             <?php } ?>

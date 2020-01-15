@@ -582,6 +582,9 @@ break;
             }
 
             header("Location:../cms/view/class-session/");
+
+break;
+
 }
 
 ?>

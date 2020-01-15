@@ -72,5 +72,8 @@ break;
         }
 
         header("Location:../cms/view/backup/");
+
+break;
+
 }
 ?>

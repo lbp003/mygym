@@ -147,18 +147,6 @@
                 <?php } ?>
             </div>
             <div class="col-3">
-                <?php if($auth->checkPermissions([Role::VIEW_MEMBER_LOGIN_LOG, Role::VIEW_STAFF_LOGIN_LOG])){ ?>
-                    <div class="mb-3">
-                        <div class="card align-items-center border-dark" style="width: 100%;">
-                        <i class="fas fa-map-marker fa-5x dash-icon-color"></i>
-                        <div class="card-body">
-                            <a href="../../../controller/logController.php?status=index"><h5 class="card-title">LOG</h5></a>
-                        </div>
-                        </div>
-                    </div>          
-                <?php } ?>
-            </div>
-            <div class="col-3">
                 <?php if($auth->checkPermissions([Role::MANAGE_BACKUP])){ ?>
                     <div class="mb-3">
                         <div class="card align-items-center border-dark" style="width: 100%;">

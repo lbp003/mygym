@@ -134,7 +134,19 @@
                         </div>
                     </div>
                 <?php } ?>
-            </div>     
+            </div>  
+            <div class="col-3">
+                <?php if($auth->checkPermissions([Role::VIEW_MEMBER_LOGIN_LOG, Role::VIEW_STAFF_LOGIN_LOG])){ ?>
+                    <div class="mb-3">
+                        <div class="card align-items-center" style="width: 100%;">
+                        <i class="fas fa-map-marker fa-5x dash-icon-color"></i>
+                        <div class="card-body">
+                            <a href="../../../controller/reportController.php?status=log"><h6 class="card-title">USER LOGIN REPORT</h6></a>
+                        </div>
+                        </div>
+                    </div>          
+                <?php } ?>
+            </div>   
         </div>
     </div>
     <?php include_once '../../layout/footer.php';?>

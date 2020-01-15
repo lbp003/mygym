@@ -65,10 +65,10 @@ switch ($status){
         $pacID = base64_encode($packageID);
 
         if($graceDate >= $today){
-            header("Location:../cms/view/subscription/renewMembership.php?subID=$subID&memID=$memID&pacID=$pacID");
+            header("Location:../cms/view/subscription/renew-membership.php?subID=$subID&memID=$memID&pacID=$pacID");
             exit;
         }else{
-            header("Location:../cms/view/subscription/reactivateMembership.php?subID=$subID&memID=$memID&pacID=$pacID");
+            header("Location:../cms/view/subscription/reactivate-membership.php?subID=$subID&memID=$memID&pacID=$pacID");
             exit;
         }
         
@@ -103,7 +103,7 @@ break;
         if (empty($packageID)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Package can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/subscription/reactivateMembership.php?msg=$msg");
+            header("Location:../cms/view/subscription/reactivate-membership.php?msg=$msg");
             exit;
         }
         $method = Subscription::CASH;
@@ -152,7 +152,7 @@ break;
         if (empty($packageID)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Package can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/subscription/renewMembership.php?msg=$msg");
+            header("Location:../cms/view/subscription/renew-membership.php?msg=$msg");
             exit;
         }
 
@@ -160,7 +160,7 @@ break;
         if (empty($payMethod)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Please select a payment method','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/subscription/renewMembership.php?msg=$msg");
+            header("Location:../cms/view/subscription/renew-membership.php?msg=$msg");
             exit;
         }
 
@@ -464,7 +464,7 @@ break;
 
         $_SESSION['subscriptionData'] = $subscriptionData;
 
-        header("Location:../cms/view/subscription/viewSubscription.php");
+        header("Location:../cms/view/subscription/view-subscription.php");
         exit;
 break;
 

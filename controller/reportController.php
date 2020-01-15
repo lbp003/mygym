@@ -344,6 +344,32 @@ break;
             
 break;
 
+    /**
+     * Redirect to User log reports
+    */ 
+    case "log":
+
+        if(!$user)
+    {
+        $msg = SESSION_TIMED_OUT;
+        $msg = base64_encode($msg);
+        header("Location:../cms/view/index/index.php?msg=$msg");
+        exit;
+    }
+
+
+    if(!$auth->checkPermissions(array(Role::VIEW_STAFF_LOGIN_LOG, Role::VIEW_MEMBER_LOGIN_LOG)))
+    {
+        $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+        $msg = base64_encode($msg);
+        header("Location:../cms/view/report/index.php?msg=$msg");
+        exit;
+    }
+
+    header("Location:../cms/view/report/user-login-report.php");
+
+break;
+
 /**
  * Index actiton
  */

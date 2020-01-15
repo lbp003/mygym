@@ -38,7 +38,7 @@ include '../../layout/header.php'; ?>
                         <input type="text" class="form-control" id="fee" name="fee" aria-describedby="fee" value="<?php echo $packData['fee'];?>" readonly>
                     </div>
                     <div class="form-group col-6">
-                        <label for="duration">Duration</label>
+                        <label for="duration">Duration (Months)</label>
                         <input type="number" class="form-control" id="duration" name="duration" aria-describedby="duration" value="<?php echo $packData['duration'];?>" readonly>
                     </div>
                     <div class="form-group col-6">

@@ -504,7 +504,8 @@ break;
             }else {
                 echo(json_encode(false));
             }
-    break;  
+break;  
+
 /**
  * Index actiton
  */

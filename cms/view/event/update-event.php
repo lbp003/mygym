@@ -37,11 +37,11 @@ include '../../layout/header.php'; ?>
                         <input type="text" class="form-control" id="date" name="date" aria-describedby="date" value="<?php echo $eventData['event_date'];?>" autocomplete="off">
                     </div>           
                     <div class="form-group col-6">
-                        <label for="start_time">Start Time</label>
+                        <label for="start_time">Start Time (in 24H)</label>
                         <input type="time" class="form-control" id="start_time" name="start_time" aria-describedby="start_time" value="<?php echo date('H:i', strtotime($eventData['start_time']));?>">
                     </div>
                     <div class="form-group col-6">
-                        <label for="end_time">End Time</label>
+                        <label for="end_time">End Time (in 24H)</label>
                         <input type="time" class="form-control" id="end_time" name="end_time" aria-describedby="end_time" value="<?php echo date('H:i', strtotime($eventData['end_time']));?>">
                     </div>
                     <div class="form-group col-6">

@@ -36,7 +36,7 @@ switch ($status){
             exit;
         }
 
-        header("Location:../cms/view/package/addPackage.php");
+        header("Location:../cms/view/package/add-package.php");
 
 break;
 
@@ -67,7 +67,7 @@ break;
         if (empty($packageName)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Package Name can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/package/addPackage.php?msg=$msg");
+            header("Location:../cms/view/package/add-package.php?msg=$msg");
             exit;
         }
 
@@ -76,14 +76,14 @@ break;
         if (empty($fee)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Package fee can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/package/addPackage.php?msg=$msg");
+            header("Location:../cms/view/package/add-package.php?msg=$msg");
             exit;
         }
 
         if (!is_numeric($fee)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Fee should be a numeric value','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/package/addPackage.php?msg=$msg");
+            header("Location:../cms/view/package/add-package.php?msg=$msg");
             exit;
         }
 
@@ -92,14 +92,14 @@ break;
         if (empty($duration)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Duration can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/package/addPackage.php?msg=$msg");
+            header("Location:../cms/view/package/add-package.php?msg=$msg");
             exit;
         }
 
         if (!is_numeric($duration) || $duration > 12) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Duration must be numeric and less or equal to 12','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/package/addPackage.php?msg=$msg");
+            header("Location:../cms/view/package/add-package.php?msg=$msg");
             exit;
         }
 
@@ -108,7 +108,7 @@ break;
         if (empty($description)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Description can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/package/addPackage.php?msg=$msg");
+            header("Location:../cms/view/package/add-package.php?msg=$msg");
             exit;
         }
 
@@ -171,13 +171,13 @@ break;
             }else{
                 $msg = json_encode(array('title'=>'Danger','message'=> 'Failed to add the Package','type'=>'danger'));
                 $msg = base64_encode($msg);
-                header("Location:../cms/view/package/addPackage.php?msg=$msg");
+                header("Location:../cms/view/package/add-package.php?msg=$msg");
                 exit;
             }
         }else{
             $msg = json_encode(array('title'=>'Warning','message'=> 'Package name already exists','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/package/addPackage.php?msg=$msg");
+            header("Location:../cms/view/package/add-package.php?msg=$msg");
             exit;
         }
 
@@ -215,7 +215,7 @@ break;
 
             $_SESSION['packData'] = $packData;
 
-            header("Location:../cms/view/package/updatePackage.php");
+            header("Location:../cms/view/package/update-package.php");
             exit;
         }else {
             $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
@@ -256,7 +256,7 @@ break;
         if (empty($packageName)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Package Name can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/package/updatePackage.php?msg=$msg");
+            header("Location:../cms/view/package/update-package.php?msg=$msg");
             exit;
         }
 
@@ -265,14 +265,14 @@ break;
         if (empty($fee)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Package fee can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/package/updatePackage.php?msg=$msg");
+            header("Location:../cms/view/package/update-package.php?msg=$msg");
             exit;
         }
 
         if (!is_numeric($fee)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Fee should be a numeric value','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/package/updatePackage.php?msg=$msg");
+            header("Location:../cms/view/package/update-package.php?msg=$msg");
             exit;
         }
 
@@ -281,14 +281,14 @@ break;
         if (empty($duration)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Duration can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/package/updatePackage.php?msg=$msg");
+            header("Location:../cms/view/package/update-package.php?msg=$msg");
             exit;
         }
 
         if (!is_numeric($duration) || $duration > 12) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Duration must be numeric and less or equal to 12','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/package/updatePackage.php?msg=$msg");
+            header("Location:../cms/view/package/update-package.php?msg=$msg");
             exit;
         }
 
@@ -297,9 +297,11 @@ break;
         if (empty($description)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Description can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/package/updatePackage.php?msg=$msg");
+            header("Location:../cms/view/package/update-package.php?msg=$msg");
             exit;
         }
+
+        $image=$_POST['image'];
 
         $tmp = $_FILES['avatar'];
         if(!empty($tmp['name'])){
@@ -341,7 +343,7 @@ break;
                 'fee' => $fee,
                 'description' => $description,
                 'duration' => $duration,
-                'img' => (!empty($imgName)) ? $imgName : NULL,
+                'img' => (!empty($imgName)) ? $imgName : $image,
                 'id' => $packageID
             ];
              //update class
@@ -354,13 +356,13 @@ break;
             }else {
                 $msg = json_encode(array('title'=>'Warning :','message'=> 'Update failed','type'=>'danger'));
                 $msg = base64_encode($msg);
-                header("Location:../cms/view/package/updatePackage.php?msg=$msg");
+                header("Location:../cms/view/package/update-package.php?msg=$msg");
                 exit;
             }
         }else {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Package name already exists','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/package/updatePackage.php?msg=$msg");
+            header("Location:../cms/view/package/update-package.php?msg=$msg");
             exit;
         }
 
@@ -397,7 +399,7 @@ break;
 
             $_SESSION['packData'] = $packData;
 
-            header("Location:../cms/view/package/viewPackage.php");
+            header("Location:../cms/view/package/view-package.php");
             exit;
         }else {
             $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
@@ -524,6 +526,37 @@ break;
             exit;
         }
 
+break;
+
+    //check class name exists
+
+    case "checkPackageName":
+
+        $packageName=$_REQUEST['package_name'];
+
+        $result = Package::checkPackageName($packageName);
+
+        if($result == true){
+            echo(json_encode(true));
+        }else {
+            echo(json_encode(false));
+        }
+break;  
+
+    //check package name exists
+
+    case "checkUpdatePackageName":
+
+        $packageID=$_REQUEST['package_id'];
+        $packageName=$_REQUEST['package_name'];
+
+        $result = Package::checkUpdatePackageName($packageName,$packageID);
+
+        if($result == true){
+            echo(json_encode(true));
+        }else {
+            echo(json_encode(false));
+        }
 break;
 
 /**

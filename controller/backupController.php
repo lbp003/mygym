@@ -35,7 +35,7 @@ switch ($status){
         }
 
         try {
-            $dump = new IMysqldump\Mysqldump('mysql:host=localhost;dbname=mygym', 'root', '');
+            $dump = new IMysqldump\Mysqldump('mysql:host=localhost;dbname=mygym', 'root', 'root');
             $dump->start('../public/db/dump.sql');
 
             $msg = json_encode(array('title'=>'Success','message'=>'Database backup successful','type'=>'success'));

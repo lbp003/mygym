@@ -25,7 +25,7 @@ $allPackage = Package::displayAllPackage();
                     <th>&nbsp;</th>
                     <th>Package Name</th>
                     <th>Fee (LKR)</th>
-                    <th>Duration</th>
+                    <th>Duration (Months)</th>
                     <th>Status</th>
                     <th>&nbsp;</th>
                 </tr>

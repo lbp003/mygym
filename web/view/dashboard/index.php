@@ -37,7 +37,7 @@
     <div class="container">
         <div class="row">   
             <div class="col-12 d-flex flex-row">
-                <div class="col-3">
+                <div class="col-3 text-center">
                     <h3>BMI</h3>
                     <p>Your BMI:</p>
                     <div id="result"></div>
@@ -88,6 +88,12 @@
         <div class="row">
             <div class="col-12 d-flex flex-row">
                 <div class="col-6">
+                    <h3 class="text-center" style="margin-top: 50%;">Body Fat Percentage (%)</h3>
+                    <p class="text-center">Your Body Fat:</p>
+                    <div class="text-center" id="resultbf"></div>
+                    <div class="text-center" id="bf_status"></div>
+                </div>
+                <div class="col-6">
                     <h3 class="text-uppercase">Check Your Body Fat</h3>
                     <small>Measure the following skinfolds (in millimeters) with body fat calipers:</small>
                     <form method="post" id="bfrm" action="#"  enctype="multipart/form-data">
@@ -128,12 +134,6 @@
                         <button id="cte" class="btn btn-primary">Calculate</button>          
                         <button type="submit" id="bfSave" class="btn btn-success" onclick="saveBodyFat()">Save</button>                    
                     </form>
-                </div>
-                <div class="col-6">
-                    <h3 class="text-center" style="margin-top: 50%;">Body Fat Percentage (%)</h3>
-                    <p class="text-center">Your Body Fat:</p>
-                    <div class="text-center" id="resultbf"></div>
-                    <div class="text-center" id="bf_status"></div>
                 </div>
             </div>
         </div>

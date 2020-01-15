@@ -24,6 +24,19 @@ $allSubscription = Subscription::displayAllPaymentHistory();
             </div>
         </div>
     </div>
+    <div  class="container">
+        <div class="row">
+            <div class="col-12 d-flex flex-row">
+                <div class="col-6">
+                    <div id="container1"></div>
+                </div>
+                <div class="col-6">
+                    <div id="container2"></div>
+                </div>
+            </div>
+            <hr />
+        </div>
+    </div>
     <div class="container">
     <table cellpadding="0" cellspacing="0" border="0" style="width: 50%; margin: 0 auto 2em auto; border-spacing: 5px; border-collapse: separate;">
             <tbody>
@@ -104,6 +117,8 @@ $allSubscription = Subscription::displayAllPaymentHistory();
 var web = [];
 var cash = [];
 var momo = [];
+var webSum = [];
+var cashSum = [];
 
 function getPaymentData(){
     $.ajax({
@@ -139,7 +154,7 @@ function drawChart(momo,web,cash){
                 type: 'column'
             },
             title: {
-                text: 'Completed Payments'
+                text: 'Completed Payment Count'
             },
             xAxis: {
                 categories: momo
@@ -147,7 +162,7 @@ function drawChart(momo,web,cash){
             yAxis: {
                 min: 0,
                 title: {
-                    text: 'Total Amount of members'
+                    text: 'Total Count of members'
                 },
                 stackLabels: {
                     enabled: true,
@@ -189,10 +204,120 @@ function drawChart(momo,web,cash){
                 data: web
             }, {
                 name: 'Cash',
+                color: '#00ff00',
                 data: cash
             }]
         });
-}
+    }
+
+    function getRevenueData(){
+        $.ajax({
+            type: "POST",
+            url: '../../../controller/reportController.php?status=revenueData',
+            success: function (returnJSON) {
+                try {
+                    var JSON = jQuery.parseJSON(returnJSON);
+                    
+                    if (JSON.Result) {
+                        momo = JSON.Data.xAxis;
+                        webSum = JSON.Data.web.map(Number);
+                        console.log(webSum);
+                        cashSum = JSON.Data.cash.map(Number);
+
+                        drawRevenueChart(momo,webSum,cashSum);
+
+                    } else {
+                        showStatusMessage('Danger','Unknown error occured.','danger');
+                    }
+                } catch (e) {
+                    showStatusMessage('Danger','Unknown error occured.','danger');
+                }
+            },
+            error: function () {
+                showStatusMessage('Danger','Unknown error occured.','danger');
+            }
+        });
+    } 
+
+    //revenue chart
+    function drawRevenueChart(momo,webSum,cashSum){
+        Highcharts.chart('container1', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Online Payments Monthly Revenue (USD)'
+            },
+            xAxis: {
+                categories: momo,
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Total Amount (USD)'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Online',
+                data: webSum
+
+            }]
+        });
+
+        Highcharts.chart('container2', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Cash Payments Monthly Revenue (LKR)'
+            },
+            xAxis: {
+                categories: momo,
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Total Amount (LKR)'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Cash',
+                color: '#00ff00',
+                data: cashSum
+
+            }]
+        });
+    }
 
  // https://jsfiddle.net/bindrid/2bkbx2y3/6/
     $.fn.dataTable.ext.search.push(
@@ -211,6 +336,7 @@ function drawChart(momo,web,cash){
     $(document).ready(function() {
 
     getPaymentData();
+    getRevenueData();
 
       var table = $('#example').DataTable( {
             dom: 'Bfrtip',

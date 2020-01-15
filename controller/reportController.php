@@ -344,6 +344,31 @@ break;
             
 break;
 
+    case "revenueData":
+
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
+
+        if(!$auth->checkPermissions(array(Role::MANAGE_REPORT, Role::VIEW_REPORT)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/report/index.php?msg=$msg");         
+            exit;
+        }
+
+        $response = Subscription::getPaidAmountByCurrency();
+
+        echo Json_encode(['Result' => true, 'Data' => $response]);
+        exit;
+        
+break;
+
     /**
      * Redirect to User log reports
     */ 

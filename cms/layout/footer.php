@@ -58,97 +58,101 @@
     <script src="../../../public/plugin/Highcharts/code/modules/exporting.js"></script>
     <script src="../../../public/plugin/Highcharts/code/modules/export-data.js"></script>
     <script type="text/javascript">
-        $( document ).ready(function() {
 
-            // deactivate confirmation
-            $('.deactivate').on('click', function(event){
-            event.preventDefault();
-                bootbox.confirm({
-                message: "Are you sure that you want to Deactivate ?",
-                buttons: {
-                    confirm: {
-                        label: 'Yes',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'No',
-                        className: 'btn-danger'
-                    }
+    // deactivate confirmation
+
+    function deactivate(href){
+        event.preventDefault();
+            bootbox.confirm({
+            message: "Are you sure that you want to Deactivate ?",
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-success'
                 },
-                callback: function (result) {
-                    if(result){
-                    var href = $('.deactivate').attr('href');
-                    window.location.href = href;
-                    }
+                cancel: {
+                    label: 'No',
+                    className: 'btn-danger'
                 }
-            });
-            });
-
-        //    activate confirmation
-            $('.activate').on('click', function(event){
-                event.preventDefault();
-                    bootbox.confirm({
-                    message: "Are you sure that you want to Activate ?",
-                    buttons: {
-                        confirm: {
-                            label: 'Yes',
-                            className: 'btn-success'
-                        },
-                        cancel: {
-                            label: 'No',
-                            className: 'btn-danger'
-                        }
-                    },
-                    callback: function (result) {
-                        if(result){
-                        var href = $('.activate').attr('href');
-                        window.location.href = href;
-                        }
-                    }
-                });
-            });
-
-        // delete confirmation
-            $('.delete').on('click', function(event){
-                event.preventDefault();
-                    bootbox.confirm({
-                    message: "Are you sure that you want to Delete ?",
-                    buttons: {
-                        confirm: {
-                            label: 'Yes',
-                            className: 'btn-success'
-                        },
-                        cancel: {
-                            label: 'No',
-                            className: 'btn-danger'
-                        }
-                    },
-                    callback: function (result) {
-                        if(result){
-                        var href = $('.delete').attr('href');
-                        window.location.href = href;
-                        }
-                    }
-                });
-            });
-
-            $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-            })
-
-            <?php 
-            if(isset($_REQUEST['msg'])){
-                $msg = base64_decode($_REQUEST['msg']);
-                $msgAr = json_decode($msg, true); ?>
-                var title = '<?php echo $msgAr["title"];?>';
-                var message = '<?php echo $msgAr["message"];?>';
-                var type = '<?php echo $msgAr["type"];?>'; 
-
-            //notify messages
-            showStatusMessage(title,message,type);
-
-            <?php } ?>
+            },
+            callback: function (result) {
+                if(result){
+                // var href = $('#deactivate').attr('href');
+                window.location.href = href;
+                // console.log(href);
+                }
+            }
         });
+    }
+
+    //activate confirmation
+
+    function activate(href){
+        event.preventDefault();
+            bootbox.confirm({
+            message: "Are you sure that you want to Activate ?",
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'No',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if(result){
+                // var href = $('.activate').attr('href');
+                window.location.href = href;
+                }
+            }
+        });
+    }
+
+    // delete confirmation
+
+    function deleteC(href){
+        event.preventDefault();
+            bootbox.confirm({
+            message: "Are you sure that you want to Delete ?",
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'No',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if(result){
+                window.location.href = href;
+                }
+            }
+        });
+    }
+
+    $( document ).ready(function() {
+
+        $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+        })
+
+        <?php 
+        if(isset($_REQUEST['msg'])){
+            $msg = base64_decode($_REQUEST['msg']);
+            $msgAr = json_decode($msg, true); ?>
+            var title = '<?php echo $msgAr["title"];?>';
+            var message = '<?php echo $msgAr["message"];?>';
+            var type = '<?php echo $msgAr["type"];?>'; 
+
+        //notify messages
+        showStatusMessage(title,message,type);
+
+        <?php } ?>
+    });
 
     function showStatusMessage(title,message,type){
 

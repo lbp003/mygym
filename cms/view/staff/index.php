@@ -79,12 +79,12 @@ $allStaff = Staff::displayAllStaff();
                         $staffId = $row['staff_id'];
                         
                         if($row['status']==Staff::ACTIVE && $staffId != $user['staff_id']){ ?>
-                            <a class="deactivate" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../../controller/staffController.php?staff_id=<?php echo $staffId;?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
+                            <a onclick="deactivate(this.href);" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../../controller/staffController.php?staff_id=<?php echo $staffId;?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
                         <?php }elseif($row['status']==Staff::INACTIVE && $staffId != $user['staff_id']){ ?>
-                            <a class="activate" data-toggle="tooltip" data-placement="top" title="Activate" href="../../../controller/staffController.php?staff_id=<?php echo $staffId;?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
+                            <a onclick="activate(this.href);" data-toggle="tooltip" data-placement="top" title="Activate" href="../../../controller/staffController.php?staff_id=<?php echo $staffId;?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
                         <?php } 
                          if($auth->checkPermissions([Role::MANAGE_STAFF]) && $staffId != $user['staff_id']){ ?>
-                            <a class="delete" data-toggle="tooltip" data-placement="top" title="Delete" href="../../../controller/staffController.php?staff_id=<?php echo $staffId;?>&status=Delete"><i class="fas fa-trash text-danger"></i></a>
+                            <a onclick="deleteC(this.href);" data-toggle="tooltip" data-placement="top" title="Delete" href="../../../controller/staffController.php?staff_id=<?php echo $staffId;?>&status=Delete"><i class="fas fa-trash text-danger"></i></a>
                          <?php } ?>
                     </td>
                 </tr>

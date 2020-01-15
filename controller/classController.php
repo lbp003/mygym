@@ -36,7 +36,7 @@ switch ($status){
         exit;
     }
 
-    header("Location:../cms/view/class/addClass.php");
+    header("Location:../cms/view/class/add-class.php");
 
 
 break;
@@ -47,13 +47,13 @@ break;
     
     case "Insert":
 
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
 
         if(!$auth->checkPermissions(array(Role::MANAGE_CLASS)))
@@ -68,21 +68,21 @@ break;
         if (empty($className)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Class Name can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class/addClass.php?msg=$msg");
+            header("Location:../cms/view/class/add-class.php?msg=$msg");
             exit;
         }
         $color=$_POST['color'];
         if (empty($color)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Color can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class/addClass.php?msg=$msg");
+            header("Location:../cms/view/class/add-class.php?msg=$msg");
             exit;
         }
         $description=$_POST['description'];
         if (empty($description)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Description can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class/addClass.php?msg=$msg");
+            header("Location:../cms/view/class/add-class.php?msg=$msg");
             exit;
         }
 
@@ -150,13 +150,13 @@ break;
             }else{
                 $msg = json_encode(array('title'=>'Danger','message'=> 'Failed to add the class','type'=>'danger'));
                 $msg = base64_encode($msg);
-                header("Location:../cms/view/class/addClass.php?msg=$msg");
+                header("Location:../cms/view/class/add-class.php?msg=$msg");
                 exit;  
             }                  
         }else{
             $msg = json_encode(array('title'=>'Warning','message'=> 'Class name already exists','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class/addClass.php?msg=$msg");
+            header("Location:../cms/view/class/add-class.php?msg=$msg");
             exit;
         }    
                 
@@ -192,7 +192,7 @@ break;
         // var_dump($classData); exit;
         $_SESSION['clsData'] = $classData;
 
-        header("Location:../cms/view/class/updateClass.php");
+        header("Location:../cms/view/class/update-class.php");
         exit;
     }else {
         $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
@@ -209,13 +209,13 @@ break;
 
     case "Update":
     
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
 
         if(!$auth->checkPermissions(array(Role::MANAGE_CLASS)))
@@ -232,21 +232,21 @@ break;
         if (empty($className)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Class Name can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class/updateClass.php?msg=$msg");
+            header("Location:../cms/view/class/update-class.php?msg=$msg");
             exit;
         }
         $color=$_POST['color'];
         if (empty($color)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Color can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class/updateClass.php?msg=$msg");
+            header("Location:../cms/view/class/update-class.php?msg=$msg");
             exit;
         }
         $description=$_POST['description'];
         if (empty($description)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Description can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class/updateClass.php?msg=$msg");
+            header("Location:../cms/view/class/update-class.php?msg=$msg");
             exit;
         }
 
@@ -303,7 +303,7 @@ break;
             }else {
                 $msg = json_encode(array('title'=>'Warning :','message'=> 'Update failed','type'=>'danger'));
                 $msg = base64_encode($msg);
-                header("Location:../cms/view/class/updateClass.php?msg=$msg");
+                header("Location:../cms/view/class/update-class.php?msg=$msg");
                 exit;
             }
     
@@ -311,7 +311,7 @@ break;
         }else {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Class name already exists','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/class/updateClass.php?msg=$msg");
+            header("Location:../cms/view/class/update-class.php?msg=$msg");
             exit;
         }
             
@@ -322,14 +322,13 @@ break;
  */ 
     case "View":
             
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::VIEW_CLASS)))
         {
@@ -347,7 +346,7 @@ break;
 
             $_SESSION['clsData'] = $clsData;
 
-            header("Location:../cms/view/class/viewClass.php");
+            header("Location:../cms/view/class/view-class.php");
             exit;
         }else {
             $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
@@ -364,36 +363,36 @@ break;
 
     case "Activate":
         
-    if(!$user)
-    {
-        $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-    
-    if(!$auth->checkPermissions(array(Role::MANAGE_CLASS)))
-    {
-        $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/class/index.php?msg=$msg");
-        exit;
-    }
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
-    $classID=$_REQUEST['class_id'];
+        if(!$auth->checkPermissions(array(Role::MANAGE_CLASS)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/class/index.php?msg=$msg");
+            exit;
+        }
 
-    $response = Programs::activateClass($classID);
-    if($response == true){
-        $msg = json_encode(array('title'=>'Success :','message'=> 'Class has been activated','type'=>'success'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/class/index.php?msg=$msg");
-        exit;
-    }else{
-        $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/class/index.php?msg=$msg");
-        exit;
-    }  
+        $classID=$_REQUEST['class_id'];
+
+        $response = Programs::activateClass($classID);
+        if($response == true){
+            $msg = json_encode(array('title'=>'Success :','message'=> 'Class has been activated','type'=>'success'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/class/index.php?msg=$msg");
+            exit;
+        }else{
+            $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/class/index.php?msg=$msg");
+            exit;
+        }  
 
 break;
 
@@ -402,36 +401,37 @@ break;
  */ 
 
     case "Deactivate":
-    if(!$user)
-    {
-        $msg = json_encode(array('title'=>'Warning','message'=> SESSION_TIMED_OUT,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-    
-    if(!$auth->checkPermissions(array(Role::MANAGE_CLASS)))
-    {
-        $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/class/index.php?msg=$msg");
-        exit;
-    }
+      
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
-    $classID=$_REQUEST['class_id'];
+        if(!$auth->checkPermissions(array(Role::MANAGE_CLASS)))
+        {
+            $msg = json_encode(array('title'=>'Warning','message'=> UNAUTHORIZED_ACCESS,'type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/class/index.php?msg=$msg");
+            exit;
+        }
 
-    $response = Programs::deactivateClass($classID);
-    if($response == true){
-        $msg = json_encode(array('title'=>'Success :','message'=> 'Class has been deactivated','type'=>'success'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/class/index.php?msg=$msg");
-        exit;
-    }else{
-        $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/class/index.php?msg=$msg");
-        exit;
-    }
+        $classID=$_REQUEST['class_id'];
+
+        $response = Programs::deactivateClass($classID);
+        if($response == true){
+            $msg = json_encode(array('title'=>'Success :','message'=> 'Class has been deactivated','type'=>'success'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/class/index.php?msg=$msg");
+            exit;
+        }else{
+            $msg = json_encode(array('title'=>'Warning :','message'=> 'Error','type'=>'danger'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/class/index.php?msg=$msg");
+            exit;
+        }
         
 break;
 
@@ -441,14 +441,13 @@ break;
 
     case "Delete":
 
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::MANAGE_CLASS)))
         {
@@ -475,20 +474,49 @@ break;
 
 break;
 
+        //check class name exists
+
+    case "checkClassName":
+
+        $className=$_REQUEST['class_name'];
+
+        $result = Programs::checkClassName($className);
+
+        if($result == true){
+            echo(json_encode(true));
+        }else {
+            echo(json_encode(false));
+        }
+break;  
+
+        //check class name exists
+
+        case "checkUpdateClassName":
+
+            $classID=$_REQUEST['class_id'];
+            $className=$_REQUEST['class_name'];
+
+            $result = Programs::checkUpdateClassName($className,$classID);
+
+            if($result == true){
+                echo(json_encode(true));
+            }else {
+                echo(json_encode(false));
+            }
+    break;  
 /**
  * Index actiton
  */
 
     case "index":
 
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::MANAGE_CLASS, Role::VIEW_CLASS)))
         {

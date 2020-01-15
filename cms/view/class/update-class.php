@@ -1,6 +1,9 @@
 <!--- header  ---->
-<?php
-include '../../layout/header.php'; ?>
+<?php include '../../layout/header.php'; ?>
+<?php 
+    $clsData = $_SESSION['clsData'];
+    // var_dump($clsData); exit;
+?>
 <body>
     <!---navbar starting ---------->
     <?php include '../../layout/navBar.php';?> 
@@ -10,26 +13,15 @@ include '../../layout/header.php'; ?>
     <ol class="breadcrumb">
         <li class="breadcrumb-item" aria-current="page"><a href="../dashboard/dashboard.php">Home</a></li>
         <li class="breadcrumb-item" aria-current="page"><a href="index.php">Class</a></li>
-        <li class="breadcrumb-item active" aria-current="page"><a href="#">Add Class</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="#">Update Class</a></li>
     </ol>
     </nav>
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <form method="post" id="addClass" name="addClass" action="../../../controller/classController.php?status=Insert" enctype="multipart/form-data">
+            <div id="kv-avatar-errors-2" class="center-block" style="width:800px;display:none"></div>
+                <form method="post" id="updateClass" name="updateClass" action="../../../controller/classController.php?status=Update" enctype="multipart/form-data">
                 <div class="d-flex flex-wrap">
-                    <div class="form-group col-6">
-                        <label for="class_name">Class Name</label>
-                        <input type="text" class="form-control" id="class_name" name="class_name" aria-describedby="class_name" placeholder="Class Name">
-                    </div>
-                    <div class="form-group col-6">
-                        <label for="color">Color</label>
-                        <input id="color" name="color" type="text" class="form-control input-lg" value=""/>
-                    </div>
-                    <div class="form-group col-6">
-                        <label for="Description">Description</label>
-                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
-                    </div>
                     <div class="form-group col-6" style="text-align:center">
                         <div class="kv-avatar">
                             <div class="file-loading">
@@ -37,7 +29,21 @@ include '../../layout/header.php'; ?>
                             </div>
                         </div>
                     </div>
+                    <div class="form-group col-6">
+                        <label for="class_name">Class Name</label>
+                        <input type="text" class="form-control" id="class_name" name="class_name" aria-describedby="class_name" placeholder="Class Name" value="<?php echo $clsData['class_name']?>">
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="color">Color</label>
+                        <input type="text" class="form-control" id="color" name="color" aria-describedby="color" placeholder="color" value="<?php echo $clsData['color']?>">
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="description">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="3"><?php echo $clsData['class_description']?></textarea>
+                    </div>
                     <div class="col-12">
+                        <input type="hidden" name="image" value="<?php echo $clsData['image']?>"> 
+                        <input type="hidden" name="class_id" value="<?php echo $clsData['class_id']?>"> 
                         <button type="submit" class="btn btn-primary mb-2 float-right">Submit</button>
                     </div>
                 </div>
@@ -50,17 +56,19 @@ include '../../layout/header.php'; ?>
 
 <script type="text/javascript">
     $(document).ready(function(){
-
-// form validation plugin
-        $('#addClass').validate({
+        $('#updateClass').validate({
             rules: {
-                class_name: "required",
+                class_name: {
+                    required: true,
+                    remote: "../../../controller/classController.php?status=checkUpdateClassName&class_id=<?php echo $clsData['class_id']?>"
+                },
                 color: "required", 
                 description: "required"
             },
             messages: {
                 class_name: {
-                    required: "Please enter class name"
+                    required: "Please enter class name",
+                    remote: "Class name already exists"
                 },
                 color: {
                     required: "Please pickup color"
@@ -71,7 +79,12 @@ include '../../layout/header.php'; ?>
             }
         });
 
-// file input plugin
+        <?php 
+            if(!empty($clsData['image'])){ ?>
+                var path = "<?php echo "../../../".PATH_IMAGE.PATH_CLASS_IMAGE.$clsData['image']; ?>";   
+                // console.log(path);
+        <?php } ?>
+
         $("#avatar").fileinput({
             overwriteInitial: true,
             maxFileSize: 1500,
@@ -84,7 +97,7 @@ include '../../layout/header.php'; ?>
             removeTitle: 'Cancel or reset changes',
             elErrorContainer: '#kv-avatar-errors-2',
             msgErrorClass: 'alert alert-block alert-danger',
-            defaultPreviewContent: '<i class="far fa-image fa-5x"></i>',
+            defaultPreviewContent: '<?php if(!empty($clsData['image'])){ ?><img src="'+ path +'" width="100" height="auto" class="img-responsive img-thumbnail" /> <?php }else{ ?> <i class="fas fa-user fa-7x"></i> <?php } ?>',
             layoutTemplates: {main2: '{preview} {remove} {browse}'},
             allowedFileExtensions: ["jpg", "png", "gif", "jpeg"],
             minFileCount : 0,
@@ -92,9 +105,13 @@ include '../../layout/header.php'; ?>
             showUpload: true,
             previewFileType: 'any',
             initialPreviewFileType: 'image',
+            maxImageWidth: 800,
+            maxImageHeight: 530,
+            minImageWidth: 350,
+            minImageHeight: 263
         });
 
-// color picker plugin
+        // color picker plugin
         $(function () {
             $('#color').colorpicker();
         });

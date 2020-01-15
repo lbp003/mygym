@@ -71,13 +71,13 @@ $allMember = Member::displayAllMember();
 
                         if($auth->checkPermissions([Role::MANAGE_MEMBER])){
                         if($row['status']==Member::ACTIVE){ ?>
-                            <a class="deactivate" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../../controller/memberController.php?member_id=<?php echo $memberID;?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
+                            <a onclick="deactivate(this.href);" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../../controller/memberController.php?member_id=<?php echo $memberID;?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
                         <?php }elseif($row['status']==Member::INACTIVE){ ?>
-                            <a class="activate" data-toggle="tooltip" data-placement="top" title="Activate" href="../../../controller/memberController.php?member_id=<?php echo $memberID;?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
+                            <a onclick="activate(this.href);" data-toggle="tooltip" data-placement="top" title="Activate" href="../../../controller/memberController.php?member_id=<?php echo $memberID;?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
                         <?php }} ?>
                         <?php
                          if($auth->checkPermissions([Role::MANAGE_MEMBER])){ ?>
-                            <a class="delete" data-toggle="tooltip" data-placement="top" title="Delete" href="../../../controller/memberController.php?member_id=<?php echo $memberID;?>&status=Delete"><i class="fas fa-trash text-danger"></i></a>
+                            <a onclick="deleteC(this.href);" data-toggle="tooltip" data-placement="top" title="Delete" href="../../../controller/memberController.php?member_id=<?php echo $memberID;?>&status=Delete"><i class="fas fa-trash text-danger"></i></a>
                          <?php } ?>
                     </td>
                 </tr>

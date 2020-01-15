@@ -58,12 +58,12 @@ $allPackage = Package::displayAllPackage();
                         $packageID = $row['package_id'];
 
                     if($row['status']==Package::ACTIVE){ ?>
-                        <a class="Deactivate" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../../controller/packageController.php?package_id=<?php echo $packageID;?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
+                        <a onclick="deactivate(this.href);" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../../controller/packageController.php?package_id=<?php echo $packageID;?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
                     <?php                            
                     }elseif($row['status']==Package::INACTIVE){ ?>
-                        <a class="Activate" data-toggle="tooltip" data-placement="top" title="Activate" href="../../../controller/packageController.php?package_id=<?php echo $packageID;?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
+                        <a onclick="activate(this.href);" data-toggle="tooltip" data-placement="top" title="Activate" href="../../../controller/packageController.php?package_id=<?php echo $packageID;?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
                     <?php } ?>
-                        <a class="Delete" data-toggle="tooltip" data-placement="top" title="Delete" href="../../../controller/packageController.php?package_id=<?php echo $packageID;?>&status=Delete"><i class="fas fa-trash text-danger"></i></a>
+                        <a onclick="deleteC(this.href);" data-toggle="tooltip" data-placement="top" title="Delete" href="../../../controller/packageController.php?package_id=<?php echo $packageID;?>&status=Delete"><i class="fas fa-trash text-danger"></i></a>
                     </td>
                 </tr>
                     <?php } ?>

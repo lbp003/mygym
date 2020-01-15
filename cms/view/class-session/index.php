@@ -65,14 +65,14 @@ $allClassSession = Session::displayAllClassSession();
                             $classSessionID = $row['class_session_id'];
 
                             if($row['status']==Session::ACTIVE){ ?>
-                                <a class="deactivate" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../../controller/classSessionController.php?class_session_id=<?php echo $classSessionID;?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
+                                <a onclick="deactivate(this.href);" data-toggle="tooltip" data-placement="top" title="Deactivate" href="../../../controller/classSessionController.php?class_session_id=<?php echo $classSessionID;?>&status=Deactivate"><i class="fas fa-ban text-warning"></i></a>
                             <?php
                             }elseif($row['status']==Session::INACTIVE){ ?>
-                                <a class="activate" data-toggle="tooltip" data-placement="top" title="Activate" href="../../../controller/classSessionController.php?class_session_id=<?php echo $classSessionID;?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
+                                <a onclick="activate(this.href);" data-toggle="tooltip" data-placement="top" title="Activate" href="../../../controller/classSessionController.php?class_session_id=<?php echo $classSessionID;?>&status=Activate"><i class="far fa-check-circle text-success"></i></a>
                             <?php
                             }
                         ?>
-                            <a class="delete" data-toggle="tooltip" data-placement="top" title="Delete" href="../../../controller/classSessionController.php?class_session_id=<?php echo $classSessionID;?>&status=Delete"><i class="fas fa-trash text-danger"></i></a>
+                            <a onclick="deleteC(this.href);" data-toggle="tooltip" data-placement="top" title="Delete" href="../../../controller/classSessionController.php?class_session_id=<?php echo $classSessionID;?>&status=Delete"><i class="fas fa-trash text-danger"></i></a>
                     </td>
                 </tr>
                     <?php } ?>

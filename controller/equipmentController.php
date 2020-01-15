@@ -36,7 +36,7 @@ switch ($status){
         exit;
     }
 
-    header("Location:../cms/view/equipment/addEquipment.php");
+    header("Location:../cms/view/equipment/add-equipment.php");
 
 
 break;
@@ -69,7 +69,7 @@ break;
         if (empty($equipmentName)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Equipment Name can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/equipment/addEquipment.php?msg=$msg");
+            header("Location:../cms/view/equipment/add-equipment.php?msg=$msg");
             exit;
         }
  
@@ -78,7 +78,7 @@ break;
         if (empty($description)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Description can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/equipment/addEquipment.php?msg=$msg");
+            header("Location:../cms/view/equipment/add-equipment.php?msg=$msg");
             exit;
         }
 
@@ -143,13 +143,13 @@ break;
             }else{
                 $msg = json_encode(array('title'=>'Danger','message'=> 'Failed to add the equipment','type'=>'danger'));
                 $msg = base64_encode($msg);
-                header("Location:../cms/view/equipment/addEquipment.php?msg=$msg");
+                header("Location:../cms/view/equipment/add-equipment.php?msg=$msg");
                 exit;  
             }                  
         }else{
             $msg = json_encode(array('title'=>'Warning','message'=> 'Equipment name already exists','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/equipment/addEquipment.php?msg=$msg");
+            header("Location:../cms/view/equipment/add-equipment.php?msg=$msg");
             exit;
         }    
                 
@@ -186,7 +186,7 @@ break;
         // var_dump($classData); exit;
         $_SESSION['equData'] = $equData;
 
-        header("Location:../cms/view/equipment/updateEquipment.php");
+        header("Location:../cms/view/equipment/update-equipment.php");
         exit;
     }else {
         $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
@@ -227,7 +227,7 @@ break;
         if (empty($equipmentName)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Equipment Name can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/equipment/updateEquipment.php?msg=$msg");
+            header("Location:../cms/view/equipment/update-equipment.php?msg=$msg");
             exit;
         }
 
@@ -235,9 +235,11 @@ break;
         if (empty($description)) {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Description can not be empty','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/equipment/updateEquipment.php?msg=$msg");
+            header("Location:../cms/view/equipment/update-equipment.php?msg=$msg");
             exit;
         }
+
+        $image=$_POST['image'];
 
         $tmp = $_FILES['avatar'];
         if(!empty($tmp['name'])){
@@ -276,7 +278,7 @@ break;
             $dataAr = [
                 'name' => $equipmentName,
                 'description' => $description,
-                'img' => (!empty($imgName)) ? $imgName : NULL,
+                'img' => (!empty($imgName)) ? $imgName : $image,
                 'id' => $equipmentID
             ];
              //update equipment
@@ -289,7 +291,7 @@ break;
             }else {
                 $msg = json_encode(array('title'=>'Warning :','message'=> 'Update failed','type'=>'danger'));
                 $msg = base64_encode($msg);
-                header("Location:../cms/view/equipment/updateEquipment.php?msg=$msg");
+                header("Location:../cms/view/equipment/update-equipment.php?msg=$msg");
                 exit;
             }
     
@@ -297,7 +299,7 @@ break;
         }else {
             $msg = json_encode(array('title'=>'Warning','message'=> 'Equipment name already exists','type'=>'warning'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/equipment/updateEquipment.php?msg=$msg");
+            header("Location:../cms/view/equipment/update-equipment.php?msg=$msg");
             exit;
         }
             
@@ -308,14 +310,13 @@ break;
  */ 
     case "View":
             
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::VIEW_EQUIPMENT)))
         {
@@ -334,7 +335,7 @@ break;
 
             $_SESSION['equData'] = $equData;
 
-            header("Location:../cms/view/equipment/viewEquipment.php");
+            header("Location:../cms/view/equipment/view-equipment.php");
             exit;
         }else {
             $msg = json_encode(array('title'=>'Warning','message'=> UNKNOWN_ERROR,'type'=>'warning'));
@@ -429,14 +430,13 @@ break;
 
     case "Delete":
 
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::MANAGE_EQUIPMENT)))
         {
@@ -463,20 +463,51 @@ break;
 
 break;
 
+    //check equipment name exists
+
+    case "checkEquipmentName":
+
+        $equipmentName=$_REQUEST['equipment_name'];
+
+        $result = Equipment::checkEquipmentName($equipmentName);
+
+        if($result == true){
+            echo(json_encode(true));
+        }else {
+            echo(json_encode(false));
+        }
+break; 
+
+
+    //check equipment name exists
+
+    case "checkUpdateEquipmentName":
+
+        $equipmentID=$_REQUEST['equipment_id'];
+        $equipmentName=$_REQUEST['equipment_name'];
+
+        $result = Equipment::checkUpdateEquipmentName($equipmentName,$equipmentID);
+
+        if($result == true){
+            echo(json_encode(true));
+        }else {
+            echo(json_encode(false));
+        }
+break;  
+
 /**
  * Index actiton
  */
 
     case "index":
 
-         if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        if(!$user)
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::MANAGE_EQUIPMENT, Role::VIEW_EQUIPMENT)))
         {

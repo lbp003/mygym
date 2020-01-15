@@ -1,6 +1,9 @@
 <!--- header  ---->
-<?php
-include '../../layout/header.php'; ?>
+<?php include '../../layout/header.php'; ?>
+<?php 
+    $equData = $_SESSION['equData'];
+    // var_dump($equData); exit;
+?>
 <body>
     <!---navbar starting ---------->
     <?php include '../../layout/navBar.php';?> 
@@ -10,13 +13,14 @@ include '../../layout/header.php'; ?>
     <ol class="breadcrumb">
         <li class="breadcrumb-item" aria-current="page"><a href="../dashboard/dashboard.php">Home</a></li>
         <li class="breadcrumb-item" aria-current="page"><a href="index.php">Equipment</a></li>
-        <li class="breadcrumb-item active" aria-current="page"><a href="#">Add Equipment</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="#">Update Equipment</a></li>
     </ol>
     </nav>
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <form method="post" id="addEquipment" action="../../../controller/equipmentController.php?status=Insert" enctype="multipart/form-data">
+            <div id="kv-avatar-errors-2" class="center-block" style="width:800px;display:none"></div>
+                <form method="post" id="updateEquipment" name="updateEquipment" action="../../../controller/equipmentController.php?status=Update" enctype="multipart/form-data">
                 <div class="d-flex flex-wrap">
                     <div class="form-group col-6" style="text-align:center">
                         <div class="kv-avatar">
@@ -27,13 +31,15 @@ include '../../layout/header.php'; ?>
                     </div>
                     <div class="form-group col-6">
                         <label for="equipment_name">Equipment Name</label>
-                        <input type="text" class="form-control" id="equipment_name" name="equipment_name" aria-describedby="equipment_name" placeholder="Equipment Name">
+                        <input type="text" class="form-control" id="equipment_name" name="equipment_name" aria-describedby="equipment_name" placeholder="Equipment Name" value="<?php echo $equData['equipment_name']?>">
                     </div>
                     <div class="form-group col-6">
-                        <label for="Description">Description</label>
-                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                        <label for="description">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="3"><?php echo $equData['equipment_description']?></textarea>
                     </div>
                     <div class="col-12">
+                        <input type="hidden" name="image" value="<?php echo $equData['image']?>">
+                        <input type="hidden" name="equipment_id" value="<?php echo $equData['equipment_id']?>"> 
                         <button type="submit" class="btn btn-primary mb-2 float-right">Submit</button>
                     </div>
                 </div>
@@ -46,16 +52,18 @@ include '../../layout/header.php'; ?>
 
 <script type="text/javascript">
     $(document).ready(function(){
-
-// form validation plugin
-        $('#addEquipment').validate({
+        $('#updateEquipment').validate({
             rules: {
-                equipment_name: "required",
+                equipment_name: {
+                    required: true,
+                    remote:  "../../../controller/equipmentController.php?status=checkUpdateEquipmentName&equipment_id=<?php echo $equData['equipment_id']?>"
+                },
                 description: "required"
             },
             messages: {
                 equipment_name: {
-                    required: "Please enter equipment name"
+                    required: "Please enter equipment name",
+                    remote: "Equipment name already exists"
                 },
                 description: {
                     required: "Please enter description"
@@ -63,7 +71,12 @@ include '../../layout/header.php'; ?>
             }
         });
 
-// file input plugin
+        <?php 
+            if(!empty($equData['image'])){ ?>
+                var path = "<?php echo "../../../".PATH_IMAGE.PATH_EQUIPMENT_IMAGE.$equData['image']; ?>";   
+                // console.log(path);
+        <?php } ?>
+
         $("#avatar").fileinput({
             overwriteInitial: true,
             maxFileSize: 1500,
@@ -76,7 +89,7 @@ include '../../layout/header.php'; ?>
             removeTitle: 'Cancel or reset changes',
             elErrorContainer: '#kv-avatar-errors-2',
             msgErrorClass: 'alert alert-block alert-danger',
-            defaultPreviewContent: '<i class="far fa-image fa-5x"></i>',
+            defaultPreviewContent: '<?php if(!empty($equData['image'])){ ?><img src="'+ path +'" width="100" height="auto" class="img-responsive img-thumbnail" /> <?php }else{ ?> <i class="fas fa-user fa-7x"></i> <?php } ?>',
             layoutTemplates: {main2: '{preview} {remove} {browse}'},
             allowedFileExtensions: ["jpg", "png", "gif", "jpeg"],
             minFileCount : 0,

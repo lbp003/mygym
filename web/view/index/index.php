@@ -46,17 +46,25 @@
     <!-- include navigation bar -->
     <?php include_once '../../layout/navBar.php'; ?>
   
-    <!-- <div class="slide-one-item home-slider owl-carousel"> -->
-    <div>   
-      <div class="site-blocks-cover" style="background-image: url(../../../public/theme/images/hero_bg_2.jpg);"  data-stellar-background-ratio="0.5">
+    <div class="slide-one-item home-slider owl-carousel">    
+      <div class="site-blocks-cover" style="background-image: url(../../../public/theme/images/hero_bg_2.jpg);" data-aos="fade" data-stellar-background-ratio="0.5">
         <div class="container">
           <div class="row align-items-center justify-content-center">
-            <div class="col-md-7 text-center" >
+            <div class="col-md-7 text-center" data-aos="fade">
               <h1>Get In Shape &amp; Be <strong>Healthy</strong></h1>
             </div>
           </div>
         </div>
       </div>  
+      <div class="site-blocks-cover" style="background-image: url(../../../public/theme/images/hero_bg_2.jpg);" data-aos="fade" data-stellar-background-ratio="0.5">
+        <div class="container">
+          <div class="row align-items-center justify-content-center">
+            <div class="col-md-7 text-center" data-aos="fade">
+              <h1>Build Your <strong>Body</strong> Strong</h1>
+            </div>
+          </div>
+        </div>
+      </div> 
     </div>
     <div class="border-bottom">
       <div class="row no-gutters">
@@ -143,7 +151,7 @@
             }
           ?>
             <div class="block-media-1 heading-with-border bg-white">
-              <img src="<?php echo $path; ?>" width="350" height="263" alt="Image" class="img-fluid">
+              <img src="<?php echo $path; ?>" width="800" height="530" alt="Image" class="img-fluid">
               <div class="p-4">
                 <h3 class="h5 heading"><?php echo ucwords($row['class_name']); ?></h3>
                 <p><?php echo ucfirst($row['class_description']); ?></p>

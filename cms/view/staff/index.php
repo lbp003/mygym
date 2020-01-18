@@ -112,13 +112,13 @@ $allStaff = Staff::displayAllStaff();
             dom: 'Bfrtip',
             buttons: [
                 <?php if($auth->checkPermissions([Role::MANAGE_STAFF])){?>
-                    {
-                    text: '+ ADD STAFF',
-                    className: 'btn-success',
-                    action: function ( e, dt, node, config ) {
-                        window.location.href = "add-staff.php";
-                    }
-                },
+                {
+                text: '+ ADD STAFF',
+                className: 'btn-success',
+                action: function ( e, dt, node, config ) {
+                    window.location.href = "add-staff.php";
+                }
+            },
             <?php } ?>
             ],
             select: false

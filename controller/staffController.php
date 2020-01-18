@@ -383,7 +383,7 @@ break;
         if($result == true){
             $msg = json_encode(array('title'=>'Success :','message'=> 'Employee has been updated','type'=>'success'));
             $msg = base64_encode($msg);
-            header("Location:../cms/view/staff/update-staff.php?msg=$msg");
+            header("Location:../cms/view/staff/index.php?msg=$msg");
             exit;
         }else {
             $msg = json_encode(array('title'=>'Warning :','message'=> 'Update failed','type'=>'danger'));

@@ -93,6 +93,7 @@ $allClass = Programs::displayAllPrograms();
       var table = $('#example').DataTable( {
             dom: 'Bfrtip',
             buttons: [
+                <?php if($auth->checkPermissions([Role::MANAGE_CLASS])){?>
                 {
                 text: '+ ADD CLASS',
                 className: 'btn-success',
@@ -100,6 +101,7 @@ $allClass = Programs::displayAllPrograms();
                     window.location.href = "../../../controller/classController.php?status=Add";
                 }
             },
+            <?php } ?>
             ],
             select: false
         } );

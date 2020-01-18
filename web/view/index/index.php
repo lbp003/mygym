@@ -178,11 +178,11 @@
             <a class="nav-link <?php if($today == "Fri"){ echo "active";}?>" id="pills-friday-tab" data-toggle="pill" href="#pills-friday" role="tab" aria-controls="pills-friday" aria-selected="false">Friday</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link <?php if($today == "Sat"){ echo "active";}?>" id="pills-saturday-tab" data-toggle="pill" href="#pills-saturday" role="tab" aria-controls="pills-saturday" aria-selected="false">Saturday</a>
+            <a class="nav-link <?php if($today == "Sat"){ echo "active";}?>" id="pills-saturday-tab" data-toggle="pill" href="#pills-saturday" role="tab" aria-controls="pills-saturday" aria-selected="true">Saturday</a>
           </li>
         </ul>
         <div class="tab-content" id="pills-tabContent">
-          <div class="tab-pane fade show active" id="pills-sunday" role="tabpanel" aria-labelledby="pills-sunday-tab">
+          <div class="tab-pane fade show <?php if($today == "Sun"){ echo "active";}?>" id="pills-sunday" role="tabpanel" aria-labelledby="pills-sunday-tab">
             <?php 
             while($row = $allSessionSun->fetch_assoc()) {
               if($row['day'] == "Sun"){ ?>
@@ -197,7 +197,7 @@
             <?php }} ?> 
           </div>
        
-          <div class="tab-pane fade show" id="pills-monday" role="tabpane1" aria-labelledby="pills-monday-tab">
+          <div class="tab-pane fade show <?php if($today == "Mon"){ echo "active";}?>" id="pills-monday" role="tabpane1" aria-labelledby="pills-monday-tab">
           <?php  
           while($row = $allSessionMon->fetch_assoc()) { 
             if($row['day'] == "Mon"){?>
@@ -212,7 +212,7 @@
               <?php }} ?>
           </div>
        
-          <div class="tab-pane fade show" id="pills-tuesday" role="tabpane1" aria-labelledby="pills-tuesday-tab">
+          <div class="tab-pane fade show <?php if($today == "Tue"){ echo "active";}?>" id="pills-tuesday" role="tabpane1" aria-labelledby="pills-tuesday-tab">
           <?php  
           while($row = $allSessionTue->fetch_assoc()) {
            if($row['day'] == "Tue"){?>
@@ -227,7 +227,7 @@
             <?php }} ?> 
           </div>
         
-          <div class="tab-pane fade show" id="pills-wednesday" role="tabpane1" aria-labelledby="pills-wednesday-tab">
+          <div class="tab-pane fade show <?php if($today == "Wed"){ echo "active";}?>" id="pills-wednesday" role="tabpane1" aria-labelledby="pills-wednesday-tab">
           <?php  while($row = $allSessionWed->fetch_assoc()) {
           if($row['day'] == "Wed"){ ?>
           <div class="row-wrap">
@@ -241,7 +241,7 @@
             <?php }} ?>
             </div>
            
-          <div class="tab-pane fade show" id="pills-thursday" role="tabpanel" aria-labelledby="pills-thursday-tab">
+          <div class="tab-pane fade show <?php if($today == "Thu"){ echo "active";}?>" id="pills-thursday" role="tabpanel" aria-labelledby="pills-thursday-tab">
           <?php  while($row = $allSessionThu->fetch_assoc()) {
           if($row['day'] == "Thu"){ ?>
           <div class="row-wrap">
@@ -255,7 +255,7 @@
             <?php }} ?>
             </div>
         
-          <div class="tab-pane fade show" id="pills-friday" role="tabpanel" aria-labelledby="pills-friday-tab">
+          <div class="tab-pane fade show <?php if($today == "Fri"){ echo "active";}?>" id="pills-friday" role="tabpanel" aria-labelledby="pills-friday-tab">
           <?php  
           while($row = $allSessionFri->fetch_assoc()) {
             if($row['day'] == "Fri"){ ?>
@@ -270,7 +270,7 @@
               <?php } }?>
           </div>
         
-          <div class="tab-pane fade show" id="pills-saturday" role="tabpanel" aria-labelledby="pills-saturday-tab">
+          <div class="tab-pane fade show <?php if($today == "Sat"){ echo "active";}?>" id="pills-saturday" role="tabpanel" aria-labelledby="pills-saturday-tab">
           <?php  
           while($row = $allSessionSat->fetch_assoc()) { 
             if($row['day'] == "Sat"){ ?>

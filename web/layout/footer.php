@@ -1,4 +1,4 @@
-<footer style="background-color: #212529">
+  <footer style="background-color: #212529">
       <div class="container">
         <div class="row pt-5 mt-5 text-center text-white">
           <div class="col-md-12">
@@ -13,8 +13,7 @@
         </div>
       </div>
     </footer>
-  </div>
-
+</div>
   <script src="../../../public/theme/js/jquery-3.3.1.min.js"></script>
   <script src="../../../public/theme/js/jquery-migrate-3.0.1.min.js"></script>
   <script src="../../../public/theme/js/jquery-ui.js"></script>

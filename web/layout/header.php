@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <?php include_once '../../../config/dbconnection.php'; ?>
 <?php include_once '../../../config/session.php'; ?>
 <?php include_once '../../../config/global.php'; ?>
@@ -5,8 +6,8 @@
 <?php include_once '../../../model/class.php'; ?>
 <?php include_once '../../../model/classSession.php'; ?>
 <?php include_once '../../../model/event.php'; ?>
-<!DOCTYPE html>
-<html lang="en">
+
+<html>
   <head>
     <title><?php echo SYSTEM_BUSINESS_NAME;?> &mdash; Home</title>
     <meta charset="utf-8">

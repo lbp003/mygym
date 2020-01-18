@@ -1,8 +1,10 @@
 <!-- including header -->
 <?php include_once '../../layout/header.php'; ?>
+<?php $today = date('D');
+// echo $today; exit;
+?>
   <body>
   <div class="site-wrap">
-
     <div class="site-mobile-menu">
       <div class="site-mobile-menu-header">
         <div class="site-mobile-menu-close mt-3">
@@ -46,27 +48,15 @@
   
     <!-- <div class="slide-one-item home-slider owl-carousel"> -->
     <div>   
-      <div class="site-blocks-cover" style="background-image: url(../../../public/theme/images/hero_bg_2.jpg);" data-aos="fade" data-stellar-background-ratio="0.5">
+      <div class="site-blocks-cover" style="background-image: url(../../../public/theme/images/hero_bg_2.jpg);"  data-stellar-background-ratio="0.5">
         <div class="container">
           <div class="row align-items-center justify-content-center">
-            <div class="col-md-7 text-center" data-aos="fade">
+            <div class="col-md-7 text-center" >
               <h1>Get In Shape &amp; Be <strong>Healthy</strong></h1>
             </div>
           </div>
         </div>
       </div>  
-
-      <!-- <div class="site-blocks-cover" style="background-image: url(../../../public/theme/images/hero_bg_1.jpg);" data-aos="fade" data-stellar-background-ratio="0.5">
-        <div class="container">
-          <div class="row align-items-center justify-content-center">
-            <div class="col-md-7 text-center" data-aos="fade">
-              <h1>Build Your <strong>Body</strong> Strong</h1>
-            </div>
-          </div>
-        </div>
-      </div>  -->
-      
-
     </div>
     <div class="border-bottom">
       <div class="row no-gutters">
@@ -76,7 +66,7 @@
               <span class="flaticon-padmasana display-4"></span>
             </span>
             <h2>Fat Burning Special</h2>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora fugiat iure eveniet perferendis odit est.</p>
+            <p>We help you to achieve your slim and fit body. The Fat Burning Special program includes Diet plans, Personal instructions and Smart progress tracking </p>
           </div>
         </div>
         <div class="col-md-6 col-lg-3">
@@ -84,8 +74,8 @@
             <span class="d-block mb-3">
               <span class="flaticon-weight display-4"></span>
             </span>
-            <h2>Juice Bar</h2>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora fugiat iure eveniet perferendis odit est.</p>
+            <h2>Supplement Bar</h2>
+            <p>Enjoy pre-workout and recovery supplements with our professional recommendations</p>
           </div>
         </div>
         <div class="col-md-6 col-lg-3">
@@ -95,7 +85,7 @@
             </span>
             
             <h2>Fitness Store</h2>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora fugiat iure eveniet perferendis odit est.</p>
+            <p>Purchase all your fitness accessories under one roof.</p>
           </div>
         </div>
         <div class="col-md-6 col-lg-3">
@@ -104,7 +94,7 @@
               <span class="flaticon-running display-4"></span>
             </span>
             <h2>Free Parking</h2>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora fugiat iure eveniet perferendis odit est.</p>
+            <p>Parking available for customers.</p>
           </div>
         </div>
       </div>
@@ -113,14 +103,15 @@
       <div class="container">
         <div class="row align-items-center">
           <div class="col-md-12 col-lg-5 mb-5 mb-lg-0">
-            <h2 class="mb-3 text-uppercase">All About <strong class="text-black font-weight-bold">Our Gym</strong></h2>
-            <p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque accusamus, rerum illo facilis reiciendis.</p>
-            <p class="mb-4">Iste aut dolorem veritatis saepe nesciunt distinctio voluptas sapiente sunt perspiciatis autem minima, iure provident. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero, quas.</p>
+            <h3 class="mb-3 text-uppercase">All About <strong class="text-black font-weight-bold">Hiru Fitness</strong></h3>
+            <p class="lead">Hiru Fitness Centre was founded in 2018 by Mr.Manoj Kumara. Our mission is to help people to achieve fit and well-being lifestyle.</p>
+            <p class="mb-4">Contact us for a free one day work out and get a first-hand experience of our dynamic and professional fitness training offered to you and your loved ones.</p>
             <ul class="site-block-check">
-              <li>Lorem ipsum dolor sit amet, consectetur adipisicing.</li>
-              <li>Nemo, voluptate? Voluptates odit, aperiam nostrum! Ipsa.</li>
-              <li>Itaque voluptatum ducimus aliquam, est fuga molestiae?</li>
-              <li>Accusamus porro at commodi delectus, nesciunt molestiae.</li>
+              <li>Air conditioning.</li>
+              <li>Modern and Olympic committee certified equipments.</li>
+              <li>Qualified and experienced trainers.</li>
+              <li>Smart fitness tracking.</li>
+              <li>Online payments.</li>
             </ul>
           </div>
           <div class="col-md-12 col-lg-6 ml-auto">
@@ -169,25 +160,25 @@
         <h2 id="schedule" class="text-white display-4 mb-5">Schedule</h2>
         <ul class="nav nav-pills tab-nav mb-4" id="pills-tab" role="tablist">
           <li class="nav-item">
-            <a class="nav-link active" id="pills-sunday-tab" data-toggle="pill" href="#pills-sunday" role="tab" aria-controls="pills-sunday" aria-selected="true">Sunday</a>
+            <a class="nav-link <?php if($today == "Sun"){ echo "active";}?>" id="pills-sunday-tab" data-toggle="pill" href="#pills-sunday" role="tab" aria-controls="pills-sunday" aria-selected="true">Sunday</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="pills-monday-tab" data-toggle="pill" href="#pills-monday" role="tab" aria-controls="pills-monday" aria-selected="true">Monday</a>
+            <a class="nav-link <?php if($today == "Mon"){ echo "active";}?>" id="pills-monday-tab" data-toggle="pill" href="#pills-monday" role="tab" aria-controls="pills-monday" aria-selected="true">Monday</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="pills-tuesday-tab" data-toggle="pill" href="#pills-tuesday" role="tab" aria-controls="pills-tuesday" aria-selected="false">Tuesday</a>
+            <a class="nav-link <?php if($today == "Tue"){ echo "active";}?>" id="pills-tuesday-tab" data-toggle="pill" href="#pills-tuesday" role="tab" aria-controls="pills-tuesday" aria-selected="false">Tuesday</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="pills-wednesday-tab" data-toggle="pill" href="#pills-wednesday" role="tab" aria-controls="pills-wednesday" aria-selected="false">Wednesday</a>
+            <a class="nav-link <?php if($today == "Wed"){ echo "active";}?>" id="pills-wednesday-tab" data-toggle="pill" href="#pills-wednesday" role="tab" aria-controls="pills-wednesday" aria-selected="false">Wednesday</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="pills-thursday-tab" data-toggle="pill" href="#pills-thursday" role="tab" aria-controls="pills-thursday" aria-selected="false">Thursday</a>
+            <a class="nav-link <?php if($today == "Thu"){ echo "active";}?>" id="pills-thursday-tab" data-toggle="pill" href="#pills-thursday" role="tab" aria-controls="pills-thursday" aria-selected="false">Thursday</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="pills-friday-tab" data-toggle="pill" href="#pills-friday" role="tab" aria-controls="pills-friday" aria-selected="false">Friday</a>
+            <a class="nav-link <?php if($today == "Fri"){ echo "active";}?>" id="pills-friday-tab" data-toggle="pill" href="#pills-friday" role="tab" aria-controls="pills-friday" aria-selected="false">Friday</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="pills-saturday-tab" data-toggle="pill" href="#pills-saturday" role="tab" aria-controls="pills-saturday" aria-selected="false">Saturday</a>
+            <a class="nav-link <?php if($today == "Sat"){ echo "active";}?>" id="pills-saturday-tab" data-toggle="pill" href="#pills-saturday" role="tab" aria-controls="pills-saturday" aria-selected="false">Saturday</a>
           </li>
         </ul>
         <div class="tab-content" id="pills-tabContent">
@@ -296,53 +287,6 @@
         </div>
       </div>      
     </div>
-    <div class="site-section block-14">
-      <div class="container">     
-        <div class="heading-with-border text-center">
-          <h2 class="heading text-uppercase">Testimonials</h2>
-        </div>
-
-        <div class="nonloop-block-14 owl-carousel">
-
-          <div class="d-flex block-testimony">
-            <div class="person mr-3">
-              <img src="../../../public/theme/images/person_1.jpg" alt="Image" class="img-fluid rounded-circle">
-            </div>
-            <div>
-              <h2 class="h5">Katie Johnson, CEO</h2>
-              <blockquote>&ldquo;Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias accusantium qui optio, possimus necessitatibus voluptate aliquam velit nostrum tempora ipsam!&rdquo;</blockquote>
-            </div>
-          </div>
-          <div class="d-flex block-testimony">
-            <div class="person mr-3">
-              <img src="../../../public/theme/images/person_2.jpg" alt="Image" class="img-fluid rounded-circle">
-            </div>
-            <div>
-              <h2 class="h5">Jane Mars, Designer</h2>
-              <blockquote>&ldquo;Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias accusantium qui optio, possimus necessitatibus voluptate aliquam velit nostrum tempora ipsam!&rdquo;</blockquote>
-            </div>
-          </div>
-          <div class="d-flex block-testimony">
-            <div class="person mr-3">
-              <img src="../../../public/theme/images/person_3.jpg" alt="Image" class="img-fluid rounded-circle">
-            </div>
-            <div>
-              <h2 class="h5">Shane Holmes, CEO</h2>
-              <blockquote>&ldquo;Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias accusantium qui optio, possimus necessitatibus voluptate aliquam velit nostrum tempora ipsam!&rdquo;</blockquote>
-            </div>
-          </div>
-          <div class="d-flex block-testimony">
-            <div class="person mr-3">
-              <img src="../../../public/theme/images/person_4.jpg" alt="Image" class="img-fluid rounded-circle">
-            </div>
-            <div>
-              <h2 class="h5">Mark Johnson, CEO</h2>
-              <blockquote>&ldquo;Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias accusantium qui optio, possimus necessitatibus voluptate aliquam velit nostrum tempora ipsam!&rdquo;</blockquote>
-            </div>
-          </div>
-        </div>
-      </div> 
-    </div>
 <!-- events -->
     <div class="site-section bg-light">
       <div class="container">
@@ -384,7 +328,7 @@
       <div class="container">
       <h2 class="text-black display-4">Contact Us</h2>  
         <div class="row">   
-          <div class="col-md-12 col-lg-8 mb-5">  
+          <div class="col-md-12 col-lg-8 mb-5">
             <form method="post" action="../../../controller/userController.php?status=Contact" class="p-5" enctype="multipart/form-data">
               <div class="row form-group">
                 <div class="col-md-12 mb-3 mb-md-0">

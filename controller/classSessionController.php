@@ -156,6 +156,13 @@ break;
             header("Location:../cms/view/class-session/add-class-session.php?msg=$msg");
             exit;
         }
+
+        if (!Session::checkTrainerAvailable($instructor, $day, $startTime, $endTime)) {
+            $msg = json_encode(array('title'=>'Warning','message'=> 'Instructor is already assign to a class','type'=>'warning'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/class-session/add-class-session.php?msg=$msg");
+            exit;
+        }
        
         $status = Session::ACTIVE;
 
@@ -254,13 +261,12 @@ break;
     case "Update":
     
          if(!$user)
-    {
-        $msg = SESSION_TIMED_OUT;
-        $msg = base64_encode($msg);
-        header("Location:../cms/view/index/index.php?msg=$msg");
-        exit;
-    }
-
+        {
+            $msg = SESSION_TIMED_OUT;
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/index/index.php?msg=$msg");
+            exit;
+        }
 
         if(!$auth->checkPermissions(array(Role::MANAGE_CLASS_SESSION)))
         {

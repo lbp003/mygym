@@ -331,4 +331,27 @@ class Session{
         return $result;
     }
    
+    public static function checkTrainerAvailable($instructor, $day, $startTime, $endTime){
+
+        $hourS = date('H:i:s', strtotime($startTime));
+        $hourE = date('H:i:s', strtotime($endTime));
+
+        $con=$GLOBALS['con'];//To get connection string
+        $sql="  SELECT  class_session.class_session_id,
+                        class_session.start_time,
+                        class_session.end_time
+                FROM class_session
+                WHERE class_session.status = 'A' 
+                AND class_session.instructor_id = '$instructor'
+                AND class_session.day = '$day'
+                AND (class_session.start_time BETWEEN '$hourS' AND '$hourE'
+                    OR class_session.end_time BETWEEN '$hourS' AND '$hourE')";
+                // var_dump($sql); exit;
+        $result = $con->query($sql);
+        $result=$con->query($sql);
+        if($result->num_rows == 0){
+            return true;
+        }
+        return false;  
+    }
 }

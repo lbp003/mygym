@@ -107,7 +107,7 @@ $allClassSession = Session::displayAllClassSession();
                 selector: 'td:first-child'
             }, 
             initComplete: function () {
-            this.api().columns([2,3,4,7]).every( function () {
+            this.api().columns([2,3,4,5,7]).every( function () {
                 var column = this;
                 var select = $('<select><option value=""></option></select>')
                     .appendTo( $(column.header()).empty() )

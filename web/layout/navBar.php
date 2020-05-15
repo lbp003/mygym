@@ -4,7 +4,7 @@
       <div class="py-1">
         <div class="row align-items-center">
           <div class="col-4">
-            <h2 class="mb-0 site-logo"><a href="index.php"><strong>HIRU</strong> FITNESS CENTER</a></h2>
+            <h2 class="mb-0 site-logo"><a href="index.php"><strong>YOUR</strong> GYM'S NAME</a></h2>
           </div>
           <div class="col-8">
             <nav class="site-navigation text-right" role="navigation">

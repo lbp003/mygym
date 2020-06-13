@@ -1,7 +1,5 @@
-<!--- header start ---->
 <?php include_once '../../layout/default_header.php'; ?>
-<?php include_once '../../../model/member.php'; ?>
-<!--- header end ----> 
+<?php include_once '../../../model/member.php'; ?> 
 <?php 
     $memberID = $_SESSION['user']['member_id'];
     $gender = $_SESSION['user']['gender'];

@@ -1,4 +1,3 @@
-<!--- header start ---->
 <?php include_once '../../layout/default_header.php'; ?>
 <?php 
     if(empty($user['image'])){
@@ -20,8 +19,7 @@
     }else{
         $gender="Female";
     }
-?>
-<!--- header end ----> 
+?> 
 <body>
     <!---navbar starting ---------->
     <?php include '../../layout/default_navBar.php';?> 

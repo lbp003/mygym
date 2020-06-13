@@ -1,6 +1,4 @@
-<!--- header start ---->
 <?php include '../../layout/header.php'; ?>
-<!--- header end ---->
 <?php include '../../../model/class.php'; ?>
 <?php 
 $allClass = Programs::displayAllPrograms();

@@ -1,16 +1,14 @@
-<?php include_once '../../../config/dbconnection.php'; ?>
 <?php include_once '../../../config/session.php'; ?>
+<?php include_once '../../../config/dbconnection.php'; ?>
 <?php include_once '../../../config/global.php'; ?>
 <?php include_once '../../../model/role.php'; ?>
 <?php
-    // Get User Details from session
     $user=$_SESSION['user']; 
     if(!$user)
     {   
         header("Location:../../index.php");
         exit;
     }
-
     $auth = new Role();
 ?>
 <html>

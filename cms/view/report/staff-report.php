@@ -1,6 +1,4 @@
-<!--- header start ---->
 <?php include '../../layout/header.php'; ?>
-<!--- header end ---->
 <?php include '../../../model/staff.php'; ?>
 <?php 
 $allStaff = Staff::displayAllStaff();

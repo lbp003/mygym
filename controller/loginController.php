@@ -1,9 +1,7 @@
 <?php
-date_default_timezone_get("Asia/Colombo");//To change time zone
-//Login controller
-//Server Side Include to include a file
-include_once '../config/dbconnection.php';
+date_default_timezone_get("Asia/Colombo");
 include_once '../config/session.php';
+include_once '../config/dbconnection.php';
 include_once '../model/login.php';
 include_once '../model/role.php';
 include_once '../model/log.php';

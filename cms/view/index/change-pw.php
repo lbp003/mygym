@@ -1,6 +1,4 @@
-<!--- header start ---->
-<?php include_once '../../layout/header.php'; ?>
-<!--- header end ----> 
+<?php include_once '../../layout/header.php'; ?> 
 <body>
     <!---navbar starting ---------->
     <?php include '../../layout/navBar.php';?> 

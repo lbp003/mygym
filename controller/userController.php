@@ -5,9 +5,6 @@ include_once '../config/global.php';
 include_once '../model/staff.php';
 include_once '../model/member.php';
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
 $auth = new Role(); 
 
 $status=$_REQUEST['status'];
@@ -52,50 +49,38 @@ switch ($status){
             . "<p>Thank you.</p><br />"
             . "<p align='center'>".EMAIL_FOOTER."</p>"
             . "</div>";
-                
-            //Send email
-        
-                    // Load Composer's autoloader
-                require_once '../vendor/autoload.php';
-        
-                // Instantiation and passing `true` enables exceptions
-                $mail = new PHPMailer(true);
-        
-                try {
-                    //Server settings
-                    $mail->SMTPDebug = 2;                                       // Enable verbose debug output
-                    $mail->isSMTP();                                            // Set mailer to use SMTP
-                    $mail->Host       = EMAIL_HOST;  // Specify main and backup SMTP servers
-                    $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-                    $mail->Username   = SYSTEM_EMAIL;                     // SMTP username
-                    $mail->Password   = APP_KEY;                               // SMTP password
-                    $mail->SMTPSecure = 'tls';                                  // Enable TLS encryption, `ssl` also accepted
-                    $mail->Port       = 25;                                    // TCP port to connect to
-        
-                    //Recipients
-                    $mail->setFrom(SYSTEM_EMAIL, 'Mailer');
-                    $mail->addAddress($email,"User");     // Add a recipient
-        
-                    // Content
-                    $mail->isHTML(true);                                  // Set email format to HTML
-                    $mail->Subject = 'Recover Your Password';
-                    $mail->Body    = $mailBody;
-        
-                    if($mail->send()){
-                        header("Location:../cms/view/index/recovery-mail-sent.php");
-                        exit;  
-                    }
-                    
-                } catch (Exception $e) {
-                        //write email errors to  a text file 
-                        $logFile = ERROR_LOG.'email_error_'.date('YmdH').'.txt';
-                        @file_put_contents($logFile, "Mailer Error: " . $mail->ErrorInfo, FILE_APPEND | LOCK_EX);
-            
-                        $msg = "Failed to send the email. Try again";
-                        $msg = base64_encode($msg);
-                        header("Location:../cms/view/index/forget-pw.php");
-                        exit;            
-                }
+
+            require_once '../vendor/autoload.php';
+
+            try{
+                // Create the Transport
+                $transport = (new Swift_SmtpTransport(EMAIL_HOST, 25))
+                ->setUsername(EMAIL_USERNAME)
+                ->setPassword(EMAIL_KEY)
+                ;
+    
+                // Create the Mailer using your created Transport
+                $mailer = new Swift_Mailer($transport);
+    
+                // Create a message
+                $message = (new Swift_Message('Recover Your Password'))
+                ->setFrom([SYSTEM_EMAIL])
+                ->setTo([$email])
+                ->setBody($mailBody, 'text/html')
+                ;
+    
+                // Send the message
+                $result = $mailer->send($message);
+    
+                header("Location:../cms/view/index/recovery-mail-sent.php");
+                exit; 
+    
+            }catch(Exception $e){
+                $msg = "Failed to send the email. Try again";
+                $msg = base64_encode($msg);
+                header("Location:../cms/view/index/forget-pw.php");
+                exit;  
+            }
         }else {
             $msg = "Employee account not found. Try again with correct email address";
             $msg = base64_encode($msg);
@@ -203,50 +188,41 @@ break;
             . "<p>Thank you.</p><br />"
             . "<p align='center'>".EMAIL_FOOTER."</p>"
             . "</div>";
-                
-            //Send email
-        
-                    // Load Composer's autoloader
-                require_once '../vendor/autoload.php';
-        
-                // Instantiation and passing `true` enables exceptions
-                $mail = new PHPMailer(true);
-        
-                try {
-                    //Server settings
-                    $mail->SMTPDebug = 2;                                       // Enable verbose debug output
-                    $mail->isSMTP();                                            // Set mailer to use SMTP
-                    $mail->Host       = EMAIL_HOST;  // Specify main and backup SMTP servers
-                    $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-                    $mail->Username   = SYSTEM_EMAIL;                     // SMTP username
-                    $mail->Password   = APP_KEY;                               // SMTP password
-                    $mail->SMTPSecure = 'tls';                                  // Enable TLS encryption, `ssl` also accepted
-                    $mail->Port       = 25;                                    // TCP port to connect to
-        
-                    //Recipients
-                    $mail->setFrom(SYSTEM_EMAIL, 'Mailer');
-                    $mail->addAddress($email,"User");     // Add a recipient
-        
-                    // Content
-                    $mail->isHTML(true);                                  // Set email format to HTML
-                    $mail->Subject = 'Recover Your Password';
-                    $mail->Body    = $mailBody;
-        
-                    if($mail->send()){
-                        header("Location:../web/view/index/recovery-mail-sent.php");
-                        exit;  
-                    }
-                    
-                } catch (Exception $e) {
-                        //write email errors to  a text file 
-                        $logFile = ERROR_LOG.'email_error_'.date('YmdH').'.txt';
-                        @file_put_contents($logFile, "Mailer Error: " . $mail->ErrorInfo, FILE_APPEND | LOCK_EX);
-            
-                        $msg = "Failed to send the email. Try again";
-                        $msg = base64_encode($msg);
-                        header("Location:../web/view/index/forget-pw.php");
-                        exit;            
+
+            require_once '../vendor/autoload.php';
+
+            try{
+                // Create the Transport
+                $transport = (new Swift_SmtpTransport(EMAIL_HOST, 25))
+                ->setUsername(EMAIL_USERNAME)
+                ->setPassword(EMAIL_KEY)
+                ;
+    
+                // Create the Mailer using your created Transport
+                $mailer = new Swift_Mailer($transport);
+    
+                // Create a message
+                $message = (new Swift_Message('Recover Your Password'))
+                ->setFrom([SYSTEM_EMAIL])
+                ->setTo([$email])
+                ->setBody($mailBody, 'text/html')
+                ;
+    
+                // Send the message
+                $result = $mailer->send($message);
+    
+                if($mail->send()){
+                    header("Location:../web/view/index/recovery-mail-sent.php");
+                    exit;  
                 }
+    
+            }catch(Exception $e){
+                $msg = "Failed to send the email. Try again";
+                $msg = base64_encode($msg);
+                header("Location:../web/view/index/forget-pw.php");
+                exit;  
+            }
+        
         }else {
             $msg = "Member account not found. Try again with correct email address";
             $msg = base64_encode($msg);
@@ -366,42 +342,33 @@ break;
         // Load Composer's autoloader
         require_once '../vendor/autoload.php';
 
-        // Instantiation and passing `true` enables exceptions
-        $mail = new PHPMailer(true);
+        try{
+            // Create the Transport
+            $transport = (new Swift_SmtpTransport(EMAIL_HOST, 25))
+            ->setUsername(EMAIL_USERNAME)
+            ->setPassword(EMAIL_KEY)
+            ;
 
-        try {
-            //Server settings
-            $mail->SMTPDebug = 2;                                       // Enable verbose debug output
-            $mail->isSMTP();                                            // Set mailer to use SMTP
-            $mail->Host       = EMAIL_HOST;  // Specify main and backup SMTP servers
-            $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-            $mail->Username   = SYSTEM_EMAIL;                     // SMTP username
-            $mail->Password   = APP_KEY;                               // SMTP password
-            $mail->SMTPSecure = 'tls';                                  // Enable TLS encryption, `ssl` also accepted
-            $mail->Port       = 25;                                    // TCP port to connect to
+            // Create the Mailer using your created Transport
+            $mailer = new Swift_Mailer($transport);
 
-            //Recipients
-            $mail->setFrom(SYSTEM_EMAIL, 'Mailer');
-            $mail->addAddress(SYSTEM_EMAIL,"Contact");     // Add a recipient
+            // Create a message
+            $message = (new Swift_Message('Contact Us'))
+            ->setFrom([$email => $fullName])
+            ->setTo([SYSTEM_EMAIL])
+            ->setBody($mailBody, 'text/html')
+            ;
 
-            // Content
-            $mail->isHTML(true);                                  // Set email format to HTML
-            $mail->Subject = 'Contact Us';
-            $mail->Body    = $mailBody;
+            // Send the message
+            $result = $mailer->send($message);
 
-            if($mail->send()){
-                header("Location:../web/view/index/success.php");
-                exit;  
-            }
-            
-        } catch (Exception $e) {
-                //write email errors to  a text file 
-                $logFile = ERROR_LOG.'email_error_'.date('YmdH').'.txt';
-                @file_put_contents($logFile, "Mailer Error: " . $mail->ErrorInfo, FILE_APPEND | LOCK_EX);
+            header("Location:../web/view/index/success.php");
+            exit; 
 
-                header("Location:../web/view/index/failed.php");
-                exit;            
-                }
+        }catch(Exception $e){
+            header("Location:../web/view/index/failed.php");
+            exit; 
+        }
 break; 
 /**
  * Index actiton

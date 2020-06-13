@@ -22,10 +22,6 @@ class ComposerStaticInit68c69f56485fd965783e2ed809da18c4
             'Symfony\\Polyfill\\Intl\\Idn\\' => 26,
             'Symfony\\Polyfill\\Iconv\\' => 23,
         ),
-        'P' => 
-        array (
-            'PHPMailer\\PHPMailer\\' => 20,
-        ),
         'I' => 
         array (
             'Ifsnop\\' => 7,
@@ -56,10 +52,6 @@ class ComposerStaticInit68c69f56485fd965783e2ed809da18c4
         'Symfony\\Polyfill\\Iconv\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-iconv',
-        ),
-        'PHPMailer\\PHPMailer\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
         'Ifsnop\\' => 
         array (

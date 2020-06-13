@@ -7,9 +7,6 @@ include_once '../model/role.php';
 include_once '../model/package.php';
 include_once '../model/subscription.php';
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
 $user=$_SESSION['user'];
 $auth = new Role(); 
 
@@ -162,12 +159,10 @@ break;
         $updatedBy = $user['staff_id'];
     
         if(Member::checkEmail($email)){
-              //add new member
             $memberID=$objme->addMember($firstName,$lastName,$email,$gender,$dob,$nic,$phone,$address,$packageID, $membershipNumber, $enPassword, $createdBy, $updatedBy, $lmd, $status, $joinedDate);
             
             if($memberID){
 
-                // Send mail
                 $fullName = $firstName." ".$lastName;
                 $mailBody="<div style='font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#444; background:#ffffff; line-height:20px; padding-bottom:20px;'>"
                 . "<h2> Hi ".$fullName." ,</h2>"
@@ -190,51 +185,38 @@ break;
                 . "<p align='center'>".EMAIL_FOOTER."</p>"
                 . "</div>";
                     
-                //Send email
-            
-                    // Load Composer's autoloader
-                    require_once '../vendor/autoload.php';
-            
-                    // Instantiation and passing `true` enables exceptions
-                    $mail = new PHPMailer(true);
-            
-                    try {
-                        //Server settings
-                        $mail->SMTPDebug = 2;                                       // Enable verbose debug output
-                        $mail->isSMTP();                                            // Set mailer to use SMTP
-                        $mail->Host       = EMAIL_HOST;  // Specify main and backup SMTP servers
-                        $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-                        $mail->Username   = SYSTEM_EMAIL;                     // SMTP username
-                        $mail->Password   = APP_KEY;                               // SMTP password
-                        $mail->SMTPSecure = 'tls';                                  // Enable TLS encryption, `ssl` also accepted
-                        $mail->Port       = 25;                                    // TCP port to connect to
-            
-                        //Recipients
-                        $mail->setFrom(SYSTEM_EMAIL, 'Mailer');
-                        $mail->addAddress($email, $fullName);     // Add a recipient
-            
-                        // Content
-                        $mail->isHTML(true);                                  // Set email format to HTML
-                        $mail->Subject = 'Member Registration';
-                        $mail->Body    = $mailBody;
-            
-                        if($mail->send()){
-                            $msg = json_encode(array('title'=>'Success','message'=>'Member registration successful','type'=>'success'));
-                            $msg = base64_encode($msg);
-                            header("Location:../cms/view/member/index.php?msg=$msg");
-                            exit;
-                        }
-                        
-                    } catch (Exception $e) {
-                        
-                            //write email errors to  a text file 
-                            $logFile = ERROR_LOG.'email_error_'.date('YmdH').'.txt';
-                            @file_put_contents($logFile, "Mailer Error: " . $mail->ErrorInfo, FILE_APPEND | LOCK_EX);
-                
-                            $msg = json_encode(array('title'=>'Danger','message'=> 'Member registration failed','type'=>'danger'));
-                            $msg = base64_encode($msg);
-                            header("Location:../cms/view/member/add-member.php?msg=$msg");
-                            exit;            
+                require_once '../vendor/autoload.php';
+
+                    try{
+                        // Create the Transport
+                        $transport = (new Swift_SmtpTransport(EMAIL_HOST, 25))
+                        ->setUsername(EMAIL_USERNAME)
+                        ->setPassword(EMAIL_KEY)
+                        ;
+
+                        // Create the Mailer using your created Transport
+                        $mailer = new Swift_Mailer($transport);
+
+                        // Create a message
+                        $message = (new Swift_Message('Member Registration'))
+                        ->setFrom([SYSTEM_EMAIL])
+                        ->setTo([$email => $fullName])
+                        ->setBody($mailBody, 'text/html')
+                        ;
+
+                        // Send the message
+                        $result = $mailer->send($message);
+
+                        $msg = json_encode(array('title'=>'Success','message'=>'Member registration successful','type'=>'success'));
+                        $msg = base64_encode($msg);
+                        header("Location:../cms/view/member/index.php?msg=$msg");
+                        exit;
+
+                    }catch(Exception $e){
+                        $msg = json_encode(array('title'=>'Danger','message'=> 'Failed to send email','type'=>'danger'));
+                        $msg = base64_encode($msg);
+                        header("Location:../cms/view/member/add-member.php?msg=$msg");
+                        exit;
                     }
             }else{
                 $msg = json_encode(array('title'=>'Warning','message'=> 'Member registration failed','type'=>'danger'));

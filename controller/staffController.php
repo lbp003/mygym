@@ -6,9 +6,6 @@ include_once '../model/staff.php';
 include_once '../model/login.php';
 include_once '../model/role.php';
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
 $user=$_SESSION['user'];
 $auth = new Role(); 
 
@@ -144,52 +141,40 @@ switch ($status){
     . "<p align='center'>".EMAIL_FOOTER."</p>"
     . "</div>";
         
-    //Send email
+    require_once '../vendor/autoload.php';
 
-            // Load Composer's autoloader
-        require_once '../vendor/autoload.php';
+        try{
+            // Create the Transport
+            $transport = (new Swift_SmtpTransport(EMAIL_HOST, 25))
+            ->setUsername(EMAIL_USERNAME)
+            ->setPassword(EMAIL_KEY)
+            ;
 
-        // Instantiation and passing `true` enables exceptions
-        $mail = new PHPMailer(true);
+            // Create the Mailer using your created Transport
+            $mailer = new Swift_Mailer($transport);
 
-        try {
-            //Server settings
-            $mail->SMTPDebug = 2;                                       // Enable verbose debug output
-            $mail->isSMTP();                                            // Set mailer to use SMTP
-            $mail->Host       = EMAIL_HOST;  // Specify main and backup SMTP servers
-            $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-            $mail->Username   = SYSTEM_EMAIL;                     // SMTP username
-            $mail->Password   = APP_KEY;                               // SMTP password
-            $mail->SMTPSecure = 'tls';                                  // Enable TLS encryption, `ssl` also accepted
-            $mail->Port       = 25;                                    // TCP port to connect to
+            // Create a message
+            $message = (new Swift_Message('Employee Registration'))
+            ->setFrom([SYSTEM_EMAIL])
+            ->setTo([$email => $fullName])
+            ->setBody($mailBody, 'text/html')
+            ;
 
-            //Recipients
-            $mail->setFrom(SYSTEM_EMAIL, 'Mailer');
-            $mail->addAddress($email,$fullName);     // Add a recipient
+            // Send the message
+            $result = $mailer->send($message);
 
-            // Content
-            $mail->isHTML(true);                                  // Set email format to HTML
-            $mail->Subject = 'Employee Registration';
-            $mail->Body    = $mailBody;
-            // $mail->AltBody = 'Employee Registration';
+            $msg = json_encode(array('title'=>'Success','message'=> 'Employee registration successful','type'=>'success'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/staff/index.php?msg=$msg");
+            exit;
 
-            if($mail->send()){
-                    $msg = json_encode(array('title'=>'Success','message'=> 'Employee registration successful','type'=>'success'));
-                    $msg = base64_encode($msg);
-                    header("Location:../cms/view/staff/index.php?msg=$msg");
-                    exit;
-            }
-            
-        } catch (Exception $e) {
-               //write email errors to  a text file 
-               $logFile = ERROR_LOG.'email_error_'.date('YmdH').'.txt';
-               @file_put_contents($logFile, "Mailer Error: " . $mail->ErrorInfo, FILE_APPEND | LOCK_EX);
-   
-               $msg = json_encode(array('title'=>'Danger','message'=> 'Employee registration failed','type'=>'danger'));
-               $msg = base64_encode($msg);
-               header("Location:../cms/view/staff/add-staff.php?msg=$msg");
-               exit;            
+        }catch(Exception $e){
+            $msg = json_encode(array('title'=>'Danger','message'=> 'Employee registration failed','type'=>'danger'));
+            $msg = base64_encode($msg);
+            header("Location:../cms/view/staff/add-staff.php?msg=$msg");
+            exit;  
         }
+
     }else {
         $msg = json_encode(array('title'=>'Danger','message'=> 'Employee registration failed','type'=>'danger'));
         $msg = base64_encode($msg);

@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
 date_default_timezone_get("Asia/Colombo");
 include_once '../config/session.php';
 include_once '../config/dbconnection.php';
@@ -49,7 +53,7 @@ if($email=="" or $password==""){
         }
         
     }else {//Valid user name and password  
-               
+        
          if($user_type=='member'){
 
              $user=$result->fetch_assoc(); 

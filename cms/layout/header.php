@@ -3,6 +3,9 @@
 <?php include_once '../../../config/global.php'; ?>
 <?php include_once '../../../model/role.php'; ?>
 <?php
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
     $user=$_SESSION['user']; 
     if(!$user)
     {   

@@ -1,4 +1,3 @@
-<!--- header  ---->
 <?php include '../../layout/header.php'; ?>
 <?php 
     $clsData = $_SESSION['clsData'];

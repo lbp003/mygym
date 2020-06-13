@@ -5,9 +5,9 @@ class dbconnection{
     function connection(){
         //dbconnection
         $host="localhost";
-        $un="root";
-        $pw="root";
-        $db="mygym";
+        $un="id13796618_root";
+        $pw="52n2B^MCuq]Ni{\-";
+        $db="id13796618_mygym";
         //connection
         $con= new mysqli($host,$un,$pw,$db);
         return $con;

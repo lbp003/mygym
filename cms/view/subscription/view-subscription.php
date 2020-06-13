@@ -1,4 +1,3 @@
-<!--- header  ---->
 <?php include '../../layout/header.php'; ?>
 <?php include_once '../../../model/subscription.php'; ?>
 <?php 

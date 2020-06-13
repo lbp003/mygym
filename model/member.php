@@ -130,10 +130,11 @@ class Member{
 	* @return object $result
 	*/
     public static function activateMember($member_id){
+        $status = Member::ACTIVE;
         $con=$GLOBALS['con']; 
         $sql = "UPDATE member SET status=? WHERE member_id=?";
         $stmt = $con->prepare($sql);
-        $stmt->bind_param("si", $status = Member::ACTIVE, $member_id);
+        $stmt->bind_param("si", $status, $member_id);
         $stmt->execute();
         if ($stmt->error) {
             return false;
@@ -146,10 +147,11 @@ class Member{
 	* @return object $result
 	*/
     public static function deactivateMember($member_id){
+        $status=Member::INACTIVE;
         $con=$GLOBALS['con']; 
         $sql = "UPDATE member SET status=? WHERE member_id=?";
         $stmt = $con->prepare($sql);
-        $stmt->bind_param("si", $status = Member::INACTIVE, $member_id);
+        $stmt->bind_param("si", $status, $member_id);
         $stmt->execute();
         if ($stmt->error) {
             return false;

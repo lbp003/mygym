@@ -1,6 +1,4 @@
 <?php
-
-//Login class
 class Login{
     /** 
 	* Return All Employee Details

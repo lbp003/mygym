@@ -1,4 +1,3 @@
-<!-- including header -->
 <?php include_once '../../layout/header.php'; ?>
   <body>
   <div class="site-wrap">
@@ -18,7 +17,7 @@
           <div class="row align-items-center">
             <div class="col-6">
               <a href="#" class="p-2 pl-0"><span class="icon-twitter"></span></a>
-              <a href="https://www.facebook.com/Hiru-fitness-centre-774379499563801" target="_blank" class="p-2 pl-0"><span class="icon-facebook"></span></a>
+              <a href="#" target="_blank" class="p-2 pl-0"><span class="icon-facebook"></span></a>
               <a href="#" class="p-2 pl-0"><span class="icon-instagram"></span></a>
             </div>
             <div class="col-6">

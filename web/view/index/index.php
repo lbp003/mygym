@@ -1,4 +1,3 @@
-<!-- including header -->
 <?php include_once '../../layout/header.php'; ?>
 <?php $today = date('D');
 // echo $today; exit;
@@ -20,7 +19,7 @@
           <div class="row align-items-center">
             <div class="col-6">
               <a href="#" class="p-2 pl-0"><span class="icon-twitter"></span></a>
-              <a href="https://www.facebook.com/Hiru-fitness-centre-774379499563801" target="_blank" class="p-2 pl-0"><span class="icon-facebook"></span></a>
+              <a href="#" target="_blank" class="p-2 pl-0"><span class="icon-facebook"></span></a>
               <a href="#" class="p-2 pl-0"><span class="icon-instagram"></span></a>
             </div>
             <div class="col-6">
@@ -111,8 +110,8 @@
       <div class="container">
         <div class="row align-items-center">
           <div class="col-md-12 col-lg-5 mb-5 mb-lg-0">
-            <h3 class="mb-3 text-uppercase">All About <strong class="text-black font-weight-bold">Hiru Fitness</strong></h3>
-            <p class="lead">Hiru Fitness Centre was founded in 2018 by Mr.Manoj Kumara. Our mission is to help people to achieve fit and well-being lifestyle.</p>
+            <h3 class="mb-3 text-uppercase">All About <strong class="text-black font-weight-bold">LBP Fitness</strong></h3>
+            <p class="lead">LBP Fitness Centre was founded in 2018 by Mr.Lakshan Peramuna. Our mission is to help people to achieve fit and well-being lifestyle.</p>
             <p class="mb-4">Contact us for a free one day work out and get a first-hand experience of our dynamic and professional fitness training offered to you and your loved ones.</p>
             <ul class="site-block-check">
               <li>Air conditioning.</li>
@@ -373,7 +372,7 @@
             <div class="p-4 mb-3">
               <h3 class="h5 mb-3">Contact Info</h3>
               <p class="mb-0 font-weight-bold">Address</p>
-              <p class="mb-4">Hiru Fitness Centre Pvt.Ltd, 149, Bollatha, Ganemulla, Sri Lanka</p>
+              <p class="mb-4">LBPFitness Centre Pvt.Ltd, 149, Bollatha, Ganemulla, Sri Lanka</p>
 
               <p class="mb-0 font-weight-bold">Phone</p>
               <p class="mb-4"><a href="tel://<?php echo BUSINESS_PHONE;?>"><?php echo BUSINESS_PHONE;?></a></p>
